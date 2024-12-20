@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>避凉闲庭</title>
+  <title>Rocky部署OpenVPN | 避凉闲庭</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="title:Rocky部署OpenVPNdate:2024-12-20 17:29:00参考文献Linux 小白鼠：https:&#x2F;&#x2F;www.itwordsweb.com&#x2F;archives&#x2F;openvpn Rocky9.3安装openVPN_rocky 9.3-CSDN博客 前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL V">
+  <meta name="description" content="参考文献Linux 小白鼠：https:&#x2F;&#x2F;www.itwordsweb.com&#x2F;archives&#x2F;openvpn Rocky9.3安装openVPN_rocky 9.3-CSDN博客 前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL VPN软件，主要是建立点对点的的连接，说白一点就是在做远程接入的时候建立VPN通道，这样可以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="避凉闲庭">
+<meta property="og:title" content="Rocky部署OpenVPN">
 <meta property="og:url" content="http://example.com/2024/12/20/Rocky%E9%83%A8%E7%BD%B2OpenVPN/index.html">
 <meta property="og:site_name" content="避凉闲庭">
-<meta property="og:description" content="title:Rocky部署OpenVPNdate:2024-12-20 17:29:00参考文献Linux 小白鼠：https:&#x2F;&#x2F;www.itwordsweb.com&#x2F;archives&#x2F;openvpn Rocky9.3安装openVPN_rocky 9.3-CSDN博客 前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL V">
+<meta property="og:description" content="参考文献Linux 小白鼠：https:&#x2F;&#x2F;www.itwordsweb.com&#x2F;archives&#x2F;openvpn Rocky9.3安装openVPN_rocky 9.3-CSDN博客 前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL VPN软件，主要是建立点对点的的连接，说白一点就是在做远程接入的时候建立VPN通道，这样可以">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752190720-3427b976-8989-459d-ae3f-3f63ed21e832.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752411057-dec47ca1-3ffc-447c-8ce5-dd35d22b469f.png">
@@ -37,10 +37,12 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798518958-bbea0918-1a30-422f-b647-35bc82e98564.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798561764-9b2b0dfd-6f8b-4f79-ae0d-407167ef0893.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798595495-2aff9663-214a-4481-b906-4f23f8f6285f.png">
-<meta property="article:published_time" content="2024-12-20T09:33:56.787Z">
-<meta property="article:modified_time" content="2024-12-20T09:33:56.787Z">
+<meta property="article:published_time" content="2024-12-20T09:36:09.000Z">
+<meta property="article:modified_time" content="2024-12-20T09:36:48.632Z">
 <meta property="article:author" content="避凉闲庭">
-<meta property="article:tag" content="python linux 云计算 人工智能 大数据">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="云计算">
+<meta property="article:tag" content="openvpn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752190720-3427b976-8989-459d-ae3f-3f63ed21e832.png">
   
@@ -249,10 +251,52 @@
             <article id="post-Rocky部署OpenVPN" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+  
+  
+    <h1 class="article-title" itemprop="name">
+      Rocky部署OpenVPN
+    </h1>
+  
+
+
+  
+  
+<a href="/2024/12/20/Rocky%E9%83%A8%E7%BD%B2OpenVPN/" class="archive-article-date">
+        <time datetime="2024-12-20T09:36:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-12-20</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">2.7k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">11分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
   <div class="article-entry" itemprop="articleBody">
     
-    <hr>
-<h2 id="title-Rocky部署OpenVPNdate-2024-12-20-17-29-00"><a href="#title-Rocky部署OpenVPNdate-2024-12-20-17-29-00" class="headerlink" title="title:Rocky部署OpenVPNdate:2024-12-20 17:29:00"></a>title:Rocky部署OpenVPN<br>date:2024-12-20 17:29:00</h2><h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><font style="color:rgb(31, 45, 61);"></font><a target="_blank" rel="noopener" href="https://www.itwordsweb.com/">Linux 小白鼠：https://www.itwordsweb.com/archives/openvpn</a></p>
+    <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><font style="color:rgb(31, 45, 61);"></font><a target="_blank" rel="noopener" href="https://www.itwordsweb.com/">Linux 小白鼠：https://www.itwordsweb.com/archives/openvpn</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19402941/article/details/135339138">Rocky9.3安装openVPN_rocky 9.3-CSDN博客</a></p>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="OpenVPN是啥？"><a href="#OpenVPN是啥？" class="headerlink" title="OpenVPN是啥？"></a>OpenVPN是啥？</h2><p>看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL VPN软件，主要是建立点对点的的连接，说白一点就是在做远程接入的时候建立VPN通道，这样可以对传输中的数据进行加密提高安全性。</p>
 <h2 id="为啥要部署OpenVPN"><a href="#为啥要部署OpenVPN" class="headerlink" title="为啥要部署OpenVPN"></a>为啥要部署OpenVPN</h2><pre><code>1. 提高互联网链接的安全性；
@@ -454,7 +498,7 @@
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="http://example.com/2024/12/20/Rocky部署OpenVPN/" title="" target="_blank">http://example.com/2024/12/20/Rocky部署OpenVPN/</a>
+          <a href="http://example.com/2024/12/20/Rocky部署OpenVPN/" title="Rocky部署OpenVPN" target="_blank">http://example.com/2024/12/20/Rocky部署OpenVPN/</a>
         </li>
         
         <li>
@@ -471,6 +515,25 @@
   <div class="article-info article-info-index">
     
     
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">云计算</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">openvpn</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
     
 
     
@@ -565,7 +628,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#title-Rocky%E9%83%A8%E7%BD%B2OpenVPNdate-2024-12-20-17-29-00"><span class="toc-number">1.</span> <span class="toc-text">title:Rocky部署OpenVPNdate:2024-12-20 17:29:00</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.1.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenVPN%E6%98%AF%E5%95%A5%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">OpenVPN是啥？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E5%95%A5%E8%A6%81%E9%83%A8%E7%BD%B2OpenVPN"><span class="toc-number">2.</span> <span class="toc-text">为啥要部署OpenVPN</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D"><span class="toc-number"></span> <span class="toc-text">环境介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2OpenVPN"><span class="toc-number"></span> <span class="toc-text">部署OpenVPN</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">服务器初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDepel%E3%80%81elrepo%E5%BA%93"><span class="toc-number">1.1.</span> <span class="toc-text">加载epel、elrepo库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E5%BB%BA%E7%AB%8B%E7%BC%93%E5%AD%98"><span class="toc-number">1.2.</span> <span class="toc-text">重新建立缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%9B%B4%E6%96%B0"><span class="toc-number">1.3.</span> <span class="toc-text">安装更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">1.4.</span> <span class="toc-text">关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADselinux"><span class="toc-number">1.5.</span> <span class="toc-text">关闭selinux</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85OpenVPN"><span class="toc-number">2.</span> <span class="toc-text">安装OpenVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%BE%E5%8F%91%E8%AF%81%E4%B9%A6"><span class="toc-number">3.</span> <span class="toc-text">签发证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAeasy-rsa%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="toc-number">3.1.</span> <span class="toc-text">创建easy-rsa工作目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E4%BF%AE%E6%94%B9easy-rsa%EF%BC%88vars%EF%BC%89%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%EF%BC%9A-etc-openvpn-easy-rsa-vars"><span class="toc-number">3.2.</span> <span class="toc-text">编辑修改easy-rsa（vars）配置文件，配置文件路径：&#x2F;etc&#x2F;openvpn&#x2F;easy-rsa&#x2F;vars</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easy-rsa%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">easy-rsa初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6"><span class="toc-number">3.4.</span> <span class="toc-text">生成CA证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90server%E7%AB%AF%E7%A7%81%E9%92%A5%E5%92%8C%E8%AF%81%E4%B9%A6"><span class="toc-number">3.5.</span> <span class="toc-text">生成server端私钥和证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99server%E8%AF%81%E4%B9%A6%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="toc-number">3.6.</span> <span class="toc-text">给server证书进行签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%81%E9%92%A5%E5%B9%B6%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="toc-number">3.7.</span> <span class="toc-text">生成客户端证书和私钥并进行签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90Diffie-Hellman%E5%8F%82%E6%95%B0"><span class="toc-number">3.8.</span> <span class="toc-text">生成Diffie-Hellman参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEOpenVPN"><span class="toc-number">4.</span> <span class="toc-text">配置OpenVPN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%A8%A1%E6%9D%BF"><span class="toc-number">4.1.</span> <span class="toc-text">复制配置文件模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAta-key%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">创建ta.key文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.3.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF"><span class="toc-number">4.4.</span> <span class="toc-text">启动客户端并设置开机自启</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">其他配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E8%B7%AF%E7%94%B1%E8%BD%AC%E5%8F%91"><span class="toc-number">5.1.</span> <span class="toc-text">开启路由转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEiptables%E9%98%B2%E7%81%AB%E5%A2%99%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99%E5%92%8CNAT%E8%A7%84%E5%88%99"><span class="toc-number">5.2.</span> <span class="toc-text">设置iptables防火墙转发规则和NAT规则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">客户端配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="toc-number">2.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">下载安装客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">导入配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%80%89%E6%8B%A9upload-file"><span class="toc-number">4.1.</span> <span class="toc-text">客户端选择upload file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E5%BA%95%E9%83%A8BROWSE"><span class="toc-number">4.2.</span> <span class="toc-text">点击底部BROWSE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE"><span class="toc-number">4.3.</span> <span class="toc-text">连接成功截图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number"></span> <span class="toc-text">验证是否成功</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-openvpn%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-number">0.1.</span> <span class="toc-text">ping openvpn服务器地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E5%85%B3%E6%88%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-number">0.2.</span> <span class="toc-text">ping 服务器网关或服务器地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%8E%B7%E5%8F%96%E5%88%B0%E7%9A%84%E5%9C%B0%E5%9D%80%E5%92%8C%E8%B7%AF%E7%94%B1"><span class="toc-number">0.3.</span> <span class="toc-text">查看客户端获取到的地址和路由</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenVPN%E6%98%AF%E5%95%A5%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">OpenVPN是啥？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E5%95%A5%E8%A6%81%E9%83%A8%E7%BD%B2OpenVPN"><span class="toc-number"></span> <span class="toc-text">为啥要部署OpenVPN</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D"><span class="toc-number"></span> <span class="toc-text">环境介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2OpenVPN"><span class="toc-number"></span> <span class="toc-text">部署OpenVPN</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number"></span> <span class="toc-text">服务器初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDepel%E3%80%81elrepo%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">加载epel、elrepo库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E5%BB%BA%E7%AB%8B%E7%BC%93%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">重新建立缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%9B%B4%E6%96%B0"><span class="toc-number">3.</span> <span class="toc-text">安装更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">4.</span> <span class="toc-text">关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADselinux"><span class="toc-number">5.</span> <span class="toc-text">关闭selinux</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85OpenVPN"><span class="toc-number"></span> <span class="toc-text">安装OpenVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%BE%E5%8F%91%E8%AF%81%E4%B9%A6"><span class="toc-number"></span> <span class="toc-text">签发证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAeasy-rsa%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">创建easy-rsa工作目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E4%BF%AE%E6%94%B9easy-rsa%EF%BC%88vars%EF%BC%89%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%EF%BC%9A-etc-openvpn-easy-rsa-vars"><span class="toc-number">2.</span> <span class="toc-text">编辑修改easy-rsa（vars）配置文件，配置文件路径：&#x2F;etc&#x2F;openvpn&#x2F;easy-rsa&#x2F;vars</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easy-rsa%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">easy-rsa初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90CA%E8%AF%81%E4%B9%A6"><span class="toc-number">4.</span> <span class="toc-text">生成CA证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90server%E7%AB%AF%E7%A7%81%E9%92%A5%E5%92%8C%E8%AF%81%E4%B9%A6"><span class="toc-number">5.</span> <span class="toc-text">生成server端私钥和证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99server%E8%AF%81%E4%B9%A6%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="toc-number">6.</span> <span class="toc-text">给server证书进行签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%81%E9%92%A5%E5%B9%B6%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="toc-number">7.</span> <span class="toc-text">生成客户端证书和私钥并进行签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90Diffie-Hellman%E5%8F%82%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">生成Diffie-Hellman参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEOpenVPN"><span class="toc-number"></span> <span class="toc-text">配置OpenVPN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.</span> <span class="toc-text">复制配置文件模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAta-key%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">创建ta.key文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF"><span class="toc-number">4.</span> <span class="toc-text">启动客户端并设置开机自启</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">其他配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E8%B7%AF%E7%94%B1%E8%BD%AC%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">开启路由转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEiptables%E9%98%B2%E7%81%AB%E5%A2%99%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99%E5%92%8CNAT%E8%A7%84%E5%88%99"><span class="toc-number">2.</span> <span class="toc-text">设置iptables防火墙转发规则和NAT规则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">客户端配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number"></span> <span class="toc-text">生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="toc-number"></span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number"></span> <span class="toc-text">下载安装客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number"></span> <span class="toc-text">导入配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%80%89%E6%8B%A9upload-file"><span class="toc-number">1.</span> <span class="toc-text">客户端选择upload file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E5%BA%95%E9%83%A8BROWSE"><span class="toc-number">2.</span> <span class="toc-text">点击底部BROWSE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE"><span class="toc-number">3.</span> <span class="toc-text">连接成功截图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-number"></span> <span class="toc-text">验证是否成功</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-openvpn%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-number">1.</span> <span class="toc-text">ping openvpn服务器地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E5%85%B3%E6%88%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80"><span class="toc-number">2.</span> <span class="toc-text">ping 服务器网关或服务器地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%8E%B7%E5%8F%96%E5%88%B0%E7%9A%84%E5%9C%B0%E5%9D%80%E5%92%8C%E8%B7%AF%E7%94%B1"><span class="toc-number">3.</span> <span class="toc-text">查看客户端获取到的地址和路由</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -699,6 +762,18 @@
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">云计算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">openvpn</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
