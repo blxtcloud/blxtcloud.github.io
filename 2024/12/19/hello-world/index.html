@@ -487,10 +487,10 @@
   var titleTime;
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-      document.title = "避凉闲庭" + originTitle;
+      document.title = "" + originTitle;
       clearTimeout(titleTime);
     } else {
-      document.title = "我不管 我最帅" + originTitle;
+      document.title = "" + originTitle;
       titleTime = setTimeout(function () {
         document.title = originTitle;
       }, 2000);
