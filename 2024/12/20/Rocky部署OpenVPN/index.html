@@ -17,7 +17,7 @@
 <meta property="og:site_name" content="避凉闲庭">
 <meta property="og:description" content="前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL VPN软件，主要是建立点对点的的连接，说白一点就是在做远程接入的时候建立VPN通道，这样可以对传输中的数据进行加密提高安全性。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752190720-3427b976-8989-459d-ae3f-3f63ed21e832.png">
+<meta property="og:image" content="http://i-blog.csdnimg.cn/img_convert/b6a53d1e0a442d0f7acd79f4de45fe0a.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752411057-dec47ca1-3ffc-447c-8ce5-dd35d22b469f.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752072418-384d60b0-fe4c-403f-ac18-3523d409524a.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733753188062-6e60b3be-49cb-4ff5-8ddd-bc83d5e14c12.png">
@@ -38,13 +38,13 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798561764-9b2b0dfd-6f8b-4f79-ae0d-407167ef0893.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798595495-2aff9663-214a-4481-b906-4f23f8f6285f.png">
 <meta property="article:published_time" content="2024-12-20T09:36:09.000Z">
-<meta property="article:modified_time" content="2024-12-20T14:12:17.927Z">
+<meta property="article:modified_time" content="2024-12-21T07:58:47.013Z">
 <meta property="article:author" content="避凉闲庭">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="云计算">
 <meta property="article:tag" content="openvpn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752190720-3427b976-8989-459d-ae3f-3f63ed21e832.png">
+<meta name="twitter:image" content="http://i-blog.csdnimg.cn/img_convert/b6a53d1e0a442d0f7acd79f4de45fe0a.png">
   
     <link rel="alternative" href="/atom.xml" title="避凉闲庭" type="application/atom+xml">
   
@@ -320,7 +320,7 @@
 <h1 id="部署OpenVPN"><a href="#部署OpenVPN" class="headerlink" title="部署OpenVPN"></a>部署OpenVPN</h1><h2 id="服务器初始化"><a href="#服务器初始化" class="headerlink" title="服务器初始化"></a>服务器初始化</h2><h3 id="加载epel、elrepo库"><a href="#加载epel、elrepo库" class="headerlink" title="加载epel、elrepo库"></a>加载epel、elrepo库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf -y install epel-release epel-next-release elrepo-release</span><br></pre></td></tr></table></figure>
 
 <p>输出结果如下：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733752190720-3427b976-8989-459d-ae3f-3f63ed21e832.png"></p>
+<p><img src="http://i-blog.csdnimg.cn/img_convert/b6a53d1e0a442d0f7acd79f4de45fe0a.png"></p>
 <h3 id="重新建立缓存"><a href="#重新建立缓存" class="headerlink" title="重新建立缓存"></a>重新建立缓存</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dnf clean all	## 删除缓存</span><br><span class="line">dnf makecache ## 建立缓存</span><br></pre></td></tr></table></figure>
 
 <p>输出结果如下：</p>
@@ -466,7 +466,7 @@
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/29440596/1733798595495-2aff9663-214a-4481-b906-4f23f8f6285f.png"></p>
 
     
-
+   
     
 
     
