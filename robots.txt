@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://blxtcloud.github.io/sitemap.xml
