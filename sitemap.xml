@@ -29,15 +29,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/2025/01/16/hello-world/</loc>
-    
-    <lastmod>2025-01-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/message/index.html</loc>
     
     <lastmod>2025-01-19</lastmod>
@@ -555,6 +546,20 @@
   </url>
   
   <url>
+    <loc>https://blxtcloud.github.io/tags/python/</loc>
+    <lastmod>2025-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
+    <lastmod>2025-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blxtcloud.github.io/tags/linux/</loc>
     <lastmod>2025-01-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -584,20 +589,6 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2025-01-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/python/</loc>
-    <lastmod>2025-01-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
     <lastmod>2025-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -746,14 +737,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://blxtcloud.github.io/categories/python/</loc>
     <lastmod>2025-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/python/</loc>
+    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2025-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
