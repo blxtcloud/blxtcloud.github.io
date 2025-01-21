@@ -546,14 +546,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/linux/</loc>
+    <loc>https://blxtcloud.github.io/tags/python/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
+    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -581,20 +581,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/python/</loc>
-    <lastmod>2025-01-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
-    <lastmod>2025-01-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/pip/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -610,6 +596,20 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/linux/</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -644,14 +644,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/php/</loc>
+    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
+    <loc>https://blxtcloud.github.io/tags/php/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -737,14 +737,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://blxtcloud.github.io/categories/python/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/python/</loc>
+    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
