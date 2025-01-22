@@ -2,7 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blxtcloud.github.io/identity/index.html</loc>
+    <loc>https://blxtcloud.github.io/about/index.html</loc>
+    
+    <lastmod>2025-01-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/categories/index.html</loc>
+    
+    <lastmod>2025-01-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/index.html</loc>
     
     <lastmod>2025-01-22</lastmod>
     
@@ -21,15 +39,6 @@
   
   <url>
     <loc>https://blxtcloud.github.io/downloads/index.html</loc>
-    
-    <lastmod>2025-01-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/categories/index.html</loc>
     
     <lastmod>2025-01-20</lastmod>
     
@@ -478,15 +487,6 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://blxtcloud.github.io/tags/index.html</loc>
-    
-    <lastmod>2025-01-16</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>https://blxtcloud.github.io/</loc>
@@ -495,6 +495,27 @@
     <priority>1.0</priority>
   </url>
 
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E7%BD%91%E7%9B%98%E5%8A%A0%E9%80%9F/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
   <url>
     <loc>https://blxtcloud.github.io/tags/ansible/</loc>
@@ -525,27 +546,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E7%BD%91%E7%9B%98%E5%8A%A0%E9%80%9F/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/linux/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -554,27 +554,6 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E5%8C%BB%E7%96%97/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -595,7 +574,28 @@
   </url>
   
   <url>
+    <loc>https://blxtcloud.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blxtcloud.github.io/tags/pip/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E5%8C%BB%E7%96%97/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -686,6 +686,13 @@
   </url>
   
   <url>
+    <loc>https://blxtcloud.github.io/tags/resin/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blxtcloud.github.io/tags/docker/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -693,7 +700,7 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/resin/</loc>
+    <loc>https://blxtcloud.github.io/tags/openvpn/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -713,21 +720,7 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>https://blxtcloud.github.io/tags/openvpn/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
-  
-  <url>
-    <loc>https://blxtcloud.github.io/categories/linux/</loc>
-    <lastmod>2025-01-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
   <url>
     <loc>https://blxtcloud.github.io/categories/%E5%B0%8F%E8%AE%B0/</loc>
@@ -737,7 +730,7 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://blxtcloud.github.io/categories/linux/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -745,6 +738,13 @@
   
   <url>
     <loc>https://blxtcloud.github.io/categories/python/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
