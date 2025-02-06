@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>百度网盘加速-实测有效</title>
-    <url>/2024/12/24/2024122401/</url>
-    <content><![CDATA[<p>《百度网盘加速-实测有效》看到这个标题是不是很惊讶，百度网盘用来N年每次从网盘下载点东西都被限速限的头疼，明明是1000M带宽却被限速到几十kb，恶心到家了。然后看到几十块一个月的会员恶心到家了吧，今天教大家一个让百度网盘下载加速的方法，很有效的。</p>
-<span id="more"></span>
-<!-- ![在这里插入图片描述](f576e8b643314da59e867cddb959091e.png) -->
-<!-- <img src="f576e8b643314da59e867cddb959091e.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/f576e8b643314da59e867cddb959091e.png">'); </script><br>
-<!-- ![在这里插入图片描述](8101efff16c949979d1e536c67652529.png) -->
-<!-- <img src="8101efff16c949979d1e536c67652529.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/8101efff16c949979d1e536c67652529.png">'); </script><br>
-<h3 id="重点来了"><a href="#重点来了" class="headerlink" title="重点来了"></a>重点来了</h3><ol>
-<li>更新到最新版本的百度网盘，我的版本是7.44.6版本<!-- ![在这里插入图片描述](d9183ca9dac54899a105f372a4841df8.png) -->
-<!-- <img src="d9183ca9dac54899a105f372a4841df8.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/d9183ca9dac54899a105f372a4841df8.png">'); </script><br></li>
-<li>设置利用闲置带宽来加速<br><!-- ![在这里插入图片描述](41a1f867180b494c90ffdd161a466b25.png) -->
-<!-- <img src="41a1f867180b494c90ffdd161a466b25.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/41a1f867180b494c90ffdd161a466b25.png">'); </script><br>
-选择设置，进入到设置<!-- ![在这里插入图片描述](9123490a5bfa466bbcf7427fca7a3c64.png) -->
-<!-- <img src="9123490a5bfa466bbcf7427fca7a3c64.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/9123490a5bfa466bbcf7427fca7a3c64.png">'); </script><br>
-选择传输<!-- ![在这里插入图片描述](802534779a8d45c08eb59112cd78603f.png) -->
-<!-- <img src="802534779a8d45c08eb59112cd78603f.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/802534779a8d45c08eb59112cd78603f.png">'); </script><br></li>
-</ol>
-<p>选择优化速率，我这里已经开启了，没有开启他会显示”去开启该功能“</p>
-<!-- ![在这里插入图片描述](ad5bef5a9a334a00bc4263317b417e71.png). -->
-<!-- <img src="ad5bef5a9a334a00bc4263317b417e71.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/ad5bef5a9a334a00bc4263317b417e71.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](2e43824f768d476997ed5bc534b2ca11.png) -->
-<!-- <img src="2e43824f768d476997ed5bc534b2ca11.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/2e43824f768d476997ed5bc534b2ca11.png">'); </script><br>
-<p>同意，开启优化速率，最后别忘记点应用和确定哦</p>
-<!-- ![在这里插入图片描述](71c42238dc7e4f509b5806342fabedb3.png) -->
-<!-- <img src="71c42238dc7e4f509b5806342fabedb3.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/71c42238dc7e4f509b5806342fabedb3.png">'); </script><br>
-<p>这样就设置好了，随便找个文件点击下载，你会发现速率比之前快多了，不过还是没办法达到十几M这样的速率的</p>
-<!-- ![在这里插入图片描述](07fe5b22ee1e4ddbb9a09e42293fa17a.png) -->
-<!-- <img src="07fe5b22ee1e4ddbb9a09e42293fa17a.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735385633/07fe5b22ee1e4ddbb9a09e42293fa17a.png">'); </script><br>
-<p>这是我随便找的一个文件下载的，速率可以达到2M，这样蛮可以的了，比起kb可是好很多了 </p>
-]]></content>
-      <categories>
-        <category>小记</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>百度网盘</tag>
-        <tag>网盘加速</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ansible开局配置-openEuler</title>
     <url>/2024/12/24/2024122402/</url>
     <content><![CDATA[<p>ansible干啥用的就不多介绍了，这篇文章主要在说ansible的安装、开局配置、免密登录。</p>
@@ -322,11 +270,63 @@
         <category>linux</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>ansible</tag>
         <tag>openEuler</tag>
         <tag>云计算</tag>
         <tag>运维</tag>
+        <tag>技术笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>百度网盘加速-实测有效</title>
+    <url>/2024/12/24/2024122401/</url>
+    <content><![CDATA[<p>《百度网盘加速-实测有效》看到这个标题是不是很惊讶，百度网盘用来N年每次从网盘下载点东西都被限速限的头疼，明明是1000M带宽却被限速到几十kb，恶心到家了。然后看到几十块一个月的会员恶心到家了吧，今天教大家一个让百度网盘下载加速的方法，很有效的。</p>
+<span id="more"></span>
+<!-- ![在这里插入图片描述](f576e8b643314da59e867cddb959091e.png) -->
+<!-- <img src="f576e8b643314da59e867cddb959091e.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/f576e8b643314da59e867cddb959091e.png">'); </script><br>
+<!-- ![在这里插入图片描述](8101efff16c949979d1e536c67652529.png) -->
+<!-- <img src="8101efff16c949979d1e536c67652529.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/8101efff16c949979d1e536c67652529.png">'); </script><br>
+<h3 id="重点来了"><a href="#重点来了" class="headerlink" title="重点来了"></a>重点来了</h3><ol>
+<li>更新到最新版本的百度网盘，我的版本是7.44.6版本<!-- ![在这里插入图片描述](d9183ca9dac54899a105f372a4841df8.png) -->
+<!-- <img src="d9183ca9dac54899a105f372a4841df8.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/d9183ca9dac54899a105f372a4841df8.png">'); </script><br></li>
+<li>设置利用闲置带宽来加速<br><!-- ![在这里插入图片描述](41a1f867180b494c90ffdd161a466b25.png) -->
+<!-- <img src="41a1f867180b494c90ffdd161a466b25.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/41a1f867180b494c90ffdd161a466b25.png">'); </script><br>
+选择设置，进入到设置<!-- ![在这里插入图片描述](9123490a5bfa466bbcf7427fca7a3c64.png) -->
+<!-- <img src="9123490a5bfa466bbcf7427fca7a3c64.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/9123490a5bfa466bbcf7427fca7a3c64.png">'); </script><br>
+选择传输<!-- ![在这里插入图片描述](802534779a8d45c08eb59112cd78603f.png) -->
+<!-- <img src="802534779a8d45c08eb59112cd78603f.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/802534779a8d45c08eb59112cd78603f.png">'); </script><br></li>
+</ol>
+<p>选择优化速率，我这里已经开启了，没有开启他会显示”去开启该功能“</p>
+<!-- ![在这里插入图片描述](ad5bef5a9a334a00bc4263317b417e71.png). -->
+<!-- <img src="ad5bef5a9a334a00bc4263317b417e71.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/ad5bef5a9a334a00bc4263317b417e71.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](2e43824f768d476997ed5bc534b2ca11.png) -->
+<!-- <img src="2e43824f768d476997ed5bc534b2ca11.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/2e43824f768d476997ed5bc534b2ca11.png">'); </script><br>
+<p>同意，开启优化速率，最后别忘记点应用和确定哦</p>
+<!-- ![在这里插入图片描述](71c42238dc7e4f509b5806342fabedb3.png) -->
+<!-- <img src="71c42238dc7e4f509b5806342fabedb3.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/71c42238dc7e4f509b5806342fabedb3.png">'); </script><br>
+<p>这样就设置好了，随便找个文件点击下载，你会发现速率比之前快多了，不过还是没办法达到十几M这样的速率的</p>
+<!-- ![在这里插入图片描述](07fe5b22ee1e4ddbb9a09e42293fa17a.png) -->
+<!-- <img src="07fe5b22ee1e4ddbb9a09e42293fa17a.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735385633/07fe5b22ee1e4ddbb9a09e42293fa17a.png">'); </script><br>
+<p>这是我随便找的一个文件下载的，速率可以达到2M，这样蛮可以的了，比起kb可是好很多了 </p>
+]]></content>
+      <categories>
+        <category>小记</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>百度网盘</tag>
+        <tag>网盘加速</tag>
       </tags>
   </entry>
   <entry>
@@ -471,10 +471,57 @@
         <category>linux</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>openEuler</tag>
+        <tag>技术笔记</tag>
         <tag>linux</tag>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>schedule-执行周期性任务</title>
+    <url>/2024/12/24/2024122404/</url>
+    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
+<span id="more"></span>
+
+<p>相较于linux的crontab对比：</p>
+<ol>
+<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
+<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
+<li>轻量级，无需任何依赖</li>
+</ol>
+<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
+
+<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
+</blockquote>
+<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
+</blockquote>
+<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>技术笔记</tag>
+        <tag>python</tag>
+        <tag>schedule</tag>
       </tags>
   </entry>
   <entry>
@@ -569,76 +616,6 @@
         <tag>医疗</tag>
         <tag>信息系统</tag>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>schedule-执行周期性任务</title>
-    <url>/2024/12/24/2024122404/</url>
-    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
-<span id="more"></span>
-
-<p>相较于linux的crontab对比：</p>
-<ol>
-<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
-<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
-<li>轻量级，无需任何依赖</li>
-</ol>
-<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
-
-<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-
-<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
-</blockquote>
-<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
-
-
-<blockquote>
-<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
-</blockquote>
-<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>python</tag>
-        <tag>schedule</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次pip/pip3安装uwsgi报错</title>
-    <url>/2024/12/26/2024122601/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
-<span id="more"></span>
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
-</blockquote>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
-<p>安装好之后再pip安装uwsgi就没问题了。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-        <tag>python</tag>
-        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
@@ -1433,6 +1410,29 @@
       <tags>
         <tag>技术笔记</tag>
         <tag>windwos</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次pip/pip3安装uwsgi报错</title>
+    <url>/2024/12/26/2024122601/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
+<span id="more"></span>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
+</blockquote>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
+<p>安装好之后再pip安装uwsgi就没问题了。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>随笔</tag>
+        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
@@ -3284,8 +3284,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>堡垒机</tag>
       </tags>
   </entry>
@@ -3382,101 +3382,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>云计算</tag>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
-    <url>/2024/12/28/2024122802/</url>
-    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
-<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP</strong></li>
-</ol>
-<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
-
-<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
-<ol>
-<li><strong>IPv6-双栈</strong></li>
-</ol>
-<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
-
-<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
-<ol>
-<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
-
-<ol>
-<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
-</ol>
-<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP使用指导</strong></li>
-</ol>
-<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
-
-<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
-
-<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
-
-<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
-
-<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
-
-<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
-<ol>
-<li><strong>IPv6-双栈使用指导</strong></li>
-</ol>
-<ol start="2">
-<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
-</ol>
-<ul>
-<li>创建IPv6子网，开启子网的IPv6功能：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
-
-<ul>
-<li>添加IPv6安全组规则和ACL规则：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
-
-<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
-
-<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
-
-<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
-<ul>
-<li>购买共享带宽：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
-
-<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
-
-<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
-<ul>
-<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
-<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
-<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
-<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
-
-<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
-<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -3614,73 +3519,103 @@ MySql：经典安装 MySql 5.6
         <category>python</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>python</tag>
       </tags>
   </entry>
   <entry>
-    <title>IPV6改造 华为云如此简单</title>
-    <url>/2024/12/28/2024122804/</url>
-    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
-<ul>
-<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
-<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
-<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
-<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
-<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
-</ul>
-<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
-<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
-<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
-
-<blockquote>
-<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
-</blockquote>
-<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
-<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
-</li>
-<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
-</li>
+    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
+    <url>/2024/12/28/2024122802/</url>
+    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
+<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP</strong></li>
 </ol>
-<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
 
-<ul>
-<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
-<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
-<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
-</ul>
-<blockquote>
-<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
-</blockquote>
-<ul>
-<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
-</ul>
+<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
 <ol>
-<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+<li><strong>IPv6-双栈</strong></li>
+</ol>
+<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
+
+<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
+<ol>
+<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
+
+<ol>
+<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
+</ol>
+<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP使用指导</strong></li>
+</ol>
+<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
+
+<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
+
+<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
+
+<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
+
+<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
+
+<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
+<ol>
+<li><strong>IPv6-双栈使用指导</strong></li>
+</ol>
+<ol start="2">
+<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
 </ol>
 <ul>
-<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
-<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+<li>创建IPv6子网，开启子网的IPv6功能：</li>
 </ul>
-<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
 
-<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+<ul>
+<li>添加IPv6安全组规则和ACL规则：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
 
-<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
 
-<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
-]]></content>
+<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
+
+<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
+<ul>
+<li>购买共享带宽：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
+
+<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
+
+<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
+<ul>
+<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
+<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
+<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
+<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
+
+<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
+<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
       <categories>
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>随笔</tag>
         <tag>IPV6</tag>
       </tags>
   </entry>
@@ -3785,8 +3720,8 @@ MySql：经典安装 MySql 5.6
       </categories>
       <tags>
         <tag>云计算</tag>
-        <tag>随笔</tag>
         <tag>python</tag>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -4109,6 +4044,71 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>云计算</tag>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IPV6改造 华为云如此简单</title>
+    <url>/2024/12/28/2024122804/</url>
+    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
+<ul>
+<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
+<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
+<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
+<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
+<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
+</ul>
+<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
+<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
+<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
+
+<blockquote>
+<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
+</blockquote>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
+</li>
+<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
+</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+
+<ul>
+<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
+<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
+<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
+</ul>
+<blockquote>
+<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
+</blockquote>
+<ul>
+<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
+</ul>
+<ol>
+<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+</ol>
+<ul>
+<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
+<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+
+<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+
+<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+
+<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>技术笔记</tag>
+        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -5610,67 +5610,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>自学PHP笔记（一）PHP语法</title>
-    <url>/2025/01/13/2025011304/</url>
-    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
-<span id="more"></span>
-<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
-<ol>
-<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-输出结果为：  <code>php$test变量为 false.</code></li>
-</ol>
-<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
-<ol>
-<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
-<ol>
-<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>123</code>不会显示我注释的内容。</li>
-<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
-<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
-
-<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
-<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
-
-<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>华为云-容器引擎CCE-部署Nginx应用</title>
     <url>/2025/01/13/2025011305/</url>
     <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="注册华为云账号"><a href="#注册华为云账号" class="headerlink" title="注册华为云账号"></a>注册华为云账号</h3><p>进入华为云官网，点击右上角“注册账号”，选择“华为云”，输入信息进行注册。</p>
@@ -5835,6 +5774,67 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>容器</tag>
         <tag>华为云</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学PHP笔记（一）PHP语法</title>
+    <url>/2025/01/13/2025011304/</url>
+    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
+<span id="more"></span>
+<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
+<ol>
+<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+输出结果为：  <code>php$test变量为 false.</code></li>
+</ol>
+<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
+<ol>
+<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
+<ol>
+<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>123</code>不会显示我注释的内容。</li>
+<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
+<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
+
+<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
+<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
+
+<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -6271,8 +6271,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>阿里云</tag>
       </tags>
   </entry>
@@ -6492,8 +6492,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -7155,8 +7155,8 @@ MySql：经典安装 MySql 5.6
         <category>linux</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -7595,8 +7595,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -11645,8 +11645,8 @@ MySql：经典安装 MySql 5.6
         <category>linux</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>linux</tag>
       </tags>
   </entry>
@@ -11893,8 +11893,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>docker</tag>
       </tags>
   </entry>
@@ -12047,8 +12047,8 @@ MySql：经典安装 MySql 5.6
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>resin</tag>
       </tags>
   </entry>
@@ -13506,8 +13506,8 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>docker</tag>
       </tags>
   </entry>
@@ -13729,8 +13729,8 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -13933,8 +13933,8 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
         <category>linux</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>技术笔记</tag>
         <tag>linux</tag>
         <tag>openvpn</tag>
       </tags>
