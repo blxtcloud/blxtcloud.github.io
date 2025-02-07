@@ -1,19 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>docker命令总结（二） | 避凉闲庭</title><meta name="author" content="避凉闲庭"><meta name="copyright" content="避凉闲庭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：docker命令总结（一）），那这篇文章会详细介绍每条命令的参数">
-<meta property="og:type" content="article">
-<meta property="og:title" content="docker命令总结（二）">
-<meta property="og:url" content="https://blxtcloud.github.io/2025/01/13/2025011316/index.html">
-<meta property="og:site_name" content="避凉闲庭">
-<meta property="og:description" content="上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：docker命令总结（一）），那这篇文章会详细介绍每条命令的参数">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg">
-<meta property="article:published_time" content="2025-01-13T06:47:27.000Z">
-<meta property="article:modified_time" content="2025-01-18T13:15:39.517Z">
-<meta property="article:author" content="避凉闲庭">
-<meta property="article:tag" content="技术笔记">
-<meta property="article:tag" content="云计算">
-<meta property="article:tag" content="docker">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg"><script type="application/ld+json">{
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>docker命令总结（二） | 避凉闲庭</title><meta name="author" content="避凉闲庭"><meta name="copyright" content="避凉闲庭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：docker命令总结（一）），那这篇文章会详细介绍每条命令的参数"><meta property="og:type" content="article"><meta property="og:title" content="docker命令总结（二）"><meta property="og:url" content="https://blxtcloud.github.io/2025/01/13/2025011316/index.html"><meta property="og:site_name" content="避凉闲庭"><meta property="og:description" content="上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：docker命令总结（一）），那这篇文章会详细介绍每条命令的参数"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg"><meta property="article:published_time" content="2025-01-13T06:47:27.000Z"><meta property="article:modified_time" content="2025-01-18T13:15:39.517Z"><meta property="article:author" content="避凉闲庭"><meta property="article:tag" content="技术笔记"><meta property="article:tag" content="云计算"><meta property="article:tag" content="docker"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "docker命令总结（二）",
@@ -28,157 +13,14 @@
       "url": "https://blxtcloud.github.io/"
     }
   ]
-}</script><link rel="shortcut icon" href="https://jihulab.com/blxt/images/-/raw/main/ico/favicon.ico"><link rel="canonical" href="https://blxtcloud.github.io/2025/01/13/2025011316/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
-    (() => {
-      
-    const saveToLocal = {
-      set: (key, value, ttl) => {
-        if (!ttl) return
-        const expiry = Date.now() + ttl * 86400000
-        localStorage.setItem(key, JSON.stringify({ value, expiry }))
-      },
-      get: key => {
-        const itemStr = localStorage.getItem(key)
-        if (!itemStr) return undefined
-        const { value, expiry } = JSON.parse(itemStr)
-        if (Date.now() > expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return value
-      }
-    }
-
-    window.btf = {
-      saveToLocal,
-      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
-        script.onload = script.onreadystatechange = () => {
-          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
-        }
-        script.onerror = reject
-        document.head.appendChild(script)
-      }),
-      getCSS: (url, id) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onload = link.onreadystatechange = () => {
-          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
-        }
-        link.onerror = reject
-        document.head.appendChild(link)
-      }),
-      addGlobalFn: (key, fn, name = false, parent = window) => {
-        if (!false && key.startsWith('pjax')) return
-        const globalFn = parent.globalFn || {}
-        globalFn[key] = globalFn[key] || {}
-        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
-        parent.globalFn = globalFn
-      }
-    }
-  
-      
-      const activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      const activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-
-      btf.activateDarkMode = activateDarkMode
-      btf.activateLightMode = activateLightMode
-
-      const theme = saveToLocal.get('theme')
-    
-          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
-        
-      
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
-      }
-    
-      
-    const detectApple = () => {
-      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-  
-    })()
-  </script><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
-  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
-  copy: {
-    success: '复制成功',
-    error: '复制失败',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: {"limitCount":150,"languages":{"author":"作者: 避凉闲庭","link":"链接: ","source":"来源: 避凉闲庭","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: false,
-  islazyloadPlugin: false,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: true,
-  },
-  autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'docker命令总结（二）',
-  isHighlightShrink: false,
-  isToc: true,
-  pageType: 'post'
-}
-var imgurl = 'https://jihulab.com/blxt/images/-/raw/main/'</script><link rel="stylesheet" href="/css/external.css"><link rel="stylesheet" href="/css/downloads.css"><link rel="stylesheet" href="/css/message.css"><script src='/js/Valine.min.js'></script><link rel="stylesheet" href="/css/denglong.css"><link rel="stylesheet" href="/css/menu.css"><link rel="stylesheet" href="/css/about.css"><script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" onerror="this.onerror=null;this.src='https://jihulab.com/blxt/images/-/raw/main/ico/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">48</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house-chimney"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-graduation-cap"></i><span> 学习</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/python/"><i class="fa-fw fa-brands fa-python"></i><span> python</span></a></li><li><a class="site-page child" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"><i class="fa-fw fa-solid fa-cloud"></i><span> 云计算</span></a></li><li><a class="site-page child" href="/categories/php/"><i class="fa-fw fa-brands fa-php"></i><span> php</span></a></li><li><a class="site-page child" href="/categories/%E5%AE%89%E5%85%A8/"><i class="fa-fw fa-solid fa-user-secret"></i><span> 安全</span></a></li><li><a class="site-page child" href="/categories/linux/"><i class="fa-fw fa-brands fa-linux"></i><span> linux</span></a></li><li><a class="site-page child" href="/categories/%E5%B0%8F%E8%AE%B0/"><i class="fa-fw fa-solid fa-pen"></i><span> 小记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/downloads/"><i class="fa-fw fa-solid fa-cloud-arrow-down"></i><span> 资源下载</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fa-solid fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa-solid fa-link"></i><span> 推荐链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">避凉闲庭</span></a><a class="nav-page-title" href="/"><span class="site-name">docker命令总结（二）</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house-chimney"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-graduation-cap"></i><span> 学习</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/python/"><i class="fa-fw fa-brands fa-python"></i><span> python</span></a></li><li><a class="site-page child" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"><i class="fa-fw fa-solid fa-cloud"></i><span> 云计算</span></a></li><li><a class="site-page child" href="/categories/php/"><i class="fa-fw fa-brands fa-php"></i><span> php</span></a></li><li><a class="site-page child" href="/categories/%E5%AE%89%E5%85%A8/"><i class="fa-fw fa-solid fa-user-secret"></i><span> 安全</span></a></li><li><a class="site-page child" href="/categories/linux/"><i class="fa-fw fa-brands fa-linux"></i><span> linux</span></a></li><li><a class="site-page child" href="/categories/%E5%B0%8F%E8%AE%B0/"><i class="fa-fw fa-solid fa-pen"></i><span> 小记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/downloads/"><i class="fa-fw fa-solid fa-cloud-arrow-down"></i><span> 资源下载</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fa-solid fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa-solid fa-link"></i><span> 推荐链接</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">docker命令总结（二）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-13T06:47:27.000Z" title="发表于 2025-01-13 14:47:27">2025-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-18T13:15:39.517Z" title="更新于 2025-01-18 21:15:39">2025-01-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">12.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>63分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/KH_FC/article/details/103789373">docker命令总结（一）</a>），那这篇文章会详细介绍每条命令的参数</p>
-<span id="more"></span>
-<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p>docker search：此命令是用来在仓库中查找docker镜像</p>
-<p><strong>语法：</strong></p>
-<pre><code>docker search 参数 镜像名称:tag（版本）
-</code></pre>
-<p><strong>参数说明：</strong></p>
-<pre><code>--filter，-f：根据相关条件过滤输出
+}</script><link rel="shortcut icon" href="https://jihulab.com/blxt/images/-/raw/main/ico/favicon.ico"><link rel="canonical" href="https://blxtcloud.github.io/2025/01/13/2025011316/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//busuanzi.ibruce.info"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload='this.media="all"'><script>(()=>{const e={set:(e,t,o)=>{if(!o)return;const a=Date.now()+864e5*o;localStorage.setItem(e,JSON.stringify({value:t,expiry:a}))},get:e=>{const t=localStorage.getItem(e);if(!t)return;const{value:o,expiry:a}=JSON.parse(t);if(!(Date.now()>a))return o;localStorage.removeItem(e)}};window.btf={saveToLocal:e,getScript:(e,t={})=>new Promise(((o,a)=>{const n=document.createElement("script");n.src=e,n.async=!0,Object.entries(t).forEach((([e,t])=>n.setAttribute(e,t))),n.onload=n.onreadystatechange=()=>{n.readyState&&!/loaded|complete/.test(n.readyState)||o()},n.onerror=a,document.head.appendChild(n)})),getCSS:(e,t)=>new Promise(((o,a)=>{const n=document.createElement("link");n.rel="stylesheet",n.href=e,t&&(n.id=t),n.onload=n.onreadystatechange=()=>{n.readyState&&!/loaded|complete/.test(n.readyState)||o()},n.onerror=a,document.head.appendChild(n)})),addGlobalFn:(e,t,o=!1,a=window)=>{if(e.startsWith("pjax"))return;const n=a.globalFn||{};n[e]=n[e]||{},n[e][o||Object.keys(n[e]).length]=t,a.globalFn=n}};const t=()=>{document.documentElement.setAttribute("data-theme","dark"),null!==document.querySelector('meta[name="theme-color"]')&&document.querySelector('meta[name="theme-color"]').setAttribute("content","#0d0d0d")},o=()=>{document.documentElement.setAttribute("data-theme","light"),null!==document.querySelector('meta[name="theme-color"]')&&document.querySelector('meta[name="theme-color"]').setAttribute("content","#ffffff")};btf.activateDarkMode=t,btf.activateLightMode=o;const a=e.get("theme");"dark"===a?t():"light"===a&&o();const n=e.get("aside-status");void 0!==n&&document.documentElement.classList.toggle("hide-aside","hide"===n);/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)&&document.documentElement.classList.add("apple")})()</script><script>const GLOBAL_CONFIG={root:"/",algolia:void 0,localSearch:{path:"/search.xml",preload:!1,top_n_per_article:1,unescape:!1,languages:{hits_empty:"未找到符合您查询的内容：${query}",hits_stats:"共找到 ${hits} 篇文章"}},translate:{defaultEncoding:2,translateDelay:0,msgToTraditionalChinese:"繁",msgToSimplifiedChinese:"簡"},highlight:{plugin:"highlight.js",highlightCopy:!0,highlightLang:!0,highlightHeightLimit:!1,highlightFullpage:!1,highlightMacStyle:!0},copy:{success:"复制成功",error:"复制失败",noSupport:"浏览器不支持"},relativeDate:{homepage:!1,post:!1},runtime:"",dateSuffix:{just:"刚刚",min:"分钟前",hour:"小时前",day:"天前",month:"个月前"},copyright:{limitCount:150,languages:{author:"作者: 避凉闲庭",link:"链接: ",source:"来源: 避凉闲庭",info:"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},lightbox:"fancybox",Snackbar:void 0,infinitegrid:{js:"https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js",buttonText:"加载更多"},isPhotoFigcaption:!1,islazyloadPlugin:!1,isAnchor:!1,percent:{toc:!0,rightside:!0},autoDarkmode:!1}</script><script id="config-diff">var GLOBAL_CONFIG_SITE={title:"docker命令总结（二）",isHighlightShrink:!1,isToc:!0,pageType:"post"},imgurl="https://jihulab.com/blxt/images/-/raw/main/"</script><link rel="stylesheet" href="/css/external.css"><link rel="stylesheet" href="/css/downloads.css"><link rel="stylesheet" href="/css/message.css"><script src="/js/Valine.min.js"></script><link rel="stylesheet" href="/css/denglong.css"><link rel="stylesheet" href="/css/menu.css"><link rel="stylesheet" href="/css/about.css"><script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" onerror='this.onerror=null,this.src="https://jihulab.com/blxt/images/-/raw/main/ico/friend_404.gif"' alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">48</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house-chimney"></i> <span>首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-graduation-cap"></i> <span>学习</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/python/"><i class="fa-fw fa-brands fa-python"></i> <span>python</span></a></li><li><a class="site-page child" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"><i class="fa-fw fa-solid fa-cloud"></i> <span>云计算</span></a></li><li><a class="site-page child" href="/categories/php/"><i class="fa-fw fa-brands fa-php"></i> <span>php</span></a></li><li><a class="site-page child" href="/categories/%E5%AE%89%E5%85%A8/"><i class="fa-fw fa-solid fa-user-secret"></i> <span>安全</span></a></li><li><a class="site-page child" href="/categories/linux/"><i class="fa-fw fa-brands fa-linux"></i> <span>linux</span></a></li><li><a class="site-page child" href="/categories/%E5%B0%8F%E8%AE%B0/"><i class="fa-fw fa-solid fa-pen"></i> <span>小记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/downloads/"><i class="fa-fw fa-solid fa-cloud-arrow-down"></i> <span>资源下载</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-address-card"></i> <span>关于</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fa-solid fa-message"></i> <span>留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa-solid fa-link"></i> <span>推荐链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">避凉闲庭</span></a><a class="nav-page-title" href="/"><span class="site-name">docker命令总结（二）</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house-chimney"></i> <span>首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-graduation-cap"></i> <span>学习</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/python/"><i class="fa-fw fa-brands fa-python"></i> <span>python</span></a></li><li><a class="site-page child" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"><i class="fa-fw fa-solid fa-cloud"></i> <span>云计算</span></a></li><li><a class="site-page child" href="/categories/php/"><i class="fa-fw fa-brands fa-php"></i> <span>php</span></a></li><li><a class="site-page child" href="/categories/%E5%AE%89%E5%85%A8/"><i class="fa-fw fa-solid fa-user-secret"></i> <span>安全</span></a></li><li><a class="site-page child" href="/categories/linux/"><i class="fa-fw fa-brands fa-linux"></i> <span>linux</span></a></li><li><a class="site-page child" href="/categories/%E5%B0%8F%E8%AE%B0/"><i class="fa-fw fa-solid fa-pen"></i> <span>小记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/downloads/"><i class="fa-fw fa-solid fa-cloud-arrow-down"></i> <span>资源下载</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-address-card"></i> <span>关于</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fa-solid fa-message"></i> <span>留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa-solid fa-link"></i> <span>推荐链接</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">docker命令总结（二）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-13T06:47:27.000Z" title="发表于 2025-01-13 14:47:27">2025-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-18T13:15:39.517Z" title="更新于 2025-01-18 21:15:39">2025-01-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">12.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>63分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/KH_FC/article/details/103789373">docker命令总结（一）</a>），那这篇文章会详细介绍每条命令的参数</p><span id="more"></span><h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p>docker search：此命令是用来在仓库中查找docker镜像</p><p><strong>语法：</strong></p><pre><code>docker search 参数 镜像名称:tag（版本）
+</code></pre><p><strong>参数说明：</strong></p><pre><code>--filter，-f：根据相关条件过滤输出
  --format：使用Go模板进行漂亮的打印搜索
 --limit：指定最大搜索结果，默认25个
 --no-trunc：显示完整的镜像描述
 --stars，-s：列出收藏数不小于指定值的镜像
 --automated：仅显示自动构建的镜像
-</code></pre>
-<p><strong>示例：</strong></p>
-<p> 默认搜索</p>
-<pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search nginx
+</code></pre><p><strong>示例：</strong></p><p>默认搜索</p><pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search nginx
 NAME                              DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
 nginx                             Official build of Nginx.                        12438               [OK]                
 jwilder/nginx-proxy               Automated Nginx reverse proxy for docker con…   1713                                    [OK]
@@ -206,9 +48,7 @@ ansibleplaybookbundle/nginx-apb   An APB to deploy NGINX                        
 centos/nginx-110-centos7          Platform for running nginx 1.10 or building …   0                                       
 wodby/nginx                       Generic nginx                                   0                                       [OK]
 ubuntu@VM-101-242-ubuntu:~$ 
-</code></pre>
-<p>搜索收藏数大于10的nginx镜像，并显示详细信息</p>
-<pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search --stars=10 --no-trunc nginx
+</code></pre><p>搜索收藏数大于10的nginx镜像，并显示详细信息</p><pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search --stars=10 --no-trunc nginx
 Flag --stars has been deprecated, use --filter=stars=3 instead
 NAME                          DESCRIPTION                                                                                            STARS               OFFICIAL            AUTOMATED
 nginx                         Official build of Nginx.                                                                               12438               [OK]                
@@ -229,9 +69,7 @@ nginxinc/nginx-unprivileged   Unprivileged NGINX Dockerfiles                    
 blacklabelops/nginx           Dockerized Nginx Reverse Proxy Server.                                                                 12                                      [OK]
 centos/nginx-112-centos7      Platform for running nginx 1.12 or building nginx-based application                                    11                                      
 ubuntu@VM-101-242-ubuntu:~$ 
-</code></pre>
-<p>使用条件查找收藏数大于10的nginx镜像</p>
-<pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search --filter stars=3 nginx
+</code></pre><p>使用条件查找收藏数大于10的nginx镜像</p><pre><code>ubuntu@VM-101-242-ubuntu:~$ sudo docker search --filter stars=3 nginx
 NAME                              DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
 nginx                             Official build of Nginx.                        12438               [OK]                
 jwilder/nginx-proxy               Automated Nginx reverse proxy for docker con…   1713                                    [OK]
@@ -255,20 +93,12 @@ sophos/nginx-vts-exporter         Simple server that scrapes Nginx vts stats a�
 mailu/nginx                       Mailu nginx frontend                            5                                       [OK]
 1science/nginx                    Nginx Docker images that include Consul Temp…   5                                       [OK]
 ubuntu@VM-101-242-ubuntu:~$ 
-</code></pre>
-<h2 id="pull"><a href="#pull" class="headerlink" title="pull"></a>pull</h2><p>从docker仓库下载镜像到本地</p>
-<p><strong>语法</strong></p>
-<pre><code>docker pull 镜像名称:tag（版本）
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-a, --all-tags：下载所有版本的镜像
+</code></pre><h2 id="pull"><a href="#pull" class="headerlink" title="pull"></a>pull</h2><p>从docker仓库下载镜像到本地</p><p><strong>语法</strong></p><pre><code>docker pull 镜像名称:tag（版本）
+</code></pre><p><strong>参数说明</strong></p><pre><code>-a, --all-tags：下载所有版本的镜像
 -q, --quiet：不显示详细信息
 --disable-content-trust：不对下载的镜像进行校验
 --platform：指定下载镜像服务器的平台信息
-</code></pre>
-<p><strong>示例</strong></p>
-<p>下载nginx默认版本的docker镜像</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker pull nginx:latest
+</code></pre><p><strong>示例</strong></p><p>下载nginx默认版本的docker镜像</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker pull nginx:latest
 latest: Pulling from library/nginx
 8ec398bc0356: Pull complete 
 465560073b6f: Pull complete 
@@ -280,53 +110,29 @@ ubuntu@VM-35-226-ubuntu:~$ sudo docker images			//查看本地所有镜像
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        9 days ago          126MB
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<h2 id="push"><a href="#push" class="headerlink" title="push"></a>push</h2><p>推送指定镜像到docker镜像服务器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker push 本地镜像：tag(版本)
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--disable-content-trust：不对镜像进行校验
-</code></pre>
-<p><strong>示例</strong></p>
-<pre><code>docker push blxt:5000/blxt/nginx 上传nginx到私有仓库
-</code></pre>
-<h2 id="images"><a href="#images" class="headerlink" title="images"></a>images</h2><p>查看本地所有docker镜像</p>
-<p><strong>语法</strong></p>
-<pre><code>docker images 参数 镜像:tag（版本）
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-a, --all：列出本地所有镜像
+</code></pre><h2 id="push"><a href="#push" class="headerlink" title="push"></a>push</h2><p>推送指定镜像到docker镜像服务器</p><p><strong>语法</strong></p><pre><code>docker push 本地镜像：tag(版本)
+</code></pre><p><strong>参数说明</strong></p><pre><code>--disable-content-trust：不对镜像进行校验
+</code></pre><p><strong>示例</strong></p><pre><code>docker push blxt:5000/blxt/nginx 上传nginx到私有仓库
+</code></pre><h2 id="images"><a href="#images" class="headerlink" title="images"></a>images</h2><p>查看本地所有docker镜像</p><p><strong>语法</strong></p><pre><code>docker images 参数 镜像:tag（版本）
+</code></pre><p><strong>参数说明</strong></p><pre><code>-a, --all：列出本地所有镜像
 --digests：显示镜像简单信息说明
 -f, --filter：根据相关条件过滤输出
 --format：使用Go模板进行漂亮的打印搜索
 --no-trunc：显示镜像的完整信息
 -q, --quiet：只显示镜像ID
-</code></pre>
-<p><strong>示例</strong></p>
-<p>查看本地所有镜像</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images -a
+</code></pre><p><strong>示例</strong></p><p>查看本地所有镜像</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images -a
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        9 days ago          126MB
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>查看镜像详细信息</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images --no-trunc nginx:latest
+</code></pre><p>查看镜像详细信息</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images --no-trunc nginx:latest
 REPOSITORY          TAG                 IMAGE ID                                                                  CREATED             SIZE
 nginx               latest              sha256:f7bb5701a33c0e572ed06ca554edca1bee96cbbc1f76f3b01c985de7e19d0657   9 days ago          126MB
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>查看镜像ID</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images -q nginx:latest
+</code></pre><p>查看镜像ID</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker images -q nginx:latest
 f7bb5701a33c
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>创建容器，并运行</p>
-<p><strong>语法</strong></p>
-<pre><code>docker run 参数 镜像:tag（版本）
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-a, --attach：	指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项
+</code></pre><h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>创建容器，并运行</p><p><strong>语法</strong></p><pre><code>docker run 参数 镜像:tag（版本）
+</code></pre><p><strong>参数说明</strong></p><pre><code>-a, --attach：	指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项
 -d:		容器将在后台运行
 -t：		给容器分配tty终端
 --sig-proxy=true：	将所有接收到的信号代理到进程（仅限非TTY模式）
@@ -358,18 +164,13 @@ ubuntu@VM-35-226-ubuntu:~$
 -e：		设置环境变量
 --env-file：		从指定文件中导入变量
 参数还有很多，这里就不一一列举了，上面是常用的参数
-</code></pre>
-<p><strong>示例</strong></p>
-<p>后台运行nginx容器，并取名为nginx</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -d --name nginx nginx:latest
+</code></pre><p><strong>示例</strong></p><p>后台运行nginx容器，并取名为nginx</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -d --name nginx nginx:latest
 06a913a442f9729e284b1a0628e5ce46561f81c6e8777f91d184f10de079cb55
 ubuntu@VM-35-226-ubuntu:~$ sudo docker ps -a			//查看所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 06a913a442f9        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   18 seconds ago      Up 15 seconds       80/tcp              nginx
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>后台运行nginx容器，并映射容器80端口到宿主机的80端口</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -d --name nginx -p 80:80 nginx:latest
+</code></pre><p>后台运行nginx容器，并映射容器80端口到宿主机的80端口</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -d --name nginx -p 80:80 nginx:latest
 c026ee7e0c9477c15ac42965ed19af92b6017e7bcce079fd450f8cee5f2d9de6
 ubuntu@VM-35-226-ubuntu:~$ sudo docker ps -a			//查看所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
@@ -401,24 +202,14 @@ Commercial support is available at
 &lt;/body&gt;
 &lt;/html&gt;
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>创建nginx容器，并进行交互式启动</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -it --name nginx nginx:latest /bin/bash
+</code></pre><p>创建nginx容器，并进行交互式启动</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker run -it --name nginx nginx:latest /bin/bash
 root@4a518f4a2a01:/# 
-</code></pre>
-<h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><p>查看镜像形成过程</p>
-<p><strong>语法</strong></p>
-<pre><code>docker history 参数 镜像：tag（版本）
-</code></pre>
-<p><strong>参数</strong></p>
-<pre><code>--format：使用Go模板进行漂亮的打印搜索
+</code></pre><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><p>查看镜像形成过程</p><p><strong>语法</strong></p><pre><code>docker history 参数 镜像：tag（版本）
+</code></pre><p><strong>参数</strong></p><pre><code>--format：使用Go模板进行漂亮的打印搜索
 -H, --human：以可读格式打印大小和日期（默认为true）
 --no-trunc：显示形成详细信息
 -q, --quiet：只显示镜像ID
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认使用方法</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history nginx:latest
+</code></pre><p><strong>示例</strong></p><p>默认使用方法</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history nginx:latest
 IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
 f7bb5701a33c        9 days ago          /bin/sh -c #(nop)  CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon…   0B                  
 &lt;missing&gt;           9 days ago          /bin/sh -c #(nop)  STOPSIGNAL SIGTERM           0B                  
@@ -432,9 +223,7 @@ f7bb5701a33c        9 days ago          /bin/sh -c #(nop)  CMD [&quot;nginx&quot
 &lt;missing&gt;           10 days ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0B                  
 &lt;missing&gt;           10 days ago         /bin/sh -c #(nop) ADD file:04caaf303199c81ff…   69.2MB              
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>只打印镜像ID</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history -q nginx:latest
+</code></pre><p>只打印镜像ID</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history -q nginx:latest
 f7bb5701a33c
 &lt;missing&gt;
 &lt;missing&gt;
@@ -447,9 +236,7 @@ f7bb5701a33c
 &lt;missing&gt;
 &lt;missing&gt;
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<p>显示镜像形成的详细信息</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history --no-trunc nginx
+</code></pre><p>显示镜像形成的详细信息</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker history --no-trunc nginx
 IMAGE                                                                     CREATED             CREATED BY                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      SIZE                COMMENT
 sha256:f7bb5701a33c0e572ed06ca554edca1bee96cbbc1f76f3b01c985de7e19d0657   9 days ago          /bin/sh -c #(nop)  CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon off;&quot;]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             0B                  
 &lt;missing&gt;                                                                 9 days ago          /bin/sh -c #(nop)  STOPSIGNAL SIGTERM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           0B                  
@@ -472,21 +259,13 @@ sha256:f7bb5701a33c0e572ed06ca554edca1bee96cbbc1f76f3b01c985de7e19d0657   9 days
 &lt;missing&gt;                                                                 10 days ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 0B                  
 &lt;missing&gt;                                                                 10 days ago         /bin/sh -c #(nop) ADD file:04caaf303199c81ff1a94e2e39d5096f9d02b73294b82758e5bc6e23aff94272 in /                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                69.2MB              
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<h2 id="start"><a href="#start" class="headerlink" title="start"></a>start</h2><p>启动容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker start 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-a, --attach：附加STDOUT/STDERR和转发信号
+</code></pre><h2 id="start"><a href="#start" class="headerlink" title="start"></a>start</h2><p>启动容器</p><p><strong>语法</strong></p><pre><code>docker start 参数 容器ID/容器名称
+</code></pre><p><strong>参数说明</strong></p><pre><code>-a, --attach：附加STDOUT/STDERR和转发信号
 --checkpoint：从快照进行还原 
 --checkpoint-dir：使用自定义检查点存储目录
 --detach-keys：重写用于分离容器的键序列
 -i, --interactive：附加容器的STDIN
-</code></pre>
-<p><strong>示例</strong></p>
-<p>启动使用create创建的nginx容器</p>
-<pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker ps -a			//查看所有容器
+</code></pre><p><strong>示例</strong></p><p>启动使用create创建的nginx容器</p><pre><code>ubuntu@VM-35-226-ubuntu:~$ sudo docker ps -a			//查看所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 8b9053318855        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   9 seconds ago       Created                                 admiring_rhodes
 ubuntu@VM-35-226-ubuntu:~$ sudo docker start 8b9053318855 	
@@ -495,17 +274,9 @@ ubuntu@VM-35-226-ubuntu:~$ sudo docker ps 		//查看已运行容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 8b9053318855        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   40 seconds ago      Up 7 seconds        80/tcp              admiring_rhodes
 ubuntu@VM-35-226-ubuntu:~$ 
-</code></pre>
-<h2 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h2><p>关闭容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker stop 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--time , -t：在多少时间后关闭容器
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认使用方法</p>
-<pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run -d --name nginx nginx:latest		//创建并后台启动nginx容器
+</code></pre><h2 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h2><p>关闭容器</p><p><strong>语法</strong></p><pre><code>docker stop 参数 容器ID/容器名称
+</code></pre><p><strong>参数说明</strong></p><pre><code>--time , -t：在多少时间后关闭容器
+</code></pre><p><strong>示例</strong></p><p>默认使用方法</p><pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run -d --name nginx nginx:latest		//创建并后台启动nginx容器
 4c1e4ab3cfdcb7c5c55052238525e79bb82c0b5cf70b18420520ec2884669272
 ubuntu@VM-121-163-ubuntu:~$ sudo docker ps -a		//查看所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -516,13 +287,8 @@ ubuntu@VM-121-163-ubuntu:~$ sudo docker ps -a		//查看所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
 4c1e4ab3cfdc        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   26 seconds ago      Exited (0) 5 seconds ago                       nginx
 ubuntu@VM-121-163-ubuntu:~$ 
-</code></pre>
-<h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p>通过dockerfile制作镜像</p>
-<p><strong>语法</strong></p>
-<pre><code>docker build 参数 路径
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--build-arg：设置创建时的变量
+</code></pre><h2 id="build"><a href="#build" class="headerlink" title="build"></a>build</h2><p>通过dockerfile制作镜像</p><p><strong>语法</strong></p><pre><code>docker build 参数 路径
+</code></pre><p><strong>参数说明</strong></p><pre><code>--build-arg：设置创建时的变量
 --cgroup-parent：容器的可选父cgroup
 --compress：使用gzip压缩构建上下文
 --cpu-shares :设置 cpu 使用权重
@@ -547,32 +313,15 @@ ubuntu@VM-121-163-ubuntu:~$
 --tag, -t: 镜像的名字及标签
 --ulimit :Ulimit配置
 --shm-size :设置/dev/shm的大小，默认值是64M
-</code></pre>
-<p><strong>示例</strong></p>
-<p>使用当前目录下的dockerfile制作nginx：V1镜像</p>
-<pre><code>docker build -t nginx：V1 .
-</code></pre>
-<p>创建nginx：V2镜像，使用非当前目录下的dockerfile</p>
-<pre><code>docker build -t nginx:V2 -f /opt/dockerfile
-</code></pre>
-<p>添加其他主机到容器文件中</p>
-<pre><code>docker build --add-host=docker:1.1.1.1 .
-</code></pre>
-<p>使用参数–squash创建名为test:1的镜像</p>
-<pre><code>docker build --squash -t test:1  .
-</code></pre>
-<h2 id="attach"><a href="#attach" class="headerlink" title="attach"></a>attach</h2><p>当前shell连接运行容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker attach 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数</strong></p>
-<pre><code>--detach-keys：	覆盖分离容器的键序列
+</code></pre><p><strong>示例</strong></p><p>使用当前目录下的dockerfile制作nginx：V1镜像</p><pre><code>docker build -t nginx：V1 .
+</code></pre><p>创建nginx：V2镜像，使用非当前目录下的dockerfile</p><pre><code>docker build -t nginx:V2 -f /opt/dockerfile
+</code></pre><p>添加其他主机到容器文件中</p><pre><code>docker build --add-host=docker:1.1.1.1 .
+</code></pre><p>使用参数–squash创建名为test:1的镜像</p><pre><code>docker build --squash -t test:1  .
+</code></pre><h2 id="attach"><a href="#attach" class="headerlink" title="attach"></a>attach</h2><p>当前shell连接运行容器</p><p><strong>语法</strong></p><pre><code>docker attach 参数 容器ID/容器名称
+</code></pre><p><strong>参数</strong></p><pre><code>--detach-keys：	覆盖分离容器的键序列
 --no-stdin：不要附上STDIN
 --sig-proxy：代理所有接收到的信号到进程
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认使用方法</p>
-<pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run -d --name ubuntu ubuntu /usr/bin/top -b		//创建并后台启动ubuntu容器
+</code></pre><p><strong>示例</strong></p><p>默认使用方法</p><pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run -d --name ubuntu ubuntu /usr/bin/top -b		//创建并后台启动ubuntu容器
 98c3f0964ad3a38e360867941a5510cd77e164a835be5b9b69aa47d3d5ceed17
 ubuntu@VM-121-163-ubuntu:~$ sudo docker attach ubuntu
 top - 08:24:58 up  1:12,  0 users,  load average: 0.04, 0.06, 0.01
@@ -602,20 +351,13 @@ KiB Swap:        0 total,        0 free,        0 used.   500616 avail Mem
 
   PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
     1 root      20   0   36480   3100   2748 R  0.0  0.4   0:00.19 top
-</code></pre>
-<p>您可以看到该bash 过程返回的退出代码也由docker attach命令返回给其调用者</p>
-<pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run --name ubuntu -d -it ubuntu		//创建并后台运行ubuntu容器
+</code></pre><p>您可以看到该bash 过程返回的退出代码也由docker attach命令返回给其调用者</p><pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker run --name ubuntu -d -it ubuntu		//创建并后台运行ubuntu容器
 9ac7802feb2b77bb905bc9f4c5ca9782e6800fc995b1f2b39da78239d86a7405
 ubuntu@VM-121-163-ubuntu:~$ sudo docker attach ubuntu
 root@9ac7802feb2b:/# 
 root@9ac7802feb2b:/# 
-</code></pre>
-<h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><p>保存当前容器为镜像&#x2F;快照</p>
-<p><strong>语法</strong></p>
-<pre><code>docker commit 容器名称/容器ID 镜像名:tag（版本）
-</code></pre>
-<p><strong>示例</strong></p>
-<pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker images		//查看镜像
+</code></pre><h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><p>保存当前容器为镜像&#x2F;快照</p><p><strong>语法</strong></p><pre><code>docker commit 容器名称/容器ID 镜像名:tag（版本）
+</code></pre><p><strong>示例</strong></p><pre><code>ubuntu@VM-121-163-ubuntu:~$ sudo docker images		//查看镜像
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        9 days ago          126MB
 ubuntu              latest              549b9b86cb8d        2 weeks ago         64.2MB
@@ -632,19 +374,11 @@ nginx               V1                  e091997549ff        22 seconds ago      
 nginx               latest              f7bb5701a33c        9 days ago          126MB
 ubuntu              latest              549b9b86cb8d        2 weeks ago         64.2MB
 ubuntu@VM-121-163-ubuntu:~$ 
-</code></pre>
-<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p>容器与宿主机互相复制文件</p>
-<p><strong>语法</strong></p>
-<pre><code>docker cp 容器ID/容器名:文件路径 宿主机路径		复制容器中文件到宿主机
+</code></pre><h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p>容器与宿主机互相复制文件</p><p><strong>语法</strong></p><pre><code>docker cp 容器ID/容器名:文件路径 宿主机路径		复制容器中文件到宿主机
 docker cp 宿主机路径 容器ID/容器名:文件存储路径		复制宿主机文件到容器
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code> -a, --archive：复制文件同时复制文件用户信息
+</code></pre><p><strong>参数说明</strong></p><pre><code> -a, --archive：复制文件同时复制文件用户信息
  -L, --follow-link：保持源目标中的链接
-</code></pre>
-<p><strong>示例</strong></p>
-<p>复制宿主机文件到容器的根目录中</p>
-<pre><code>root@test:/jia/test# docker run -d --name nginx nginx:latest	//创建并运行nginx容器
+</code></pre><p><strong>示例</strong></p><p>复制宿主机文件到容器的根目录中</p><pre><code>root@test:/jia/test# docker run -d --name nginx nginx:latest	//创建并运行nginx容器
 33b6339003ef41fd62b909fd79e9056d53d944b3172f0f02fc717fd64a2648e3
 root@test:/jia/test# docker exec nginx ls /			//列出容器根目录
 bin
@@ -688,20 +422,13 @@ test
 tmp
 usr
 var
-</code></pre>
-<p>从容器中复制文件到宿主目录</p>
-<pre><code>root@test:/jia/test# ls 		//列出目录
+</code></pre><p>从容器中复制文件到宿主目录</p><pre><code>root@test:/jia/test# ls 		//列出目录
 root@test:/jia/test# docker cp nginx:/test .		//复制容器中文件到当前目录
 root@test:/jia/test# ls			//列出目录
 test
 root@test:/jia/test# 
-</code></pre>
-<h2 id="create"><a href="#create" class="headerlink" title="create"></a>create</h2><p>创建容器但不启动容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker create 参数 镜像:tag（版本）
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--add-host：			在容器的hosts文件中添加记录	
+</code></pre><h2 id="create"><a href="#create" class="headerlink" title="create"></a>create</h2><p>创建容器但不启动容器</p><p><strong>语法</strong></p><pre><code>docker create 参数 镜像:tag（版本）
+</code></pre><p><strong>参数说明</strong></p><pre><code>--add-host：			在容器的hosts文件中添加记录	
 -a, --attach：		指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项
 --cap-add：		添加linux功能
 --cap-drop：		删除linux功能
@@ -742,10 +469,7 @@ root@test:/jia/test#
 --user , -u：		设置运行容器的用户
 --workdir , -w：		设置容器的工作目录
 参数还有很多，这里就不一一列举了，上面是常用的参数
-</code></pre>
-<p><strong>示例</strong></p>
-<p>创建nginx容器并启动</p>
-<pre><code>root@test:/jia/test# docker create -t -i  nginx:latest /bin/bash		//创建容器
+</code></pre><p><strong>示例</strong></p><p>创建nginx容器并启动</p><pre><code>root@test:/jia/test# docker create -t -i  nginx:latest /bin/bash		//创建容器
 6f2cea61b80c117fe877589073b5f259a57623bd511a89330c72c825c0cbe4fd		
 root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
@@ -754,9 +478,7 @@ root@test:/jia/test# docker start -a -i 6f2cea61b80c		//启动容器
 root@6f2cea61b80c:/# ls		//列出容器当前目录
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 root@6f2cea61b80c:/# 
-</code></pre>
-<p>创建名为nginx的容器并进行启动</p>
-<pre><code>root@test:/jia/test# docker create --name nginx -t -i nginx:latest /bin/bash		//创建容器
+</code></pre><p>创建名为nginx的容器并进行启动</p><pre><code>root@test:/jia/test# docker create --name nginx -t -i nginx:latest /bin/bash		//创建容器
 5487d362e25bfcd39c70754972eb964121ba8408f3f97c89cac930208882e745
 root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
@@ -765,9 +487,7 @@ root@test:/jia/test# docker start -a -i nginx		//启动容器并进行链接
 root@5487d362e25b:/# ls
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 root@5487d362e25b:/# 
-</code></pre>
-<p>创建nginx容器并映射端口</p>
-<pre><code>root@test:/jia/test# docker create --name nginx -p 80:80-it nginx:latest /bin/bash	//创建容器
+</code></pre><p>创建nginx容器并映射端口</p><pre><code>root@test:/jia/test# docker create --name nginx -p 80:80-it nginx:latest /bin/bash	//创建容器
 4cc06988f4284f01281a338b914aff247a16969e33177088673a281d848f99d4
 root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
@@ -804,37 +524,22 @@ Commercial support is available at
 &lt;/body&gt;
 &lt;/html&gt;
 root@test:/jia/test#
-</code></pre>
-<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>查看容器改动</p>
-<p><strong>语法</strong></p>
-<pre><code>docker diff 容器
-</code></pre>
-<p><strong>符号说明</strong></p>
-<pre><code>A	添加了文件或目录
+</code></pre><h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>查看容器改动</p><p><strong>语法</strong></p><pre><code>docker diff 容器
+</code></pre><p><strong>符号说明</strong></p><pre><code>A	添加了文件或目录
 D	文件或目录已删除
 C	文件或目录已更改
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认使用方法</p>
-<pre><code>root@test:/jia/test# docker diff nginx
+</code></pre><p><strong>示例</strong></p><p>默认使用方法</p><pre><code>root@test:/jia/test# docker diff nginx
 C /root
 A /root/.bash_history
 root@test:/jia/test# 
-</code></pre>
-<p>复制test文件到nginx容器中查看你改动情况</p>
-<pre><code>root@test:/jia/test# docker cp test nginx:/		//复制test文件到容器的根目录
+</code></pre><p>复制test文件到nginx容器中查看你改动情况</p><pre><code>root@test:/jia/test# docker cp test nginx:/		//复制test文件到容器的根目录
 root@test:/jia/test# docker diff nginx
 A /test
 C /root
 A /root/.bash_history
 root@test:/jia/test# 
-</code></pre>
-<h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>在容器中执行命令</p>
-<p><strong>语法</strong></p>
-<pre><code>docker exec 参数 容器ID/容器名称 命令
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--detach , -d：后台运行容器
+</code></pre><h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>在容器中执行命令</p><p><strong>语法</strong></p><pre><code>docker exec 参数 容器ID/容器名称 命令
+</code></pre><p><strong>参数说明</strong></p><pre><code>--detach , -d：后台运行容器
 --detach-keys：覆盖分离容器的键序列
 --env , -e：设置环境变量
 --interactive , -i：	即使未连接STDIN也保持打开状态
@@ -842,10 +547,7 @@ root@test:/jia/test#
 --tty , -t：	分配伪TTY
 --user , -u：指定运行用户
 --workdir , -w：设置工作目录
-</code></pre>
-<p><strong>示例</strong></p>
-<p>使用容器打印“hello word”</p>
-<pre><code>root@test:/jia/test# docker run --name centos -itd centos:latest		//创建并启动容器
+</code></pre><p><strong>示例</strong></p><p>使用容器打印“hello word”</p><pre><code>root@test:/jia/test# docker run --name centos -itd centos:latest		//创建并启动容器
 1b75dac7104122e021fb8cc7989c8992eb8502f34713e76ee87e6d6f7796e83c
 root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
@@ -853,9 +555,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 root@test:/jia/test# docker exec centos echo &quot;hello word&quot;		//使用 echo 打印“hello word”
 hello word
 root@test:/jia/test# 
-</code></pre>
-<p>给容器建立交互式shell，并查看容器IP地址</p>
-<pre><code>root@test:/jia/test# docker ps -a		//查看容器
+</code></pre><p>给容器建立交互式shell，并查看容器IP地址</p><pre><code>root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 1b75dac71041        centos:latest       &quot;/bin/bash&quot;         2 minutes ago       Up 2 minutes                            centos
 root@test:/jia/test# docker exec -it centos /bin/bash		//建立bash交互式shell
@@ -869,26 +569,16 @@ root@test:/jia/test# docker exec -it centos /bin/bash		//建立bash交互式shel
     inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
        valid_lft forever preferred_lft forever
 [root@1b75dac71041 /]# 
-</code></pre>
-<p>指定工作目录，并打印路径</p>
-<pre><code>root@test:/jia/test# docker ps -a		//查看容器
+</code></pre><p>指定工作目录，并打印路径</p><pre><code>root@test:/jia/test# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 1b75dac71041        centos:latest       &quot;/bin/bash&quot;         9 minutes ago       Up 9 minutes                            centos
 root@test:/jia/test# docker exec -w /var/www/html centos pwd		//设置工作目录，并进行打印目录
 /var/www/html
 root@test:/jia/test#
-</code></pre>
-<h2 id="login"><a href="#login" class="headerlink" title="login"></a>login</h2><p>登入docker镜像源服务器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker login 参数 服务器地址
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-p, --password：指定登录服务器用户的密码
+</code></pre><h2 id="login"><a href="#login" class="headerlink" title="login"></a>login</h2><p>登入docker镜像源服务器</p><p><strong>语法</strong></p><pre><code>docker login 参数 服务器地址
+</code></pre><p><strong>参数说明</strong></p><pre><code>-p, --password：指定登录服务器用户的密码
 -u, --username：指定登录服务器用户的账户
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认登录dockerhub</p>
-<pre><code>root@test:/jia/test# docker login
+</code></pre><p><strong>示例</strong></p><p>默认登录dockerhub</p><pre><code>root@test:/jia/test# docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don&#39;t have a Docker ID, head over to https://hub.docker.com to create one.
 Username: blxt
 Password: 
@@ -898,9 +588,7 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 root@test:/jia/test#
-</code></pre>
-<p>指定用户名和密码进行登录</p>
-<pre><code>root@test:/jia/test# docker login -u blxt -p 123456
+</code></pre><p>指定用户名和密码进行登录</p><pre><code>root@test:/jia/test# docker login -u blxt -p 123456
 WARNING! Using --password via the CLI is insecure. Use --password-stdin.
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
@@ -908,9 +596,7 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 root@test:/jia/test# 
-</code></pre>
-<p>登录阿里镜像仓库</p>
-<pre><code>root@jia:/etc# docker login -u &#39;弑天倾城&#39; -p &#39;123456&#39; registry.cn-shenzhen.aliyuncs.com
+</code></pre><p>登录阿里镜像仓库</p><pre><code>root@jia:/etc# docker login -u &#39;弑天倾城&#39; -p &#39;123456&#39; registry.cn-shenzhen.aliyuncs.com
 WARNING! Using --password via the CLI is insecure. Use --password-stdin.
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
@@ -918,14 +604,8 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 root@jia:/etc# 
-</code></pre>
-<h2 id="logout"><a href="#logout" class="headerlink" title="logout"></a>logout</h2><p>退出登录镜像源服务器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker logout 镜像仓库地址
-</code></pre>
-<p><strong>示例</strong></p>
-<p>退出dockerhub用户登录</p>
-<pre><code>root@jia:/etc# docker login -u blxt -p &#39;JKY@jjj.123&#39;		//登录dockerhub服务器
+</code></pre><h2 id="logout"><a href="#logout" class="headerlink" title="logout"></a>logout</h2><p>退出登录镜像源服务器</p><p><strong>语法</strong></p><pre><code>docker logout 镜像仓库地址
+</code></pre><p><strong>示例</strong></p><p>退出dockerhub用户登录</p><pre><code>root@jia:/etc# docker login -u blxt -p &#39;JKY@jjj.123&#39;		//登录dockerhub服务器
 WARNING! Using --password via the CLI is insecure. Use --password-stdin.
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
@@ -935,9 +615,7 @@ Login Succeeded
 root@jia:/etc# docker logout		//退出登录
 Removing login credentials for https://index.docker.io/v1/
 root@jia:/etc# 
-</code></pre>
-<p>退出阿里镜像仓库</p>
-<pre><code>root@jia:/etc# docker login -u &#39;弑天倾城&#39; -p &#39;123456&#39; registry.cn-shenzhen.aliyuncs.com		//登录阿里镜像仓库
+</code></pre><p>退出阿里镜像仓库</p><pre><code>root@jia:/etc# docker login -u &#39;弑天倾城&#39; -p &#39;123456&#39; registry.cn-shenzhen.aliyuncs.com		//登录阿里镜像仓库
 WARNING! Using --password via the CLI is insecure. Use --password-stdin.
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
@@ -949,22 +627,14 @@ Not logged in to https://index.docker.io/v1/
 root@jia:/etc# docker logout registry.cn-shenzhen.aliyuncs.com
 Removing login credentials for registry.cn-shenzhen.aliyuncs.com		//退出登录阿里镜像仓库
 root@jia:/etc# 
-</code></pre>
-<h2 id="logs"><a href="#logs" class="headerlink" title="logs"></a>logs</h2><p>输出当前容器的日志信息</p>
-<p><strong>语法</strong></p>
-<pre><code>docker logs 参数 容器ID/容器名
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--details：查看日志详细信息
+</code></pre><h2 id="logs"><a href="#logs" class="headerlink" title="logs"></a>logs</h2><p>输出当前容器的日志信息</p><p><strong>语法</strong></p><pre><code>docker logs 参数 容器ID/容器名
+</code></pre><p><strong>参数说明</strong></p><pre><code>--details：查看日志详细信息
 --follow , -f：实时动态的查看日志
 --since：显示生成日志的时间
 --tail：显示日志行数
 --timestamps , -t：显示时间戳
 --until：显示某一时间段的日志信息
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认查看容器日志</p>
-<pre><code>root@jia:/etc# docker ps -a
+</code></pre><p><strong>示例</strong></p><p>默认查看容器日志</p><pre><code>root@jia:/etc# docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 85c8be92df44        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   7 minutes ago       Up 7 minutes        80/tcp              nginx
 root@jia:/etc# docker logs nginx
@@ -972,9 +642,7 @@ root@jia:/etc# docker logs nginx
 172.17.0.1 - - [08/Jan/2020:08:19:04 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot; &quot;-&quot;
 172.17.0.1 - - [08/Jan/2020:08:19:07 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot; &quot;-&quot;
 root@jia:/etc# 
-</code></pre>
-<p>实时显示nginx容器的日志</p>
-<pre><code>root@jia:/etc# docker run --name nginx -itd nginx:latest		//创建并启动nginx容器
+</code></pre><p>实时显示nginx容器的日志</p><pre><code>root@jia:/etc# docker run --name nginx -itd nginx:latest		//创建并启动nginx容器
 85c8be92df44960e0973ae2b48907661679d921d0523cb93526351f07850f290
 root@jia:/etc# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1015,14 +683,8 @@ root@jia:/etc# docker logs -f nginx		//输出日志信息
 172.17.0.1 - - [08/Jan/2020:08:19:02 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot; &quot;-&quot;
 172.17.0.1 - - [08/Jan/2020:08:19:04 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot; &quot;-&quot;
 172.17.0.1 - - [08/Jan/2020:08:19:07 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot; &quot;-&quot;
-</code></pre>
-<h2 id="port"><a href="#port" class="headerlink" title="port"></a>port</h2><p>查看容器的端口映射情况</p>
-<p><strong>语法</strong></p>
-<pre><code>docker port 容器ID/容器名称
-</code></pre>
-<p><strong>示例</strong></p>
-<p>列出nginx容器所有端口映射情况</p>
-<pre><code>root@jia:/etc# docker run --name nginx -itd -P nginx:latest 		//创建并启动容器，映射容器所有端口
+</code></pre><h2 id="port"><a href="#port" class="headerlink" title="port"></a>port</h2><p>查看容器的端口映射情况</p><p><strong>语法</strong></p><pre><code>docker port 容器ID/容器名称
+</code></pre><p><strong>示例</strong></p><p>列出nginx容器所有端口映射情况</p><pre><code>root@jia:/etc# docker run --name nginx -itd -P nginx:latest 		//创建并启动容器，映射容器所有端口
 b4e3a51697c2e35b4a17acee93630ac77c6e9fe94df99c70750b60c4f87b535a
 root@jia:/etc# docker ps -a			//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
@@ -1030,13 +692,8 @@ b4e3a51697c2        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;  
 root@jia:/etc# docker port nginx		//显示容器端口映射情况
 80/tcp -&gt; 0.0.0.0:32768
 root@jia:/etc# 
-</code></pre>
-<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>列出容器列表</p>
-<p><strong>语法</strong></p>
-<pre><code>docker ps 参数 
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--all , -a：查看所有容器
+</code></pre><h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>列出容器列表</p><p><strong>语法</strong></p><pre><code>docker ps 参数 
+</code></pre><p><strong>参数说明</strong></p><pre><code>--all , -a：查看所有容器
 --filter , -f：根据相关条件进行过滤
 --format:	使用Go模板打印漂亮的容器
 --last , -n:显示第几个创建的容器
@@ -1044,48 +701,28 @@ root@jia:/etc#
 --no-trunc：显示详细信息
 --quiet , -q：只显示容器ID
 --size , -s：显示容器的总大小
-</code></pre>
-<p><strong>示例</strong></p>
-<p>查看所有容器</p>
-<pre><code>root@jia:~# docker ps -a
+</code></pre><p><strong>示例</strong></p><p>查看所有容器</p><pre><code>root@jia:~# docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
 79b53ebbc86e        centos:latest       &quot;/bin/bash&quot;              5 seconds ago       Created                                     fervent_payne
 b4e3a51697c2        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   13 minutes ago      Up 13 minutes       0.0.0.0:32768-&gt;80/tcp   nginx
 root@jia:~# 
-</code></pre>
-<p>查看正在运行的容器</p>
-<pre><code>root@jia:~# docker ps
+</code></pre><p>查看正在运行的容器</p><pre><code>root@jia:~# docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
 b4e3a51697c2        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   13 minutes ago      Up 13 minutes       0.0.0.0:32768-&gt;80/tcp   nginx
 root@jia:~# 
-</code></pre>
-<h2 id="restart"><a href="#restart" class="headerlink" title="restart"></a>restart</h2><p>重新启动容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker restart 容器名称/容器ID
-</code></pre>
-<p><strong>参数</strong></p>
-<pre><code>-t:设置重启执行时间
-</code></pre>
-<p><strong>示例</strong></p>
-<pre><code>root@jia:~# docker ps -a
+</code></pre><h2 id="restart"><a href="#restart" class="headerlink" title="restart"></a>restart</h2><p>重新启动容器</p><p><strong>语法</strong></p><pre><code>docker restart 容器名称/容器ID
+</code></pre><p><strong>参数</strong></p><pre><code>-t:设置重启执行时间
+</code></pre><p><strong>示例</strong></p><pre><code>root@jia:~# docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
 b4e3a51697c2        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   16 minutes ago      Up 16 minutes       0.0.0.0:32768-&gt;80/tcp   nginx
 root@jia:~# docker restart nginx
 nginx
 root@jia:~# 
-</code></pre>
-<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p>删除容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker rm 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数</strong></p>
-<pre><code>--force , -f：根据条件进行删除容器，强制删除正在运行的容器
+</code></pre><h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p>删除容器</p><p><strong>语法</strong></p><pre><code>docker rm 参数 容器ID/容器名称
+</code></pre><p><strong>参数</strong></p><pre><code>--force , -f：根据条件进行删除容器，强制删除正在运行的容器
 --link , -l：移除容器间的网络连接，而非容器本身
 -v, --volumes：删除与容器关联的文件系统
-</code></pre>
-<p><strong>示例</strong></p>
-<p>删除nginx容器</p>
-<pre><code>root@jia:~# docker ps -a		//查看容器
+</code></pre><p><strong>示例</strong></p><p>删除nginx容器</p><pre><code>root@jia:~# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                   NAMES
 c3800e1bda43        centos              &quot;/bin/bash&quot;              About a minute ago   Up About a minute                           centos
 b4e3a51697c2        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   22 minutes ago       Up 5 minutes        0.0.0.0:32769-&gt;80/tcp   nginx
@@ -1097,9 +734,7 @@ root@jia:~# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
 c3800e1bda43        centos              &quot;/bin/bash&quot;         About a minute ago   Up About a minute                       centos
 root@jia:~# 
-</code></pre>
-<p>删除所有容器</p>
-<pre><code>root@jia:~# docker ps -a		//查看容器
+</code></pre><p>删除所有容器</p><pre><code>root@jia:~# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 4ee9b7488e32        nginx               &quot;nginx -g &#39;daemon of…&quot;   26 seconds ago      Up 25 seconds       80/tcp              nginx
 c3800e1bda43        centos              &quot;/bin/bash&quot;              4 minutes ago       Up 4 minutes                            centos
@@ -1112,18 +747,10 @@ c3800e1bda43
 root@jia:~# docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 root@jia:~# 
-</code></pre>
-<h2 id="rmi"><a href="#rmi" class="headerlink" title="rmi"></a>rmi</h2><p>删除本地镜像</p>
-<p><strong>语法</strong></p>
-<pre><code>docker rmi 参数 镜像名称/镜像ID
-</code></pre>
-<p><strong>参数</strong></p>
-<pre><code>--force , -f：强制删除
+</code></pre><h2 id="rmi"><a href="#rmi" class="headerlink" title="rmi"></a>rmi</h2><p>删除本地镜像</p><p><strong>语法</strong></p><pre><code>docker rmi 参数 镜像名称/镜像ID
+</code></pre><p><strong>参数</strong></p><pre><code>--force , -f：强制删除
 --no-prune：不移除该镜像的过程镜像，默认移除
-</code></pre>
-<p><strong>示例</strong></p>
-<p>默认删除镜像</p>
-<pre><code>root@jia:~# docker images		//查看本地镜像
+</code></pre><p><strong>示例</strong></p><p>默认删除镜像</p><pre><code>root@jia:~# docker images		//查看本地镜像
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        10 days ago         126MB
 ubuntu              latest              549b9b86cb8d        2 weeks ago         64.2MB
@@ -1141,9 +768,7 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 nginx               latest              f7bb5701a33c        10 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:~# 
-</code></pre>
-<p>强制删除正在运行的镜像</p>
-<pre><code>root@jia:~# docker run -itd --name nginx nginx		//启动创建容器
+</code></pre><p>强制删除正在运行的镜像</p><pre><code>root@jia:~# docker run -itd --name nginx nginx		//启动创建容器
 36b203a3fb5cf8fe6a1e13e298998c8510f7d24e49da36ada8d7181d89b16089
 root@jia:~# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1162,18 +787,9 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 &lt;none&gt;              &lt;none&gt;              f7bb5701a33c        10 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:~# 
-</code></pre>
-<p>注意：当强制删除镜像后，会直接删除，但是会生成新的镜像，容器不会被删除</p>
-<h2 id="save"><a href="#save" class="headerlink" title="save"></a>save</h2><p>保存镜像为tar包</p>
-<p><strong>语法</strong></p>
-<pre><code>docker save 参数 镜像名称 文件目录及名称.tar
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--output , -o：保存到某文件
-</code></pre>
-<p><strong>示例</strong></p>
-<p>将nginx镜像保存为文件</p>
-<pre><code>root@jia:/jia/jia# docker images
+</code></pre><p>注意：当强制删除镜像后，会直接删除，但是会生成新的镜像，容器不会被删除</p><h2 id="save"><a href="#save" class="headerlink" title="save"></a>save</h2><p>保存镜像为tar包</p><p><strong>语法</strong></p><pre><code>docker save 参数 镜像名称 文件目录及名称.tar
+</code></pre><p><strong>参数说明</strong></p><pre><code>--output , -o：保存到某文件
+</code></pre><p><strong>示例</strong></p><p>将nginx镜像保存为文件</p><pre><code>root@jia:/jia/jia# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        11 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
@@ -1181,28 +797,19 @@ root@jia:/jia/jia# docker save nginx:latest &gt; nginx.tar
 root@jia:/jia/jia# ls
 nginx.tar
 root@jia:/jia/jia# 
-</code></pre>
-<p>将多个镜像保存到一个文件</p>
-<pre><code>root@jia:/jia/jia# docker save  -o test.tar nginx:latest centos:latest
+</code></pre><p>将多个镜像保存到一个文件</p><pre><code>root@jia:/jia/jia# docker save  -o test.tar nginx:latest centos:latest
 root@jia:/jia/jia# ls
 nginx.tar  test.tar
 root@jia:/jia/jia# 
-</code></pre>
-<p>使用gzip+tar进行打包压缩</p>
-<pre><code>root@jia:/jia/jia# docker save nginx:latest | gzip &gt; nginx.tar.gz
+</code></pre><p>使用gzip+tar进行打包压缩</p><pre><code>root@jia:/jia/jia# docker save nginx:latest | gzip &gt; nginx.tar.gz
 root@jia:/jia/jia# ls -lh		//查看目录中文件长格式显示
 total 513M
 -rw-r--r-- 1 root root 125M Jan  9 16:57 nginx.tar
 -rw-r--r-- 1 root root  47M Jan  9 17:03 nginx.tar.gz
 -rw------- 1 root root 342M Jan  9 17:00 test.tar
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p>查看容器中进程信息</p>
-<p><strong>语法</strong></p>
-<pre><code>docker top 参数 容器ID/容器名称
-</code></pre>
-<p><strong>示例</strong><br>查看nginx容器中所有进程信息</p>
-<pre><code>root@jia:/jia/jia# docker run --name nginx -itd nginx:latest		//创建启动nginx容器
+</code></pre><h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p>查看容器中进程信息</p><p><strong>语法</strong></p><pre><code>docker top 参数 容器ID/容器名称
+</code></pre><p><strong>示例</strong><br>查看nginx容器中所有进程信息</p><pre><code>root@jia:/jia/jia# docker run --name nginx -itd nginx:latest		//创建启动nginx容器
 69e353d8564025e07ee201098cafb9870d95b92edf990db2455aa6261c0bede6
 root@jia:/jia/jia# docker ps -a			//列出所有容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1212,17 +819,10 @@ UID                 PID                 PPID                C                   
 root                28665               28637               1                   17:08               pts/0               00:00:00            nginx: master process nginx -g daemon off;
 systemd+            28724               28665               0                   17:08               pts/0               00:00:00            nginx: worker process
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="version"><a href="#version" class="headerlink" title="version"></a>version</h2><p>查看docker软件版本</p>
-<p><strong>语法</strong></p>
-<pre><code>docker version 参数
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-f, --format：使用给定的Go模板格式化输出
+</code></pre><h2 id="version"><a href="#version" class="headerlink" title="version"></a>version</h2><p>查看docker软件版本</p><p><strong>语法</strong></p><pre><code>docker version 参数
+</code></pre><p><strong>参数说明</strong></p><pre><code>-f, --format：使用给定的Go模板格式化输出
 --kubeconfig：Kubernetes配置文件
-</code></pre>
-<p><strong>示例</strong><br>查看docker版本详细信息</p>
-<pre><code>root@jia:/jia/jia# docker version
+</code></pre><p><strong>示例</strong><br>查看docker版本详细信息</p><pre><code>root@jia:/jia/jia# docker version
 Client: Docker Engine - Community
  Version:           19.03.5
  API version:       1.40
@@ -1251,24 +851,15 @@ Server: Docker Engine - Community
   Version:          0.18.0
   GitCommit:        fec3683
 root@jia:/jia/jia# 
-</code></pre>
-<p>查看docker版本</p>
-<pre><code>root@jia:/jia/jia# docker version --format &#39;&#123;&#123;.Server.Version&#125;&#125;&#39;
+</code></pre><p>查看docker版本</p><pre><code>root@jia:/jia/jia# docker version --format &#39;&#123;&#123;.Server.Version&#125;&#125;&#39;
 19.03.5
 root@jia:/jia/jia#
-</code></pre>
-<h2 id="events"><a href="#events" class="headerlink" title="events"></a>events</h2><p>查看docker服务器实时事件</p>
-<p><strong>语法</strong></p>
-<pre><code>docker events 参数
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-f，--filter：根据条件过滤事件
+</code></pre><h2 id="events"><a href="#events" class="headerlink" title="events"></a>events</h2><p>查看docker服务器实时事件</p><p><strong>语法</strong></p><pre><code>docker events 参数
+</code></pre><p><strong>参数说明</strong></p><pre><code>-f，--filter：根据条件过滤事件
 --since ：从指定的时间戳后显示所有事件
 --until ：流水时间显示到指定的时间为止
 --format：使用给定的Go模板格式化输出
-</code></pre>
-<p><strong>示例</strong><br>容器启动停止，使用events显示事件</p>
-<pre><code>root@jia:/jia/jia# docker ps -a		//查看容器列表
+</code></pre><p><strong>示例</strong><br>容器启动停止，使用events显示事件</p><pre><code>root@jia:/jia/jia# docker ps -a		//查看容器列表
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 69e353d85640        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   13 minutes ago      Up 13 minutes       80/tcp              nginx
 root@jia:/jia/jia# docker stop nginx		//停止容器
@@ -1284,17 +875,10 @@ root@jia:~# docker events 		//查看实时事件，注意此命令不会自动�
 2020-01-09T17:22:27.145650268+08:00 container stop 69e353d8564025e07ee201098cafb9870d95b92edf990db2455aa6261c0bede6 (image=nginx:latest, maintainer=NGINX Docker Maintainers &lt;docker-maint@nginx.com&gt;, name=nginx)
 2020-01-09T17:22:33.680477968+08:00 network connect f2ccf449e47668433fb96511ef577c7515be7f481a7a9cb386c9d46650cbabbf (container=69e353d8564025e07ee201098cafb9870d95b92edf990db2455aa6261c0bede6, name=bridge, type=bridge)
 2020-01-09T17:22:34.093551544+08:00 container start 69e353d8564025e07ee201098cafb9870d95b92edf990db2455aa6261c0bede6 (image=nginx:latest, maintainer=NGINX Docker Maintainers &lt;docker-maint@nginx.com&gt;, name=nginx)
-</code></pre>
-<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>从tar文件导入docker为镜像</p>
-<p><strong>语法</strong></p>
-<pre><code>docker import 参数 tar文件目录名称 导入的镜像名称：tag（版本）
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--change , -c：	将Dockerfile指令应用于创建的映像
+</code></pre><h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>从tar文件导入docker为镜像</p><p><strong>语法</strong></p><pre><code>docker import 参数 tar文件目录名称 导入的镜像名称：tag（版本）
+</code></pre><p><strong>参数说明</strong></p><pre><code>--change , -c：	将Dockerfile指令应用于创建的映像
 --message , -m：	设置导入图像的提交消息
-</code></pre>
-<p><strong>示例</strong><br>将nginx.tar的镜像包导入docker并命名nginx版本V1</p>
-<pre><code>root@jia:/jia/jia# docker images		//查看本地所有镜像
+</code></pre><p><strong>示例</strong><br>将nginx.tar的镜像包导入docker并命名nginx版本V1</p><pre><code>root@jia:/jia/jia# docker images		//查看本地所有镜像
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        11 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
@@ -1308,9 +892,7 @@ nginx               V1                  07b2b1766ed1        3 seconds ago       
 nginx               latest              f7bb5701a33c        11 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:/jia/jia# 
-</code></pre>
-<p>导入使用tar打包gzip压缩的镜像</p>
-<pre><code>root@jia:/jia/jia# docker import nginx.tar.gz nginx:V2
+</code></pre><p>导入使用tar打包gzip压缩的镜像</p><pre><code>root@jia:/jia/jia# docker import nginx.tar.gz nginx:V2
 sha256:ca7505dbea914f7babb1ed3667d1a133461c344d92ea978585b64fe7dabf5b36
 root@jia:/jia/jia# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
@@ -1319,16 +901,9 @@ nginx               V1                  07b2b1766ed1        2 minutes ago       
 nginx               latest              f7bb5701a33c        11 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p>从docker导出容器为tar文件</p>
-<p><strong>语法</strong></p>
-<pre><code>docker export 参数 容器名称/容器ID
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--output , -o：写入文件
-</code></pre>
-<p><strong>示例</strong><br>导出centos容器并命名为centos.tar</p>
-<pre><code>root@jia:/jia/jia# docker run --name centos -itd centos:latest		//创建并启动centos容器
+</code></pre><h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p>从docker导出容器为tar文件</p><p><strong>语法</strong></p><pre><code>docker export 参数 容器名称/容器ID
+</code></pre><p><strong>参数说明</strong></p><pre><code>--output , -o：写入文件
+</code></pre><p><strong>示例</strong><br>导出centos容器并命名为centos.tar</p><pre><code>root@jia:/jia/jia# docker run --name centos -itd centos:latest		//创建并启动centos容器
 06b5abbb068dc493056aae6f1526b81028f931fd160fe470a937e15ac0110bdf
 root@jia:/jia/jia# docker ps 
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1338,9 +913,7 @@ root@jia:/jia/jia# docker export centos &gt; centos.tar
 root@jia:/jia/jia# ls
 centos.tar  nginx.tar  nginx.tar.gz  test.tar
 root@jia:/jia/jia# 
-</code></pre>
-<p>导出centos容器并命名为centos.tar.gz,使用gzip压缩</p>
-<pre><code>root@jia:/jia/jia# docker export centos &gt; centos.tar
+</code></pre><p>导出centos容器并命名为centos.tar.gz,使用gzip压缩</p><pre><code>root@jia:/jia/jia# docker export centos &gt; centos.tar
 root@jia:/jia/jia# ls
 centos.tar  nginx.tar  nginx.tar.gz  test.tar
 root@jia:/jia/jia# docker export centos | gzip &gt; centos.tar.gz
@@ -1352,22 +925,13 @@ total 796M
 -rw-r--r-- 1 root root  47M Jan  9 17:03 nginx.tar.gz
 -rw------- 1 root root 342M Jan  9 17:00 test.tar
 root@jia:/jia/jia# 
-</code></pre>
-<p>导出nginx容器，并命名nginx1.tar</p>
-<pre><code>root@jia:/jia/jia# docker export -o nginx1.tar nginx
+</code></pre><p>导出nginx容器，并命名nginx1.tar</p><pre><code>root@jia:/jia/jia# docker export -o nginx1.tar nginx
 root@jia:/jia/jia# ls
 centos.tar  centos.tar.gz  nginx1.tar  nginx.tar  nginx.tar.gz  test.tar
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><p>查看docker系统信息</p>
-<p><strong>语法</strong></p>
-<pre><code>docekr info 参数
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--format , -f：使用给定的Go模板格式化输出
-</code></pre>
-<p><strong>示例</strong></p>
-<pre><code>root@jia:/jia/jia# docker info
+</code></pre><h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><p>查看docker系统信息</p><p><strong>语法</strong></p><pre><code>docekr info 参数
+</code></pre><p><strong>参数说明</strong></p><pre><code>--format , -f：使用给定的Go模板格式化输出
+</code></pre><p><strong>示例</strong></p><pre><code>root@jia:/jia/jia# docker info
     Client:
      Debug Mode: false
     
@@ -1418,19 +982,11 @@ root@jia:/jia/jia#
     
     WARNING: No swap limit support
     root@jia:/jia/jia# 
-</code></pre>
-<h2 id="inspect"><a href="#inspect" class="headerlink" title="inspect"></a>inspect</h2><p>查看容器详细信息</p>
-<p><strong>语法</strong></p>
-<pre><code>docker inspect 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--format , -f：使用给定的Go模板格式化输出
+</code></pre><h2 id="inspect"><a href="#inspect" class="headerlink" title="inspect"></a>inspect</h2><p>查看容器详细信息</p><p><strong>语法</strong></p><pre><code>docker inspect 参数 容器ID/容器名称
+</code></pre><p><strong>参数说明</strong></p><pre><code>--format , -f：使用给定的Go模板格式化输出
 --size , -s：显示文件总大小
 --type :为指定类型返回JSON
-</code></pre>
-<p><strong>示例</strong></p>
-<p>获取容器IP地址</p>
-<pre><code>第一种方式：
+</code></pre><p><strong>示例</strong></p><p>获取容器IP地址</p><pre><code>第一种方式：
 
 root@jia:/jia/jia# docker ps -a		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1447,29 +1003,17 @@ root@jia:/jia/jia#
 root@jia:/jia/jia#  docker inspect --format=&#39;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#39; centos
 172.17.0.3
 root@jia:/jia/jia# 
-</code></pre>
-<p>获取容器MAC地址</p>
-<pre><code>root@jia:/jia/jia# docker inspect centos | grep MacAddress
+</code></pre><p>获取容器MAC地址</p><pre><code>root@jia:/jia/jia# docker inspect centos | grep MacAddress
         &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,
                 &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,
 root@jia:/jia/jia# 
-</code></pre>
-<p>获取容器日志目录</p>
-<pre><code>root@jia:/jia/jia# docker inspect centos | grep log
+</code></pre><p>获取容器日志目录</p><pre><code>root@jia:/jia/jia# docker inspect centos | grep log
     &quot;LogPath&quot;: &quot;/var/lib/docker/containers/06b5abbb068dc493056aae6f1526b81028f931fd160fe470a937e15ac0110bdf/06b5abbb068dc493056aae6f1526b81028f931fd160fe470a937e15ac0110bdf-json.log&quot;,
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h2><pre><code>杀死正在运行的容器
-</code></pre>
-<p><strong>语法</strong></p>
-<pre><code>docker kill 参数 容器ID/容器名称
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>--signal , -s：向容器发送信号
-</code></pre>
-<p><strong>示例</strong></p>
-<p>杀死正在运行的centos容器</p>
-<pre><code>root@jia:/jia/jia# docker ps		//查看容器
+</code></pre><h2 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h2><pre><code>杀死正在运行的容器
+</code></pre><p><strong>语法</strong></p><pre><code>docker kill 参数 容器ID/容器名称
+</code></pre><p><strong>参数说明</strong></p><pre><code>--signal , -s：向容器发送信号
+</code></pre><p><strong>示例</strong></p><p>杀死正在运行的centos容器</p><pre><code>root@jia:/jia/jia# docker ps		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 06b5abbb068d        centos:latest       &quot;/bin/bash&quot;              17 hours ago        Up 17 hours                             centos
 69e353d85640        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   18 hours ago        Up 17 hours         80/tcp              nginx
@@ -1480,27 +1024,17 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 06b5abbb068d        centos:latest       &quot;/bin/bash&quot;              17 hours ago        Exited (137) 6 seconds ago                       centos
 69e353d85640        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   18 hours ago        Up 17 hours                  80/tcp              nginx
 root@jia:/jia/jia# 
-</code></pre>
-<p>杀死正在运行的nginx容器，发送kill信号</p>
-<pre><code>root@jia:/jia/jia# docker kill --signal=kill  nginx
+</code></pre><p>杀死正在运行的nginx容器，发送kill信号</p><pre><code>root@jia:/jia/jia# docker kill --signal=kill  nginx
 nginx
 root@jia:/jia/jia# docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                       PORTS               NAMES
 06b5abbb068d        centos:latest       &quot;/bin/bash&quot;              17 hours ago        Exited (137) 3 minutes ago                       centos
 69e353d85640        nginx:latest        &quot;nginx -g &#39;daemon of…&quot;   18 hours ago        Exited (137) 1 second ago                        nginx
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="load"><a href="#load" class="headerlink" title="load"></a>load</h2><p>从tar文件中加载为docker镜像</p>
-<p><strong>语法</strong></p>
-<pre><code>docker load 参数 tar文件
-</code></pre>
-<p><strong>参数说明</strong></p>
-<pre><code>-i, --input：从tar存档文件中读取，而不是从STDIN中读取
+</code></pre><h2 id="load"><a href="#load" class="headerlink" title="load"></a>load</h2><p>从tar文件中加载为docker镜像</p><p><strong>语法</strong></p><pre><code>docker load 参数 tar文件
+</code></pre><p><strong>参数说明</strong></p><pre><code>-i, --input：从tar存档文件中读取，而不是从STDIN中读取
 --quiet , -q：显示简要信息
-</code></pre>
-<p><strong>示例</strong></p>
-<p>导入nginx镜像</p>
-<pre><code>root@jia:/jia/jia# docker images		//查看所有镜像
+</code></pre><p><strong>示例</strong></p><p>导入nginx镜像</p><pre><code>root@jia:/jia/jia# docker images		//查看所有镜像
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:/jia/jia# docker load &lt; nginx.tar.gz 
@@ -1513,14 +1047,8 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 nginx               latest              f7bb5701a33c        12 days ago         126MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="pause"><a href="#pause" class="headerlink" title="pause"></a>pause</h2><p>暂停容器</p>
-<p><strong>语法</strong></p>
-<pre><code>docker pause 容器ID/容器名称
-</code></pre>
-<p><strong>示例</strong></p>
-<p>暂停centos容器</p>
-<pre><code>root@jia:/jia/jia# docker run -itd --name centos centos:latest		//创建并运行
+</code></pre><h2 id="pause"><a href="#pause" class="headerlink" title="pause"></a>pause</h2><p>暂停容器</p><p><strong>语法</strong></p><pre><code>docker pause 容器ID/容器名称
+</code></pre><p><strong>示例</strong></p><p>暂停centos容器</p><pre><code>root@jia:/jia/jia# docker run -itd --name centos centos:latest		//创建并运行
 48e49042b927f427aed68437e12e5acd14b82e3a33a71b6f236bcef5c3edd41d
 root@jia:/jia/jia# docker ps		//查看容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
@@ -1533,14 +1061,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 root@jia:/jia/jia# 
 
 容器暂停后会在状态处加(Paused) 
-</code></pre>
-<h2 id="unpause"><a href="#unpause" class="headerlink" title="unpause"></a>unpause</h2><p>取消容器暂停状态</p>
-<p><strong>语法</strong></p>
-<pre><code>docker unpause 容器ID/容器名称
-</code></pre>
-<p><strong>示例</strong></p>
-<p>取消centos容器的暂停操作</p>
-<pre><code>root@jia:/jia/jia# docker ps -a		//查看所有容器
+</code></pre><h2 id="unpause"><a href="#unpause" class="headerlink" title="unpause"></a>unpause</h2><p>取消容器暂停状态</p><p><strong>语法</strong></p><pre><code>docker unpause 容器ID/容器名称
+</code></pre><p><strong>示例</strong></p><p>取消centos容器的暂停操作</p><pre><code>root@jia:/jia/jia# docker ps -a		//查看所有容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                   PORTS               NAMES
 48e49042b927        centos:latest       &quot;/bin/bash&quot;         14 seconds ago      Up 13 seconds (Paused)                       centos
 root@jia:/jia/jia# docker unpause centos
@@ -1549,27 +1071,16 @@ root@jia:/jia/jia# docker ps -a		//查看所有容器
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 48e49042b927        centos:latest       &quot;/bin/bash&quot;         5 minutes ago       Up 5 minutes                            centos
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h2><p>给镜像进行打标签</p>
-<p><strong>语法</strong></p>
-<pre><code>docker tag 源镜像ID/源镜像名称:tag（版本） 目标镜像名称：tag（版本）
-</code></pre>
-<p><strong>示例</strong></p>
-<p>给centos镜像重新打标签</p>
-<pre><code>root@jia:/jia/jia# docker tag  centos:latest centos:V1
+</code></pre><h2 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h2><p>给镜像进行打标签</p><p><strong>语法</strong></p><pre><code>docker tag 源镜像ID/源镜像名称:tag（版本） 目标镜像名称：tag（版本）
+</code></pre><p><strong>示例</strong></p><p>给centos镜像重新打标签</p><pre><code>root@jia:/jia/jia# docker tag  centos:latest centos:V1
 root@jia:/jia/jia# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx               latest              f7bb5701a33c        12 days ago         126MB
 centos              V1                  0f3e07c0138f        3 months ago        220MB
 centos              latest              0f3e07c0138f        3 months ago        220MB
 root@jia:/jia/jia# 
-</code></pre>
-<h2 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h2><p>阻塞运行直到容器停止，然后打印出它的退出代码</p>
-<p><strong>语法</strong></p>
-<pre><code>docekr wait 容器ID/容器名称
-</code></pre>
-<p><strong>示例</strong></p>
-<pre><code>root@jia:/jia/jia# docker run -itd --name nginx nginx		//创建启动容器
+</code></pre><h2 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h2><p>阻塞运行直到容器停止，然后打印出它的退出代码</p><p><strong>语法</strong></p><pre><code>docekr wait 容器ID/容器名称
+</code></pre><p><strong>示例</strong></p><pre><code>root@jia:/jia/jia# docker run -itd --name nginx nginx		//创建启动容器
 57af5446f0eaff56a54c3a5559ac0073511de9b9f48c93ff04bbcd0c62b3a809
 root@jia:/jia/jia# docker ps		//查看容器
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
@@ -1607,9 +1118,4 @@ Commercial support is available at
 root@jia:/jia/jia# docker wait nginx		//启动阻塞
 
 root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
-</code></pre>
-<div id="post-outdate-notice" data="{&quot;limitDay&quot;:1095,&quot;messagePrev&quot;:&quot;距离上次更新已经过去了&quot;,&quot;messageNext&quot;:&quot;天，文章可能已经过时。&quot;,&quot;postUpdate&quot;:&quot;2025-01-18 21:15:39&quot;}" hidden></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blxtcloud.github.io">避凉闲庭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blxtcloud.github.io/2025/01/13/2025011316/">https://blxtcloud.github.io/2025/01/13/2025011316/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://blxtcloud.github.io" target="_blank">避凉闲庭</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a><a class="post-meta__tags" href="/tags/docker/">docker</a></div><div class="post-share"><div class="social-share" data-image="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/01/13/2025011317/" title="docker命令总结（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">docker命令总结（一）</div></div><div class="info-2"><div class="info-item-1">个人简单总结：     参数 用途 语法 示例    search 在docker hub中搜索镜像 docker search 镜像名称 docker search nginx   pull 在docker hub中下载镜像到本地 docker pull 镜像名：tag docker pull nginx:latest   push 推送指定镜像到docker镜像服务器 docker push 本地镜像：tag docker push nginx:V1   images 查看本地所有docker镜像 docker images docker imaegs   run 创建容器，并运行 docker run 参数 镜像名：tag docker -d run nginx:latest   history 查看镜像形成过程 docker history 本地镜像名：tag docker history nginx:V1   start 启动容器 docker start 容器ID或容器名称 docker strat 3d265463456   stop 停止容器 docker...</div></div></div></a><a class="pagination-related" href="/2024/12/20/Rocky%E9%83%A8%E7%BD%B2OpenVPN/" title="Rocky部署OpenVPN"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-20</div><div class="info-item-2">Rocky部署OpenVPN</div></div><div class="info-2"><div class="info-item-1">  前言OpenVPN是啥？看名字想必大家也就猜个差不多了，open嘛就是开放、开源的意思，OpenVPN是一个开源的SSL VPN软件，主要是建立点对点的的连接，说白一点就是在做远程接入的时候建立VPN通道，这样可以对传输中的数据进行加密提高安全性。  为啥要部署OpenVPN1. 提高互联网链接的安全性； 2. 解决在某些限制较多的网络环境下访问服务器； 3. 减少在互联网暴露的端口； 4. 提高运维效率； 5....</div></div></div></a><a class="pagination-related" href="/2024/12/24/2024122402/" title="ansible开局配置-openEuler"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-24</div><div class="info-item-2">ansible开局配置-openEuler</div></div><div class="info-2"><div class="info-item-1">ansible干啥用的就不多介绍了，这篇文章主要在说ansible的安装、开局配置、免密登录。   ansible安装 查看系统版本  1cat /etc/openEuler-latest  输出内容如下：  openeulerversion&#x3D;openEuler-24.03-LTS compiletime&#x3D;2024-05-27-21-31-28 gccversion&#x3D;12.3.1-30.oe2403 kernelversion&#x3D;6.6.0-28.0.0.34.oe2403 openjdkversion&#x3D;1.8.0.412.b08-5.oe2403   清除软件库缓存  1dnf clean all   建议软件库缓存  1dnf makecache    安装epel-release软件仓   下载对应版本epel-release的软件仓库  12# 不同系统版本需要安装不同的epel-releasewget...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011311/" title="Linux命令总结大全，包含所有linux命令"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">Linux命令总结大全，包含所有linux命令</div></div><div class="info-2"><div class="info-item-1">使用说明：此文档包含所有的Linux命令，只有你想不到的没有你看不到的，此文档共计10万余字，有8400多行，预计阅读时间差不多需要3个小时左右，所以要给大家说一说如何阅读此文档  为了方便大家阅读，我这里做了相关索引，建议使用搜索的方式阅读，如果您有大把时光去阅读的话您可以试着去建议直接在csdn关注此博客，在博主资源中下载搜索的话直接使用浏览器的搜索方式就可以了，我这里使用谷歌浏览器进行演示 打开文档   document.write('');   打开谷歌的搜索，键入ctrl+f   document.write('');   右上角出现搜索框后，直接在搜索框中输入要查询的命令，但是查询结果有很多，如我直接输入ls   document.write('');   共计123个结果，如果要准确搜索您需要在命令前面加三个*号，注意后面不要加空格   document.write('');   这下只有6个结果了   document.write('');   文件传输***bye 说明:  中断FTP连线并结束程序 语法:  bye 补充说明: ...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011312/" title="vi指令总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">vi指令总结</div></div><div class="info-2"><div class="info-item-1">VI常用技巧​	VI命令可以说是Unix&#x2F;Linux世界里最常用的编辑文件的命令了，但是因为它的命令集众多，很多人都不习惯使用它，其实您只需要掌握基本命令，然后加以灵活运用，就会发现它的优势，并会逐渐喜欢使用这种方法。本文旨在介绍VI的一些最常用命令和高级应用技巧。    基本命令介绍 光标命令 k、j、h、l——上、下、左、右光标移动命令。虽然您可以在Linux中使用键盘右边的4个光标键，但是记住这4个命令还是非常有用的。这4个键正是右手在键盘上放置的基本位置。 nG——跳转命令。n为行数，该命令立即使光标跳到指定行。 Ctrl+G——光标所在位置的行数和列数报告。 w、b——使光标向前或向后跳过一个单词。   编辑命令 i、a、r——在光标的前、后以及所在处插入字符命令(i&#x3D;insert、a&#x3D;append、r&#x3D;replace)。 cw、dw——改变(置换)&#x2F;删除光标所在处的单词的命令 (c&#x3D;change、d&#x3D;delete)。...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011315/" title="制作网页黑白背景"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">制作网页黑白背景</div></div><div class="info-2"><div class="info-item-1">2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图  百度   document.write('');   CSDN   document.write('');   JD   document.write('');   淘宝   document.write('');   那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下： 12345678html&#123;-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter: grayscale(100%);filter: gray;   &#125; </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" onerror="this.onerror=null;this.src='https://jihulab.com/blxt/images/-/raw/main/ico/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">避凉闲庭</div><div class="author-info-description">一起学习，天天向上</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">48</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" href="https://blxtcloud.github.io/message/"><i class="fa-solid fa-message"></i><span>给我留言吧</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://blxtcloud.github.io" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:kuiyajia@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2405571304&amp;site=qq&amp;menu=yes" target="_blank" title="QQ号码：2405571304"><i class="fa-brands fa-qq" style="color: #74c0fc;"></i></a><a class="social-icon" href="weixin://contacts/profile/blxtst" target="_blank" title="微信号：blxtst"><i class="fa-brands fa-weixin" style="color: #2ed818;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">该网站正在加速建设中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#search"><span class="toc-number">1.</span> <span class="toc-text">search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pull"><span class="toc-number">2.</span> <span class="toc-text">pull</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#push"><span class="toc-number">3.</span> <span class="toc-text">push</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#images"><span class="toc-number">4.</span> <span class="toc-text">images</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">5.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#history"><span class="toc-number">6.</span> <span class="toc-text">history</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#start"><span class="toc-number">7.</span> <span class="toc-text">start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stop"><span class="toc-number">8.</span> <span class="toc-text">stop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#build"><span class="toc-number">9.</span> <span class="toc-text">build</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">10.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit"><span class="toc-number">11.</span> <span class="toc-text">commit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp"><span class="toc-number">12.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create"><span class="toc-number">13.</span> <span class="toc-text">create</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diff"><span class="toc-number">14.</span> <span class="toc-text">diff</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#exec"><span class="toc-number">15.</span> <span class="toc-text">exec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#login"><span class="toc-number">16.</span> <span class="toc-text">login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logout"><span class="toc-number">17.</span> <span class="toc-text">logout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logs"><span class="toc-number">18.</span> <span class="toc-text">logs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#port"><span class="toc-number">19.</span> <span class="toc-text">port</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">20.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#restart"><span class="toc-number">21.</span> <span class="toc-text">restart</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">22.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rmi"><span class="toc-number">23.</span> <span class="toc-text">rmi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#save"><span class="toc-number">24.</span> <span class="toc-text">save</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#top"><span class="toc-number">25.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#version"><span class="toc-number">26.</span> <span class="toc-text">version</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#events"><span class="toc-number">27.</span> <span class="toc-text">events</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import"><span class="toc-number">28.</span> <span class="toc-text">import</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#export"><span class="toc-number">29.</span> <span class="toc-text">export</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">30.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inspect"><span class="toc-number">31.</span> <span class="toc-text">inspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kill"><span class="toc-number">32.</span> <span class="toc-text">kill</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#load"><span class="toc-number">33.</span> <span class="toc-text">load</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pause"><span class="toc-number">34.</span> <span class="toc-text">pause</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unpause"><span class="toc-number">35.</span> <span class="toc-text">unpause</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tag"><span class="toc-number">36.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wait"><span class="toc-number">37.</span> <span class="toc-text">wait</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011319/" title="nginx location匹配及rewrite规则">nginx location匹配及rewrite规则</a><time datetime="2025-01-13T07:17:14.000Z" title="发表于 2025-01-13 15:17:14">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011318/" title="resin部署安装">resin部署安装</a><time datetime="2025-01-13T06:51:30.000Z" title="发表于 2025-01-13 14:51:30">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011317/" title="docker命令总结（一）">docker命令总结（一）</a><time datetime="2025-01-13T06:49:25.000Z" title="发表于 2025-01-13 14:49:25">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011316/" title="docker命令总结（二）">docker命令总结（二）</a><time datetime="2025-01-13T06:47:27.000Z" title="发表于 2025-01-13 14:47:27">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011315/" title="制作网页黑白背景">制作网页黑白背景</a><time datetime="2025-01-13T06:43:29.000Z" title="发表于 2025-01-13 14:43:29">2025-01-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By 避凉闲庭</div><div class="footer_custom_text"><span>欢迎来到避凉闲庭的博客，本博客主题采用 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="/js/downloads.js"></script><script src="/js/message.js"></script><script src="/js/about.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
-POWERMODE.shake = false;
-POWERMODE.mobile = false;
-document.body.addEventListener('input', POWERMODE);
-</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="避,凉,闲,庭" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="python" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
+</code></pre><div id="post-outdate-notice" data="{&quot;limitDay&quot;:1095,&quot;messagePrev&quot;:&quot;距离上次更新已经过去了&quot;,&quot;messageNext&quot;:&quot;天，文章可能已经过时。&quot;,&quot;postUpdate&quot;:&quot;2025-01-18 21:15:39&quot;}" hidden></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者:</span> <span class="post-copyright-info"><a href="https://blxtcloud.github.io">避凉闲庭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接:</span> <span class="post-copyright-info"><a href="https://blxtcloud.github.io/2025/01/13/2025011316/">https://blxtcloud.github.io/2025/01/13/2025011316/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://blxtcloud.github.io" target="_blank">避凉闲庭</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a><a class="post-meta__tags" href="/tags/docker/">docker</a></div><div class="post-share"><div class="social-share" data-image="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload='this.media="all"'><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/01/13/2025011317/" title="docker命令总结（一）"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">docker命令总结（一）</div></div><div class="info-2"><div class="info-item-1">个人简单总结： 参数 用途 语法 示例 search 在docker hub中搜索镜像 docker search 镜像名称 docker search nginx pull 在docker hub中下载镜像到本地 docker pull 镜像名：tag docker pull nginx:latest push 推送指定镜像到docker镜像服务器 docker push 本地镜像：tag docker push nginx:V1 images 查看本地所有docker镜像 docker images docker imaegs run 创建容器，并运行 docker run 参数 镜像名：tag docker -d run nginx:latest history 查看镜像形成过程 docker history 本地镜像名：tag docker history nginx:V1 start 启动容器 docker start 容器ID或容器名称 docker strat 3d265463456 stop 停止容器 docker...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011315/" title="制作网页黑白背景"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">制作网页黑白背景</div></div><div class="info-2"><div class="info-item-1">2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图 百度 document.write(''); CSDN document.write(''); JD document.write(''); 淘宝 document.write(''); 那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下： 12345678html&#123;-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter: grayscale(100%);filter: gray; &#125;</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011311/" title="Linux命令总结大全，包含所有linux命令"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">Linux命令总结大全，包含所有linux命令</div></div><div class="info-2"><div class="info-item-1">使用说明：此文档包含所有的Linux命令，只有你想不到的没有你看不到的，此文档共计10万余字，有8400多行，预计阅读时间差不多需要3个小时左右，所以要给大家说一说如何阅读此文档 为了方便大家阅读，我这里做了相关索引，建议使用搜索的方式阅读，如果您有大把时光去阅读的话您可以试着去建议直接在csdn关注此博客，在博主资源中下载搜索的话直接使用浏览器的搜索方式就可以了，我这里使用谷歌浏览器进行演示 打开文档 document.write(''); 打开谷歌的搜索，键入ctrl+f document.write(''); 右上角出现搜索框后，直接在搜索框中输入要查询的命令，但是查询结果有很多，如我直接输入ls document.write(''); 共计123个结果，如果要准确搜索您需要在命令前面加三个*号，注意后面不要加空格 document.write(''); 这下只有6个结果了 document.write(''); 文件传输***bye 说明: 中断FTP连线并结束程序 语法: bye 补充说明: ...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011319/" title="nginx location匹配及rewrite规则"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">nginx location匹配及rewrite规则</div></div><div class="info-2"><div class="info-item-1">nginx location匹配及rewrite规则 location匹配规则1. 实例1234567891011121314151617 server&#123; location = \ &#123; [配置A] &#125; location / &#123; [配置B] &#125; location = /images/ &#123; [配置C] &#125; location ^~ /static/&#123; [配置D] &#125; localtion ~* \.(gif|jpg|png)&#123; [配置E] &#125;&#125; 2. location语法规则语法： 1234location = | ~ | ~* | ^~ | @ /url/&#123; //注意 =、~、~*、^~...</div></div></div></a><a class="pagination-related" href="/2024/12/26/2024122607/" title="分享一款开源堡垒机-jumpserver"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-26</div><div class="info-item-2">分享一款开源堡垒机-jumpserver</div></div><div class="info-2"><div class="info-item-1">JumpServer是由FIT2CLOUD（飞致远）公司旗下一款开源的堡垒机，这款也是全球首款开源的堡垒机，使用 GNU GPL v2.0 开源协议，是符合 4A 规范的运维安全审计系统，使用 Python 开发，遵循 Web 2.0 规范，配备了业界领先的 Web Terminal 方案，交互界面美观、用户体验好，同时采纳分布式架构，支持多机房跨区域部署以及横向扩展，无资产数量及并发限制。这款开源堡垒机不但提供了社区开源版本并且还提供了企业使用的企业版本，企业版功能更加强大。 飞致远官网地址：https://www.fit2cloud.com/ 旗下开源软件： MeterSphere：是一站式开源持续测试平台, 涵盖测试跟踪、接口测试、性能测试、 团队协作等功能，全面兼容 JMeter、Postman、Swagger 等开源、主流标准，有效助力开发和测试团队充分利用云弹性进行高度可扩展的自动化测试，加速高质量的软件交付，推动中国测试行业整体效率的提升。 KubeOperator：是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的...</div></div></div></a><a class="pagination-related" href="/2025/01/13/2025011312/" title="vi指令总结"><div class="cover" style="background:var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-13</div><div class="info-item-2">vi指令总结</div></div><div class="info-2"><div class="info-item-1">VI常用技巧​ VI命令可以说是Unix&#x2F;Linux世界里最常用的编辑文件的命令了，但是因为它的命令集众多，很多人都不习惯使用它，其实您只需要掌握基本命令，然后加以灵活运用，就会发现它的优势，并会逐渐喜欢使用这种方法。本文旨在介绍VI的一些最常用命令和高级应用技巧。 基本命令介绍 光标命令 k、j、h、l——上、下、左、右光标移动命令。虽然您可以在Linux中使用键盘右边的4个光标键，但是记住这4个命令还是非常有用的。这4个键正是右手在键盘上放置的基本位置。 nG——跳转命令。n为行数，该命令立即使光标跳到指定行。 Ctrl+G——光标所在位置的行数和列数报告。 w、b——使光标向前或向后跳过一个单词。 编辑命令 i、a、r——在光标的前、后以及所在处插入字符命令(i&#x3D;insert、a&#x3D;append、r&#x3D;replace)。 cw、dw——改变(置换)&#x2F;删除光标所在处的单词的命令 (c&#x3D;change、d&#x3D;delete)。...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://jihulab.com/blxt/images/-/raw/main/ico/head.jpg" onerror='this.onerror=null,this.src="https://jihulab.com/blxt/images/-/raw/main/ico/friend_404.gif"' alt="avatar"></div><div class="author-info-name">避凉闲庭</div><div class="author-info-description">一起学习，天天向上</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">48</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" href="https://blxtcloud.github.io/message/"><i class="fa-solid fa-message"></i><span>给我留言吧</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://blxtcloud.github.io" target="_blank" title="Github"><i class="fab fa-github" style="color:#24292e"></i></a><a class="social-icon" href="mailto:kuiyajia@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color:#4a7dbe"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2405571304&amp;site=qq&amp;menu=yes" target="_blank" title="QQ号码：2405571304"><i class="fa-brands fa-qq" style="color:#74c0fc"></i></a><a class="social-icon" href="weixin://contacts/profile/blxtst" target="_blank" title="微信号：blxtst"><i class="fa-brands fa-weixin" style="color:#2ed818"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">该网站正在加速建设中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#search"><span class="toc-number">1.</span> <span class="toc-text">search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pull"><span class="toc-number">2.</span> <span class="toc-text">pull</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#push"><span class="toc-number">3.</span> <span class="toc-text">push</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#images"><span class="toc-number">4.</span> <span class="toc-text">images</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">5.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#history"><span class="toc-number">6.</span> <span class="toc-text">history</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#start"><span class="toc-number">7.</span> <span class="toc-text">start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stop"><span class="toc-number">8.</span> <span class="toc-text">stop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#build"><span class="toc-number">9.</span> <span class="toc-text">build</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">10.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit"><span class="toc-number">11.</span> <span class="toc-text">commit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp"><span class="toc-number">12.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create"><span class="toc-number">13.</span> <span class="toc-text">create</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diff"><span class="toc-number">14.</span> <span class="toc-text">diff</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#exec"><span class="toc-number">15.</span> <span class="toc-text">exec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#login"><span class="toc-number">16.</span> <span class="toc-text">login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logout"><span class="toc-number">17.</span> <span class="toc-text">logout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logs"><span class="toc-number">18.</span> <span class="toc-text">logs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#port"><span class="toc-number">19.</span> <span class="toc-text">port</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">20.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#restart"><span class="toc-number">21.</span> <span class="toc-text">restart</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">22.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rmi"><span class="toc-number">23.</span> <span class="toc-text">rmi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#save"><span class="toc-number">24.</span> <span class="toc-text">save</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#top"><span class="toc-number">25.</span> <span class="toc-text">top</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#version"><span class="toc-number">26.</span> <span class="toc-text">version</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#events"><span class="toc-number">27.</span> <span class="toc-text">events</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import"><span class="toc-number">28.</span> <span class="toc-text">import</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#export"><span class="toc-number">29.</span> <span class="toc-text">export</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">30.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inspect"><span class="toc-number">31.</span> <span class="toc-text">inspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kill"><span class="toc-number">32.</span> <span class="toc-text">kill</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#load"><span class="toc-number">33.</span> <span class="toc-text">load</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pause"><span class="toc-number">34.</span> <span class="toc-text">pause</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unpause"><span class="toc-number">35.</span> <span class="toc-text">unpause</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tag"><span class="toc-number">36.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wait"><span class="toc-number">37.</span> <span class="toc-text">wait</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011319/" title="nginx location匹配及rewrite规则">nginx location匹配及rewrite规则</a><time datetime="2025-01-13T07:17:14.000Z" title="发表于 2025-01-13 15:17:14">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011318/" title="resin部署安装">resin部署安装</a><time datetime="2025-01-13T06:51:30.000Z" title="发表于 2025-01-13 14:51:30">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011317/" title="docker命令总结（一）">docker命令总结（一）</a><time datetime="2025-01-13T06:49:25.000Z" title="发表于 2025-01-13 14:49:25">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011316/" title="docker命令总结（二）">docker命令总结（二）</a><time datetime="2025-01-13T06:47:27.000Z" title="发表于 2025-01-13 14:47:27">2025-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/13/2025011315/" title="制作网页黑白背景">制作网页黑白背景</a><time datetime="2025-01-13T06:43:29.000Z" title="发表于 2025-01-13 14:43:29">2025-01-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By 避凉闲庭</div><div class="footer_custom_text"><span>欢迎来到避凉闲庭的博客，本博客主题采用</span> <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="/js/downloads.js"></script><script src="/js/message.js"></script><script src="/js/about.js"></script><script defer id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful=!0,POWERMODE.shake=!1,POWERMODE.mobile=!1,document.body.addEventListener("input",POWERMODE)</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="避,凉,闲,庭" data-fontsize="15px" data-random="false" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i> <span>数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="python" type="text"></div></div><hr><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
