@@ -2240,6 +2240,55 @@ figure.highlight pre .javascript .function {
 .container .flink {
   margin-bottom: 20px;
 }
+.container .flink .flink-menu {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 30px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  background-color: #f9f9f9;
+  border-radius: 100px;
+}
+.container .flink .flink-menu li {
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -ms-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.container .flink .flink-menu li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -ms-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.container .flink .flink-menu li a:hover {
+  background-color: var(--text-bg-hover);
+}
 .container .flink .flink-list {
   overflow: auto;
   padding: 10px 10px 0;
