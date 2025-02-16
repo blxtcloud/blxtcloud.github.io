@@ -1,0 +1,1 @@
+document.querySelector(".chat-header button").addEventListener("click",(function(){document.getElementById("chat-box1").style.display="none"})),document.querySelector("#chat-button").addEventListener("click",(function(){document.getElementById("chat-box1").style.display="block"}));
