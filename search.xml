@@ -478,6 +478,53 @@
       </tags>
   </entry>
   <entry>
+    <title>schedule-执行周期性任务</title>
+    <url>/2024/12/24/2024122404/</url>
+    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
+<span id="more"></span>
+
+<p>相较于linux的crontab对比：</p>
+<ol>
+<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
+<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
+<li>轻量级，无需任何依赖</li>
+</ol>
+<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
+
+<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
+</blockquote>
+<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
+</blockquote>
+<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>python</tag>
+        <tag>schedule</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>医院信息化系统术语汇总</title>
     <url>/2024/12/24/2024122405/</url>
     <content><![CDATA[<p><a href="https://mp.weixin.qq.com/s/QNZ-uS0kyOvKGy4VWOqrIg">以下文章来源于罗福如 ，作者Rolia</a></p>
@@ -572,50 +619,26 @@
       </tags>
   </entry>
   <entry>
-    <title>schedule-执行周期性任务</title>
-    <url>/2024/12/24/2024122404/</url>
-    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
+    <title>记一次pip/pip3安装uwsgi报错</title>
+    <url>/2024/12/26/2024122601/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
 <span id="more"></span>
-
-<p>相较于linux的crontab对比：</p>
-<ol>
-<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
-<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
-<li>轻量级，无需任何依赖</li>
-</ol>
-<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
-
-<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-
-<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
+<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
 </blockquote>
-<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
-
-
-<blockquote>
-<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
-</blockquote>
-<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
+<p>安装好之后再pip安装uwsgi就没问题了。</p>
 ]]></content>
       <categories>
         <category>python</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
         <tag>python</tag>
-        <tag>schedule</tag>
+        <tag>随笔</tag>
+        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
@@ -1410,29 +1433,6 @@
       <tags>
         <tag>技术笔记</tag>
         <tag>windwos</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次pip/pip3安装uwsgi报错</title>
-    <url>/2024/12/26/2024122601/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
-<span id="more"></span>
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
-</blockquote>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
-<p>安装好之后再pip安装uwsgi就没问题了。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-        <tag>python</tag>
-        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
@@ -3720,8 +3720,8 @@ MySql：经典安装 MySql 5.6
       </categories>
       <tags>
         <tag>云计算</tag>
-        <tag>随笔</tag>
         <tag>python</tag>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -3787,81 +3787,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>IPV6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>全局负载均衡、CDN内容分发的原理与实践</title>
-    <url>/2024/12/28/2024122806/</url>
-    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
-<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
-<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
-<blockquote>
-<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-</blockquote>
-<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
-<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
-
-<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
-<ul>
-<li>节省骨干网带宽，减少带宽需求量；</li>
-<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
-<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
-<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
-<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
-</ul>
-<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
-<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
-<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
-<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
-<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
-<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
-<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
-<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
-<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
-<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
-<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
-
-<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
-<p>下图展示两种流程的不同：</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
-
-<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
-<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
-<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
-<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
-<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
-
-<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
-<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
-<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
-<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
-<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
-
-<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
-<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
-<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
-<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
-<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
-<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
-<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
-<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
-<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
-<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
-<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
-<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
-<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -4177,6 +4102,81 @@ MySql：经典安装 MySql 5.6
 <script> document .write('<img src="'+ imgurl +'1735394507/7dbe0f2c4238c617736b2fd37b2ece4e.png">'); </script><br>
 
 <p>大型网站的架构是根据业务需求不断完善的，根据不同的业务特征会做特定的设计和考虑，本文只是讲述一个常规大型网站会涉及的一些技术和手段，希望能给大家带来启发。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>全局负载均衡、CDN内容分发的原理与实践</title>
+    <url>/2024/12/28/2024122806/</url>
+    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
+<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
+<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
+<blockquote>
+<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+</blockquote>
+<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
+<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
+
+<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
+<ul>
+<li>节省骨干网带宽，减少带宽需求量；</li>
+<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
+<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
+<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
+<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
+</ul>
+<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
+<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
+<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
+<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
+<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
+<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
+<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
+<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
+<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
+<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
+<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
+
+<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
+<p>下图展示两种流程的不同：</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
+
+<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
+<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
+<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
+<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
+<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
+
+<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
+<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
+<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
+<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
+<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
+
+<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
+<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
+<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
+<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
+<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
+<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
+<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
+<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
+<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
+<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
+<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
+<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
+<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
 ]]></content>
       <categories>
         <category>云计算</category>
@@ -4981,6 +4981,159 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>自学PHP笔记 (三) 类型转换</title>
+    <url>/2025/01/13/2025011302/</url>
+    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>转换类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(bool)(boolean)</td>
+<td>转换为布尔值</td>
+</tr>
+<tr>
+<td>(string)</td>
+<td>转换为字符串</td>
+</tr>
+<tr>
+<td>(int)(integer)</td>
+<td>转换为整数</td>
+</tr>
+<tr>
+<td>(float)(double)(real)</td>
+<td>转换为浮点型</td>
+</tr>
+<tr>
+<td>(array)</td>
+<td>转换为数组</td>
+</tr>
+<tr>
+<td>(object)</td>
+<td>转换为对象</td>
+</tr>
+<tr>
+<td>(unset)</td>
+<td>转换为NULL，也就是删除变量</td>
+</tr>
+<tr>
+<td>(binary)b前缀</td>
+<td>转换为二进制字符串</td>
+</tr>
+<tr>
+<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
+<ol>
+<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
+<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
+<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
+<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
+<li>NULL总会被转换为空的字符串。</li>
+</ol>
+<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
+<ol>
+<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
+<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
+</ol>
+<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
+<ol>
+<li><code>0</code>:整数零</li>
+<li><code>0.0</code>：浮点数零</li>
+<li><code>&quot;0&quot;</code>：字符串零</li>
+<li><code>&quot;&quot;</code>：空字符串</li>
+<li><code>空数组</code>:没有任何值得数组</li>
+<li><code>空对象</code>：没有任何成员变量得对象</li>
+<li><code>NULL</code>：特殊类型NULL</li>
+<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
+<table>
+<thead>
+<tr>
+<th>检测函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>is_bool</td>
+<td>检测变量是否为布尔值</td>
+</tr>
+<tr>
+<td>is_string</td>
+<td>检测变量是否为字符串</td>
+</tr>
+<tr>
+<td>is_float</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+<tr>
+<td>is_int</td>
+<td>检测变量是否为整数</td>
+</tr>
+<tr>
+<td>is_null</td>
+<td>检测变量是否为空</td>
+</tr>
+<tr>
+<td>is_array</td>
+<td>检测变量是否为数组</td>
+</tr>
+<tr>
+<td>is_object</td>
+<td>检测变量是否为对象</td>
+</tr>
+<tr>
+<td>is_numeric</td>
+<td>检测变量是否为数字或者是数字组成得字符串</td>
+</tr>
+<tr>
+<td>is_double</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+</tbody></table>
+<p>【<strong>示例1</strong>】判断是否为整数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int不是浮点数类型</code></p>
+<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
+<ul>
+<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
+<li><code>var_dump</code>函数即输出值也输出类型</li>
+</ul>
+<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>double</code>也就是浮点数类型</p>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自学PHP笔记(四) PHP变量和常量</title>
     <url>/2025/01/13/2025011301/</url>
     <content><![CDATA[<p>PHP中变量有普通变量、可变变量和预定义变量，而常量就是普通变量和预定义变量。</p>
@@ -5175,159 +5328,6 @@ MySql：经典安装 MySql 5.6
 <td>获取类名</td>
 </tr>
 </tbody></table>
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学PHP笔记 (三) 类型转换</title>
-    <url>/2025/01/13/2025011302/</url>
-    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>转换类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>(bool)(boolean)</td>
-<td>转换为布尔值</td>
-</tr>
-<tr>
-<td>(string)</td>
-<td>转换为字符串</td>
-</tr>
-<tr>
-<td>(int)(integer)</td>
-<td>转换为整数</td>
-</tr>
-<tr>
-<td>(float)(double)(real)</td>
-<td>转换为浮点型</td>
-</tr>
-<tr>
-<td>(array)</td>
-<td>转换为数组</td>
-</tr>
-<tr>
-<td>(object)</td>
-<td>转换为对象</td>
-</tr>
-<tr>
-<td>(unset)</td>
-<td>转换为NULL，也就是删除变量</td>
-</tr>
-<tr>
-<td>(binary)b前缀</td>
-<td>转换为二进制字符串</td>
-</tr>
-<tr>
-<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
-<ol>
-<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
-<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
-<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
-<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
-<li>NULL总会被转换为空的字符串。</li>
-</ol>
-<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
-<ol>
-<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
-<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
-这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
-</ol>
-<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
-<ol>
-<li><code>0</code>:整数零</li>
-<li><code>0.0</code>：浮点数零</li>
-<li><code>&quot;0&quot;</code>：字符串零</li>
-<li><code>&quot;&quot;</code>：空字符串</li>
-<li><code>空数组</code>:没有任何值得数组</li>
-<li><code>空对象</code>：没有任何成员变量得对象</li>
-<li><code>NULL</code>：特殊类型NULL</li>
-<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
-<table>
-<thead>
-<tr>
-<th>检测函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>is_bool</td>
-<td>检测变量是否为布尔值</td>
-</tr>
-<tr>
-<td>is_string</td>
-<td>检测变量是否为字符串</td>
-</tr>
-<tr>
-<td>is_float</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-<tr>
-<td>is_int</td>
-<td>检测变量是否为整数</td>
-</tr>
-<tr>
-<td>is_null</td>
-<td>检测变量是否为空</td>
-</tr>
-<tr>
-<td>is_array</td>
-<td>检测变量是否为数组</td>
-</tr>
-<tr>
-<td>is_object</td>
-<td>检测变量是否为对象</td>
-</tr>
-<tr>
-<td>is_numeric</td>
-<td>检测变量是否为数字或者是数字组成得字符串</td>
-</tr>
-<tr>
-<td>is_double</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-</tbody></table>
-<p>【<strong>示例1</strong>】判断是否为整数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int不是浮点数类型</code></p>
-<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
-<ul>
-<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
-<li><code>var_dump</code>函数即输出值也输出类型</li>
-</ul>
-<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>double</code>也就是浮点数类型</p>
 ]]></content>
       <categories>
         <category>php</category>
@@ -5671,32 +5671,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>你会系统备份及恢复吗？来看看吧</title>
-    <url>/2025/01/13/2025011306/</url>
-    <content><![CDATA[<h2 id="tar-命令"><a href="#tar-命令" class="headerlink" title="tar 命令"></a>tar 命令</h2><p>副本（本机备份整个系统，以后还原还是还原到本机）<br>注意根目录下要有充足的可用空间用于备份。</p>
-<span id="more"></span>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#tar.gz格式</span></span><br><span class="line">tar cvpzf system_backup.tar.gz / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.gz --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"><span class="comment">#tar.bz2格式</span></span><br><span class="line">tar cvpjf system_backup.tar.bz2 / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.bz2 --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复系统</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#上传文件到根目录下</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /</span><br><span class="line">或</span><br><span class="line">tar xvpfj system_backup.tar.bz2 -C /</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建备份时排除的目录</span></span><br><span class="line"><span class="built_in">mkdir</span> proc</span><br><span class="line"><span class="built_in">mkdir</span> lost+found</span><br><span class="line"><span class="built_in">mkdir</span> mnt</span><br><span class="line"><span class="built_in">mkdir</span> sys</span><br></pre></td></tr></table></figure>
-<ul>
-<li>&#x2F;proc 权限：文件所有者：root群组：root 所有者：读取 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;lost+found 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;mnt 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;sys 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-</ul>
-<p>恢复完成重启以后，所以的事情都会和你备份的时候一模一样。<br>镜像（本机备份系统，还原到新主机上）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1,检查系统版本，在目标机上安装一样版本的系统(最简安装即可),分区格式，类型也一样（我没试过不一样的情况，不知道能否成功）</span><br><span class="line">lsb_release -a</span><br><span class="line"><span class="built_in">uname</span> -a</span><br><span class="line"><span class="built_in">df</span> -Th</span><br><span class="line">free -h</span><br><span class="line"></span><br><span class="line">2，备份源系统</span><br><span class="line"><span class="comment"># 因为目标机和源主机硬件配置不同，所以排除dev，tmp；再适当增加你要排除的文件，如：--exclude=/root/*.bz2</span></span><br><span class="line"><span class="comment"># 这里再mnt下有充足空间，所以保存到mnt下。</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">tar cvpzf /mnt/system_backup.tar.gz / --exclude=/mnt/system_backup.tar.gz \</span><br><span class="line">--exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/dev \</span><br><span class="line">--exclude=/tmp --exclude=/media</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传到目标主机</span></span><br><span class="line">scp /mnt/system_backup.tar.gz root@192.168.0.166:/mnt</span><br><span class="line"></span><br><span class="line">3,在目标机上用ISO、LiveCD等启动，挂载磁盘（一般会自动挂载到/media文件夹）</span><br><span class="line"><span class="built_in">sudo</span> -s  </span><br><span class="line"><span class="built_in">cd</span> /media/&lt;对应的uuid号&gt;</span><br><span class="line"><span class="comment"># 备份重要配置文件/boot/gurb/gurb.cfg /etc/fstab</span></span><br><span class="line">记录里面的UUID，</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除重复文件</span></span><br><span class="line"><span class="comment"># 除了上面备份系统时排除的一些文件夹外，比如说dev mnt media sys这些文件夹，其他全部删除。</span></span><br><span class="line"><span class="built_in">rm</span> -rf root home usr lib lib64 etc var bin sbin opt boot run selinux vmlinuz initrd.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原备份</span></span><br><span class="line">mount /dev/vda1 /mnt/1</span><br><span class="line"><span class="comment"># 这里注意千万不要写/目录，会把现有的系统搞挂！！！应该是挂载的目录</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /mnt/1</span><br><span class="line"><span class="built_in">cd</span> /mnt/1       <span class="comment">#此时你可以看到根目录的结构，但是编辑fstab文件发现是现有系统的fstab</span></span><br><span class="line"><span class="built_in">chroot</span> ./       <span class="comment">#执行chroot后会以./目录为根目录，这时编辑的文件就是真正的目标源文件了。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">还原后修改/etc/fstab里的UUID为刚刚备份的文件里面的信息，注意分区格式也要对应。</span><br><span class="line">修改/boot/gurb/gurb.cfg里的UUID为刚刚备份的文件里面的信息。</span><br><span class="line">修改网卡、IP配置文件，以防无法分配IP。（如果是虚拟机记得添加网卡，配置中等性能的显卡）</span><br><span class="line"></span><br><span class="line">如果有依赖于原有平台的服务，如内建NTP，Agent等监控程序；关闭服务，关闭开机自启；</span><br><span class="line">Ubuntu：在命令行输入runleve可以查看当前运行级别，一般默认是2</span><br><span class="line">查看/etc/rc2.d目录中的S开头的服务都是会开机自动运行的；里面是软链接，想添加的话自己建一个链接文件就可以，S代表start，后面数字是启动顺序，删除软链接。同时删除/etc/init.d/下对应的脚本。</span><br><span class="line">vim /etc/init.d/rc.local</span><br><span class="line">Centos:用systemctl</span><br><span class="line"></span><br><span class="line">完成上述步骤后</span><br><span class="line"><span class="built_in">exit</span>      <span class="comment">#退出chroot</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">umount /mnt/1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一切完成后就可以重启了，不出意外就正常启动系统了（启动后原来安装系统时设置的账户等全部消失；账户和源主机一致）。</span></span><br><span class="line">若开机Grub提示“boot error 15 :Error 15 file not found”</span><br><span class="line">解决方法：请检查GRUB相关文件的内核文件所在位置。通常与/boot分区有关。</span><br><span class="line"></span><br><span class="line">若开机Grub提示“dracut:dono<span class="string">&#x27;t how to hand root=f078”</span></span><br><span class="line"><span class="string">解决方法：将root=UUID改成root=/dev/sdaX这种格式。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">若开机系统提示/usr/libexec/gconf-sanity-check-2退出状态256的解决</span></span><br><span class="line"><span class="string">解决方法：chmod 777 /tmp</span></span><br></pre></td></tr></table></figure>
-<h2 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h2><p>注意目标分区的格式最好是NTFS、FAT、EXT之类的格式，避免遇到大于4G的文件无法备份的问题。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最好有其他分区或外接存储设备，挂载好，df -lh看挂载点。</span></span><br><span class="line"><span class="comment">#备份</span></span><br><span class="line">rsync -Pa / /media/usb/backup_20170410 --exclude=/media/* --exclude=/sys/* --exclude=/proc/* --exclude=/mnt/* --exclude=/tmp/*</span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line">rsync -Pa /media/usb/backup_20170410 /</span><br></pre></td></tr></table></figure>
-<h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><p>dd命令属于扇区克隆，目标分区要比备份分区要大，即使没有使用的空间也会被原样克隆下来，会比较慢。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#备份</span></span><br><span class="line"><span class="built_in">df</span> -h   <span class="comment">#查看系统所在分区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sda1 of=/dev/sdb3     <span class="comment">#备份sda1到sdb3中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb3 of=/dev/sda1     <span class="comment">#恢复sdb3到sdb1中</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>华为云-容器引擎CCE-部署Nginx应用</title>
     <url>/2025/01/13/2025011305/</url>
     <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="注册华为云账号"><a href="#注册华为云账号" class="headerlink" title="注册华为云账号"></a>注册华为云账号</h3><p>进入华为云官网，点击右上角“注册账号”，选择“华为云”，输入信息进行注册。</p>
@@ -5861,6 +5835,32 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>容器</tag>
         <tag>华为云</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>你会系统备份及恢复吗？来看看吧</title>
+    <url>/2025/01/13/2025011306/</url>
+    <content><![CDATA[<h2 id="tar-命令"><a href="#tar-命令" class="headerlink" title="tar 命令"></a>tar 命令</h2><p>副本（本机备份整个系统，以后还原还是还原到本机）<br>注意根目录下要有充足的可用空间用于备份。</p>
+<span id="more"></span>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#tar.gz格式</span></span><br><span class="line">tar cvpzf system_backup.tar.gz / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.gz --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"><span class="comment">#tar.bz2格式</span></span><br><span class="line">tar cvpjf system_backup.tar.bz2 / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.bz2 --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复系统</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#上传文件到根目录下</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /</span><br><span class="line">或</span><br><span class="line">tar xvpfj system_backup.tar.bz2 -C /</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建备份时排除的目录</span></span><br><span class="line"><span class="built_in">mkdir</span> proc</span><br><span class="line"><span class="built_in">mkdir</span> lost+found</span><br><span class="line"><span class="built_in">mkdir</span> mnt</span><br><span class="line"><span class="built_in">mkdir</span> sys</span><br></pre></td></tr></table></figure>
+<ul>
+<li>&#x2F;proc 权限：文件所有者：root群组：root 所有者：读取 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;lost+found 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;mnt 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;sys 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+</ul>
+<p>恢复完成重启以后，所以的事情都会和你备份的时候一模一样。<br>镜像（本机备份系统，还原到新主机上）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1,检查系统版本，在目标机上安装一样版本的系统(最简安装即可),分区格式，类型也一样（我没试过不一样的情况，不知道能否成功）</span><br><span class="line">lsb_release -a</span><br><span class="line"><span class="built_in">uname</span> -a</span><br><span class="line"><span class="built_in">df</span> -Th</span><br><span class="line">free -h</span><br><span class="line"></span><br><span class="line">2，备份源系统</span><br><span class="line"><span class="comment"># 因为目标机和源主机硬件配置不同，所以排除dev，tmp；再适当增加你要排除的文件，如：--exclude=/root/*.bz2</span></span><br><span class="line"><span class="comment"># 这里再mnt下有充足空间，所以保存到mnt下。</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">tar cvpzf /mnt/system_backup.tar.gz / --exclude=/mnt/system_backup.tar.gz \</span><br><span class="line">--exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/dev \</span><br><span class="line">--exclude=/tmp --exclude=/media</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传到目标主机</span></span><br><span class="line">scp /mnt/system_backup.tar.gz root@192.168.0.166:/mnt</span><br><span class="line"></span><br><span class="line">3,在目标机上用ISO、LiveCD等启动，挂载磁盘（一般会自动挂载到/media文件夹）</span><br><span class="line"><span class="built_in">sudo</span> -s  </span><br><span class="line"><span class="built_in">cd</span> /media/&lt;对应的uuid号&gt;</span><br><span class="line"><span class="comment"># 备份重要配置文件/boot/gurb/gurb.cfg /etc/fstab</span></span><br><span class="line">记录里面的UUID，</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除重复文件</span></span><br><span class="line"><span class="comment"># 除了上面备份系统时排除的一些文件夹外，比如说dev mnt media sys这些文件夹，其他全部删除。</span></span><br><span class="line"><span class="built_in">rm</span> -rf root home usr lib lib64 etc var bin sbin opt boot run selinux vmlinuz initrd.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原备份</span></span><br><span class="line">mount /dev/vda1 /mnt/1</span><br><span class="line"><span class="comment"># 这里注意千万不要写/目录，会把现有的系统搞挂！！！应该是挂载的目录</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /mnt/1</span><br><span class="line"><span class="built_in">cd</span> /mnt/1       <span class="comment">#此时你可以看到根目录的结构，但是编辑fstab文件发现是现有系统的fstab</span></span><br><span class="line"><span class="built_in">chroot</span> ./       <span class="comment">#执行chroot后会以./目录为根目录，这时编辑的文件就是真正的目标源文件了。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">还原后修改/etc/fstab里的UUID为刚刚备份的文件里面的信息，注意分区格式也要对应。</span><br><span class="line">修改/boot/gurb/gurb.cfg里的UUID为刚刚备份的文件里面的信息。</span><br><span class="line">修改网卡、IP配置文件，以防无法分配IP。（如果是虚拟机记得添加网卡，配置中等性能的显卡）</span><br><span class="line"></span><br><span class="line">如果有依赖于原有平台的服务，如内建NTP，Agent等监控程序；关闭服务，关闭开机自启；</span><br><span class="line">Ubuntu：在命令行输入runleve可以查看当前运行级别，一般默认是2</span><br><span class="line">查看/etc/rc2.d目录中的S开头的服务都是会开机自动运行的；里面是软链接，想添加的话自己建一个链接文件就可以，S代表start，后面数字是启动顺序，删除软链接。同时删除/etc/init.d/下对应的脚本。</span><br><span class="line">vim /etc/init.d/rc.local</span><br><span class="line">Centos:用systemctl</span><br><span class="line"></span><br><span class="line">完成上述步骤后</span><br><span class="line"><span class="built_in">exit</span>      <span class="comment">#退出chroot</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">umount /mnt/1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一切完成后就可以重启了，不出意外就正常启动系统了（启动后原来安装系统时设置的账户等全部消失；账户和源主机一致）。</span></span><br><span class="line">若开机Grub提示“boot error 15 :Error 15 file not found”</span><br><span class="line">解决方法：请检查GRUB相关文件的内核文件所在位置。通常与/boot分区有关。</span><br><span class="line"></span><br><span class="line">若开机Grub提示“dracut:dono<span class="string">&#x27;t how to hand root=f078”</span></span><br><span class="line"><span class="string">解决方法：将root=UUID改成root=/dev/sdaX这种格式。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">若开机系统提示/usr/libexec/gconf-sanity-check-2退出状态256的解决</span></span><br><span class="line"><span class="string">解决方法：chmod 777 /tmp</span></span><br></pre></td></tr></table></figure>
+<h2 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h2><p>注意目标分区的格式最好是NTFS、FAT、EXT之类的格式，避免遇到大于4G的文件无法备份的问题。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最好有其他分区或外接存储设备，挂载好，df -lh看挂载点。</span></span><br><span class="line"><span class="comment">#备份</span></span><br><span class="line">rsync -Pa / /media/usb/backup_20170410 --exclude=/media/* --exclude=/sys/* --exclude=/proc/* --exclude=/mnt/* --exclude=/tmp/*</span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line">rsync -Pa /media/usb/backup_20170410 /</span><br></pre></td></tr></table></figure>
+<h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><p>dd命令属于扇区克隆，目标分区要比备份分区要大，即使没有使用的空间也会被原样克隆下来，会比较慢。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#备份</span></span><br><span class="line"><span class="built_in">df</span> -h   <span class="comment">#查看系统所在分区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sda1 of=/dev/sdb3     <span class="comment">#备份sda1到sdb3中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb3 of=/dev/sda1     <span class="comment">#恢复sdb3到sdb1中</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -13940,77 +13940,6 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
       </tags>
   </entry>
   <entry>
-    <title>一起聊聊等保测评工作内容以及FAQ</title>
-    <url>/2024/12/24/dbcp02/</url>
-    <content><![CDATA[<p>之前写过一篇关于等保测评的相关介绍<a href="https://blog.csdn.net/KH_FC/article/details/115628039?spm=1001.2014.3001.5502">《一起聊聊等保测评》</a>，发现大家对于等保测评这个还是很关注的，有些人问等保测评这份工工作的，也有些人问关于等保测评一些指导意见的，这篇文章我想把大家的问题来总结一下，让大家对等保测评有一个更深入的认识。</p>
-<span id="more"></span>
-<p><strong>1.首先我想先来说说等保测评师这个职位，这个职位的未来发展方向又是怎样的呢？</strong><br>在说这个职位之前呀我们先来看看这个职位的工作职责是什么？下面我找了几个知名等保测评机构的招聘信息。</p>
-<!-- ![在这里插入图片描述](ce3b0f2d76ea6be90ed8f35511c1629c.png) -->
-<!-- <img src="ce3b0f2d76ea6be90ed8f35511c1629c.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/ce3b0f2d76ea6be90ed8f35511c1629c.png">'); </script><br>
-<!-- ![在这里插入图片描述](58377dac4cf2f0d1af756d474e016220.png) -->
-<!-- <img src="58377dac4cf2f0d1af756d474e016220.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/58377dac4cf2f0d1af756d474e016220.png">'); </script><br>
-<!-- ![在这里插入图片描述](56e6adcf8a93d5654cc2b23d87a36f18.png) -->
-<!-- <img src="56e6adcf8a93d5654cc2b23d87a36f18.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/56e6adcf8a93d5654cc2b23d87a36f18.png">'); </script><br>
-
-<p>这类的招聘信息还是有很多的，我这里就不一个一个列举出来了，那我们先从薪资来说一说这份工作吧。<br><strong>北京、上海、广州：平均在10-15K左右<br>河北、成都、西安：平均在8-13K左右</strong><br>由以上可以看出薪资方面还是比较不错的，当然这个薪资的高低跟区域划分、个人能力等多方面因素有关，刚入门的小伙伴如果在二线或三线城市的话可能入门薪资也就在3-8K之间，更多的是5K左右，相对于二线三线城市薪资应该算是比较合适的了，像北上广深这种一线城市可能刚毕业入门的话薪资在7-10K之间，当然这只是我招聘信息结合二三线城市的情况去推断出来的，具体的薪资情况要看企业和面试情况去定的。</p>
-<p>说完薪资我们再来看看等保测评师的工作职责是什么？下面我总结了下招聘信息中所提到的一些关键性的工作职责。</p>
-<ol>
-<li>等保测评的项目实施及管理，包括等保测评的物理安全测评、主机安全测评、数据安全测评、应用安全测评、风险评估、差距分析等并编制相关报告。</li>
-<li>完成信息安全等级保护测评、信息安全咨询、信息安全风险评估等项目的技术支持工作，能够为客户提供信息安全等级保护、信息安全风险评估以及其他信息安全知识的培训；</li>
-<li>负责等级保护测评项目、信息安全风险评估项目以及其他信息安全项目的投标应答、讲解与答疑；</li>
-</ol>
-<p>看到上面的工作内容基本上已经涵盖了等保测评师的所有工作内容了，但是招聘信息一般写的都比较文字化不够直白，当然做过类似工作的肯定一看就知道是怎么回事，没有做过的看到上面内容一般就会认为这个工作不就是个文职类工作嘛，平时也就写写报告，写写投标文件啥的嘛，其实并不是这样的等保测评涵盖的工作有很多，不但你要有写作能力还要有技术能力才行的。下面我来说一说这个工作的具体工作内容</p>
-<ol>
-<li><strong>事前</strong><ul>
-<li><strong>项目方案</strong>：当销售挖掘到客户需求之后，就需要等保测评师来针对客户的具体需求来出具测评项目整体方案</li>
-<li><strong>答疑解惑</strong>：上面有了项目方案就需要给客户讲解整个项目的方案和解答客户所提出的问题。比如：方案优势、测评流程、职责划分等等一系列问题</li>
-<li><strong>招投标</strong>：配合客户测制作招标文件，投标中技术参数、偏离表等等，当然这个会有项目经理带着一起做，有些公司没有项目经理就需要自行解决啦，还有很重要的一个环节就是招投标答疑，这个是很重要的招投标的关键点，但不是所有项目都需要答疑的</li>
-</ul>
-</li>
-<li>事中<ul>
-<li><strong>项目启动会</strong>：这个项目启动会一般是在客户测进行召开的，由等保测评公司发起客户测人员参与的这样一个会议，在这个项目启动会中要将项目进行立项，明确工作内容、划分工作职责、确定工作流程、确认工作时间点、收集信息等等</li>
-<li><strong>定级、备案</strong>：这里是要协助配合客户来完成的，按照正常流程是由客户测来完成，考虑到客户测对流程不了解，所以由测评师来协助完成，在这里要明确客户测系统测评等级、需要测评的系统等等，需要编写备案表、备案报告和一些纸质的相关资料。</li>
-<li><strong>专家评审</strong>：这个专家评审是由测评公司向公安部申请，由国家专家库中派遣或抽取相应的三个专家，专家去客户测现场了解情况，了解后在相关文件中进行签字，签字完成后会由客户测拿着定级报告等材料去公安部进行备案，备案完成后会发放电子版测评证书。</li>
-<li><strong>系统测评</strong>：前面的工作都是准备工作，系统测评才是最重要的一部分，在这个模块中等保测评师需要对客户测系统进行现场测评，测评前打印测评表，按照测评表中测评项对客户的业务系统进行一条一条的查看检查，检查大项包括：物理环境、主机环境、数据库环境、应用环境、安全边界环境等等，这里是最重要的也是需要技术的，因为你需要一项一项的去的按照规则去查看他有没有配置相应的策略等等，在此你还需要对系统进行漏洞扫描、渗透测试等等一些工作。</li>
-<li><strong>整改报告</strong>：在上一步对系统测评做完测评后会先编辑制作一份整改报告，整改报告内容包含不满足的测评项以及整改建议，当然这个期间也会对客户的系统出一个大概的分数，不满足就需要客户整改后再进行一次测评，如果满足的话就直接往下进行并且告知客户测哪些项不满足。</li>
-<li><strong>测评报告</strong>：这个就是测评工作的最后一个内容了，也是需要花费大量时间去完成的一个工作了，在此你可能会有很多时间是在加班做的，因为在此期间也会其他项目去做的，这里会把所有的测评结果列出来，完成之后会交由公安部进行审核没问题最后会给到客户一份。</li>
-</ul>
-</li>
-<li>事后<br> 大家是不是以为测评都完成了就没有后续了吧，往往不是这样的看过我写的上一篇关于等保测评的同学大家都知道测评完成了之后还有一项就是公安部会不定期不定时的会抽取行业内的一些系统进行检查的，如果被抽到的了那恭喜了，你们就需要提前联系客户去再进行一次现场测评，这一次不需要出具任何纸质资料，但是测评结果要和你提交的测评报告一致，不然公安部查出后客户测以及测评机构也会受到一些处罚的。</li>
-</ol>
-<p> 以上就是测评工作的基本所有内容了，所以说这份工作并不是一份纯文职的一份工作，更多的还是需要有一些技术功底的。因为很多工作都是在客户现场做的，所以会涉及到频繁的出差的。</p>
-<p>说了职责那再来说说这个职位要有哪些能力才能从容的面对这份工作？下面是我在招聘信息中整理出来的一些要求：</p>
-<ol>
-<li>.熟悉计算机系统和网络设备的操作,至少精通一种操作系统的安全机制和配置（Windows，Linux，Unix）；熟悉数据库系统的安全机制和配置；熟悉安全协议、网络安全体系架构、安全技术和应用，熟练配置管理主流信息安全产品；</li>
-<li>对系统安全、网络安全以有深入理解,熟悉网络安全相关标准，如风险评估规范，等级保护，ISO27001等；</li>
-<li>持有网络安全等级测评证书（初级、中级、高级）和具有网络安全等级测评工作经验者或安全服务工作经验者优先；</li>
-</ol>
-<p>大致基本上就是上面的这些要求，每个公司之间的要求基本上都大差不差的，下面我来总结下具体需要哪些能力：</p>
-<ol>
-<li>首先就是你必须要有一定的网络知识的基础，比如：路由器、交换机、防火墙等设备的配置和工作原理。</li>
-<li>熟悉服务器版本的操作系统，比如：Centos、Ubuntu等liunx操作系统，windows server 2012 R2、windows sevrer 2016等windows操作系统，甚至你还要熟悉AIX系统和unix操作系统，以及国产操作系统如麒麟、UOS等等。</li>
-<li>要熟悉数据库系统，如MySql、SQL server、DB2、Oracle等数据库安全配置以及使用。</li>
-<li>对各类攻击性行为的工作原理以及防护防护方法方式有一定的理解和熟知，比如：SQL注入、木马、勒索病毒等等</li>
-<li>要对国家网络安全的相关标准有一定的了解或熟悉，比如ISO27001、网络安全等级保护基本要求等等，都要有一定的熟悉。</li>
-<li>写文件比较多当然要有一定的写作功底。</li>
-</ol>
-<p>以上就是我总结的一些基础，除了以上的能力之外可能还需要很多其他的能力，所需能力基本上就这些，大家有需要补充的可以告诉我我来补充。</p>
-<p>总结一下吧，这份工作呢整体来说还是很不错的，也有较大的成长空间，涉及的面相对来说也比较广，各方面都可以涉及的到，对于应届生刚步入社会不知往哪个方向发展，可以考虑先来做等保测评师通过这份工作来积累经验和了解各个方向的利弊，选择后续自己发展的一个重点，当然后续继续在这方面发展也是完全不错的，这份工作和其他IT行业的工作类似都是需要有证书和能力来提升自己的薪资，从事这个工作的建议大家都去考测评师证书，很多企业入门都是要求有这个证书的。</p>
-<p><strong>2.企业业务系统部署在公有云了或者托管到了运营商的IDC机房是不是就不需要做等保了？</strong><br>首先来说下哈不管是你托管到别人的机房还是把业务系统部署到了公有云都是需要做等保测评的，根据“谁运营谁负责，谁使用谁负责，谁主管谁负责”的原则，该系统责任主体还是属于网络运营者自己，所以还是得承担相应的网络安全责任，该进行系统定级的还是得定级，该做等保的还是得做等保。<br>系统上云或托管后，并不是安全责任主体转移，只是系统所在机房地址的变更，当然在公有云模式下，Iaas、Paas、Saas不同模式相应的安全责任会有些区别，但是并不是没有责任。部署到公有云或者IDC机房当中只不过是底层资源是已经过了等保测评的，但整体的应用你还是没有过等保测评，所以还是要做的，流程还是哪些流程，不过就是有一部分不需要由自己来负责了，只需要把自己负责的一部分做好防护就可以了。<br><strong>3.系统定级是不是越低越好，定的低了所需的安全就少一些，这样就会减少很多资金投入了？</strong><br>这肯定是不对的，最终定级是根据受侵害的客体以及对客体侵害的程度来确定的，以事实为根据，而不是主观随意定级。定级低了，表面上要求更容易满足，但相应的防护措施也相对不足，万一你的系统不小心被攻击破坏造成一定不良影响，在主管部门进行责任认定追查时，很有可能就会因为系统定级不合理，安全责任没有履行到位而被处罚。<br><strong>4.只要保证不出事，是不是不做等保测评也可以？</strong><br>只要是需要做的就不能不做，《中华人民共和国网络安全法》第二十一条 国家实行网络安全等级保护制度。网络运营者应当按照网络安全等级保护制度的要求，履行下列安全保护义务，保障网络免受干扰、破坏或者未经授权的访问，防止网络数据泄露或者被窃取、篡改：（五）法律、行政法规规定的其他义务。不做等保就属于第五个行为，国内目前已经有公开报道的因没有落实等级保护制度而被处罚的真实案例。所以等保及时去做，不要等。<br><strong>5.系统在内网，数据不出公司是不是就可以不用做等保测评了？</strong><br>这个肯定是不对的，首先所有非涉密系统都属于等级保护范畴，和系统在外网还是内网没有关系。其次在内网的系统往往其网络安全技术措施做的并不好，甚至不少系统已经发生了安全事件。所以不论系统在内网还是外网都得及时开展等保工作。<br><strong>6.做等保测评就意味着一定要去整改吗？会不会花费很多资金来做整改？</strong><br>这个不一定，整改花多少钱取决于你的信息系统等级、系统现有的安全防护措施状况以及网络运营者对测评分数的期望值，如果信息系统在建设阶段，采取了完备的安全技术手段，整改工作不一定要花很多钱甚至不花钱。<br><strong>7.信息系统上云就安全了？</strong><br>很多单位认为网站和信息系统上云后就安全了，等保不用做了。这样是不对的，信息系统是否上云，安全责任主体都不会变。各类云平台只提供平台和简单的安全措施，安全责任主体单位还是要按等保要求落实相应的安全工作，只是物理和环境安全等部分安全工作由云平台承担。</p>
-]]></content>
-      <categories>
-        <category>安全</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>等保测评</tag>
-        <tag>安全</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一起聊聊等保测评</title>
     <url>/2024/12/24/dbcp01/</url>
     <content><![CDATA[<p>现在好多企业里面好像都在搞这个等保测评，这个等保测评终究是个什么东西呢？那企业为什么要做这个等保测评呢？做完之后对企业又有什么帮助呢？然后就是哪些企业需要做等保测呢？甚至很多企业做了很多次等保测评最后都不太了解这个等保测评，那今天就让我们一起聊聊这个神话般的等保测评吧！</p>
@@ -14091,6 +14020,77 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
 <script> document.write('<img src="'+ imgurl +'1735387015/06edf1acf742742636197e0039343007.png">'); </script><br>
 
 <p>想不起再给大家说哪些了？大家有关于等保测评的问题可以直接评论区问？一般都是会回复的</p>
+]]></content>
+      <categories>
+        <category>安全</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>等保测评</tag>
+        <tag>安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一起聊聊等保测评工作内容以及FAQ</title>
+    <url>/2024/12/24/dbcp02/</url>
+    <content><![CDATA[<p>之前写过一篇关于等保测评的相关介绍<a href="https://blog.csdn.net/KH_FC/article/details/115628039?spm=1001.2014.3001.5502">《一起聊聊等保测评》</a>，发现大家对于等保测评这个还是很关注的，有些人问等保测评这份工工作的，也有些人问关于等保测评一些指导意见的，这篇文章我想把大家的问题来总结一下，让大家对等保测评有一个更深入的认识。</p>
+<span id="more"></span>
+<p><strong>1.首先我想先来说说等保测评师这个职位，这个职位的未来发展方向又是怎样的呢？</strong><br>在说这个职位之前呀我们先来看看这个职位的工作职责是什么？下面我找了几个知名等保测评机构的招聘信息。</p>
+<!-- ![在这里插入图片描述](ce3b0f2d76ea6be90ed8f35511c1629c.png) -->
+<!-- <img src="ce3b0f2d76ea6be90ed8f35511c1629c.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/ce3b0f2d76ea6be90ed8f35511c1629c.png">'); </script><br>
+<!-- ![在这里插入图片描述](58377dac4cf2f0d1af756d474e016220.png) -->
+<!-- <img src="58377dac4cf2f0d1af756d474e016220.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/58377dac4cf2f0d1af756d474e016220.png">'); </script><br>
+<!-- ![在这里插入图片描述](56e6adcf8a93d5654cc2b23d87a36f18.png) -->
+<!-- <img src="56e6adcf8a93d5654cc2b23d87a36f18.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/56e6adcf8a93d5654cc2b23d87a36f18.png">'); </script><br>
+
+<p>这类的招聘信息还是有很多的，我这里就不一个一个列举出来了，那我们先从薪资来说一说这份工作吧。<br><strong>北京、上海、广州：平均在10-15K左右<br>河北、成都、西安：平均在8-13K左右</strong><br>由以上可以看出薪资方面还是比较不错的，当然这个薪资的高低跟区域划分、个人能力等多方面因素有关，刚入门的小伙伴如果在二线或三线城市的话可能入门薪资也就在3-8K之间，更多的是5K左右，相对于二线三线城市薪资应该算是比较合适的了，像北上广深这种一线城市可能刚毕业入门的话薪资在7-10K之间，当然这只是我招聘信息结合二三线城市的情况去推断出来的，具体的薪资情况要看企业和面试情况去定的。</p>
+<p>说完薪资我们再来看看等保测评师的工作职责是什么？下面我总结了下招聘信息中所提到的一些关键性的工作职责。</p>
+<ol>
+<li>等保测评的项目实施及管理，包括等保测评的物理安全测评、主机安全测评、数据安全测评、应用安全测评、风险评估、差距分析等并编制相关报告。</li>
+<li>完成信息安全等级保护测评、信息安全咨询、信息安全风险评估等项目的技术支持工作，能够为客户提供信息安全等级保护、信息安全风险评估以及其他信息安全知识的培训；</li>
+<li>负责等级保护测评项目、信息安全风险评估项目以及其他信息安全项目的投标应答、讲解与答疑；</li>
+</ol>
+<p>看到上面的工作内容基本上已经涵盖了等保测评师的所有工作内容了，但是招聘信息一般写的都比较文字化不够直白，当然做过类似工作的肯定一看就知道是怎么回事，没有做过的看到上面内容一般就会认为这个工作不就是个文职类工作嘛，平时也就写写报告，写写投标文件啥的嘛，其实并不是这样的等保测评涵盖的工作有很多，不但你要有写作能力还要有技术能力才行的。下面我来说一说这个工作的具体工作内容</p>
+<ol>
+<li><strong>事前</strong><ul>
+<li><strong>项目方案</strong>：当销售挖掘到客户需求之后，就需要等保测评师来针对客户的具体需求来出具测评项目整体方案</li>
+<li><strong>答疑解惑</strong>：上面有了项目方案就需要给客户讲解整个项目的方案和解答客户所提出的问题。比如：方案优势、测评流程、职责划分等等一系列问题</li>
+<li><strong>招投标</strong>：配合客户测制作招标文件，投标中技术参数、偏离表等等，当然这个会有项目经理带着一起做，有些公司没有项目经理就需要自行解决啦，还有很重要的一个环节就是招投标答疑，这个是很重要的招投标的关键点，但不是所有项目都需要答疑的</li>
+</ul>
+</li>
+<li>事中<ul>
+<li><strong>项目启动会</strong>：这个项目启动会一般是在客户测进行召开的，由等保测评公司发起客户测人员参与的这样一个会议，在这个项目启动会中要将项目进行立项，明确工作内容、划分工作职责、确定工作流程、确认工作时间点、收集信息等等</li>
+<li><strong>定级、备案</strong>：这里是要协助配合客户来完成的，按照正常流程是由客户测来完成，考虑到客户测对流程不了解，所以由测评师来协助完成，在这里要明确客户测系统测评等级、需要测评的系统等等，需要编写备案表、备案报告和一些纸质的相关资料。</li>
+<li><strong>专家评审</strong>：这个专家评审是由测评公司向公安部申请，由国家专家库中派遣或抽取相应的三个专家，专家去客户测现场了解情况，了解后在相关文件中进行签字，签字完成后会由客户测拿着定级报告等材料去公安部进行备案，备案完成后会发放电子版测评证书。</li>
+<li><strong>系统测评</strong>：前面的工作都是准备工作，系统测评才是最重要的一部分，在这个模块中等保测评师需要对客户测系统进行现场测评，测评前打印测评表，按照测评表中测评项对客户的业务系统进行一条一条的查看检查，检查大项包括：物理环境、主机环境、数据库环境、应用环境、安全边界环境等等，这里是最重要的也是需要技术的，因为你需要一项一项的去的按照规则去查看他有没有配置相应的策略等等，在此你还需要对系统进行漏洞扫描、渗透测试等等一些工作。</li>
+<li><strong>整改报告</strong>：在上一步对系统测评做完测评后会先编辑制作一份整改报告，整改报告内容包含不满足的测评项以及整改建议，当然这个期间也会对客户的系统出一个大概的分数，不满足就需要客户整改后再进行一次测评，如果满足的话就直接往下进行并且告知客户测哪些项不满足。</li>
+<li><strong>测评报告</strong>：这个就是测评工作的最后一个内容了，也是需要花费大量时间去完成的一个工作了，在此你可能会有很多时间是在加班做的，因为在此期间也会其他项目去做的，这里会把所有的测评结果列出来，完成之后会交由公安部进行审核没问题最后会给到客户一份。</li>
+</ul>
+</li>
+<li>事后<br> 大家是不是以为测评都完成了就没有后续了吧，往往不是这样的看过我写的上一篇关于等保测评的同学大家都知道测评完成了之后还有一项就是公安部会不定期不定时的会抽取行业内的一些系统进行检查的，如果被抽到的了那恭喜了，你们就需要提前联系客户去再进行一次现场测评，这一次不需要出具任何纸质资料，但是测评结果要和你提交的测评报告一致，不然公安部查出后客户测以及测评机构也会受到一些处罚的。</li>
+</ol>
+<p> 以上就是测评工作的基本所有内容了，所以说这份工作并不是一份纯文职的一份工作，更多的还是需要有一些技术功底的。因为很多工作都是在客户现场做的，所以会涉及到频繁的出差的。</p>
+<p>说了职责那再来说说这个职位要有哪些能力才能从容的面对这份工作？下面是我在招聘信息中整理出来的一些要求：</p>
+<ol>
+<li>.熟悉计算机系统和网络设备的操作,至少精通一种操作系统的安全机制和配置（Windows，Linux，Unix）；熟悉数据库系统的安全机制和配置；熟悉安全协议、网络安全体系架构、安全技术和应用，熟练配置管理主流信息安全产品；</li>
+<li>对系统安全、网络安全以有深入理解,熟悉网络安全相关标准，如风险评估规范，等级保护，ISO27001等；</li>
+<li>持有网络安全等级测评证书（初级、中级、高级）和具有网络安全等级测评工作经验者或安全服务工作经验者优先；</li>
+</ol>
+<p>大致基本上就是上面的这些要求，每个公司之间的要求基本上都大差不差的，下面我来总结下具体需要哪些能力：</p>
+<ol>
+<li>首先就是你必须要有一定的网络知识的基础，比如：路由器、交换机、防火墙等设备的配置和工作原理。</li>
+<li>熟悉服务器版本的操作系统，比如：Centos、Ubuntu等liunx操作系统，windows server 2012 R2、windows sevrer 2016等windows操作系统，甚至你还要熟悉AIX系统和unix操作系统，以及国产操作系统如麒麟、UOS等等。</li>
+<li>要熟悉数据库系统，如MySql、SQL server、DB2、Oracle等数据库安全配置以及使用。</li>
+<li>对各类攻击性行为的工作原理以及防护防护方法方式有一定的理解和熟知，比如：SQL注入、木马、勒索病毒等等</li>
+<li>要对国家网络安全的相关标准有一定的了解或熟悉，比如ISO27001、网络安全等级保护基本要求等等，都要有一定的熟悉。</li>
+<li>写文件比较多当然要有一定的写作功底。</li>
+</ol>
+<p>以上就是我总结的一些基础，除了以上的能力之外可能还需要很多其他的能力，所需能力基本上就这些，大家有需要补充的可以告诉我我来补充。</p>
+<p>总结一下吧，这份工作呢整体来说还是很不错的，也有较大的成长空间，涉及的面相对来说也比较广，各方面都可以涉及的到，对于应届生刚步入社会不知往哪个方向发展，可以考虑先来做等保测评师通过这份工作来积累经验和了解各个方向的利弊，选择后续自己发展的一个重点，当然后续继续在这方面发展也是完全不错的，这份工作和其他IT行业的工作类似都是需要有证书和能力来提升自己的薪资，从事这个工作的建议大家都去考测评师证书，很多企业入门都是要求有这个证书的。</p>
+<p><strong>2.企业业务系统部署在公有云了或者托管到了运营商的IDC机房是不是就不需要做等保了？</strong><br>首先来说下哈不管是你托管到别人的机房还是把业务系统部署到了公有云都是需要做等保测评的，根据“谁运营谁负责，谁使用谁负责，谁主管谁负责”的原则，该系统责任主体还是属于网络运营者自己，所以还是得承担相应的网络安全责任，该进行系统定级的还是得定级，该做等保的还是得做等保。<br>系统上云或托管后，并不是安全责任主体转移，只是系统所在机房地址的变更，当然在公有云模式下，Iaas、Paas、Saas不同模式相应的安全责任会有些区别，但是并不是没有责任。部署到公有云或者IDC机房当中只不过是底层资源是已经过了等保测评的，但整体的应用你还是没有过等保测评，所以还是要做的，流程还是哪些流程，不过就是有一部分不需要由自己来负责了，只需要把自己负责的一部分做好防护就可以了。<br><strong>3.系统定级是不是越低越好，定的低了所需的安全就少一些，这样就会减少很多资金投入了？</strong><br>这肯定是不对的，最终定级是根据受侵害的客体以及对客体侵害的程度来确定的，以事实为根据，而不是主观随意定级。定级低了，表面上要求更容易满足，但相应的防护措施也相对不足，万一你的系统不小心被攻击破坏造成一定不良影响，在主管部门进行责任认定追查时，很有可能就会因为系统定级不合理，安全责任没有履行到位而被处罚。<br><strong>4.只要保证不出事，是不是不做等保测评也可以？</strong><br>只要是需要做的就不能不做，《中华人民共和国网络安全法》第二十一条 国家实行网络安全等级保护制度。网络运营者应当按照网络安全等级保护制度的要求，履行下列安全保护义务，保障网络免受干扰、破坏或者未经授权的访问，防止网络数据泄露或者被窃取、篡改：（五）法律、行政法规规定的其他义务。不做等保就属于第五个行为，国内目前已经有公开报道的因没有落实等级保护制度而被处罚的真实案例。所以等保及时去做，不要等。<br><strong>5.系统在内网，数据不出公司是不是就可以不用做等保测评了？</strong><br>这个肯定是不对的，首先所有非涉密系统都属于等级保护范畴，和系统在外网还是内网没有关系。其次在内网的系统往往其网络安全技术措施做的并不好，甚至不少系统已经发生了安全事件。所以不论系统在内网还是外网都得及时开展等保工作。<br><strong>6.做等保测评就意味着一定要去整改吗？会不会花费很多资金来做整改？</strong><br>这个不一定，整改花多少钱取决于你的信息系统等级、系统现有的安全防护措施状况以及网络运营者对测评分数的期望值，如果信息系统在建设阶段，采取了完备的安全技术手段，整改工作不一定要花很多钱甚至不花钱。<br><strong>7.信息系统上云就安全了？</strong><br>很多单位认为网站和信息系统上云后就安全了，等保不用做了。这样是不对的，信息系统是否上云，安全责任主体都不会变。各类云平台只提供平台和简单的安全措施，安全责任主体单位还是要按等保要求落实相应的安全工作，只是物理和环境安全等部分安全工作由云平台承担。</p>
 ]]></content>
       <categories>
         <category>安全</category>
@@ -14310,247 +14310,6 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
 <td>针对这一项测评公司会写：<strong>机房内机柜采用电磁机柜来屏蔽设备的电磁干扰</strong></td>
 </tr>
 </tbody></table>
-]]></content>
-      <categories>
-        <category>安全</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>等保测评</tag>
-        <tag>安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>等保三级安全要求简要攻略-安全通信网络和安全区域边界</title>
-    <url>/2024/12/24/dbcp04/</url>
-    <content><![CDATA[<p>之前有两篇文章写了为什么要做等保测评、等保测评的含义以及等保测评这份工作的一些职责和一些常见的FAQ，没有看过的朋友可以先去看下我的另外两篇文章：<a href="https://blog.csdn.net/KH_FC/article/details/115628039">一起聊聊等保测评</a> 和 <a href="https://blog.csdn.net/KH_FC/article/details/127748882">一起聊聊等保测评工作内容以及FAQ</a> 。</p>
-<span id="more"></span>
-<p>今天我们来攻略一下等保2.0国家标准中《<strong>信息安全技术网络安全等级保护基本要求</strong>》所对三级系统所提出的要求项以及针对这些要求项如何去应对或者说是如何去做防护。废话不多说直接上正题</p>
-<p>在等保三级中分为十个大项分别是：安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设和管理、安全运维管理，这十大项里面有N个小项来做限制，因为小项比较多，这篇文章主要是针对安全通信网络和安全区域边界来说的，后面也会慢慢把所有的检查项都写给大家攻略的<br><strong>下面所写的攻略以及测评结果仅供参考，要以实际情况为准。</strong></p>
-<h3 id="安全通信网络"><a href="#安全通信网络" class="headerlink" title="安全通信网络"></a>安全通信网络</h3><p>安全通信网络这一块主要是针对网络传输、网络设备、通信线路等等一些对象来做的管理或者防护的一些要求，在这一块基本上都是可以满足的，具体来看一下每一项都是怎么要求得吧</p>
-<h4 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应保证网络设备的业务处理能力满足业务高峰期需要</td>
-<td>这一项主要是说一些业务系统对可用性要求比较高的，网络设备的业务处理能力要可以支撑业务高峰时的所需要的业务支撑能力，不能因为网络设备的原因导致宕机或者服务中断的情况，这一块基本上都可以满足</td>
-<td>这一项测评公司会写：<strong>核心网络设备采用什么型号的，可以满足业务高峰的需求，并且置顶了随着业务增长不断提高业务的处理能力</strong></td>
-</tr>
-<tr>
-<td>应保证网络各个部分的带宽满足业务高峰期需要</td>
-<td>这一项主要是说的我们网络带宽要满足业务高峰时所需的带宽，这个目前机房内基本上都采用百兆的网线甚至有直接做千兆网线接入的，所以说这个基本上也就不存在不满足的这种情况</td>
-<td>这一项测评公司会写：<strong>网络中采用百兆或者千兆的网线接入，可以从容应对业务高峰</strong></td>
-</tr>
-<tr>
-<td>应划分不同的网络区域，并按照方便管理和控制的原则为各网络区域分配地址</td>
-<td>这一项将主要是针对我们网络子网的划分做出了要求，根据不同重要成都的业务系统划分不同的子网，只要是所有网络都在一个子网里面就算不合格的，这一项一般也没有不合格的，基本上都会有划分子网</td>
-<td>这一项测评公司会写：<strong>针对不同重要程度的业务系统划分了不同的子网来进行管理</strong></td>
-</tr>
-<tr>
-<td>应避免将重要网络区域部署在边界处，重要网络区域与其他网络区域之间应采取可靠的技术隔离手段</td>
-<td>这一项主要是针对划分的不同区域之间有没有做网络访问控制，比如说各个区域之间网络无限制可随意访问，这样就不行的，避免发生横向攻击</td>
-<td>这一项测评公司会写：<strong>在各区域边界部署有访问控制设备，并且设置了不同区域之间对的访问限制</strong></td>
-</tr>
-<tr>
-<td>应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性</td>
-<td>这一项要求的是网络链路不能是单链路，要做有冗余，当出现故障或者安全事故时可以保障网络的可用性，一般常做的就是核心设备的冗余，比如核心交换、路由等冗余</td>
-<td>这一项测评公司会写：<strong>核心设备或关键网络采用冗余设计，采用双机热备和负载均衡等方式</strong></td>
-</tr>
-</tbody></table>
-<h4 id="通信传输"><a href="#通信传输" class="headerlink" title="通信传输"></a>通信传输</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应采用校验技术或密码技术保证通信过程中数据的完整性</td>
-<td>这一项主要说的是对数据传输的完整性做的要求，一般这一项的话就算对数据的完整性进行做校验基本上就可以了，比如说采用SSL的方式进行传输</td>
-<td>这一项测评公司会写：<strong>采用检验技术对数据传输的完整性进行校验</strong></td>
-</tr>
-<tr>
-<td>应采用密码技术保证通信过程中数据的保密性</td>
-<td>这一项和上一项类似都是对数据创数过程中进行做的防护，这个是对数据传输过程中的保密性进行做了要求，这个一般采用的SSL加密方式进行传输基本上就可以满足，比如不用http协议，采用https协议传输等等</td>
-<td>这一项测评公司会写：<strong>对数据传输过程中数据进行加密，采用SSL加密的方式进行传输</strong></td>
-</tr>
-</tbody></table>
-<h4 id="可信验证"><a href="#可信验证" class="headerlink" title="可信验证"></a>可信验证</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>可基于可信根对通信设备的系统引导程序、系统程序、重要配置参数和通信应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心。</td>
-<td>这一项是针对可信性做的要求，这个解释起来比较繁琐并且不太容易让人理解，说简单点就是你的通信设备要具有可信性的芯片或者硬件，这个一般测评公司都看可信性报告，来评判是否符合</td>
-<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
-</tr>
-</tbody></table>
-<h3 id="安全区域边界"><a href="#安全区域边界" class="headerlink" title="安全区域边界"></a>安全区域边界</h3><p>安全区域边界主要是针对网络边界做的一项防护要求，比如说在区域边界有没有安装访问控制设备、防火墙设备等等</p>
-<h4 id="边界防护"><a href="#边界防护" class="headerlink" title="边界防护"></a>边界防护</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应保证跨越边界的访问和数据流通过边界设备提供的受控接口进行通信</td>
-<td>这一项主要是会检查是否有技术手段对不受控的接口进行限制或者控制，当然在这一块也会检查我们的拓扑图与实际的链路情况是否相符</td>
-<td>这一项一般测评公司会写：<strong>采用技术手段对不受控的接口进行限制，所提供的拓扑图与实际链路相符</strong></td>
-</tr>
-<tr>
-<td>应能够对非授权设备私自联到内部网络的行为进行检查或限制</td>
-<td>这一项是针对非授权的设备接入的区域网络当中做的限制，这一项测评公司会检查设备的一些接口信息看看是不是有与拓扑不一致的地方，如果有则被认为非授权的设备接入</td>
-<td>这一项一般测评公司会写：<strong>非授权设备无法接入到局域网络中，并做了相应的限制和控制</strong></td>
-</tr>
-<tr>
-<td>应能够对内部用户非授权联到外部网络的行为进行检查或限制</td>
-<td>这一项是针对内部用户未通过授权非法接入到外部网络做的限制，比如说有员工开启手机热点，网络设备通过连接手机热点进行访问互联网等操作，要对这一类行为进行限制</td>
-<td>这一项一般测评公司会写：<strong>封堵了未正在使用的USB接口、网口等等，可以有效防止对内部用户非授权连接外部网络</strong></td>
-</tr>
-<tr>
-<td>应限制无线网络的使用，保证无线网络通过受控的边界设备接入内部网络</td>
-<td>这一项基本上大家都可以满足的，这个是说的机房内的设备不能随意连接无线网络，如果连接了无线网络就要对无线网络进行做访问限制</td>
-<td>这一项一般测评公司会写：<strong>机房内未安装无线网络，所有设备通过有线网络进行通信</strong></td>
-</tr>
-</tbody></table>
-<h4 id="防问控制"><a href="#防问控制" class="headerlink" title="防问控制"></a>防问控制</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信</td>
-<td>这一项说的是你要在网络边界处设置访问控制设备，并且设备内要有相应的访问控制策略，对不受控的访问进行限制访问，比如路由器上有没有做ACL访问控制，防火墙上有没有开启路由策略和ACL等</td>
-<td>这一项一般测评公司会写：<strong>在网络边界安装有防火墙或路由器，并且开启了访问控制策略</strong></td>
-</tr>
-<tr>
-<td>应删除多余或无效的访间控制规则，优化访问控制列表，并保证访问控制规则数量最小化</td>
-<td>这一项是说的不要做一些没有意义的访问控制策略，别入说我允许了这个网段的访问，我又单独写了一条允许这个网段中某个地址的访问限制，这个一般建议设置针对地址的限制</td>
-<td>这一项一般测评公司会写：<strong>边界设备中没有无效的或多余的访问控制规则</strong></td>
-</tr>
-<tr>
-<td>应对源地址、目的地址、源端口、目的端口和协议等进行检查，以允许&#x2F;拒绝数据包进出</td>
-<td>这一项是要求做访问限制的时候要做到细粒度的访问控制，比如说设置高级ACL或者自定义ACL这种的，这个一般也都可以满足现在基本上网络设备都可以满足这种细粒度访问控制</td>
-<td>这一项一般测评公司会写：<strong>边界设备中对访问控制做了细粒度的限制，选择允许或拒绝数据包的进出流量</strong></td>
-</tr>
-<tr>
-<td>应能根据会话状态信息为进出数据流提供明确的允许&#x2F;拒绝访问能力</td>
-<td>这一项是针对有会话状态的访问做了限制要求，边界设备要可以根据会话状态进行限制，这个一般测评公司会检查边界设备上有没有做源地址、目的地址、源端口、目的端口等限制</td>
-<td>这一项一般测评公司会写：<strong>边界设备上对会话状态进行细粒度限制</strong></td>
-</tr>
-<tr>
-<td>应对进出网络的数据流实现基于应用协议和应用内容的访问控制</td>
-<td>这一项基本上就检查一个网络边界是不是部署了访问控制设备，另外就是检查边界访问控制设备上有没有针对协议或者内容做的一些访问控制，策略是否生效了</td>
-<td>这一项一般测评公司会写：<strong>在区域边界安装有防火墙，防火墙内配置有针对协议的访问限制</strong></td>
-</tr>
-</tbody></table>
-<h4 id="入侵防范"><a href="#入侵防范" class="headerlink" title="入侵防范"></a>入侵防范</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在关键网络节点处检测、防止或限制从外部发起的网络攻击行为</td>
-<td>这一项主要是针对网络攻击做的一个防护，主要检查是否具备检查或者阻止外部发起的网络攻击行为的这样的能力，这个安全设备当中是否配置了针对全局的网络安全策略</td>
-<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测外部发起的网络攻击行为</strong></td>
-</tr>
-<tr>
-<td>应在关键网络节点处检测、防止或限制从内部发起的网络攻击行为</td>
-<td>上面一条和这一条不太一样哈，一个是从外部发起的网络攻击行为，一个是从内部发起的网络攻击行为，这个一般也是检查网络安全设备是否具备这种能力，一般有防火墙或者IPS、IDS等设备并且做了安全策略就可以满足的</td>
-<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测内部发起的网络攻击行为</strong></td>
-</tr>
-<tr>
-<td>应采取技术措施对网络行为进行分析，实现对网络攻击特别是新型网络攻击行为的分析</td>
-<td>这一项主要检查是否部署回溯系统或抗APT攻击系统，实现对新型网络攻击行为进行检测和分析，这个其实也很简单的一般防火墙都有这种功能，也就是只要有防火墙基本满足的</td>
-<td>这一项一般测评公司会写：<strong>部署有防火墙设备，可以对网络行为进行分析</strong></td>
-</tr>
-<tr>
-<td>当检测到攻击行为时，记录攻击源 IP、攻击类型、攻击目标、攻击时间，在发生严重入侵事件时应提供报警</td>
-<td>这个一般就是检查你有没有安装这种入侵行为检测的这样设备，设备是否开启了安全策略，并且是否可以有效的记录攻击信息，也就是说发生攻击行为了你要能预警和记录详细的攻击情况</td>
-<td>这一项一般测评公司会写：<strong>部署有IPS&#x2F;IDS设备，可以试试检测攻击行为，并且对攻击行为进行详细记录</strong></td>
-</tr>
-</tbody></table>
-<h4 id="恶意代码和垃圾邮件防范"><a href="#恶意代码和垃圾邮件防范" class="headerlink" title="恶意代码和垃圾邮件防范"></a>恶意代码和垃圾邮件防范</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新</td>
-<td>这一项一般就是看看有没有防恶意代码的产品，部署了产品是不是对恶意代码开启了检测和攻击记录，测评公司可能会验证设备的可用性</td>
-<td>这一项一般测评公司会写：<strong>部署了恶意代码防范产品，可以对恶意代码进行检测和清楚，并且可以实时记录攻击行为</strong></td>
-</tr>
-<tr>
-<td>应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新</td>
-<td>这一项类似于上面一条，就是看看你又没不俗防垃圾邮件的这种防护机制或者设备，能不能对垃圾邮件进行检测和防护</td>
-<td>这一项一般测评公司会写：<strong>部署了防垃圾邮件的相关设备，可以有效对垃圾邮件进行实时监测和防护，开启了垃圾邮件防护机制自动省级和更新</strong></td>
-</tr>
-</tbody></table>
-<h4 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在网络边界、重要网络节点进行安全审计，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计</td>
-<td>这个就是检查看看是不是具备类似于堡垒机的这样一个产品，对所有的网络设备或者服务器能不能进行审计，一方面是要对所有的用户进行行为审计，另一方面就是要对所有用户行为进行记录</td>
-<td>这一项一般测评公司会写：<strong>部署了安全审计系统，可以对网络边界、重要网络节点以及所有用户进行审计，对用户行为进行记录</strong></td>
-</tr>
-<tr>
-<td>审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息</td>
-<td>这一项是规定了审计记录所包含的内容，审计记录必须包含时间、用户、事件类型、是否成功这些信息，也就是说一定要有这个用户什么时间点对哪个设备或者对象做了什么样的事情，这个事情是否做成功了，这些都要进行记录</td>
-<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计记录可以对日期和事件、用户、事件类型、事件是否成功等内容</strong></td>
-</tr>
-<tr>
-<td>应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等</td>
-<td>这一项是针对审计记录做的防护，要对审计记录进行定期备份，一般审计记录要求要保留半年才能删除，必须要设置相应的策略才可以</td>
-<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计系统对审计日志保留时间做了策略，保留6个月或更长时间，并且对审计记录进行订是备份</strong></td>
-</tr>
-<tr>
-<td>应能对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</td>
-<td>这一项主要是针对远程防护或者互联网用户的行为进行做了限制，核查是否对远程访问用户及互联风访问用户行为单独进行审计分析，并核查审计分析的记录是否包含了用于管理远程访同行为、访问互联网用户行为必要的信息</td>
-<td>这一项一般测评公司会写：<strong>可以对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</strong></td>
-</tr>
-</tbody></table>
-<h4 id="可信验证-1"><a href="#可信验证-1" class="headerlink" title="可信验证"></a>可信验证</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>可基于可信根对边界设备的系统引导程序、系统程序、重要配置参数和边界防护应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心</td>
-<td>这一项和前面写的一样都是对可信性做的防范</td>
-<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
-</tr>
-</tbody></table>
-<p>以上就是关于安全通信网络和安全区域边界的攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
 ]]></content>
       <categories>
         <category>安全</category>
@@ -14818,6 +14577,247 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
 </tr>
 </tbody></table>
 <p>以上就是关于等保测评安全计算环境的测评攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
+]]></content>
+      <categories>
+        <category>安全</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>等保测评</tag>
+        <tag>安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>等保三级安全要求简要攻略-安全通信网络和安全区域边界</title>
+    <url>/2024/12/24/dbcp04/</url>
+    <content><![CDATA[<p>之前有两篇文章写了为什么要做等保测评、等保测评的含义以及等保测评这份工作的一些职责和一些常见的FAQ，没有看过的朋友可以先去看下我的另外两篇文章：<a href="https://blog.csdn.net/KH_FC/article/details/115628039">一起聊聊等保测评</a> 和 <a href="https://blog.csdn.net/KH_FC/article/details/127748882">一起聊聊等保测评工作内容以及FAQ</a> 。</p>
+<span id="more"></span>
+<p>今天我们来攻略一下等保2.0国家标准中《<strong>信息安全技术网络安全等级保护基本要求</strong>》所对三级系统所提出的要求项以及针对这些要求项如何去应对或者说是如何去做防护。废话不多说直接上正题</p>
+<p>在等保三级中分为十个大项分别是：安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设和管理、安全运维管理，这十大项里面有N个小项来做限制，因为小项比较多，这篇文章主要是针对安全通信网络和安全区域边界来说的，后面也会慢慢把所有的检查项都写给大家攻略的<br><strong>下面所写的攻略以及测评结果仅供参考，要以实际情况为准。</strong></p>
+<h3 id="安全通信网络"><a href="#安全通信网络" class="headerlink" title="安全通信网络"></a>安全通信网络</h3><p>安全通信网络这一块主要是针对网络传输、网络设备、通信线路等等一些对象来做的管理或者防护的一些要求，在这一块基本上都是可以满足的，具体来看一下每一项都是怎么要求得吧</p>
+<h4 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应保证网络设备的业务处理能力满足业务高峰期需要</td>
+<td>这一项主要是说一些业务系统对可用性要求比较高的，网络设备的业务处理能力要可以支撑业务高峰时的所需要的业务支撑能力，不能因为网络设备的原因导致宕机或者服务中断的情况，这一块基本上都可以满足</td>
+<td>这一项测评公司会写：<strong>核心网络设备采用什么型号的，可以满足业务高峰的需求，并且置顶了随着业务增长不断提高业务的处理能力</strong></td>
+</tr>
+<tr>
+<td>应保证网络各个部分的带宽满足业务高峰期需要</td>
+<td>这一项主要是说的我们网络带宽要满足业务高峰时所需的带宽，这个目前机房内基本上都采用百兆的网线甚至有直接做千兆网线接入的，所以说这个基本上也就不存在不满足的这种情况</td>
+<td>这一项测评公司会写：<strong>网络中采用百兆或者千兆的网线接入，可以从容应对业务高峰</strong></td>
+</tr>
+<tr>
+<td>应划分不同的网络区域，并按照方便管理和控制的原则为各网络区域分配地址</td>
+<td>这一项将主要是针对我们网络子网的划分做出了要求，根据不同重要成都的业务系统划分不同的子网，只要是所有网络都在一个子网里面就算不合格的，这一项一般也没有不合格的，基本上都会有划分子网</td>
+<td>这一项测评公司会写：<strong>针对不同重要程度的业务系统划分了不同的子网来进行管理</strong></td>
+</tr>
+<tr>
+<td>应避免将重要网络区域部署在边界处，重要网络区域与其他网络区域之间应采取可靠的技术隔离手段</td>
+<td>这一项主要是针对划分的不同区域之间有没有做网络访问控制，比如说各个区域之间网络无限制可随意访问，这样就不行的，避免发生横向攻击</td>
+<td>这一项测评公司会写：<strong>在各区域边界部署有访问控制设备，并且设置了不同区域之间对的访问限制</strong></td>
+</tr>
+<tr>
+<td>应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性</td>
+<td>这一项要求的是网络链路不能是单链路，要做有冗余，当出现故障或者安全事故时可以保障网络的可用性，一般常做的就是核心设备的冗余，比如核心交换、路由等冗余</td>
+<td>这一项测评公司会写：<strong>核心设备或关键网络采用冗余设计，采用双机热备和负载均衡等方式</strong></td>
+</tr>
+</tbody></table>
+<h4 id="通信传输"><a href="#通信传输" class="headerlink" title="通信传输"></a>通信传输</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应采用校验技术或密码技术保证通信过程中数据的完整性</td>
+<td>这一项主要说的是对数据传输的完整性做的要求，一般这一项的话就算对数据的完整性进行做校验基本上就可以了，比如说采用SSL的方式进行传输</td>
+<td>这一项测评公司会写：<strong>采用检验技术对数据传输的完整性进行校验</strong></td>
+</tr>
+<tr>
+<td>应采用密码技术保证通信过程中数据的保密性</td>
+<td>这一项和上一项类似都是对数据创数过程中进行做的防护，这个是对数据传输过程中的保密性进行做了要求，这个一般采用的SSL加密方式进行传输基本上就可以满足，比如不用http协议，采用https协议传输等等</td>
+<td>这一项测评公司会写：<strong>对数据传输过程中数据进行加密，采用SSL加密的方式进行传输</strong></td>
+</tr>
+</tbody></table>
+<h4 id="可信验证"><a href="#可信验证" class="headerlink" title="可信验证"></a>可信验证</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可基于可信根对通信设备的系统引导程序、系统程序、重要配置参数和通信应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心。</td>
+<td>这一项是针对可信性做的要求，这个解释起来比较繁琐并且不太容易让人理解，说简单点就是你的通信设备要具有可信性的芯片或者硬件，这个一般测评公司都看可信性报告，来评判是否符合</td>
+<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
+</tr>
+</tbody></table>
+<h3 id="安全区域边界"><a href="#安全区域边界" class="headerlink" title="安全区域边界"></a>安全区域边界</h3><p>安全区域边界主要是针对网络边界做的一项防护要求，比如说在区域边界有没有安装访问控制设备、防火墙设备等等</p>
+<h4 id="边界防护"><a href="#边界防护" class="headerlink" title="边界防护"></a>边界防护</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应保证跨越边界的访问和数据流通过边界设备提供的受控接口进行通信</td>
+<td>这一项主要是会检查是否有技术手段对不受控的接口进行限制或者控制，当然在这一块也会检查我们的拓扑图与实际的链路情况是否相符</td>
+<td>这一项一般测评公司会写：<strong>采用技术手段对不受控的接口进行限制，所提供的拓扑图与实际链路相符</strong></td>
+</tr>
+<tr>
+<td>应能够对非授权设备私自联到内部网络的行为进行检查或限制</td>
+<td>这一项是针对非授权的设备接入的区域网络当中做的限制，这一项测评公司会检查设备的一些接口信息看看是不是有与拓扑不一致的地方，如果有则被认为非授权的设备接入</td>
+<td>这一项一般测评公司会写：<strong>非授权设备无法接入到局域网络中，并做了相应的限制和控制</strong></td>
+</tr>
+<tr>
+<td>应能够对内部用户非授权联到外部网络的行为进行检查或限制</td>
+<td>这一项是针对内部用户未通过授权非法接入到外部网络做的限制，比如说有员工开启手机热点，网络设备通过连接手机热点进行访问互联网等操作，要对这一类行为进行限制</td>
+<td>这一项一般测评公司会写：<strong>封堵了未正在使用的USB接口、网口等等，可以有效防止对内部用户非授权连接外部网络</strong></td>
+</tr>
+<tr>
+<td>应限制无线网络的使用，保证无线网络通过受控的边界设备接入内部网络</td>
+<td>这一项基本上大家都可以满足的，这个是说的机房内的设备不能随意连接无线网络，如果连接了无线网络就要对无线网络进行做访问限制</td>
+<td>这一项一般测评公司会写：<strong>机房内未安装无线网络，所有设备通过有线网络进行通信</strong></td>
+</tr>
+</tbody></table>
+<h4 id="防问控制"><a href="#防问控制" class="headerlink" title="防问控制"></a>防问控制</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信</td>
+<td>这一项说的是你要在网络边界处设置访问控制设备，并且设备内要有相应的访问控制策略，对不受控的访问进行限制访问，比如路由器上有没有做ACL访问控制，防火墙上有没有开启路由策略和ACL等</td>
+<td>这一项一般测评公司会写：<strong>在网络边界安装有防火墙或路由器，并且开启了访问控制策略</strong></td>
+</tr>
+<tr>
+<td>应删除多余或无效的访间控制规则，优化访问控制列表，并保证访问控制规则数量最小化</td>
+<td>这一项是说的不要做一些没有意义的访问控制策略，别入说我允许了这个网段的访问，我又单独写了一条允许这个网段中某个地址的访问限制，这个一般建议设置针对地址的限制</td>
+<td>这一项一般测评公司会写：<strong>边界设备中没有无效的或多余的访问控制规则</strong></td>
+</tr>
+<tr>
+<td>应对源地址、目的地址、源端口、目的端口和协议等进行检查，以允许&#x2F;拒绝数据包进出</td>
+<td>这一项是要求做访问限制的时候要做到细粒度的访问控制，比如说设置高级ACL或者自定义ACL这种的，这个一般也都可以满足现在基本上网络设备都可以满足这种细粒度访问控制</td>
+<td>这一项一般测评公司会写：<strong>边界设备中对访问控制做了细粒度的限制，选择允许或拒绝数据包的进出流量</strong></td>
+</tr>
+<tr>
+<td>应能根据会话状态信息为进出数据流提供明确的允许&#x2F;拒绝访问能力</td>
+<td>这一项是针对有会话状态的访问做了限制要求，边界设备要可以根据会话状态进行限制，这个一般测评公司会检查边界设备上有没有做源地址、目的地址、源端口、目的端口等限制</td>
+<td>这一项一般测评公司会写：<strong>边界设备上对会话状态进行细粒度限制</strong></td>
+</tr>
+<tr>
+<td>应对进出网络的数据流实现基于应用协议和应用内容的访问控制</td>
+<td>这一项基本上就检查一个网络边界是不是部署了访问控制设备，另外就是检查边界访问控制设备上有没有针对协议或者内容做的一些访问控制，策略是否生效了</td>
+<td>这一项一般测评公司会写：<strong>在区域边界安装有防火墙，防火墙内配置有针对协议的访问限制</strong></td>
+</tr>
+</tbody></table>
+<h4 id="入侵防范"><a href="#入侵防范" class="headerlink" title="入侵防范"></a>入侵防范</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在关键网络节点处检测、防止或限制从外部发起的网络攻击行为</td>
+<td>这一项主要是针对网络攻击做的一个防护，主要检查是否具备检查或者阻止外部发起的网络攻击行为的这样的能力，这个安全设备当中是否配置了针对全局的网络安全策略</td>
+<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测外部发起的网络攻击行为</strong></td>
+</tr>
+<tr>
+<td>应在关键网络节点处检测、防止或限制从内部发起的网络攻击行为</td>
+<td>上面一条和这一条不太一样哈，一个是从外部发起的网络攻击行为，一个是从内部发起的网络攻击行为，这个一般也是检查网络安全设备是否具备这种能力，一般有防火墙或者IPS、IDS等设备并且做了安全策略就可以满足的</td>
+<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测内部发起的网络攻击行为</strong></td>
+</tr>
+<tr>
+<td>应采取技术措施对网络行为进行分析，实现对网络攻击特别是新型网络攻击行为的分析</td>
+<td>这一项主要检查是否部署回溯系统或抗APT攻击系统，实现对新型网络攻击行为进行检测和分析，这个其实也很简单的一般防火墙都有这种功能，也就是只要有防火墙基本满足的</td>
+<td>这一项一般测评公司会写：<strong>部署有防火墙设备，可以对网络行为进行分析</strong></td>
+</tr>
+<tr>
+<td>当检测到攻击行为时，记录攻击源 IP、攻击类型、攻击目标、攻击时间，在发生严重入侵事件时应提供报警</td>
+<td>这个一般就是检查你有没有安装这种入侵行为检测的这样设备，设备是否开启了安全策略，并且是否可以有效的记录攻击信息，也就是说发生攻击行为了你要能预警和记录详细的攻击情况</td>
+<td>这一项一般测评公司会写：<strong>部署有IPS&#x2F;IDS设备，可以试试检测攻击行为，并且对攻击行为进行详细记录</strong></td>
+</tr>
+</tbody></table>
+<h4 id="恶意代码和垃圾邮件防范"><a href="#恶意代码和垃圾邮件防范" class="headerlink" title="恶意代码和垃圾邮件防范"></a>恶意代码和垃圾邮件防范</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新</td>
+<td>这一项一般就是看看有没有防恶意代码的产品，部署了产品是不是对恶意代码开启了检测和攻击记录，测评公司可能会验证设备的可用性</td>
+<td>这一项一般测评公司会写：<strong>部署了恶意代码防范产品，可以对恶意代码进行检测和清楚，并且可以实时记录攻击行为</strong></td>
+</tr>
+<tr>
+<td>应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新</td>
+<td>这一项类似于上面一条，就是看看你又没不俗防垃圾邮件的这种防护机制或者设备，能不能对垃圾邮件进行检测和防护</td>
+<td>这一项一般测评公司会写：<strong>部署了防垃圾邮件的相关设备，可以有效对垃圾邮件进行实时监测和防护，开启了垃圾邮件防护机制自动省级和更新</strong></td>
+</tr>
+</tbody></table>
+<h4 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在网络边界、重要网络节点进行安全审计，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计</td>
+<td>这个就是检查看看是不是具备类似于堡垒机的这样一个产品，对所有的网络设备或者服务器能不能进行审计，一方面是要对所有的用户进行行为审计，另一方面就是要对所有用户行为进行记录</td>
+<td>这一项一般测评公司会写：<strong>部署了安全审计系统，可以对网络边界、重要网络节点以及所有用户进行审计，对用户行为进行记录</strong></td>
+</tr>
+<tr>
+<td>审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息</td>
+<td>这一项是规定了审计记录所包含的内容，审计记录必须包含时间、用户、事件类型、是否成功这些信息，也就是说一定要有这个用户什么时间点对哪个设备或者对象做了什么样的事情，这个事情是否做成功了，这些都要进行记录</td>
+<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计记录可以对日期和事件、用户、事件类型、事件是否成功等内容</strong></td>
+</tr>
+<tr>
+<td>应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等</td>
+<td>这一项是针对审计记录做的防护，要对审计记录进行定期备份，一般审计记录要求要保留半年才能删除，必须要设置相应的策略才可以</td>
+<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计系统对审计日志保留时间做了策略，保留6个月或更长时间，并且对审计记录进行订是备份</strong></td>
+</tr>
+<tr>
+<td>应能对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</td>
+<td>这一项主要是针对远程防护或者互联网用户的行为进行做了限制，核查是否对远程访问用户及互联风访问用户行为单独进行审计分析，并核查审计分析的记录是否包含了用于管理远程访同行为、访问互联网用户行为必要的信息</td>
+<td>这一项一般测评公司会写：<strong>可以对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</strong></td>
+</tr>
+</tbody></table>
+<h4 id="可信验证-1"><a href="#可信验证-1" class="headerlink" title="可信验证"></a>可信验证</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可基于可信根对边界设备的系统引导程序、系统程序、重要配置参数和边界防护应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心</td>
+<td>这一项和前面写的一样都是对可信性做的防范</td>
+<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
+</tr>
+</tbody></table>
+<p>以上就是关于安全通信网络和安全区域边界的攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
 ]]></content>
       <categories>
         <category>安全</category>
