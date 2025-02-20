@@ -619,29 +619,6 @@
       </tags>
   </entry>
   <entry>
-    <title>记一次pip/pip3安装uwsgi报错</title>
-    <url>/2024/12/26/2024122601/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
-<span id="more"></span>
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
-</blockquote>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
-<p>安装好之后再pip安装uwsgi就没问题了。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>随笔</tag>
-        <tag>pip</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Windows之应用安装程序 —— winget</title>
     <url>/2024/12/26/2024122602/</url>
     <content><![CDATA[<p>大家都用过Linux中的应用程序安装工具，如yum、apt、rpm等工具进行安装自己想要的一些工具或则软件之类的，当然Linux操作系统还是很强大的有很多类似的命令来安装我们所需要的程序，但是windwos有没有类似于windows这样的应用安装程序呢？想必大家看标题就能看的出来肯定是有的，那就是微软提供的<strong>winget</strong>官网提供的名称叫<strong>应用安装程序</strong>又叫<strong>windows程序包管理器</strong>，今天我们就来说一说这个windows版的命令程序安装工具，这个工具对于大家来说还是很合谐的，使用也是非常简单和Linux中的安装程序的工具很类似，只不过windows操作系统更注重于图形化操作，所以很少有人去注意或者关注命令行中的一些操作，这个也和windows操作系统闭源有很大一部分关系的，好了废话不多说了我们开始我们的<strong>winget</strong>之旅吧!</p>
@@ -1436,6 +1413,29 @@
       </tags>
   </entry>
   <entry>
+    <title>记一次pip/pip3安装uwsgi报错</title>
+    <url>/2024/12/26/2024122601/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
+<span id="more"></span>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
+</blockquote>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
+<p>安装好之后再pip安装uwsgi就没问题了。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>随笔</tag>
+        <tag>pip</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>记一次云主机如何挂载对象存储</title>
     <url>/2024/12/26/2024122603/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>随着云计算的发展，公有云成为中小型企业建设业务系统的首选，而对象存储则是存储里面必不可少的存储产品，对象存储不仅可以提供海量、高可靠、安全的服务，而且价格相对普通存储来说会便宜很多，并且不受带宽的限制，仅限于本地下载和上传的网速，对象存储应用场景更适用于静态网站托管、多媒体存储、数据备份等等应用场景；对象存储使用相对来说是比较简单的我这里就不重点说了；</p>
@@ -1913,28 +1913,6 @@ e/n/d/r/c/s/q&gt;
       </tags>
   </entry>
   <entry>
-    <title>入门级别 Nginx 常用配置清单</title>
-    <url>/2024/12/26/2024122605/</url>
-    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
-<span id="more"></span>
-<p><strong>侦听端口</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>访问日志</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>域名</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次MySql重置root密码无效</title>
     <url>/2024/12/26/2024122604/</url>
     <content><![CDATA[<p>说起这个事情吧也相对来说比较尴尬，对于一个技术来说忘记密码然后找回密码都是相当简单的一个事情，但是在生产环境中没有保存记录只能是自己的失职，尴尬就尴尬在明明重置成功了却没有生效，弄得好几个工程师在哪里挠头！！！也是经过不断得摸索测试方案最后也是解决了这个问题，下面就简单跟大家分享一下：</p>
@@ -2018,6 +1996,28 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>随笔</tag>
         <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>入门级别 Nginx 常用配置清单</title>
+    <url>/2024/12/26/2024122605/</url>
+    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
+<span id="more"></span>
+<p><strong>侦听端口</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>访问日志</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+        <tag>nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -3290,101 +3290,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>在浏览器输入 URL 回车之后发生了什么（流程图，超详细版）</title>
-    <url>/2024/12/26/2024122608/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个问题已经是老生常谈了，更是经常被作为面试的压轴题出现，网上也有很多文章，但最近闲的无聊，然后就自己做了一篇笔记，感觉比之前理解更透彻了。</p>
-<span id="more"></span>
-<p>这篇笔记是我这两天看了数十篇文章总结出来的，所以相对全面一点，但由于我是做前端的，所以会比较重点分析浏览器渲染页面那一部分，至于其他部分我会罗列出关键词，感兴趣的可以自行查阅，<br><strong>注意</strong>：本文的步骤是建立在，请求的是一个简单的 HTTP 请求，没有 HTTPS、HTTP2、最简单的 DNS、没有代理、并且服务器没有任何问题的基础上，尽管这是不切实际的。</p>
-<h2 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h2><p>1、URL 解析<br>2、DNS 查询<br>3、TCP 连接<br>4、处理请求<br>5、接受响应<br>6、渲染页面</p>
-<h2 id="一、URL-解析"><a href="#一、URL-解析" class="headerlink" title="一、URL 解析"></a>一、URL 解析</h2><p><strong>地址解析</strong><br>首先判断你输入的是一个合法的 URL 还是一个待搜索的关键词，并且根据你输入的内容进行自动完成、字符编码等操作。<br><strong>HSTS</strong><br>由于安全隐患，会使用 HSTS 强制客户端使用 HTTPS 访问页面。详见：你所不知道的 HSTS。<br><strong>其他操作</strong><br>浏览器还会进行一些额外的操作，比如安全检查、访问限制（之前国产浏览器限制 996.icu）。<br><strong>检查缓存</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b9b57a779e5085cacb5c5b2db12aa9c3.png) -->
-<!-- <img src="b9b57a779e5085cacb5c5b2db12aa9c3.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/b9b57a779e5085cacb5c5b2db12aa9c3.png">'); </script><br>
-<h2 id="二、DNS-查询"><a href="#二、DNS-查询" class="headerlink" title="二、DNS 查询"></a>二、DNS 查询</h2><p><strong>基本步骤</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0f9b976d36f36f136f057f7ab1b754fc.png) -->
-<!-- <img src="0f9b976d36f36f136f057f7ab1b754fc.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/0f9b976d36f36f136f057f7ab1b754fc.png">'); </script><br>
-<p><strong>1、浏览器缓存</strong><br>浏览器会先检查是否在缓存中，没有则调用系统库函数进行查询。<br><strong>2、操作系统缓存</strong><br>操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。<br><strong>3、路由器缓存</strong><br>路由器也有自己的缓存。<br><strong>4、ISP DNS 缓存</strong><br>ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大多数情况下都会有缓存。<br><strong>根域名服务器查询</strong><br>在前面所有步骤没有缓存的情况下，本地 DNS 服务器会将请求转发到互联网上的根域，下面这个图很好的诠释了整个流程：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/096b6a430ae57261fa68cebe7afbbd2c.png) -->
-<!-- <img src="096b6a430ae57261fa68cebe7afbbd2c.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/096b6a430ae57261fa68cebe7afbbd2c.png">'); </script><br>
-<p><strong>需要注意的点</strong><br>1、递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地DNS服务器的过程）<br>2、迭代方式，就是本地DNS服务器到根域名服务器查询的方式。<br>3、什么是 DNS 劫持<br>4、前端 dns-prefetch 优化</p>
-<h2 id="三、TCP-连接"><a href="#三、TCP-连接" class="headerlink" title="三、TCP 连接"></a>三、TCP 连接</h2><p>TCP&#x2F;IP 分为四层，在发送数据时，每层都要对数据进行封装：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8773a5b2ee999becaa836ffcaf4c7126.png) -->
-<!-- <img src="8773a5b2ee999becaa836ffcaf4c7126.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/8773a5b2ee999becaa836ffcaf4c7126.png">'); </script><br>
-<p><strong>1、应用层：发送 HTTP 请求</strong><br>在前面的步骤我们已经得到服务器的 IP 地址，浏览器会开始构造一个 HTTP 报文，其中包括：<br><strong>请求报头（Request Header）：</strong><br>请求方法、目标地址、遵循的协议等等<br><strong>请求主体（其他参数）</strong><br>其中需要注意的点：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">浏览器只能发送 GET、POST 方法，而打开网页使用的是 GET 方法</span><br></pre></td></tr></table></figure>
-<p><strong>2、传输层：TCP 传输报文</strong><br>传输层会发起一条到达服务器的 TCP 连接，为了方便传输，会对数据进行分割（以报文段为单位），并标记编号，方便服务器接受时能够准确地还原报文信息。整编：微信公众号，搜云库技术团队，ID：souyunku<br>在建立连接前，会先进行 TCP 三次握手。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于 TCP/IP 三次握手，网上已经有很多段子和图片生动地描述了。</span><br><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
-<p><strong>1、SYN 泛洪攻击</strong><br><strong>3、网络层：IP协议查询Mac地址</strong><br>将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。<br>判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：在 OSI 参考模型中 ARP 协议位于链路层，但在 TCP/IP 中，它位于网络层。</span><br></pre></td></tr></table></figure>
-<p><strong>4、链路层：以太网协议</strong><br><strong>以太网协议</strong><br>根据以太网协议将数据分为以“帧”为单位的数据包，每一帧分为两个部分：<br><strong>标头：</strong><br>数据包的发送者、接受者、数据类型<br><strong>数据：</strong><br>数据包具体内容<br><strong>Mac 地址</strong><br>以太网规定了连入网络的所有设备都必须具备“网卡”接口，数据包都是从一块网卡传递到另一块网卡，网卡的地址就是 Mac 地址。每一个 Mac 地址都是独一无二的，具备了一对一的能力。<br><strong>广播</strong><br>发送数据的方法很原始，直接把数据通过 ARP 协议，向本网络的所有机器发送，接收方根据标头信息与自身 Mac 地址比较，一致就接受，否则丢弃。<br><strong>注意</strong>：接收方回应是单播。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
-<p>1、ARP 攻击<br><strong>服务器接受请求</strong><br>接受过程就是把以上步骤逆转过来，参见上图。</p>
-<h2 id="四、服务器处理请求"><a href="#四、服务器处理请求" class="headerlink" title="四、服务器处理请求"></a>四、服务器处理请求</h2><p><strong>大致流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c9d52bbe4ea956afd57f0a8333c5b41e.png) -->
-<!-- <img src="c9d52bbe4ea956afd57f0a8333c5b41e.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/c9d52bbe4ea956afd57f0a8333c5b41e.png">'); </script><br>
-<p><strong>HTTPD</strong><br>最常见的 HTTPD 有 Linux 上常用的 Apache 和 Nginx，以及 Windows 上的 IIS。<br>它会监听得到的请求，然后开启一个子进程去处理这个请求。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>处理请求</strong><br>接受 TCP 报文后，会对连接进行处理，对HTTP协议进行解析（请求方法、域名、路径等），并且进行一些验证：<br>1、验证是否配置虚拟主机<br>2、验证虚拟主机是否接受此方法<br>3、验证该用户可以使用该方法（根据 IP 地址、身份信息等）<br><strong>重定向</strong><br>假如服务器配置了 HTTP 重定向，就会返回一个 301永久重定向响应，浏览器就会根据响应，重新发送 HTTP 请求（重新执行上面的过程）。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于更多：详见这篇文章</span><br></pre></td></tr></table></figure>
-<p><strong>URL 重写</strong><br>然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js文件等，则会直接把这个文件返回。<br>否则服务器会按照规则把请求重写到 一个 REST 风格的 URL 上。<br>然后根据动态语言的脚本，来决定调用什么类型的动态文件解释器来处理这个请求。<br>以 PHP 语言的 MVC 框架举例，它首先会初始化一些环境的参数，根据 URL 由上到下地去匹配路由，然后让路由所定义的方法去处理请求。</p>
-<h2 id="五、浏览器接受响应"><a href="#五、浏览器接受响应" class="headerlink" title="五、浏览器接受响应"></a>五、浏览器接受响应</h2><p>浏览器接收到来自服务器的响应资源后，会对资源进行分析。<br>首先查看 Response header，根据不同状态码做不同的事（比如上面提到的重定向）。<br>如果响应资源进行了压缩（比如 gzip），还需要进行解压。整编：微信公众号，搜云库技术团队，ID：souyunku<br>然后，对响应资源做缓存。<br>接下来，根据响应资源里的 MIME 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。</p>
-<h2 id="六、渲染页面"><a href="#六、渲染页面" class="headerlink" title="六、渲染页面"></a>六、渲染页面</h2><p><strong>浏览器内核</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d8a939e1e262163834a46250b2abcd79.jpeg) -->
-<!-- <img src="d8a939e1e262163834a46250b2abcd79.jpeg"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/d8a939e1e262163834a46250b2abcd79.jpeg">'); </script><br>
-<p>不同的浏览器内核，渲染过程也不完全相同，但大致流程都差不多。<br><strong>基本流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/487084912cc7985eef359b22fb7d4938.png) -->
-<!-- <img src="487084912cc7985eef359b22fb7d4938.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/487084912cc7985eef359b22fb7d4938.png">'); </script><br>
-<p><strong>1、HTML 解析</strong><br>首先要知道浏览器解析是从上往下一行一行地解析的。<br>解析的过程可以分为四个步骤：<br><strong>1. 解码（encoding）</strong><br>传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如UTF-8）转换成字符串，也就是HTML 代码。<br><strong>2. 预解析（pre-parsing）</strong><br>预解析做的事情是提前加载资源，减少处理时间，它会识别一些会请求资源的属性，比如 img标签的 src属性，并将这个请求加到请求队列中。<br><strong>3. 符号化（Tokenization）</strong><br>符号化是词法分析的过程，将输入解析成符号，HTML 符号包括，开始标签、结束标签、属性名和属性值。<br>它通过一个状态机去识别符号的状态，比如遇到 &lt;， &gt;状态都会产生变化。<br><strong>4. 构建树（tree construction）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：符号化和构建树是并行操作的，也就是说只要解析到一个开始标签，就会创建一个 DOM 节点。</span><br></pre></td></tr></table></figure>
-<p>在上一步符号化中，解析器获得这些标记，然后以合适的方法创建 DOM对象并把这些符号插入到 DOM对象中。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">		Web page parsing</span><br><span class="line">		<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">				Web page parsing</span><br><span class="line">			<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">				This is an example Web page.</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8349c36acaf157ad48e41c5735538f9a.jpeg) -->
-<!-- <img src="8349c36acaf157ad48e41c5735538f9a.jpeg"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/8349c36acaf157ad48e41c5735538f9a.jpeg">'); </script><br>
-<p><strong>浏览器容错进制</strong><br>你从来没有在浏览器看过类似”语法无效”的错误，这是因为浏览器去纠正错误的语法，然后继续工作。<br><strong>事件</strong><br>当整个解析的过程完成以后，浏览器会通过 DOMContentLoaded事件来通知 DOM解析完成。<br><strong>2、CSS 解析</strong><br>一旦浏览器下载了 CSS，CSS 解析器就会处理它遇到的任何 CSS，根据语法规范解析出所有的 CSS 并进行标记化，然后我们得到一个规则表。<br><strong>CSS 匹配规则</strong><br>在匹配一个节点对应的 CSS 规则时，是按照从右到左的顺序的，例如：div p{font-size:14px}会先寻找所有的 p标签然后判断它的父元素是否为 div。<br>所以我们写 CSS 时，尽量用 id 和 class，千万不要过度层叠。<br><strong>3、 渲染树</strong><br>其实这就是一个 DOM 树和 CSS 规则树合并的过程。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：渲染树会忽略那些不需要渲染的节点，比如设置了 display:none的节点。</span><br></pre></td></tr></table></figure>
-<p><strong>计算</strong><br>通过计算让任何尺寸值都减少到三个可能之一：auto、百分比、px，比如把 rem转化为 px。<br><strong>级联</strong><br>浏览器需要一种方法来确定哪些样式才真正需要应用到对应元素，所以它使用一个叫做 specificity的公式，这个公式会通过：<br>1、标签名、class、id<br>2、是否内联样式<br>3、 !important<br>然后得出一个权重值，取最高的那个。<br><strong>渲染阻塞</strong><br>当遇到一个 script标签时，DOM 构建会被暂停，直至脚本完成执行，然后继续构建 DOM 树。<br>但如果 JS 依赖 CSS 样式，而它还没有被下载和构建时，浏览器就会延迟脚本执行，直至 CSS Rules 被构建。<br>所有我们知道：<br>1、CSS 会阻塞 JS 执行<br>2、JS 会阻塞后面的 DOM 解析<br><strong>为了避免这种情况，应该以下原则：</strong><br>1、CSS 资源排在 JavaScript 资源前面<br>2、JS 放在 HTML 最底部，也就是 </body>前<br>另外，如果要改变阻塞模式，可以使用 defer 与 async，详见：这篇文章<br><strong>4、布局与绘制</strong><br>确定渲染树种所有节点的几何属性，比如：位置、大小等等，最后输入一个盒子模型，它能精准地捕获到每个元素在屏幕内的准确位置与大小。<br>然后遍历渲染树，调用渲染器的 paint() 方法在屏幕上显示其内容。<br><strong>5、合并渲染层</strong><br>把以上绘制的所有图片合并，最终输出一张图片。<br><strong>6、 回流与重绘</strong><br><strong>回流(reflow)</strong><br>当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从 html标签开始递归往下，重新计算位置和大小。整编：微信公众号，搜云库技术团队，ID：souyunku<br>reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。<br><strong>重绘(repaint)</strong><br>改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。<br>每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。<br>回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。<br>比如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">display:none 会触发回流，而 visibility:hidden 只会触发重绘。</span><br></pre></td></tr></table></figure>
-<p>7、JavaScript 编译执行<br><strong>大致流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/912706ef255b4493f3a9ef2f5212a88c.jpeg) -->
-<!-- <img src="912706ef255b4493f3a9ef2f5212a88c.jpeg"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/912706ef255b4493f3a9ef2f5212a88c.jpeg">'); </script><br>
-<p><strong>可以分为三个阶段：</strong><br>1、词法分析<br>JS 脚本加载完毕后，会首先进入语法分析阶段，它首先会分析代码块的语法是否正确，不正确则抛出“语法错误”，停止执行。<br><strong>几个步骤：</strong><br><strong>分词</strong>，例如将 vara&#x3D;2，，分成 var、 a、 &#x3D;、 2这样的词法单元。<br><strong>解析</strong>，将词法单元转换成抽象语法树（AST）。<br><strong>代码生成</strong>，将抽象语法树转换成机器指令。*2、预编译<br>JS 有三种运行环境：<br>1、全局环境<br>2、函数环境<br>3、eval<br>每进入一个不同的运行环境都会创建一个对应的执行上下文，根据不同的上下文环境，形成一个函数调用栈，栈底永远是全局执行上下文，栈顶则永远是当前执行上下文。<br>创建执行上下文<br><strong>创建执行上下文的过程中，主要做了以下三件事：</strong><br>创建变量对象</p>
-<pre><code> - 参数、函数、变量
-</code></pre>
-<p>建立作用域链</p>
-<pre><code>- 确认当前执行环境是否能访问变量
-</code></pre>
-<p>确定 This 指向<br>3、执行<br><strong>JS 线程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/269e3d81242e87140a5061e292ab4e25.png) -->
-<!-- <img src="269e3d81242e87140a5061e292ab4e25.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/269e3d81242e87140a5061e292ab4e25.png">'); </script><br>
-<p>虽然 JS 是单线程的，但实际上参与工作的线程一共有四个：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">其中三个只是协助，只有 JS 引擎线程是真正执行的</span><br></pre></td></tr></table></figure>
-<p><strong>JS 引擎线程：</strong><br>也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎<br><strong>事件触发线程：</strong><br>属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>定时器触发线程：</strong><br>主要控制 setInterval和 setTimeout，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。<br><strong>HTTP 异步请求线程：</strong><br>通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。<br><strong>注：浏览器对同一域名的并发连接数是有限的，通常为 6 个。</strong><br><strong>宏任务</strong><br>分为：<br>1、同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务<br>2、异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。<br><strong>微任务</strong><br>微任务是ES6和Node环境下的，主要 API 有：Promise， process.nextTick。<br>微任务的执行在宏任务的同步任务之后，在异步任务之前。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19421fb446e9602f86aa8ac82b3b5cef.png) -->
-<!-- <img src="19421fb446e9602f86aa8ac82b3b5cef.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/19421fb446e9602f86aa8ac82b3b5cef.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c10709fc073f6e13f1a5951872ef7c6a.png) -->
-<!-- <img src="c10709fc073f6e13f1a5951872ef7c6a.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/c10709fc073f6e13f1a5951872ef7c6a.png">'); </script><br>
-<p><strong>代码例子</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">console.log(<span class="string">&#x27;1&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;2&#x27;</span>);    <span class="comment">// 宏任务 异步</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">newPromise(function(resolve) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;3&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;4&#x27;</span>)   <span class="comment">// 微任务</span></span><br><span class="line">&#125;)</span><br><span class="line">console.log(<span class="string">&#x27;5&#x27;</span>)   <span class="comment">// 宏任务 同步</span></span><br></pre></td></tr></table></figure>
-<p>以上代码输出顺序为：1,3,5,4,2</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python实现AI图像识别-身份证识别</title>
     <url>/2024/12/28/2024122801/</url>
     <content><![CDATA[<p>图像识别说白了就是把一张照片上面的文字进行提取，提供工作效率</p>
@@ -3522,6 +3427,101 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在浏览器输入 URL 回车之后发生了什么（流程图，超详细版）</title>
+    <url>/2024/12/26/2024122608/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个问题已经是老生常谈了，更是经常被作为面试的压轴题出现，网上也有很多文章，但最近闲的无聊，然后就自己做了一篇笔记，感觉比之前理解更透彻了。</p>
+<span id="more"></span>
+<p>这篇笔记是我这两天看了数十篇文章总结出来的，所以相对全面一点，但由于我是做前端的，所以会比较重点分析浏览器渲染页面那一部分，至于其他部分我会罗列出关键词，感兴趣的可以自行查阅，<br><strong>注意</strong>：本文的步骤是建立在，请求的是一个简单的 HTTP 请求，没有 HTTPS、HTTP2、最简单的 DNS、没有代理、并且服务器没有任何问题的基础上，尽管这是不切实际的。</p>
+<h2 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h2><p>1、URL 解析<br>2、DNS 查询<br>3、TCP 连接<br>4、处理请求<br>5、接受响应<br>6、渲染页面</p>
+<h2 id="一、URL-解析"><a href="#一、URL-解析" class="headerlink" title="一、URL 解析"></a>一、URL 解析</h2><p><strong>地址解析</strong><br>首先判断你输入的是一个合法的 URL 还是一个待搜索的关键词，并且根据你输入的内容进行自动完成、字符编码等操作。<br><strong>HSTS</strong><br>由于安全隐患，会使用 HSTS 强制客户端使用 HTTPS 访问页面。详见：你所不知道的 HSTS。<br><strong>其他操作</strong><br>浏览器还会进行一些额外的操作，比如安全检查、访问限制（之前国产浏览器限制 996.icu）。<br><strong>检查缓存</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b9b57a779e5085cacb5c5b2db12aa9c3.png) -->
+<!-- <img src="b9b57a779e5085cacb5c5b2db12aa9c3.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/b9b57a779e5085cacb5c5b2db12aa9c3.png">'); </script><br>
+<h2 id="二、DNS-查询"><a href="#二、DNS-查询" class="headerlink" title="二、DNS 查询"></a>二、DNS 查询</h2><p><strong>基本步骤</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0f9b976d36f36f136f057f7ab1b754fc.png) -->
+<!-- <img src="0f9b976d36f36f136f057f7ab1b754fc.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/0f9b976d36f36f136f057f7ab1b754fc.png">'); </script><br>
+<p><strong>1、浏览器缓存</strong><br>浏览器会先检查是否在缓存中，没有则调用系统库函数进行查询。<br><strong>2、操作系统缓存</strong><br>操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。<br><strong>3、路由器缓存</strong><br>路由器也有自己的缓存。<br><strong>4、ISP DNS 缓存</strong><br>ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大多数情况下都会有缓存。<br><strong>根域名服务器查询</strong><br>在前面所有步骤没有缓存的情况下，本地 DNS 服务器会将请求转发到互联网上的根域，下面这个图很好的诠释了整个流程：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/096b6a430ae57261fa68cebe7afbbd2c.png) -->
+<!-- <img src="096b6a430ae57261fa68cebe7afbbd2c.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/096b6a430ae57261fa68cebe7afbbd2c.png">'); </script><br>
+<p><strong>需要注意的点</strong><br>1、递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地DNS服务器的过程）<br>2、迭代方式，就是本地DNS服务器到根域名服务器查询的方式。<br>3、什么是 DNS 劫持<br>4、前端 dns-prefetch 优化</p>
+<h2 id="三、TCP-连接"><a href="#三、TCP-连接" class="headerlink" title="三、TCP 连接"></a>三、TCP 连接</h2><p>TCP&#x2F;IP 分为四层，在发送数据时，每层都要对数据进行封装：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8773a5b2ee999becaa836ffcaf4c7126.png) -->
+<!-- <img src="8773a5b2ee999becaa836ffcaf4c7126.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/8773a5b2ee999becaa836ffcaf4c7126.png">'); </script><br>
+<p><strong>1、应用层：发送 HTTP 请求</strong><br>在前面的步骤我们已经得到服务器的 IP 地址，浏览器会开始构造一个 HTTP 报文，其中包括：<br><strong>请求报头（Request Header）：</strong><br>请求方法、目标地址、遵循的协议等等<br><strong>请求主体（其他参数）</strong><br>其中需要注意的点：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">浏览器只能发送 GET、POST 方法，而打开网页使用的是 GET 方法</span><br></pre></td></tr></table></figure>
+<p><strong>2、传输层：TCP 传输报文</strong><br>传输层会发起一条到达服务器的 TCP 连接，为了方便传输，会对数据进行分割（以报文段为单位），并标记编号，方便服务器接受时能够准确地还原报文信息。整编：微信公众号，搜云库技术团队，ID：souyunku<br>在建立连接前，会先进行 TCP 三次握手。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于 TCP/IP 三次握手，网上已经有很多段子和图片生动地描述了。</span><br><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
+<p><strong>1、SYN 泛洪攻击</strong><br><strong>3、网络层：IP协议查询Mac地址</strong><br>将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。<br>判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：在 OSI 参考模型中 ARP 协议位于链路层，但在 TCP/IP 中，它位于网络层。</span><br></pre></td></tr></table></figure>
+<p><strong>4、链路层：以太网协议</strong><br><strong>以太网协议</strong><br>根据以太网协议将数据分为以“帧”为单位的数据包，每一帧分为两个部分：<br><strong>标头：</strong><br>数据包的发送者、接受者、数据类型<br><strong>数据：</strong><br>数据包具体内容<br><strong>Mac 地址</strong><br>以太网规定了连入网络的所有设备都必须具备“网卡”接口，数据包都是从一块网卡传递到另一块网卡，网卡的地址就是 Mac 地址。每一个 Mac 地址都是独一无二的，具备了一对一的能力。<br><strong>广播</strong><br>发送数据的方法很原始，直接把数据通过 ARP 协议，向本网络的所有机器发送，接收方根据标头信息与自身 Mac 地址比较，一致就接受，否则丢弃。<br><strong>注意</strong>：接收方回应是单播。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
+<p>1、ARP 攻击<br><strong>服务器接受请求</strong><br>接受过程就是把以上步骤逆转过来，参见上图。</p>
+<h2 id="四、服务器处理请求"><a href="#四、服务器处理请求" class="headerlink" title="四、服务器处理请求"></a>四、服务器处理请求</h2><p><strong>大致流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c9d52bbe4ea956afd57f0a8333c5b41e.png) -->
+<!-- <img src="c9d52bbe4ea956afd57f0a8333c5b41e.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/c9d52bbe4ea956afd57f0a8333c5b41e.png">'); </script><br>
+<p><strong>HTTPD</strong><br>最常见的 HTTPD 有 Linux 上常用的 Apache 和 Nginx，以及 Windows 上的 IIS。<br>它会监听得到的请求，然后开启一个子进程去处理这个请求。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>处理请求</strong><br>接受 TCP 报文后，会对连接进行处理，对HTTP协议进行解析（请求方法、域名、路径等），并且进行一些验证：<br>1、验证是否配置虚拟主机<br>2、验证虚拟主机是否接受此方法<br>3、验证该用户可以使用该方法（根据 IP 地址、身份信息等）<br><strong>重定向</strong><br>假如服务器配置了 HTTP 重定向，就会返回一个 301永久重定向响应，浏览器就会根据响应，重新发送 HTTP 请求（重新执行上面的过程）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于更多：详见这篇文章</span><br></pre></td></tr></table></figure>
+<p><strong>URL 重写</strong><br>然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js文件等，则会直接把这个文件返回。<br>否则服务器会按照规则把请求重写到 一个 REST 风格的 URL 上。<br>然后根据动态语言的脚本，来决定调用什么类型的动态文件解释器来处理这个请求。<br>以 PHP 语言的 MVC 框架举例，它首先会初始化一些环境的参数，根据 URL 由上到下地去匹配路由，然后让路由所定义的方法去处理请求。</p>
+<h2 id="五、浏览器接受响应"><a href="#五、浏览器接受响应" class="headerlink" title="五、浏览器接受响应"></a>五、浏览器接受响应</h2><p>浏览器接收到来自服务器的响应资源后，会对资源进行分析。<br>首先查看 Response header，根据不同状态码做不同的事（比如上面提到的重定向）。<br>如果响应资源进行了压缩（比如 gzip），还需要进行解压。整编：微信公众号，搜云库技术团队，ID：souyunku<br>然后，对响应资源做缓存。<br>接下来，根据响应资源里的 MIME 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。</p>
+<h2 id="六、渲染页面"><a href="#六、渲染页面" class="headerlink" title="六、渲染页面"></a>六、渲染页面</h2><p><strong>浏览器内核</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d8a939e1e262163834a46250b2abcd79.jpeg) -->
+<!-- <img src="d8a939e1e262163834a46250b2abcd79.jpeg"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/d8a939e1e262163834a46250b2abcd79.jpeg">'); </script><br>
+<p>不同的浏览器内核，渲染过程也不完全相同，但大致流程都差不多。<br><strong>基本流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/487084912cc7985eef359b22fb7d4938.png) -->
+<!-- <img src="487084912cc7985eef359b22fb7d4938.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/487084912cc7985eef359b22fb7d4938.png">'); </script><br>
+<p><strong>1、HTML 解析</strong><br>首先要知道浏览器解析是从上往下一行一行地解析的。<br>解析的过程可以分为四个步骤：<br><strong>1. 解码（encoding）</strong><br>传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如UTF-8）转换成字符串，也就是HTML 代码。<br><strong>2. 预解析（pre-parsing）</strong><br>预解析做的事情是提前加载资源，减少处理时间，它会识别一些会请求资源的属性，比如 img标签的 src属性，并将这个请求加到请求队列中。<br><strong>3. 符号化（Tokenization）</strong><br>符号化是词法分析的过程，将输入解析成符号，HTML 符号包括，开始标签、结束标签、属性名和属性值。<br>它通过一个状态机去识别符号的状态，比如遇到 &lt;， &gt;状态都会产生变化。<br><strong>4. 构建树（tree construction）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：符号化和构建树是并行操作的，也就是说只要解析到一个开始标签，就会创建一个 DOM 节点。</span><br></pre></td></tr></table></figure>
+<p>在上一步符号化中，解析器获得这些标记，然后以合适的方法创建 DOM对象并把这些符号插入到 DOM对象中。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">		Web page parsing</span><br><span class="line">		<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">				Web page parsing</span><br><span class="line">			<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">				This is an example Web page.</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8349c36acaf157ad48e41c5735538f9a.jpeg) -->
+<!-- <img src="8349c36acaf157ad48e41c5735538f9a.jpeg"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/8349c36acaf157ad48e41c5735538f9a.jpeg">'); </script><br>
+<p><strong>浏览器容错进制</strong><br>你从来没有在浏览器看过类似”语法无效”的错误，这是因为浏览器去纠正错误的语法，然后继续工作。<br><strong>事件</strong><br>当整个解析的过程完成以后，浏览器会通过 DOMContentLoaded事件来通知 DOM解析完成。<br><strong>2、CSS 解析</strong><br>一旦浏览器下载了 CSS，CSS 解析器就会处理它遇到的任何 CSS，根据语法规范解析出所有的 CSS 并进行标记化，然后我们得到一个规则表。<br><strong>CSS 匹配规则</strong><br>在匹配一个节点对应的 CSS 规则时，是按照从右到左的顺序的，例如：div p{font-size:14px}会先寻找所有的 p标签然后判断它的父元素是否为 div。<br>所以我们写 CSS 时，尽量用 id 和 class，千万不要过度层叠。<br><strong>3、 渲染树</strong><br>其实这就是一个 DOM 树和 CSS 规则树合并的过程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：渲染树会忽略那些不需要渲染的节点，比如设置了 display:none的节点。</span><br></pre></td></tr></table></figure>
+<p><strong>计算</strong><br>通过计算让任何尺寸值都减少到三个可能之一：auto、百分比、px，比如把 rem转化为 px。<br><strong>级联</strong><br>浏览器需要一种方法来确定哪些样式才真正需要应用到对应元素，所以它使用一个叫做 specificity的公式，这个公式会通过：<br>1、标签名、class、id<br>2、是否内联样式<br>3、 !important<br>然后得出一个权重值，取最高的那个。<br><strong>渲染阻塞</strong><br>当遇到一个 script标签时，DOM 构建会被暂停，直至脚本完成执行，然后继续构建 DOM 树。<br>但如果 JS 依赖 CSS 样式，而它还没有被下载和构建时，浏览器就会延迟脚本执行，直至 CSS Rules 被构建。<br>所有我们知道：<br>1、CSS 会阻塞 JS 执行<br>2、JS 会阻塞后面的 DOM 解析<br><strong>为了避免这种情况，应该以下原则：</strong><br>1、CSS 资源排在 JavaScript 资源前面<br>2、JS 放在 HTML 最底部，也就是 </body>前<br>另外，如果要改变阻塞模式，可以使用 defer 与 async，详见：这篇文章<br><strong>4、布局与绘制</strong><br>确定渲染树种所有节点的几何属性，比如：位置、大小等等，最后输入一个盒子模型，它能精准地捕获到每个元素在屏幕内的准确位置与大小。<br>然后遍历渲染树，调用渲染器的 paint() 方法在屏幕上显示其内容。<br><strong>5、合并渲染层</strong><br>把以上绘制的所有图片合并，最终输出一张图片。<br><strong>6、 回流与重绘</strong><br><strong>回流(reflow)</strong><br>当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从 html标签开始递归往下，重新计算位置和大小。整编：微信公众号，搜云库技术团队，ID：souyunku<br>reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。<br><strong>重绘(repaint)</strong><br>改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。<br>每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。<br>回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。<br>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">display:none 会触发回流，而 visibility:hidden 只会触发重绘。</span><br></pre></td></tr></table></figure>
+<p>7、JavaScript 编译执行<br><strong>大致流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/912706ef255b4493f3a9ef2f5212a88c.jpeg) -->
+<!-- <img src="912706ef255b4493f3a9ef2f5212a88c.jpeg"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/912706ef255b4493f3a9ef2f5212a88c.jpeg">'); </script><br>
+<p><strong>可以分为三个阶段：</strong><br>1、词法分析<br>JS 脚本加载完毕后，会首先进入语法分析阶段，它首先会分析代码块的语法是否正确，不正确则抛出“语法错误”，停止执行。<br><strong>几个步骤：</strong><br><strong>分词</strong>，例如将 vara&#x3D;2，，分成 var、 a、 &#x3D;、 2这样的词法单元。<br><strong>解析</strong>，将词法单元转换成抽象语法树（AST）。<br><strong>代码生成</strong>，将抽象语法树转换成机器指令。*2、预编译<br>JS 有三种运行环境：<br>1、全局环境<br>2、函数环境<br>3、eval<br>每进入一个不同的运行环境都会创建一个对应的执行上下文，根据不同的上下文环境，形成一个函数调用栈，栈底永远是全局执行上下文，栈顶则永远是当前执行上下文。<br>创建执行上下文<br><strong>创建执行上下文的过程中，主要做了以下三件事：</strong><br>创建变量对象</p>
+<pre><code> - 参数、函数、变量
+</code></pre>
+<p>建立作用域链</p>
+<pre><code>- 确认当前执行环境是否能访问变量
+</code></pre>
+<p>确定 This 指向<br>3、执行<br><strong>JS 线程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/269e3d81242e87140a5061e292ab4e25.png) -->
+<!-- <img src="269e3d81242e87140a5061e292ab4e25.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/269e3d81242e87140a5061e292ab4e25.png">'); </script><br>
+<p>虽然 JS 是单线程的，但实际上参与工作的线程一共有四个：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">其中三个只是协助，只有 JS 引擎线程是真正执行的</span><br></pre></td></tr></table></figure>
+<p><strong>JS 引擎线程：</strong><br>也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎<br><strong>事件触发线程：</strong><br>属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>定时器触发线程：</strong><br>主要控制 setInterval和 setTimeout，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。<br><strong>HTTP 异步请求线程：</strong><br>通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。<br><strong>注：浏览器对同一域名的并发连接数是有限的，通常为 6 个。</strong><br><strong>宏任务</strong><br>分为：<br>1、同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务<br>2、异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。<br><strong>微任务</strong><br>微任务是ES6和Node环境下的，主要 API 有：Promise， process.nextTick。<br>微任务的执行在宏任务的同步任务之后，在异步任务之前。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19421fb446e9602f86aa8ac82b3b5cef.png) -->
+<!-- <img src="19421fb446e9602f86aa8ac82b3b5cef.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/19421fb446e9602f86aa8ac82b3b5cef.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c10709fc073f6e13f1a5951872ef7c6a.png) -->
+<!-- <img src="c10709fc073f6e13f1a5951872ef7c6a.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/c10709fc073f6e13f1a5951872ef7c6a.png">'); </script><br>
+<p><strong>代码例子</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">console.log(<span class="string">&#x27;1&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;2&#x27;</span>);    <span class="comment">// 宏任务 异步</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">newPromise(function(resolve) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;3&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;4&#x27;</span>)   <span class="comment">// 微任务</span></span><br><span class="line">&#125;)</span><br><span class="line">console.log(<span class="string">&#x27;5&#x27;</span>)   <span class="comment">// 宏任务 同步</span></span><br></pre></td></tr></table></figure>
+<p>以上代码输出顺序为：1,3,5,4,2</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -4112,217 +4112,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>全局负载均衡、CDN内容分发的原理与实践</title>
-    <url>/2024/12/28/2024122806/</url>
-    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
-<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
-<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
-<blockquote>
-<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-</blockquote>
-<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
-<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
-
-<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
-<ul>
-<li>节省骨干网带宽，减少带宽需求量；</li>
-<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
-<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
-<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
-<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
-</ul>
-<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
-<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
-<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
-<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
-<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
-<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
-<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
-<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
-<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
-<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
-<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
-
-<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
-<p>下图展示两种流程的不同：</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
-
-<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
-<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
-<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
-<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
-<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
-
-<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
-<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
-<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
-<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
-<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
-
-<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
-<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
-<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
-<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
-<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
-<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
-<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
-<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
-<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
-<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
-<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
-<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
-<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机网络的 89 个核心概念</title>
-    <url>/2024/12/28/2024122807/</url>
-    <content><![CDATA[<p>计算机网络中的概念非常庞杂，理解起来比较困难，所以这里，我给大家汇总了计算机网络中 89 个常见的概念，希望对你有所帮助。<span id="more"></span></p>
-<p> <strong>主机</strong>：计算机网络上任何一种能够连接网络的设备都被称为主机或者说端系统，比如手机、平板电脑、电视、游戏机、汽车等，随着 5G<br>    的到来，将会有越来越多的终端设备接入网络。</p>
-<p><strong>通信链路</strong>：通信链路是由物理链路（同轴电缆、双绞线、光纤等）连接到一起组成的一种物理通路。</p>
-<p><strong>传输速率</strong>：单位是 bit&#x2F;s 或者 bps ，用来度量不同链路从一个端系统到另一个端系统传输数据的速率。</p>
-<p><strong>分组</strong>：当一台端系统向另外一台端系统发送数据时，通常会将数据进行分片，然后为每段加上首部字节，从而形成计算机网络的专业术语：分组。这些分组通过网络发送到端系统，然后再进行数据处理。</p>
-<p><strong>路由器</strong>：它和链路层交换机一样，都是一种交换机，主要用于转发数据的目的。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/9a2b4c2837c1a8ea5776057681accbc5.png">'); </script><br>
-
-<p><strong>路径</strong>：一个分组所经历一系列通信链路和分组交换机称为通过这个网络的路径。<br><strong>因特网服务商</strong>：也叫 ISP，不是 lsp。这个好理解，就是网络运营商，移动、电信、联通。</p>
-<ol>
-<li><strong>网络协议</strong>：网络协议是计算机网络中进行数据交换而建立的规则、标准或者约定。<br><strong>IP</strong>：网际协议，它规定了路由器和端系统之间发送和接收的分组格式。</li>
-</ol>
-<p> <strong>TCP&#x2F;IP 协议簇</strong>：不仅仅只有 TCP 协议和 IP 协议，而是以 TCP、IP 协议为主的一系列协议，比如 ICMP 协议、ARP 协议、UDP 协议、DNS 协议、SMTP 协议等。</p>
-<p><strong>分布式应用程序</strong>：多个端系统之间相互交换数据的端系统被称为分布式应用程序。</p>
-<p> <strong>套接字接口</strong>：指的就是 socket 接口，这个接口规定了端系统之间通过因特网进行数据交换的方式。</p>
-<p><strong>协议</strong>：协议定义了两个以上通信实体之间交换报文格式和顺序所遵从的标准。</p>
-<p> <strong>客户端</strong>：在客户-服务器架构中扮演请求方的角色，通常是 PC，智能手机等端系统。</p>
-<p><strong>服务器</strong>：在客户-服务器架构中扮演服务方的角色，通常是大型服务器集群扮演服务器的角色。</p>
-<p><strong>转发表</strong>：路由内部记录报文路径的映射关系的一种记录。</p>
-<p> <strong>时延</strong>：时延指的是一个报文或者分组从网络的一端传递到另一端所需要的时间，时延分类有发送时延、传播时延、处理时延、排队时延，总时延 &#x3D; 发送时延+传播时延+处理时延+排队时延。</p>
-<p> <strong>丢包</strong>：在计算机网络中指的是分组出现丢失的现象。</p>
-<p><strong>吞吐量</strong>：吞吐量在计算机网络中指的是单位时间内成功传输数据的数量。</p>
-<p><strong>报文</strong>：通常指的是应用层的分组。</p>
-<p><strong>报文段</strong>：通常把运输层的分组称为报文段。</p>
-<p><strong>数据报</strong>：通常将网络层的分组称为数据报。</p>
-<p><strong>帧</strong>：一般把链路层的分组称为帧。</p>
-<p><strong>客户-服务体系</strong>：它是一种面向网络应用的体系结构。把系统中的不同端系统区分为客户和服务器两类，客户向服务器发出服务请求，由服务器完成所请求的服务，并把处理结果回送给客户。在客户-服务器体系结构中，有一个总是打开的主机称为 服务器(Server)，它提供来自于 客户(client) 的服务。我们最常见的服务器就是 Web 服务器，Web 服务器服务于来自 浏览器 的请求。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/47921225ecf9d72ea636792ad736f309.png">'); </script><br>
-
-<p><strong>CIDR</strong>：使用任意长度分割 IP 地址的网络标识和主机标识</p>
-<p><strong>P2P 体系</strong>：对等体系结构，相当于没有服务器了，大家都是客户机，每个客户既能发送请求，也能对请求作出响应。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/120728ff5a4a94d583fde9fb768ce6b1.png">'); </script><br>
-
-<p><strong>IP 地址</strong>：IP 地址就是网际协议地址，在互联网中唯一标识主机的一种地址。每一台入网的设备都会有一个 IP 地址，这个 IP 又分为内网 IP 和公网 IP。</p>
-<p><strong>端口号</strong>：在同一台主机内，端口号用于标识不同应用程序进程。</p>
-<p><strong>URI</strong>：它的全称是（Uniform Resource Identifier），中文名称是统一资源标识符，使用它就能够唯一地标记互联网上资源。</p>
-<p><strong>URL</strong>：它的全称是（Uniform Resource Locator），中文名称是统一资源定位符，它实际上是 URI 的一个子集。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/c5652c7c9c54cf6f8a4d99a4ee38e565.png">'); </script><br>
-
-<p><strong>HTML</strong>：HTML 称为超文本标记语言，是一种标识性的语言。它包括一系列标签．通过这些标签可以将网络上的文档格式统一，使分散的 Internet 资源连接为一个逻辑整体。HTML 文本是由 HTML 命令组成的描述性文本，HTML 命令可以说明文字，图形、动画、声音、表格、链接等。</p>
-<p><strong>Web 页面</strong>：Web 页面也叫做 Web Page，它是由对象组成，一个对象(object) 简单来说就是一个文件，这个文件可以是 HTML 文件、一个图片、一段 Java 应用程序等，它们都可以通过 URI 来找到。一个 Web 页面包含了很多对象，Web 页面可以说是对象的集合体。</p>
-<p><strong>Web 服务器</strong>：Web 服务器的正式名称叫做 Web Server，Web 服务器可以向浏览器等 Web 客户端提供文档，也可以放置网站文件，让全世界浏览；可以放置数据文件，让全世界下载。目前最主流的三个 Web 服务器是 Apache、 Nginx 、IIS。</p>
-<p><strong>CDN</strong>：CDN 的全称是Content Delivery Network，即内容分发网络，它应用了 HTTP 协议里的缓存和代理技术，代替源站响应客户端的请求。CDN 是构建在现有网络基础之上的网络，它依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。</p>
-<p><strong>WAF</strong>：WAF 是一种 应用程序防护系统，它是一种通过执行一系列针对 HTTP &#x2F; HTTPS的安全策略来专门为 Web 应用提供保护的一款产品，它是应用层面的防火墙，专门检测 HTTP 流量，是防护 Web 应用的安全技术。</p>
-<p><strong>WebService</strong> ：WebService 是一种 Web 应用程序，WebService 是一种跨编程语言和跨操作系统平台的远程调用技术。</p>
-<p><strong>HTTP</strong>：TCP&#x2F;IP 协议簇的一种，它是一个在计算机世界里专门在两点之间传输文字、图片、音频、视频等超文本数据的约定和规范。</p>
-<p><strong>Session</strong>：Session 其实就是客户端会话的缓存，主要是为了弥补 HTTP 无状态的特性而设计的。服务器可以利用 Session 存储客户端在同一个会话期间的一些操作记录。当客户端请求服务端时，服务端会为这次请求开辟一块内存空间，这个对象便是 Session 对象，存储结构为 ConcurrentHashMap。</p>
-<p><strong>Cookie</strong>：HTTP 协议中的 Cookie 包括 Web Cookie 和浏览器 Cookie，它是服务器发送到 Web 浏览器的一小块数据。服务器发送到浏览器的 Cookie，浏览器会进行存储，并与下一个请求一起发送到服务器。通常，它用于判断两个请求是否来自于同一个浏览器，例如用户保持登录状态。</p>
-<p><strong>SMTP 协议</strong> ：提供电子邮件服务的协议叫做 SMTP 协议， SMTP 在传输层也使用了 TCP 协议。SMTP 协议主要用于系统之间的邮件信息传递，并提供有关来信的通知。</p>
-<p><strong>DNS 协议</strong>：由于 IP 地址是计算机能够识别的地址，而我们人类不方便记忆这种地址，所以为了方便人类的记忆，使用 DNS 协议，来把我们容易记忆的网络地址映射称为主机能够识别的 IP 地址。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/2575539ea120ce1a75d631ca049a5523.png">'); </script><br>
-
-<p><strong>TELNET 协议</strong>：远程登陆协议，它允许用户(Telnet 客户端)通过一个协商过程来与一个远程设备进行通信，它为用户提供了在本地计算机上完成远程主机工作的能力。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/ea9cd573e7d5a9b74d2da313698b1365.png">'); </script><br>
-
-<p><strong>SSH 协议</strong>：SSH 是一种建立在应用层上的安全加密协议。因为 TELNET 有一个非常明显的缺点，那就是在主机和远程主机的发送数据包的过程中是明文传输，未经任何安全加密，这样的后果是容易被互联网上不法分子嗅探到数据包来搞一些坏事，为了数据的安全性，我们一般使用 SSH 进行远程登录。</p>
-<p><strong>FTP 协议</strong>：文件传输协议，是应用层协议之一。FTP 协议包括两个组成部分，分为 FTP 服务器和 FTP 客户端。其中 FTP 服务器用来存储文件，用户可以使用 FTP 客户端通过 FTP 协议访问位于 FTP 服务器上的资源。FTP 协议传输效率很高，一般用来传输大文件。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/43092777f8f78bbaafea87893f796b30.png">'); </script><br>
-
-<p><strong>MIME 类型</strong>，它表示的是互联网的资源类型，一般类型有 超文本标记语言文本 .html text&#x2F;html、xml文档 .xml text&#x2F;xml、普通文本 .txt text&#x2F;plain、PNG图像 .png image&#x2F;png、GIF图形 .gif image&#x2F;gif、JPEG图形 .jpeg,.jpg image&#x2F;jpeg、AVI 文件 .avi video&#x2F;x-msvideo 等。</p>
-<p><strong>多路分解</strong>：在接收端，运输层会检查源端口号和目的端口号等字段，然后标识出接收的套接字，从而将运输层报文段的数据交付到正确套接字的过程被称为多路分解。</p>
-<p><strong>多路复用</strong>：在发送方，从不同的套接字中收集数据块，然后为数据块封装上首部信息从而生成报文段，然后将报文段传递给网络层的过程被称为多路复用。</p>
-<p><strong>周知端口号</strong>：在主机的应用程序中，从 0 - 1023 的端口号是受限制的，被称为周知端口号，这些端口号一般不能占用。</p>
-<p><strong>单向数据传输</strong>：数据的流向只能是单向的，也就是从发送端 -&gt; 接收端。</p>
-<p><strong>双向数据传输</strong>：数据的流向是双向的，又叫做全双工通信，发送端和接收端可以相互发送数据。</p>
-<p><strong>面向连接的</strong>：面向连接指的是应用进程在向另一个应用进程发送数据前，需要先进行握手，即它们必须先相互发送预备报文段，用来建立确保数据传输的参数。</p>
-<p><strong>三次握手</strong>：TCP 连接的建立需要经过三个报文段的发送，这种连接的建立过程被称为三次握手。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/cc19c89c0dbcdd3c394d1371ad47b846.png">'); </script><br>
-
-<p><strong>最大报文段长度</strong>：即 MSS，它指的是从缓存中取出并放入报文段中的最大值。</p>
-<p><strong>最大传输单元</strong>：即 MTU，它指的是通信双方能够接收有效载荷的大小，MSS 通常会根据 MTU 来设。</p>
-<p><strong>冗余 ACK</strong>：就是再次确认某个报文段的 ACK，报文段的丢失会导致冗余 ACK 的出现。</p>
-<p><strong>快速重传</strong>：即在报文段定时器过期之前重传丢失的报文段。</p>
-<p><strong>选择确认</strong>：在报文段出现丢失的情况下，TCP 能够选择确认失序的报文段，这个机制通常和重传一起使用。</p>
-<p><strong>拥塞控制</strong>：拥塞控制说的是，当某一段时间网络中的分组过多，使得接收端来不及处理，从而引起部分甚至整个网络性能下降的现象时采取的一种抑制发送端发送数据，等过一段时间或者网络情况改善后再继续发送报文段的一种方法。</p>
-<p><strong>四次挥手</strong>：TCP 断开链接需要经过四个报文段的发送，这种断开过程是四次挥手。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/adf568dac0d6525667871a9afcfc59ad.png">'); </script><br>
-
-<p><strong>路由选择算法</strong>：网络层中决定分组发送路径的一种算法。</p>
-<p><strong>转发</strong>：它指的是将分组从一个输入链路转移到合适的输出链路的动作。</p>
-<p><strong>分组调度</strong>：分组调度讨论的是分组如何经输出链路传输的问题，主要有三种调度方式：先进先出、优先级排队和”循环和加权公平排队”。</p>
-<p><strong>IPv4</strong>：网际协议的第四个版本，也是被广泛使用的一个版本。IPv4 是一种无连接的协议，无连接不保证数据的可靠性交付。使用 32 位的地址。</p>
-<p><strong>IPv6</strong>：网际协议的第六个版本，IPv6 的地址长度是 128 位，由于 IPv4 最大的问题在于网络地址资源不足，严重制约了互联网的应用和发展。IPv6 的使用，不仅能解决网络地址资源数量的问题，而且也解决了多种接入设备连入互联网的障碍。</p>
-<p><strong>接口</strong>：主机和物理链路之间的边界。</p>
-<p><strong>ARP 协议</strong>：ARP 是一种解决地址问题的协议，通过 IP 位线索，可以定位下一个用来接收数据的网络设备的 MAC 地址。如果目标主机与主机不在同一个链路上时，可以通过 ARP 查找下一跳路由的地址。不过 ARP 只适用于 IPv4 ，不适用于 IPv6。</p>
-<p><strong>RARP</strong>：RARP 就是将 ARP 协议反过来，通过 MAC 地址定位 IP 地址的一种协议。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/6fb609173f974346b7dc6ee88ddfedcc.png">'); </script><br>
-
-<p><strong>代理 ARP</strong>：用于解决 ARP 包被路由器隔离的情况，通过代理 ARP 可以实现将 ARP 请求转发给临近的网段。</p>
-<p><strong>ICMP 协议</strong>：Internet 报文控制协议，如果在 IP 通信过程中由于某个 IP 包由于某种原因未能到达目标主机，那么将会发送 ICMP 消息，ICMP 实际上是 IP 的一部分。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/23d5c4a768d06f2d6a72167e67357dfd.png">');</script><br>
-
-
-<p><strong>DHCP 协议</strong>：DHCP 是一种动态主机配置协议。使用 DHCP 就能实现自动设置 IP 地址、统一管理 IP 地址分配，实现即插即用。</p>
-<p><strong>NAT 协议</strong>：网络地址转换协议，它指的是所有本地地址的主机在接入网络时，都会要在 NAT 路由器上将其转换成为全球 IP 地址，才能和其他主机进行通信。</p>
-<p><strong>IP 隧道</strong>：IP 隧道技术说的是由路由器把网络层协议封装到另一个协议中从而跨过网络传输到另外一个路由器的过程。</p>
-<p><strong>单播</strong>：单播最大的特点就是 1 对 1，早期的固定电话就是单播的一个例子</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/c75633e66131a7a1195c32fd695d8d6e.png">');</script><br>
-
-<p><strong>广播</strong>：我们一般小时候经常会广播体操，这就是广播的一个事例，主机和与他连接的所有端系统相连，主机将信号发送给所有的端系统。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/7b5f8dccea68b7f15d178160016f4978.png">');</script><br>
-
-<p><strong>多播</strong>：多播与广播很类似，也是将消息发送给多个接收主机，不同之处在于多播需要限定在某一组主机作为接收端。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/341fdd031808aa8d8c85f13ce5878a35.png">');</script><br>
-
-<p><strong>任播</strong>：任播是在特定的多台主机中选出一个接收端的通信方式。虽然和多播很相似，但是行为与多播不同，任播是从许多目标机群中选出一台最符合网络条件的主机作为目标主机发送消息。然后被选中的特定主机将返回一个单播信号，然后再与目标主机进行通信。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/96dd3237b7f0acc0f851e3fd421d0126.png">');</script><br>
-
-<p><strong>IGP</strong>：内部网关协议，一般用于企业内部自己搭建的路由自治系统。</p>
-<p><strong>EGP</strong>：外部网关协议，EGP 通常用于在网络主机之间相互交换路由信息。</p>
-<p><strong>RIP</strong> ：一种距离向量型路由协议，广泛应用于 LAN 网。</p>
-<p><strong>OSPF</strong>：是根据 OSI 的 IS-IS 协议提出的一种链路状态型协议。这种协议还能够有效的解决网络环路问题。</p>
-<p><strong>MPLS</strong>：它是一种标记交换技术，标记交换会对每个 IP 数据包都设定一个标记，然后根据这个标记进行转发。</p>
-<p><strong>节点</strong>：一般指链路层协议中的设备。</p>
-<p><strong>链路</strong>：一般把沿着通信路径连接相邻节点的通信信道称为链路。</p>
-<p><strong>MAC 协议</strong>：媒体访问控制协议，它规定了帧在链路上传输的规则。</p>
-<p><strong>奇偶校验位</strong>：一种差错检测方式，多用于计算机硬件的错误检测中，奇偶校验通常用在数据通信中来保证数据的有效性。</p>
-<p><strong>向前纠错</strong>：接收方检测和纠正差错的能力被称为向前纠错。</p>
-<p><strong>以太网</strong>：以太网是一种当今最普遍的局域网技术，它规定了物理层的连线、电子信号和 MAC 协议的内容。</p>
-<p><strong>VLAN</strong>：虚拟局域网（VLAN）是一组逻辑上的设备和用户，这些设备和用户并不受物理位置的限制，可以根据功能、部门及应用等因素将它们组织起来，相互之间的通信就好像它们在同一个网段中一样，所以称为虚拟局域网。</p>
-<p><strong>基站</strong>：无线网络的基础设施。</p>
-<script> document.write('<img src="'+ imgurl +'1735396470/eb750b49aabfdeddb3912c50a5f9579a.png">');</script><br>
-
-<p><strong>后记</strong><br>希望这篇文章能够帮助大家更好的理解计算机网络，同时也希望大家能够点赞、在看、分享、转发！</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>干活总结 | SQL 语法速成手册</title>
     <url>/2024/12/28/2024122808/</url>
     <content><![CDATA[<p>本文针对关系型数据库的一般语法。限于篇幅，本文侧重说明用法，不会展开讲解特性、原理。本文内容包括基本概念、增删改查、子查询、连接和组合、函数、排序和分组、数据定义、事务处理、权限管理等等。</p>
@@ -4665,6 +4454,217 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>计算机网络的 89 个核心概念</title>
+    <url>/2024/12/28/2024122807/</url>
+    <content><![CDATA[<p>计算机网络中的概念非常庞杂，理解起来比较困难，所以这里，我给大家汇总了计算机网络中 89 个常见的概念，希望对你有所帮助。<span id="more"></span></p>
+<p> <strong>主机</strong>：计算机网络上任何一种能够连接网络的设备都被称为主机或者说端系统，比如手机、平板电脑、电视、游戏机、汽车等，随着 5G<br>    的到来，将会有越来越多的终端设备接入网络。</p>
+<p><strong>通信链路</strong>：通信链路是由物理链路（同轴电缆、双绞线、光纤等）连接到一起组成的一种物理通路。</p>
+<p><strong>传输速率</strong>：单位是 bit&#x2F;s 或者 bps ，用来度量不同链路从一个端系统到另一个端系统传输数据的速率。</p>
+<p><strong>分组</strong>：当一台端系统向另外一台端系统发送数据时，通常会将数据进行分片，然后为每段加上首部字节，从而形成计算机网络的专业术语：分组。这些分组通过网络发送到端系统，然后再进行数据处理。</p>
+<p><strong>路由器</strong>：它和链路层交换机一样，都是一种交换机，主要用于转发数据的目的。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/9a2b4c2837c1a8ea5776057681accbc5.png">'); </script><br>
+
+<p><strong>路径</strong>：一个分组所经历一系列通信链路和分组交换机称为通过这个网络的路径。<br><strong>因特网服务商</strong>：也叫 ISP，不是 lsp。这个好理解，就是网络运营商，移动、电信、联通。</p>
+<ol>
+<li><strong>网络协议</strong>：网络协议是计算机网络中进行数据交换而建立的规则、标准或者约定。<br><strong>IP</strong>：网际协议，它规定了路由器和端系统之间发送和接收的分组格式。</li>
+</ol>
+<p> <strong>TCP&#x2F;IP 协议簇</strong>：不仅仅只有 TCP 协议和 IP 协议，而是以 TCP、IP 协议为主的一系列协议，比如 ICMP 协议、ARP 协议、UDP 协议、DNS 协议、SMTP 协议等。</p>
+<p><strong>分布式应用程序</strong>：多个端系统之间相互交换数据的端系统被称为分布式应用程序。</p>
+<p> <strong>套接字接口</strong>：指的就是 socket 接口，这个接口规定了端系统之间通过因特网进行数据交换的方式。</p>
+<p><strong>协议</strong>：协议定义了两个以上通信实体之间交换报文格式和顺序所遵从的标准。</p>
+<p> <strong>客户端</strong>：在客户-服务器架构中扮演请求方的角色，通常是 PC，智能手机等端系统。</p>
+<p><strong>服务器</strong>：在客户-服务器架构中扮演服务方的角色，通常是大型服务器集群扮演服务器的角色。</p>
+<p><strong>转发表</strong>：路由内部记录报文路径的映射关系的一种记录。</p>
+<p> <strong>时延</strong>：时延指的是一个报文或者分组从网络的一端传递到另一端所需要的时间，时延分类有发送时延、传播时延、处理时延、排队时延，总时延 &#x3D; 发送时延+传播时延+处理时延+排队时延。</p>
+<p> <strong>丢包</strong>：在计算机网络中指的是分组出现丢失的现象。</p>
+<p><strong>吞吐量</strong>：吞吐量在计算机网络中指的是单位时间内成功传输数据的数量。</p>
+<p><strong>报文</strong>：通常指的是应用层的分组。</p>
+<p><strong>报文段</strong>：通常把运输层的分组称为报文段。</p>
+<p><strong>数据报</strong>：通常将网络层的分组称为数据报。</p>
+<p><strong>帧</strong>：一般把链路层的分组称为帧。</p>
+<p><strong>客户-服务体系</strong>：它是一种面向网络应用的体系结构。把系统中的不同端系统区分为客户和服务器两类，客户向服务器发出服务请求，由服务器完成所请求的服务，并把处理结果回送给客户。在客户-服务器体系结构中，有一个总是打开的主机称为 服务器(Server)，它提供来自于 客户(client) 的服务。我们最常见的服务器就是 Web 服务器，Web 服务器服务于来自 浏览器 的请求。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/47921225ecf9d72ea636792ad736f309.png">'); </script><br>
+
+<p><strong>CIDR</strong>：使用任意长度分割 IP 地址的网络标识和主机标识</p>
+<p><strong>P2P 体系</strong>：对等体系结构，相当于没有服务器了，大家都是客户机，每个客户既能发送请求，也能对请求作出响应。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/120728ff5a4a94d583fde9fb768ce6b1.png">'); </script><br>
+
+<p><strong>IP 地址</strong>：IP 地址就是网际协议地址，在互联网中唯一标识主机的一种地址。每一台入网的设备都会有一个 IP 地址，这个 IP 又分为内网 IP 和公网 IP。</p>
+<p><strong>端口号</strong>：在同一台主机内，端口号用于标识不同应用程序进程。</p>
+<p><strong>URI</strong>：它的全称是（Uniform Resource Identifier），中文名称是统一资源标识符，使用它就能够唯一地标记互联网上资源。</p>
+<p><strong>URL</strong>：它的全称是（Uniform Resource Locator），中文名称是统一资源定位符，它实际上是 URI 的一个子集。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/c5652c7c9c54cf6f8a4d99a4ee38e565.png">'); </script><br>
+
+<p><strong>HTML</strong>：HTML 称为超文本标记语言，是一种标识性的语言。它包括一系列标签．通过这些标签可以将网络上的文档格式统一，使分散的 Internet 资源连接为一个逻辑整体。HTML 文本是由 HTML 命令组成的描述性文本，HTML 命令可以说明文字，图形、动画、声音、表格、链接等。</p>
+<p><strong>Web 页面</strong>：Web 页面也叫做 Web Page，它是由对象组成，一个对象(object) 简单来说就是一个文件，这个文件可以是 HTML 文件、一个图片、一段 Java 应用程序等，它们都可以通过 URI 来找到。一个 Web 页面包含了很多对象，Web 页面可以说是对象的集合体。</p>
+<p><strong>Web 服务器</strong>：Web 服务器的正式名称叫做 Web Server，Web 服务器可以向浏览器等 Web 客户端提供文档，也可以放置网站文件，让全世界浏览；可以放置数据文件，让全世界下载。目前最主流的三个 Web 服务器是 Apache、 Nginx 、IIS。</p>
+<p><strong>CDN</strong>：CDN 的全称是Content Delivery Network，即内容分发网络，它应用了 HTTP 协议里的缓存和代理技术，代替源站响应客户端的请求。CDN 是构建在现有网络基础之上的网络，它依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。</p>
+<p><strong>WAF</strong>：WAF 是一种 应用程序防护系统，它是一种通过执行一系列针对 HTTP &#x2F; HTTPS的安全策略来专门为 Web 应用提供保护的一款产品，它是应用层面的防火墙，专门检测 HTTP 流量，是防护 Web 应用的安全技术。</p>
+<p><strong>WebService</strong> ：WebService 是一种 Web 应用程序，WebService 是一种跨编程语言和跨操作系统平台的远程调用技术。</p>
+<p><strong>HTTP</strong>：TCP&#x2F;IP 协议簇的一种，它是一个在计算机世界里专门在两点之间传输文字、图片、音频、视频等超文本数据的约定和规范。</p>
+<p><strong>Session</strong>：Session 其实就是客户端会话的缓存，主要是为了弥补 HTTP 无状态的特性而设计的。服务器可以利用 Session 存储客户端在同一个会话期间的一些操作记录。当客户端请求服务端时，服务端会为这次请求开辟一块内存空间，这个对象便是 Session 对象，存储结构为 ConcurrentHashMap。</p>
+<p><strong>Cookie</strong>：HTTP 协议中的 Cookie 包括 Web Cookie 和浏览器 Cookie，它是服务器发送到 Web 浏览器的一小块数据。服务器发送到浏览器的 Cookie，浏览器会进行存储，并与下一个请求一起发送到服务器。通常，它用于判断两个请求是否来自于同一个浏览器，例如用户保持登录状态。</p>
+<p><strong>SMTP 协议</strong> ：提供电子邮件服务的协议叫做 SMTP 协议， SMTP 在传输层也使用了 TCP 协议。SMTP 协议主要用于系统之间的邮件信息传递，并提供有关来信的通知。</p>
+<p><strong>DNS 协议</strong>：由于 IP 地址是计算机能够识别的地址，而我们人类不方便记忆这种地址，所以为了方便人类的记忆，使用 DNS 协议，来把我们容易记忆的网络地址映射称为主机能够识别的 IP 地址。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/2575539ea120ce1a75d631ca049a5523.png">'); </script><br>
+
+<p><strong>TELNET 协议</strong>：远程登陆协议，它允许用户(Telnet 客户端)通过一个协商过程来与一个远程设备进行通信，它为用户提供了在本地计算机上完成远程主机工作的能力。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/ea9cd573e7d5a9b74d2da313698b1365.png">'); </script><br>
+
+<p><strong>SSH 协议</strong>：SSH 是一种建立在应用层上的安全加密协议。因为 TELNET 有一个非常明显的缺点，那就是在主机和远程主机的发送数据包的过程中是明文传输，未经任何安全加密，这样的后果是容易被互联网上不法分子嗅探到数据包来搞一些坏事，为了数据的安全性，我们一般使用 SSH 进行远程登录。</p>
+<p><strong>FTP 协议</strong>：文件传输协议，是应用层协议之一。FTP 协议包括两个组成部分，分为 FTP 服务器和 FTP 客户端。其中 FTP 服务器用来存储文件，用户可以使用 FTP 客户端通过 FTP 协议访问位于 FTP 服务器上的资源。FTP 协议传输效率很高，一般用来传输大文件。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/43092777f8f78bbaafea87893f796b30.png">'); </script><br>
+
+<p><strong>MIME 类型</strong>，它表示的是互联网的资源类型，一般类型有 超文本标记语言文本 .html text&#x2F;html、xml文档 .xml text&#x2F;xml、普通文本 .txt text&#x2F;plain、PNG图像 .png image&#x2F;png、GIF图形 .gif image&#x2F;gif、JPEG图形 .jpeg,.jpg image&#x2F;jpeg、AVI 文件 .avi video&#x2F;x-msvideo 等。</p>
+<p><strong>多路分解</strong>：在接收端，运输层会检查源端口号和目的端口号等字段，然后标识出接收的套接字，从而将运输层报文段的数据交付到正确套接字的过程被称为多路分解。</p>
+<p><strong>多路复用</strong>：在发送方，从不同的套接字中收集数据块，然后为数据块封装上首部信息从而生成报文段，然后将报文段传递给网络层的过程被称为多路复用。</p>
+<p><strong>周知端口号</strong>：在主机的应用程序中，从 0 - 1023 的端口号是受限制的，被称为周知端口号，这些端口号一般不能占用。</p>
+<p><strong>单向数据传输</strong>：数据的流向只能是单向的，也就是从发送端 -&gt; 接收端。</p>
+<p><strong>双向数据传输</strong>：数据的流向是双向的，又叫做全双工通信，发送端和接收端可以相互发送数据。</p>
+<p><strong>面向连接的</strong>：面向连接指的是应用进程在向另一个应用进程发送数据前，需要先进行握手，即它们必须先相互发送预备报文段，用来建立确保数据传输的参数。</p>
+<p><strong>三次握手</strong>：TCP 连接的建立需要经过三个报文段的发送，这种连接的建立过程被称为三次握手。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/cc19c89c0dbcdd3c394d1371ad47b846.png">'); </script><br>
+
+<p><strong>最大报文段长度</strong>：即 MSS，它指的是从缓存中取出并放入报文段中的最大值。</p>
+<p><strong>最大传输单元</strong>：即 MTU，它指的是通信双方能够接收有效载荷的大小，MSS 通常会根据 MTU 来设。</p>
+<p><strong>冗余 ACK</strong>：就是再次确认某个报文段的 ACK，报文段的丢失会导致冗余 ACK 的出现。</p>
+<p><strong>快速重传</strong>：即在报文段定时器过期之前重传丢失的报文段。</p>
+<p><strong>选择确认</strong>：在报文段出现丢失的情况下，TCP 能够选择确认失序的报文段，这个机制通常和重传一起使用。</p>
+<p><strong>拥塞控制</strong>：拥塞控制说的是，当某一段时间网络中的分组过多，使得接收端来不及处理，从而引起部分甚至整个网络性能下降的现象时采取的一种抑制发送端发送数据，等过一段时间或者网络情况改善后再继续发送报文段的一种方法。</p>
+<p><strong>四次挥手</strong>：TCP 断开链接需要经过四个报文段的发送，这种断开过程是四次挥手。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/adf568dac0d6525667871a9afcfc59ad.png">'); </script><br>
+
+<p><strong>路由选择算法</strong>：网络层中决定分组发送路径的一种算法。</p>
+<p><strong>转发</strong>：它指的是将分组从一个输入链路转移到合适的输出链路的动作。</p>
+<p><strong>分组调度</strong>：分组调度讨论的是分组如何经输出链路传输的问题，主要有三种调度方式：先进先出、优先级排队和”循环和加权公平排队”。</p>
+<p><strong>IPv4</strong>：网际协议的第四个版本，也是被广泛使用的一个版本。IPv4 是一种无连接的协议，无连接不保证数据的可靠性交付。使用 32 位的地址。</p>
+<p><strong>IPv6</strong>：网际协议的第六个版本，IPv6 的地址长度是 128 位，由于 IPv4 最大的问题在于网络地址资源不足，严重制约了互联网的应用和发展。IPv6 的使用，不仅能解决网络地址资源数量的问题，而且也解决了多种接入设备连入互联网的障碍。</p>
+<p><strong>接口</strong>：主机和物理链路之间的边界。</p>
+<p><strong>ARP 协议</strong>：ARP 是一种解决地址问题的协议，通过 IP 位线索，可以定位下一个用来接收数据的网络设备的 MAC 地址。如果目标主机与主机不在同一个链路上时，可以通过 ARP 查找下一跳路由的地址。不过 ARP 只适用于 IPv4 ，不适用于 IPv6。</p>
+<p><strong>RARP</strong>：RARP 就是将 ARP 协议反过来，通过 MAC 地址定位 IP 地址的一种协议。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/6fb609173f974346b7dc6ee88ddfedcc.png">'); </script><br>
+
+<p><strong>代理 ARP</strong>：用于解决 ARP 包被路由器隔离的情况，通过代理 ARP 可以实现将 ARP 请求转发给临近的网段。</p>
+<p><strong>ICMP 协议</strong>：Internet 报文控制协议，如果在 IP 通信过程中由于某个 IP 包由于某种原因未能到达目标主机，那么将会发送 ICMP 消息，ICMP 实际上是 IP 的一部分。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/23d5c4a768d06f2d6a72167e67357dfd.png">');</script><br>
+
+
+<p><strong>DHCP 协议</strong>：DHCP 是一种动态主机配置协议。使用 DHCP 就能实现自动设置 IP 地址、统一管理 IP 地址分配，实现即插即用。</p>
+<p><strong>NAT 协议</strong>：网络地址转换协议，它指的是所有本地地址的主机在接入网络时，都会要在 NAT 路由器上将其转换成为全球 IP 地址，才能和其他主机进行通信。</p>
+<p><strong>IP 隧道</strong>：IP 隧道技术说的是由路由器把网络层协议封装到另一个协议中从而跨过网络传输到另外一个路由器的过程。</p>
+<p><strong>单播</strong>：单播最大的特点就是 1 对 1，早期的固定电话就是单播的一个例子</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/c75633e66131a7a1195c32fd695d8d6e.png">');</script><br>
+
+<p><strong>广播</strong>：我们一般小时候经常会广播体操，这就是广播的一个事例，主机和与他连接的所有端系统相连，主机将信号发送给所有的端系统。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/7b5f8dccea68b7f15d178160016f4978.png">');</script><br>
+
+<p><strong>多播</strong>：多播与广播很类似，也是将消息发送给多个接收主机，不同之处在于多播需要限定在某一组主机作为接收端。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/341fdd031808aa8d8c85f13ce5878a35.png">');</script><br>
+
+<p><strong>任播</strong>：任播是在特定的多台主机中选出一个接收端的通信方式。虽然和多播很相似，但是行为与多播不同，任播是从许多目标机群中选出一台最符合网络条件的主机作为目标主机发送消息。然后被选中的特定主机将返回一个单播信号，然后再与目标主机进行通信。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/96dd3237b7f0acc0f851e3fd421d0126.png">');</script><br>
+
+<p><strong>IGP</strong>：内部网关协议，一般用于企业内部自己搭建的路由自治系统。</p>
+<p><strong>EGP</strong>：外部网关协议，EGP 通常用于在网络主机之间相互交换路由信息。</p>
+<p><strong>RIP</strong> ：一种距离向量型路由协议，广泛应用于 LAN 网。</p>
+<p><strong>OSPF</strong>：是根据 OSI 的 IS-IS 协议提出的一种链路状态型协议。这种协议还能够有效的解决网络环路问题。</p>
+<p><strong>MPLS</strong>：它是一种标记交换技术，标记交换会对每个 IP 数据包都设定一个标记，然后根据这个标记进行转发。</p>
+<p><strong>节点</strong>：一般指链路层协议中的设备。</p>
+<p><strong>链路</strong>：一般把沿着通信路径连接相邻节点的通信信道称为链路。</p>
+<p><strong>MAC 协议</strong>：媒体访问控制协议，它规定了帧在链路上传输的规则。</p>
+<p><strong>奇偶校验位</strong>：一种差错检测方式，多用于计算机硬件的错误检测中，奇偶校验通常用在数据通信中来保证数据的有效性。</p>
+<p><strong>向前纠错</strong>：接收方检测和纠正差错的能力被称为向前纠错。</p>
+<p><strong>以太网</strong>：以太网是一种当今最普遍的局域网技术，它规定了物理层的连线、电子信号和 MAC 协议的内容。</p>
+<p><strong>VLAN</strong>：虚拟局域网（VLAN）是一组逻辑上的设备和用户，这些设备和用户并不受物理位置的限制，可以根据功能、部门及应用等因素将它们组织起来，相互之间的通信就好像它们在同一个网段中一样，所以称为虚拟局域网。</p>
+<p><strong>基站</strong>：无线网络的基础设施。</p>
+<script> document.write('<img src="'+ imgurl +'1735396470/eb750b49aabfdeddb3912c50a5f9579a.png">');</script><br>
+
+<p><strong>后记</strong><br>希望这篇文章能够帮助大家更好的理解计算机网络，同时也希望大家能够点赞、在看、分享、转发！</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+        <tag>网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>全局负载均衡、CDN内容分发的原理与实践</title>
+    <url>/2024/12/28/2024122806/</url>
+    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
+<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
+<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
+<blockquote>
+<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+</blockquote>
+<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
+<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
+
+<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
+<ul>
+<li>节省骨干网带宽，减少带宽需求量；</li>
+<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
+<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
+<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
+<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
+</ul>
+<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
+<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
+<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
+<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
+<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
+<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
+<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
+<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
+<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
+<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
+<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
+
+<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
+<p>下图展示两种流程的不同：</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
+
+<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
+<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
+<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
+<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
+<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
+
+<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
+<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
+<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
+<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
+<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
+
+<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
+<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
+<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
+<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
+<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
+<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
+<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
+<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
+<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
+<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
+<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
+<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
+<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自学PHP笔记(五) PHP运算符</title>
     <url>/2025/01/11/2025011101/</url>
     <content><![CDATA[<p>首先我们需要了解运算符是什么，运算符是指的对变量、常量或者数据进行计算的一个符号，比如数学中学到的加减乘除等用来运算的代表符号，PHP中的运算符也是这样的，它可以通过一个或者多个值产生一个新的值，这就是运算符的作用，PHP中把运算符分为：算数运算符、赋值运算符、字符串运算符、位运算符、比较运算符、逻辑运算符、错误控制运算符和其他运算符。下面将对一系列运算符进行说明</p>
@@ -4930,210 +4930,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>python+ffmpeg视频转码转格式</title>
-    <url>/2025/01/11/2025011102/</url>
-    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
-<span id="more"></span>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
-<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
-<p>执行结果：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
-
-<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
-<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
-<p>最后效果图：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
-
-<p>显示写出来了，后面该弄功能了</p>
-<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
-<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
-<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
-<p><strong>示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
-<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
-<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
-<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
-<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
-<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
-
-<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>python</tag>
-        <tag>ffmpeg</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学PHP笔记 (三) 类型转换</title>
-    <url>/2025/01/13/2025011302/</url>
-    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>转换类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>(bool)(boolean)</td>
-<td>转换为布尔值</td>
-</tr>
-<tr>
-<td>(string)</td>
-<td>转换为字符串</td>
-</tr>
-<tr>
-<td>(int)(integer)</td>
-<td>转换为整数</td>
-</tr>
-<tr>
-<td>(float)(double)(real)</td>
-<td>转换为浮点型</td>
-</tr>
-<tr>
-<td>(array)</td>
-<td>转换为数组</td>
-</tr>
-<tr>
-<td>(object)</td>
-<td>转换为对象</td>
-</tr>
-<tr>
-<td>(unset)</td>
-<td>转换为NULL，也就是删除变量</td>
-</tr>
-<tr>
-<td>(binary)b前缀</td>
-<td>转换为二进制字符串</td>
-</tr>
-<tr>
-<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
-<ol>
-<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
-<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
-<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
-<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
-<li>NULL总会被转换为空的字符串。</li>
-</ol>
-<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
-<ol>
-<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
-<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
-这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
-</ol>
-<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
-<ol>
-<li><code>0</code>:整数零</li>
-<li><code>0.0</code>：浮点数零</li>
-<li><code>&quot;0&quot;</code>：字符串零</li>
-<li><code>&quot;&quot;</code>：空字符串</li>
-<li><code>空数组</code>:没有任何值得数组</li>
-<li><code>空对象</code>：没有任何成员变量得对象</li>
-<li><code>NULL</code>：特殊类型NULL</li>
-<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
-<table>
-<thead>
-<tr>
-<th>检测函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>is_bool</td>
-<td>检测变量是否为布尔值</td>
-</tr>
-<tr>
-<td>is_string</td>
-<td>检测变量是否为字符串</td>
-</tr>
-<tr>
-<td>is_float</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-<tr>
-<td>is_int</td>
-<td>检测变量是否为整数</td>
-</tr>
-<tr>
-<td>is_null</td>
-<td>检测变量是否为空</td>
-</tr>
-<tr>
-<td>is_array</td>
-<td>检测变量是否为数组</td>
-</tr>
-<tr>
-<td>is_object</td>
-<td>检测变量是否为对象</td>
-</tr>
-<tr>
-<td>is_numeric</td>
-<td>检测变量是否为数字或者是数字组成得字符串</td>
-</tr>
-<tr>
-<td>is_double</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-</tbody></table>
-<p>【<strong>示例1</strong>】判断是否为整数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int不是浮点数类型</code></p>
-<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
-<ul>
-<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
-<li><code>var_dump</code>函数即输出值也输出类型</li>
-</ul>
-<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>double</code>也就是浮点数类型</p>
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自学PHP笔记(四) PHP变量和常量</title>
     <url>/2025/01/13/2025011301/</url>
     <content><![CDATA[<p>PHP中变量有普通变量、可变变量和预定义变量，而常量就是普通变量和预定义变量。</p>
@@ -5335,6 +5131,57 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python+ffmpeg视频转码转格式</title>
+    <url>/2025/01/11/2025011102/</url>
+    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
+<span id="more"></span>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
+<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
+
+<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
+<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
+<p>最后效果图：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
+
+<p>显示写出来了，后面该弄功能了</p>
+<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
+<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
+<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
+<p><strong>示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
+<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
+<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
+<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
+<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
+
+<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>python</tag>
+        <tag>ffmpeg</tag>
       </tags>
   </entry>
   <entry>
@@ -5600,6 +5447,159 @@ MySql：经典安装 MySql 5.6
 <p>输出结果为：<code>NULL</code><br>【<strong>提示</strong>】使用<code>unset()</code>函数将会摧毁变量，使用<code>is_null()</code>函数可以判断变量是否为空<br>【<strong>实例3</strong>】判断变量是否为空</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;张三&quot;</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">is_null</span>(<span class="variable">$a</span>))&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;变量为空&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;变量不为空&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>输出结果为：<code>变量不为空</code></p>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学PHP笔记 (三) 类型转换</title>
+    <url>/2025/01/13/2025011302/</url>
+    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>转换类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(bool)(boolean)</td>
+<td>转换为布尔值</td>
+</tr>
+<tr>
+<td>(string)</td>
+<td>转换为字符串</td>
+</tr>
+<tr>
+<td>(int)(integer)</td>
+<td>转换为整数</td>
+</tr>
+<tr>
+<td>(float)(double)(real)</td>
+<td>转换为浮点型</td>
+</tr>
+<tr>
+<td>(array)</td>
+<td>转换为数组</td>
+</tr>
+<tr>
+<td>(object)</td>
+<td>转换为对象</td>
+</tr>
+<tr>
+<td>(unset)</td>
+<td>转换为NULL，也就是删除变量</td>
+</tr>
+<tr>
+<td>(binary)b前缀</td>
+<td>转换为二进制字符串</td>
+</tr>
+<tr>
+<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
+<ol>
+<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
+<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
+<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
+<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
+<li>NULL总会被转换为空的字符串。</li>
+</ol>
+<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
+<ol>
+<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
+<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
+</ol>
+<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
+<ol>
+<li><code>0</code>:整数零</li>
+<li><code>0.0</code>：浮点数零</li>
+<li><code>&quot;0&quot;</code>：字符串零</li>
+<li><code>&quot;&quot;</code>：空字符串</li>
+<li><code>空数组</code>:没有任何值得数组</li>
+<li><code>空对象</code>：没有任何成员变量得对象</li>
+<li><code>NULL</code>：特殊类型NULL</li>
+<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
+<table>
+<thead>
+<tr>
+<th>检测函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>is_bool</td>
+<td>检测变量是否为布尔值</td>
+</tr>
+<tr>
+<td>is_string</td>
+<td>检测变量是否为字符串</td>
+</tr>
+<tr>
+<td>is_float</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+<tr>
+<td>is_int</td>
+<td>检测变量是否为整数</td>
+</tr>
+<tr>
+<td>is_null</td>
+<td>检测变量是否为空</td>
+</tr>
+<tr>
+<td>is_array</td>
+<td>检测变量是否为数组</td>
+</tr>
+<tr>
+<td>is_object</td>
+<td>检测变量是否为对象</td>
+</tr>
+<tr>
+<td>is_numeric</td>
+<td>检测变量是否为数字或者是数字组成得字符串</td>
+</tr>
+<tr>
+<td>is_double</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+</tbody></table>
+<p>【<strong>示例1</strong>】判断是否为整数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int不是浮点数类型</code></p>
+<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
+<ul>
+<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
+<li><code>var_dump</code>函数即输出值也输出类型</li>
+</ul>
+<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>double</code>也就是浮点数类型</p>
 ]]></content>
       <categories>
         <category>php</category>
@@ -5970,71 +5970,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一起来看看华为云的裸金属服务器</title>
-    <url>/2025/01/13/2025011308/</url>
-    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
-<span id="more"></span>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
-
-<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
-<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
-<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
-<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
-<ul>
-<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
-<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
-<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
-<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
-<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
-<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
-</ul>
-<p><strong>图1 BMS产品架构</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
-
-<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
-<blockquote>
-<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
-</blockquote>
-<p><strong>表1 特性对比</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
-
-<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
-
-<p><strong>常用概念</strong></p>
-<ul>
-<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
-<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
-<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
-<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
-<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
-<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
-</ul>
-<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
-<ul>
-<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
-<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
-</ul>
-<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
-<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
-<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
-<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
-<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -7597,6 +7532,71 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一起来看看华为云的裸金属服务器</title>
+    <url>/2025/01/13/2025011308/</url>
+    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
+<span id="more"></span>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
+
+<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
+<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
+<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
+<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
+<ul>
+<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
+<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
+<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
+<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
+<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
+<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
+</ul>
+<p><strong>图1 BMS产品架构</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
+
+<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
+<blockquote>
+<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
+</blockquote>
+<p><strong>表1 特性对比</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
+
+<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
+
+<p><strong>常用概念</strong></p>
+<ul>
+<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
+<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
+<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
+<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
+<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
+<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
+</ul>
+<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
+<ul>
+<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
+<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
+</ul>
+<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
+<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
+<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
+<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
+<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -14321,6 +14321,247 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
       </tags>
   </entry>
   <entry>
+    <title>等保三级安全要求简要攻略-安全通信网络和安全区域边界</title>
+    <url>/2024/12/24/dbcp04/</url>
+    <content><![CDATA[<p>之前有两篇文章写了为什么要做等保测评、等保测评的含义以及等保测评这份工作的一些职责和一些常见的FAQ，没有看过的朋友可以先去看下我的另外两篇文章：<a href="https://blog.csdn.net/KH_FC/article/details/115628039">一起聊聊等保测评</a> 和 <a href="https://blog.csdn.net/KH_FC/article/details/127748882">一起聊聊等保测评工作内容以及FAQ</a> 。</p>
+<span id="more"></span>
+<p>今天我们来攻略一下等保2.0国家标准中《<strong>信息安全技术网络安全等级保护基本要求</strong>》所对三级系统所提出的要求项以及针对这些要求项如何去应对或者说是如何去做防护。废话不多说直接上正题</p>
+<p>在等保三级中分为十个大项分别是：安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设和管理、安全运维管理，这十大项里面有N个小项来做限制，因为小项比较多，这篇文章主要是针对安全通信网络和安全区域边界来说的，后面也会慢慢把所有的检查项都写给大家攻略的<br><strong>下面所写的攻略以及测评结果仅供参考，要以实际情况为准。</strong></p>
+<h3 id="安全通信网络"><a href="#安全通信网络" class="headerlink" title="安全通信网络"></a>安全通信网络</h3><p>安全通信网络这一块主要是针对网络传输、网络设备、通信线路等等一些对象来做的管理或者防护的一些要求，在这一块基本上都是可以满足的，具体来看一下每一项都是怎么要求得吧</p>
+<h4 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应保证网络设备的业务处理能力满足业务高峰期需要</td>
+<td>这一项主要是说一些业务系统对可用性要求比较高的，网络设备的业务处理能力要可以支撑业务高峰时的所需要的业务支撑能力，不能因为网络设备的原因导致宕机或者服务中断的情况，这一块基本上都可以满足</td>
+<td>这一项测评公司会写：<strong>核心网络设备采用什么型号的，可以满足业务高峰的需求，并且置顶了随着业务增长不断提高业务的处理能力</strong></td>
+</tr>
+<tr>
+<td>应保证网络各个部分的带宽满足业务高峰期需要</td>
+<td>这一项主要是说的我们网络带宽要满足业务高峰时所需的带宽，这个目前机房内基本上都采用百兆的网线甚至有直接做千兆网线接入的，所以说这个基本上也就不存在不满足的这种情况</td>
+<td>这一项测评公司会写：<strong>网络中采用百兆或者千兆的网线接入，可以从容应对业务高峰</strong></td>
+</tr>
+<tr>
+<td>应划分不同的网络区域，并按照方便管理和控制的原则为各网络区域分配地址</td>
+<td>这一项将主要是针对我们网络子网的划分做出了要求，根据不同重要成都的业务系统划分不同的子网，只要是所有网络都在一个子网里面就算不合格的，这一项一般也没有不合格的，基本上都会有划分子网</td>
+<td>这一项测评公司会写：<strong>针对不同重要程度的业务系统划分了不同的子网来进行管理</strong></td>
+</tr>
+<tr>
+<td>应避免将重要网络区域部署在边界处，重要网络区域与其他网络区域之间应采取可靠的技术隔离手段</td>
+<td>这一项主要是针对划分的不同区域之间有没有做网络访问控制，比如说各个区域之间网络无限制可随意访问，这样就不行的，避免发生横向攻击</td>
+<td>这一项测评公司会写：<strong>在各区域边界部署有访问控制设备，并且设置了不同区域之间对的访问限制</strong></td>
+</tr>
+<tr>
+<td>应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性</td>
+<td>这一项要求的是网络链路不能是单链路，要做有冗余，当出现故障或者安全事故时可以保障网络的可用性，一般常做的就是核心设备的冗余，比如核心交换、路由等冗余</td>
+<td>这一项测评公司会写：<strong>核心设备或关键网络采用冗余设计，采用双机热备和负载均衡等方式</strong></td>
+</tr>
+</tbody></table>
+<h4 id="通信传输"><a href="#通信传输" class="headerlink" title="通信传输"></a>通信传输</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应采用校验技术或密码技术保证通信过程中数据的完整性</td>
+<td>这一项主要说的是对数据传输的完整性做的要求，一般这一项的话就算对数据的完整性进行做校验基本上就可以了，比如说采用SSL的方式进行传输</td>
+<td>这一项测评公司会写：<strong>采用检验技术对数据传输的完整性进行校验</strong></td>
+</tr>
+<tr>
+<td>应采用密码技术保证通信过程中数据的保密性</td>
+<td>这一项和上一项类似都是对数据创数过程中进行做的防护，这个是对数据传输过程中的保密性进行做了要求，这个一般采用的SSL加密方式进行传输基本上就可以满足，比如不用http协议，采用https协议传输等等</td>
+<td>这一项测评公司会写：<strong>对数据传输过程中数据进行加密，采用SSL加密的方式进行传输</strong></td>
+</tr>
+</tbody></table>
+<h4 id="可信验证"><a href="#可信验证" class="headerlink" title="可信验证"></a>可信验证</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可基于可信根对通信设备的系统引导程序、系统程序、重要配置参数和通信应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心。</td>
+<td>这一项是针对可信性做的要求，这个解释起来比较繁琐并且不太容易让人理解，说简单点就是你的通信设备要具有可信性的芯片或者硬件，这个一般测评公司都看可信性报告，来评判是否符合</td>
+<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
+</tr>
+</tbody></table>
+<h3 id="安全区域边界"><a href="#安全区域边界" class="headerlink" title="安全区域边界"></a>安全区域边界</h3><p>安全区域边界主要是针对网络边界做的一项防护要求，比如说在区域边界有没有安装访问控制设备、防火墙设备等等</p>
+<h4 id="边界防护"><a href="#边界防护" class="headerlink" title="边界防护"></a>边界防护</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应保证跨越边界的访问和数据流通过边界设备提供的受控接口进行通信</td>
+<td>这一项主要是会检查是否有技术手段对不受控的接口进行限制或者控制，当然在这一块也会检查我们的拓扑图与实际的链路情况是否相符</td>
+<td>这一项一般测评公司会写：<strong>采用技术手段对不受控的接口进行限制，所提供的拓扑图与实际链路相符</strong></td>
+</tr>
+<tr>
+<td>应能够对非授权设备私自联到内部网络的行为进行检查或限制</td>
+<td>这一项是针对非授权的设备接入的区域网络当中做的限制，这一项测评公司会检查设备的一些接口信息看看是不是有与拓扑不一致的地方，如果有则被认为非授权的设备接入</td>
+<td>这一项一般测评公司会写：<strong>非授权设备无法接入到局域网络中，并做了相应的限制和控制</strong></td>
+</tr>
+<tr>
+<td>应能够对内部用户非授权联到外部网络的行为进行检查或限制</td>
+<td>这一项是针对内部用户未通过授权非法接入到外部网络做的限制，比如说有员工开启手机热点，网络设备通过连接手机热点进行访问互联网等操作，要对这一类行为进行限制</td>
+<td>这一项一般测评公司会写：<strong>封堵了未正在使用的USB接口、网口等等，可以有效防止对内部用户非授权连接外部网络</strong></td>
+</tr>
+<tr>
+<td>应限制无线网络的使用，保证无线网络通过受控的边界设备接入内部网络</td>
+<td>这一项基本上大家都可以满足的，这个是说的机房内的设备不能随意连接无线网络，如果连接了无线网络就要对无线网络进行做访问限制</td>
+<td>这一项一般测评公司会写：<strong>机房内未安装无线网络，所有设备通过有线网络进行通信</strong></td>
+</tr>
+</tbody></table>
+<h4 id="防问控制"><a href="#防问控制" class="headerlink" title="防问控制"></a>防问控制</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信</td>
+<td>这一项说的是你要在网络边界处设置访问控制设备，并且设备内要有相应的访问控制策略，对不受控的访问进行限制访问，比如路由器上有没有做ACL访问控制，防火墙上有没有开启路由策略和ACL等</td>
+<td>这一项一般测评公司会写：<strong>在网络边界安装有防火墙或路由器，并且开启了访问控制策略</strong></td>
+</tr>
+<tr>
+<td>应删除多余或无效的访间控制规则，优化访问控制列表，并保证访问控制规则数量最小化</td>
+<td>这一项是说的不要做一些没有意义的访问控制策略，别入说我允许了这个网段的访问，我又单独写了一条允许这个网段中某个地址的访问限制，这个一般建议设置针对地址的限制</td>
+<td>这一项一般测评公司会写：<strong>边界设备中没有无效的或多余的访问控制规则</strong></td>
+</tr>
+<tr>
+<td>应对源地址、目的地址、源端口、目的端口和协议等进行检查，以允许&#x2F;拒绝数据包进出</td>
+<td>这一项是要求做访问限制的时候要做到细粒度的访问控制，比如说设置高级ACL或者自定义ACL这种的，这个一般也都可以满足现在基本上网络设备都可以满足这种细粒度访问控制</td>
+<td>这一项一般测评公司会写：<strong>边界设备中对访问控制做了细粒度的限制，选择允许或拒绝数据包的进出流量</strong></td>
+</tr>
+<tr>
+<td>应能根据会话状态信息为进出数据流提供明确的允许&#x2F;拒绝访问能力</td>
+<td>这一项是针对有会话状态的访问做了限制要求，边界设备要可以根据会话状态进行限制，这个一般测评公司会检查边界设备上有没有做源地址、目的地址、源端口、目的端口等限制</td>
+<td>这一项一般测评公司会写：<strong>边界设备上对会话状态进行细粒度限制</strong></td>
+</tr>
+<tr>
+<td>应对进出网络的数据流实现基于应用协议和应用内容的访问控制</td>
+<td>这一项基本上就检查一个网络边界是不是部署了访问控制设备，另外就是检查边界访问控制设备上有没有针对协议或者内容做的一些访问控制，策略是否生效了</td>
+<td>这一项一般测评公司会写：<strong>在区域边界安装有防火墙，防火墙内配置有针对协议的访问限制</strong></td>
+</tr>
+</tbody></table>
+<h4 id="入侵防范"><a href="#入侵防范" class="headerlink" title="入侵防范"></a>入侵防范</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在关键网络节点处检测、防止或限制从外部发起的网络攻击行为</td>
+<td>这一项主要是针对网络攻击做的一个防护，主要检查是否具备检查或者阻止外部发起的网络攻击行为的这样的能力，这个安全设备当中是否配置了针对全局的网络安全策略</td>
+<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测外部发起的网络攻击行为</strong></td>
+</tr>
+<tr>
+<td>应在关键网络节点处检测、防止或限制从内部发起的网络攻击行为</td>
+<td>上面一条和这一条不太一样哈，一个是从外部发起的网络攻击行为，一个是从内部发起的网络攻击行为，这个一般也是检查网络安全设备是否具备这种能力，一般有防火墙或者IPS、IDS等设备并且做了安全策略就可以满足的</td>
+<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测内部发起的网络攻击行为</strong></td>
+</tr>
+<tr>
+<td>应采取技术措施对网络行为进行分析，实现对网络攻击特别是新型网络攻击行为的分析</td>
+<td>这一项主要检查是否部署回溯系统或抗APT攻击系统，实现对新型网络攻击行为进行检测和分析，这个其实也很简单的一般防火墙都有这种功能，也就是只要有防火墙基本满足的</td>
+<td>这一项一般测评公司会写：<strong>部署有防火墙设备，可以对网络行为进行分析</strong></td>
+</tr>
+<tr>
+<td>当检测到攻击行为时，记录攻击源 IP、攻击类型、攻击目标、攻击时间，在发生严重入侵事件时应提供报警</td>
+<td>这个一般就是检查你有没有安装这种入侵行为检测的这样设备，设备是否开启了安全策略，并且是否可以有效的记录攻击信息，也就是说发生攻击行为了你要能预警和记录详细的攻击情况</td>
+<td>这一项一般测评公司会写：<strong>部署有IPS&#x2F;IDS设备，可以试试检测攻击行为，并且对攻击行为进行详细记录</strong></td>
+</tr>
+</tbody></table>
+<h4 id="恶意代码和垃圾邮件防范"><a href="#恶意代码和垃圾邮件防范" class="headerlink" title="恶意代码和垃圾邮件防范"></a>恶意代码和垃圾邮件防范</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新</td>
+<td>这一项一般就是看看有没有防恶意代码的产品，部署了产品是不是对恶意代码开启了检测和攻击记录，测评公司可能会验证设备的可用性</td>
+<td>这一项一般测评公司会写：<strong>部署了恶意代码防范产品，可以对恶意代码进行检测和清楚，并且可以实时记录攻击行为</strong></td>
+</tr>
+<tr>
+<td>应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新</td>
+<td>这一项类似于上面一条，就是看看你又没不俗防垃圾邮件的这种防护机制或者设备，能不能对垃圾邮件进行检测和防护</td>
+<td>这一项一般测评公司会写：<strong>部署了防垃圾邮件的相关设备，可以有效对垃圾邮件进行实时监测和防护，开启了垃圾邮件防护机制自动省级和更新</strong></td>
+</tr>
+</tbody></table>
+<h4 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应在网络边界、重要网络节点进行安全审计，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计</td>
+<td>这个就是检查看看是不是具备类似于堡垒机的这样一个产品，对所有的网络设备或者服务器能不能进行审计，一方面是要对所有的用户进行行为审计，另一方面就是要对所有用户行为进行记录</td>
+<td>这一项一般测评公司会写：<strong>部署了安全审计系统，可以对网络边界、重要网络节点以及所有用户进行审计，对用户行为进行记录</strong></td>
+</tr>
+<tr>
+<td>审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息</td>
+<td>这一项是规定了审计记录所包含的内容，审计记录必须包含时间、用户、事件类型、是否成功这些信息，也就是说一定要有这个用户什么时间点对哪个设备或者对象做了什么样的事情，这个事情是否做成功了，这些都要进行记录</td>
+<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计记录可以对日期和事件、用户、事件类型、事件是否成功等内容</strong></td>
+</tr>
+<tr>
+<td>应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等</td>
+<td>这一项是针对审计记录做的防护，要对审计记录进行定期备份，一般审计记录要求要保留半年才能删除，必须要设置相应的策略才可以</td>
+<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计系统对审计日志保留时间做了策略，保留6个月或更长时间，并且对审计记录进行订是备份</strong></td>
+</tr>
+<tr>
+<td>应能对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</td>
+<td>这一项主要是针对远程防护或者互联网用户的行为进行做了限制，核查是否对远程访问用户及互联风访问用户行为单独进行审计分析，并核查审计分析的记录是否包含了用于管理远程访同行为、访问互联网用户行为必要的信息</td>
+<td>这一项一般测评公司会写：<strong>可以对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</strong></td>
+</tr>
+</tbody></table>
+<h4 id="可信验证-1"><a href="#可信验证-1" class="headerlink" title="可信验证"></a>可信验证</h4><table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>攻略</th>
+<th>测评结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可基于可信根对边界设备的系统引导程序、系统程序、重要配置参数和边界防护应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心</td>
+<td>这一项和前面写的一样都是对可信性做的防范</td>
+<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
+</tr>
+</tbody></table>
+<p>以上就是关于安全通信网络和安全区域边界的攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
+]]></content>
+      <categories>
+        <category>安全</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>等保测评</tag>
+        <tag>安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>等保三级安全要求简要攻略-安全计算环境</title>
     <url>/2024/12/24/dbcp05/</url>
     <content><![CDATA[<p>今天我们来攻略一下等保2.0国家标准中 <strong>《信息安全技术网络安全等级保护基本要求》</strong> 所对三级系统所提出的要求项以及针对这些要求项如何去应对或者说是如何去做防护。废话不多说直接上正题</p>
@@ -14577,247 +14818,6 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
 </tr>
 </tbody></table>
 <p>以上就是关于等保测评安全计算环境的测评攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
-]]></content>
-      <categories>
-        <category>安全</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>等保测评</tag>
-        <tag>安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>等保三级安全要求简要攻略-安全通信网络和安全区域边界</title>
-    <url>/2024/12/24/dbcp04/</url>
-    <content><![CDATA[<p>之前有两篇文章写了为什么要做等保测评、等保测评的含义以及等保测评这份工作的一些职责和一些常见的FAQ，没有看过的朋友可以先去看下我的另外两篇文章：<a href="https://blog.csdn.net/KH_FC/article/details/115628039">一起聊聊等保测评</a> 和 <a href="https://blog.csdn.net/KH_FC/article/details/127748882">一起聊聊等保测评工作内容以及FAQ</a> 。</p>
-<span id="more"></span>
-<p>今天我们来攻略一下等保2.0国家标准中《<strong>信息安全技术网络安全等级保护基本要求</strong>》所对三级系统所提出的要求项以及针对这些要求项如何去应对或者说是如何去做防护。废话不多说直接上正题</p>
-<p>在等保三级中分为十个大项分别是：安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设和管理、安全运维管理，这十大项里面有N个小项来做限制，因为小项比较多，这篇文章主要是针对安全通信网络和安全区域边界来说的，后面也会慢慢把所有的检查项都写给大家攻略的<br><strong>下面所写的攻略以及测评结果仅供参考，要以实际情况为准。</strong></p>
-<h3 id="安全通信网络"><a href="#安全通信网络" class="headerlink" title="安全通信网络"></a>安全通信网络</h3><p>安全通信网络这一块主要是针对网络传输、网络设备、通信线路等等一些对象来做的管理或者防护的一些要求，在这一块基本上都是可以满足的，具体来看一下每一项都是怎么要求得吧</p>
-<h4 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应保证网络设备的业务处理能力满足业务高峰期需要</td>
-<td>这一项主要是说一些业务系统对可用性要求比较高的，网络设备的业务处理能力要可以支撑业务高峰时的所需要的业务支撑能力，不能因为网络设备的原因导致宕机或者服务中断的情况，这一块基本上都可以满足</td>
-<td>这一项测评公司会写：<strong>核心网络设备采用什么型号的，可以满足业务高峰的需求，并且置顶了随着业务增长不断提高业务的处理能力</strong></td>
-</tr>
-<tr>
-<td>应保证网络各个部分的带宽满足业务高峰期需要</td>
-<td>这一项主要是说的我们网络带宽要满足业务高峰时所需的带宽，这个目前机房内基本上都采用百兆的网线甚至有直接做千兆网线接入的，所以说这个基本上也就不存在不满足的这种情况</td>
-<td>这一项测评公司会写：<strong>网络中采用百兆或者千兆的网线接入，可以从容应对业务高峰</strong></td>
-</tr>
-<tr>
-<td>应划分不同的网络区域，并按照方便管理和控制的原则为各网络区域分配地址</td>
-<td>这一项将主要是针对我们网络子网的划分做出了要求，根据不同重要成都的业务系统划分不同的子网，只要是所有网络都在一个子网里面就算不合格的，这一项一般也没有不合格的，基本上都会有划分子网</td>
-<td>这一项测评公司会写：<strong>针对不同重要程度的业务系统划分了不同的子网来进行管理</strong></td>
-</tr>
-<tr>
-<td>应避免将重要网络区域部署在边界处，重要网络区域与其他网络区域之间应采取可靠的技术隔离手段</td>
-<td>这一项主要是针对划分的不同区域之间有没有做网络访问控制，比如说各个区域之间网络无限制可随意访问，这样就不行的，避免发生横向攻击</td>
-<td>这一项测评公司会写：<strong>在各区域边界部署有访问控制设备，并且设置了不同区域之间对的访问限制</strong></td>
-</tr>
-<tr>
-<td>应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性</td>
-<td>这一项要求的是网络链路不能是单链路，要做有冗余，当出现故障或者安全事故时可以保障网络的可用性，一般常做的就是核心设备的冗余，比如核心交换、路由等冗余</td>
-<td>这一项测评公司会写：<strong>核心设备或关键网络采用冗余设计，采用双机热备和负载均衡等方式</strong></td>
-</tr>
-</tbody></table>
-<h4 id="通信传输"><a href="#通信传输" class="headerlink" title="通信传输"></a>通信传输</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应采用校验技术或密码技术保证通信过程中数据的完整性</td>
-<td>这一项主要说的是对数据传输的完整性做的要求，一般这一项的话就算对数据的完整性进行做校验基本上就可以了，比如说采用SSL的方式进行传输</td>
-<td>这一项测评公司会写：<strong>采用检验技术对数据传输的完整性进行校验</strong></td>
-</tr>
-<tr>
-<td>应采用密码技术保证通信过程中数据的保密性</td>
-<td>这一项和上一项类似都是对数据创数过程中进行做的防护，这个是对数据传输过程中的保密性进行做了要求，这个一般采用的SSL加密方式进行传输基本上就可以满足，比如不用http协议，采用https协议传输等等</td>
-<td>这一项测评公司会写：<strong>对数据传输过程中数据进行加密，采用SSL加密的方式进行传输</strong></td>
-</tr>
-</tbody></table>
-<h4 id="可信验证"><a href="#可信验证" class="headerlink" title="可信验证"></a>可信验证</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>可基于可信根对通信设备的系统引导程序、系统程序、重要配置参数和通信应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心。</td>
-<td>这一项是针对可信性做的要求，这个解释起来比较繁琐并且不太容易让人理解，说简单点就是你的通信设备要具有可信性的芯片或者硬件，这个一般测评公司都看可信性报告，来评判是否符合</td>
-<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
-</tr>
-</tbody></table>
-<h3 id="安全区域边界"><a href="#安全区域边界" class="headerlink" title="安全区域边界"></a>安全区域边界</h3><p>安全区域边界主要是针对网络边界做的一项防护要求，比如说在区域边界有没有安装访问控制设备、防火墙设备等等</p>
-<h4 id="边界防护"><a href="#边界防护" class="headerlink" title="边界防护"></a>边界防护</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应保证跨越边界的访问和数据流通过边界设备提供的受控接口进行通信</td>
-<td>这一项主要是会检查是否有技术手段对不受控的接口进行限制或者控制，当然在这一块也会检查我们的拓扑图与实际的链路情况是否相符</td>
-<td>这一项一般测评公司会写：<strong>采用技术手段对不受控的接口进行限制，所提供的拓扑图与实际链路相符</strong></td>
-</tr>
-<tr>
-<td>应能够对非授权设备私自联到内部网络的行为进行检查或限制</td>
-<td>这一项是针对非授权的设备接入的区域网络当中做的限制，这一项测评公司会检查设备的一些接口信息看看是不是有与拓扑不一致的地方，如果有则被认为非授权的设备接入</td>
-<td>这一项一般测评公司会写：<strong>非授权设备无法接入到局域网络中，并做了相应的限制和控制</strong></td>
-</tr>
-<tr>
-<td>应能够对内部用户非授权联到外部网络的行为进行检查或限制</td>
-<td>这一项是针对内部用户未通过授权非法接入到外部网络做的限制，比如说有员工开启手机热点，网络设备通过连接手机热点进行访问互联网等操作，要对这一类行为进行限制</td>
-<td>这一项一般测评公司会写：<strong>封堵了未正在使用的USB接口、网口等等，可以有效防止对内部用户非授权连接外部网络</strong></td>
-</tr>
-<tr>
-<td>应限制无线网络的使用，保证无线网络通过受控的边界设备接入内部网络</td>
-<td>这一项基本上大家都可以满足的，这个是说的机房内的设备不能随意连接无线网络，如果连接了无线网络就要对无线网络进行做访问限制</td>
-<td>这一项一般测评公司会写：<strong>机房内未安装无线网络，所有设备通过有线网络进行通信</strong></td>
-</tr>
-</tbody></table>
-<h4 id="防问控制"><a href="#防问控制" class="headerlink" title="防问控制"></a>防问控制</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信</td>
-<td>这一项说的是你要在网络边界处设置访问控制设备，并且设备内要有相应的访问控制策略，对不受控的访问进行限制访问，比如路由器上有没有做ACL访问控制，防火墙上有没有开启路由策略和ACL等</td>
-<td>这一项一般测评公司会写：<strong>在网络边界安装有防火墙或路由器，并且开启了访问控制策略</strong></td>
-</tr>
-<tr>
-<td>应删除多余或无效的访间控制规则，优化访问控制列表，并保证访问控制规则数量最小化</td>
-<td>这一项是说的不要做一些没有意义的访问控制策略，别入说我允许了这个网段的访问，我又单独写了一条允许这个网段中某个地址的访问限制，这个一般建议设置针对地址的限制</td>
-<td>这一项一般测评公司会写：<strong>边界设备中没有无效的或多余的访问控制规则</strong></td>
-</tr>
-<tr>
-<td>应对源地址、目的地址、源端口、目的端口和协议等进行检查，以允许&#x2F;拒绝数据包进出</td>
-<td>这一项是要求做访问限制的时候要做到细粒度的访问控制，比如说设置高级ACL或者自定义ACL这种的，这个一般也都可以满足现在基本上网络设备都可以满足这种细粒度访问控制</td>
-<td>这一项一般测评公司会写：<strong>边界设备中对访问控制做了细粒度的限制，选择允许或拒绝数据包的进出流量</strong></td>
-</tr>
-<tr>
-<td>应能根据会话状态信息为进出数据流提供明确的允许&#x2F;拒绝访问能力</td>
-<td>这一项是针对有会话状态的访问做了限制要求，边界设备要可以根据会话状态进行限制，这个一般测评公司会检查边界设备上有没有做源地址、目的地址、源端口、目的端口等限制</td>
-<td>这一项一般测评公司会写：<strong>边界设备上对会话状态进行细粒度限制</strong></td>
-</tr>
-<tr>
-<td>应对进出网络的数据流实现基于应用协议和应用内容的访问控制</td>
-<td>这一项基本上就检查一个网络边界是不是部署了访问控制设备，另外就是检查边界访问控制设备上有没有针对协议或者内容做的一些访问控制，策略是否生效了</td>
-<td>这一项一般测评公司会写：<strong>在区域边界安装有防火墙，防火墙内配置有针对协议的访问限制</strong></td>
-</tr>
-</tbody></table>
-<h4 id="入侵防范"><a href="#入侵防范" class="headerlink" title="入侵防范"></a>入侵防范</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在关键网络节点处检测、防止或限制从外部发起的网络攻击行为</td>
-<td>这一项主要是针对网络攻击做的一个防护，主要检查是否具备检查或者阻止外部发起的网络攻击行为的这样的能力，这个安全设备当中是否配置了针对全局的网络安全策略</td>
-<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测外部发起的网络攻击行为</strong></td>
-</tr>
-<tr>
-<td>应在关键网络节点处检测、防止或限制从内部发起的网络攻击行为</td>
-<td>上面一条和这一条不太一样哈，一个是从外部发起的网络攻击行为，一个是从内部发起的网络攻击行为，这个一般也是检查网络安全设备是否具备这种能力，一般有防火墙或者IPS、IDS等设备并且做了安全策略就可以满足的</td>
-<td>这一项一般测评公司会写：<strong>局域网内部署有防火墙或者IPS、IDS等设备，可以有效阻止和检测内部发起的网络攻击行为</strong></td>
-</tr>
-<tr>
-<td>应采取技术措施对网络行为进行分析，实现对网络攻击特别是新型网络攻击行为的分析</td>
-<td>这一项主要检查是否部署回溯系统或抗APT攻击系统，实现对新型网络攻击行为进行检测和分析，这个其实也很简单的一般防火墙都有这种功能，也就是只要有防火墙基本满足的</td>
-<td>这一项一般测评公司会写：<strong>部署有防火墙设备，可以对网络行为进行分析</strong></td>
-</tr>
-<tr>
-<td>当检测到攻击行为时，记录攻击源 IP、攻击类型、攻击目标、攻击时间，在发生严重入侵事件时应提供报警</td>
-<td>这个一般就是检查你有没有安装这种入侵行为检测的这样设备，设备是否开启了安全策略，并且是否可以有效的记录攻击信息，也就是说发生攻击行为了你要能预警和记录详细的攻击情况</td>
-<td>这一项一般测评公司会写：<strong>部署有IPS&#x2F;IDS设备，可以试试检测攻击行为，并且对攻击行为进行详细记录</strong></td>
-</tr>
-</tbody></table>
-<h4 id="恶意代码和垃圾邮件防范"><a href="#恶意代码和垃圾邮件防范" class="headerlink" title="恶意代码和垃圾邮件防范"></a>恶意代码和垃圾邮件防范</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新</td>
-<td>这一项一般就是看看有没有防恶意代码的产品，部署了产品是不是对恶意代码开启了检测和攻击记录，测评公司可能会验证设备的可用性</td>
-<td>这一项一般测评公司会写：<strong>部署了恶意代码防范产品，可以对恶意代码进行检测和清楚，并且可以实时记录攻击行为</strong></td>
-</tr>
-<tr>
-<td>应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新</td>
-<td>这一项类似于上面一条，就是看看你又没不俗防垃圾邮件的这种防护机制或者设备，能不能对垃圾邮件进行检测和防护</td>
-<td>这一项一般测评公司会写：<strong>部署了防垃圾邮件的相关设备，可以有效对垃圾邮件进行实时监测和防护，开启了垃圾邮件防护机制自动省级和更新</strong></td>
-</tr>
-</tbody></table>
-<h4 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应在网络边界、重要网络节点进行安全审计，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计</td>
-<td>这个就是检查看看是不是具备类似于堡垒机的这样一个产品，对所有的网络设备或者服务器能不能进行审计，一方面是要对所有的用户进行行为审计，另一方面就是要对所有用户行为进行记录</td>
-<td>这一项一般测评公司会写：<strong>部署了安全审计系统，可以对网络边界、重要网络节点以及所有用户进行审计，对用户行为进行记录</strong></td>
-</tr>
-<tr>
-<td>审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息</td>
-<td>这一项是规定了审计记录所包含的内容，审计记录必须包含时间、用户、事件类型、是否成功这些信息，也就是说一定要有这个用户什么时间点对哪个设备或者对象做了什么样的事情，这个事情是否做成功了，这些都要进行记录</td>
-<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计记录可以对日期和事件、用户、事件类型、事件是否成功等内容</strong></td>
-</tr>
-<tr>
-<td>应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等</td>
-<td>这一项是针对审计记录做的防护，要对审计记录进行定期备份，一般审计记录要求要保留半年才能删除，必须要设置相应的策略才可以</td>
-<td>这一项一般测评公司会写：<strong>部署有安全审计系统，审计系统对审计日志保留时间做了策略，保留6个月或更长时间，并且对审计记录进行订是备份</strong></td>
-</tr>
-<tr>
-<td>应能对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</td>
-<td>这一项主要是针对远程防护或者互联网用户的行为进行做了限制，核查是否对远程访问用户及互联风访问用户行为单独进行审计分析，并核查审计分析的记录是否包含了用于管理远程访同行为、访问互联网用户行为必要的信息</td>
-<td>这一项一般测评公司会写：<strong>可以对远程访问的用户行为、访问互联网的用户行为等单独进行行为审计和数据分析</strong></td>
-</tr>
-</tbody></table>
-<h4 id="可信验证-1"><a href="#可信验证-1" class="headerlink" title="可信验证"></a>可信验证</h4><table>
-<thead>
-<tr>
-<th>要求项</th>
-<th>攻略</th>
-<th>测评结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>可基于可信根对边界设备的系统引导程序、系统程序、重要配置参数和边界防护应用程序等进行可信验证，并在应用程序的关键执行环节进行动态可信验证，在检测到其可信性受到破坏后进行报警，并将验证结果形成审计记录送至安全管理中心</td>
-<td>这一项和前面写的一样都是对可信性做的防范</td>
-<td>测评公司一般会写：<strong>通信设备具有可信性报告，并且可以对可信性进行验证</strong></td>
-</tr>
-</tbody></table>
-<p>以上就是关于安全通信网络和安全区域边界的攻略，大家有没有发现越往后检查项越是类似的，基本上都是从架构-访问控制-入侵检测-审计-可信验证，这几方面来说的，往后除了机房管理条例之外，剩下的都大差不差的了</p>
 ]]></content>
       <categories>
         <category>安全</category>
