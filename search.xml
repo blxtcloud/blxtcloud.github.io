@@ -330,6 +330,53 @@
       </tags>
   </entry>
   <entry>
+    <title>schedule-执行周期性任务</title>
+    <url>/2024/12/24/2024122404/</url>
+    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
+<span id="more"></span>
+
+<p>相较于linux的crontab对比：</p>
+<ol>
+<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
+<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
+<li>轻量级，无需任何依赖</li>
+</ol>
+<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
+
+<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
+</blockquote>
+<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
+</blockquote>
+<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>python</tag>
+        <tag>schedule</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>openEuler大版本升级方法</title>
     <url>/2024/12/24/2024122403/</url>
     <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
@@ -572,53 +619,6 @@
       </tags>
   </entry>
   <entry>
-    <title>schedule-执行周期性任务</title>
-    <url>/2024/12/24/2024122404/</url>
-    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
-<span id="more"></span>
-
-<p>相较于linux的crontab对比：</p>
-<ol>
-<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
-<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
-<li>轻量级，无需任何依赖</li>
-</ol>
-<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
-
-<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-
-<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
-</blockquote>
-<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
-
-
-<blockquote>
-<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
-</blockquote>
-<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>python</tag>
-        <tag>schedule</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次pip/pip3安装uwsgi报错</title>
     <url>/2024/12/26/2024122601/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
@@ -636,8 +636,8 @@
         <category>python</category>
       </categories>
       <tags>
-        <tag>随笔</tag>
         <tag>python</tag>
+        <tag>随笔</tag>
         <tag>pip</tag>
       </tags>
   </entry>
@@ -1999,6 +1999,28 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>入门级别 Nginx 常用配置清单</title>
+    <url>/2024/12/26/2024122605/</url>
+    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
+<span id="more"></span>
+<p><strong>侦听端口</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>访问日志</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>windows涉及所有协议及默认端口</title>
     <url>/2024/12/26/2024122606/</url>
     <content><![CDATA[<p>记录了一些windwos常见和不常见的端口，可能有些服务或者协议说明不准确或不正确，也在努力学习中，大家有发现不正确的请及时告诉我哦！我这边及时改正以免错误引导其他同学。</p>
@@ -3110,28 +3132,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>入门级别 Nginx 常用配置清单</title>
-    <url>/2024/12/26/2024122605/</url>
-    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
-<span id="more"></span>
-<p><strong>侦听端口</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>访问日志</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>域名</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>分享一款开源堡垒机-jumpserver</title>
     <url>/2024/12/26/2024122607/</url>
     <content><![CDATA[<p>JumpServer是由FIT2CLOUD（飞致远）公司旗下一款开源的堡垒机，这款也是全球首款开源的堡垒机，使用 GNU GPL v2.0 开源协议，是符合 4A 规范的运维安全审计系统，使用 Python 开发，遵循 Web 2.0 规范，配备了业界领先的 Web Terminal 方案，交互界面美观、用户体验好，同时采纳分布式架构，支持多机房跨区域部署以及横向扩展，无资产数量及并发限制。这款开源堡垒机不但提供了社区开源版本并且还提供了企业使用的企业版本，企业版功能更加强大。</p>
@@ -3385,101 +3385,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
-    <url>/2024/12/28/2024122802/</url>
-    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
-<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP</strong></li>
-</ol>
-<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
-
-<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
-<ol>
-<li><strong>IPv6-双栈</strong></li>
-</ol>
-<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
-
-<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
-<ol>
-<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
-
-<ol>
-<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
-</ol>
-<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP使用指导</strong></li>
-</ol>
-<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
-
-<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
-
-<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
-
-<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
-
-<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
-
-<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
-<ol>
-<li><strong>IPv6-双栈使用指导</strong></li>
-</ol>
-<ol start="2">
-<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
-</ol>
-<ul>
-<li>创建IPv6子网，开启子网的IPv6功能：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
-
-<ul>
-<li>添加IPv6安全组规则和ACL规则：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
-
-<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
-
-<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
-
-<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
-<ul>
-<li>购买共享带宽：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
-
-<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
-
-<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
-<ul>
-<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
-<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
-<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
-<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
-
-<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
-<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>IPV6</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python实现AI图像识别-身份证识别</title>
     <url>/2024/12/28/2024122801/</url>
     <content><![CDATA[<p>图像识别说白了就是把一张照片上面的文字进行提取，提供工作效率</p>
@@ -3620,67 +3525,97 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>IPV6改造 华为云如此简单</title>
-    <url>/2024/12/28/2024122804/</url>
-    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
-<ul>
-<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
-<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
-<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
-<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
-<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
-</ul>
-<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
-<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
-<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
-
-<blockquote>
-<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
-</blockquote>
-<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
-<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
-</li>
-<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
-</li>
+    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
+    <url>/2024/12/28/2024122802/</url>
+    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
+<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP</strong></li>
 </ol>
-<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
 
-<ul>
-<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
-<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
-<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
-</ul>
-<blockquote>
-<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
-</blockquote>
-<ul>
-<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
-</ul>
+<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
 <ol>
-<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+<li><strong>IPv6-双栈</strong></li>
+</ol>
+<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
+
+<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
+<ol>
+<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
+
+<ol>
+<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
+</ol>
+<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP使用指导</strong></li>
+</ol>
+<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
+
+<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
+
+<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
+
+<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
+
+<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
+
+<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
+<ol>
+<li><strong>IPv6-双栈使用指导</strong></li>
+</ol>
+<ol start="2">
+<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
 </ol>
 <ul>
-<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
-<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+<li>创建IPv6子网，开启子网的IPv6功能：</li>
 </ul>
-<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
 
-<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+<ul>
+<li>添加IPv6安全组规则和ACL规则：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
 
-<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
 
-<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
-]]></content>
+<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
+
+<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
+<ul>
+<li>购买共享带宽：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
+
+<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
+
+<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
+<ul>
+<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
+<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
+<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
+<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
+
+<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
+<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
       <categories>
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>随笔</tag>
         <tag>IPV6</tag>
       </tags>
   </entry>
@@ -3785,8 +3720,73 @@ MySql：经典安装 MySql 5.6
       </categories>
       <tags>
         <tag>云计算</tag>
-        <tag>随笔</tag>
         <tag>python</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IPV6改造 华为云如此简单</title>
+    <url>/2024/12/28/2024122804/</url>
+    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
+<ul>
+<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
+<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
+<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
+<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
+<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
+</ul>
+<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
+<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
+<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
+
+<blockquote>
+<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
+</blockquote>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
+</li>
+<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
+</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+
+<ul>
+<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
+<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
+<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
+</ul>
+<blockquote>
+<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
+</blockquote>
+<ul>
+<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
+</ul>
+<ol>
+<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+</ol>
+<ul>
+<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
+<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+
+<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+
+<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+
+<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -4981,6 +4981,159 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>自学PHP笔记 (三) 类型转换</title>
+    <url>/2025/01/13/2025011302/</url>
+    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>转换类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(bool)(boolean)</td>
+<td>转换为布尔值</td>
+</tr>
+<tr>
+<td>(string)</td>
+<td>转换为字符串</td>
+</tr>
+<tr>
+<td>(int)(integer)</td>
+<td>转换为整数</td>
+</tr>
+<tr>
+<td>(float)(double)(real)</td>
+<td>转换为浮点型</td>
+</tr>
+<tr>
+<td>(array)</td>
+<td>转换为数组</td>
+</tr>
+<tr>
+<td>(object)</td>
+<td>转换为对象</td>
+</tr>
+<tr>
+<td>(unset)</td>
+<td>转换为NULL，也就是删除变量</td>
+</tr>
+<tr>
+<td>(binary)b前缀</td>
+<td>转换为二进制字符串</td>
+</tr>
+<tr>
+<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
+<ol>
+<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
+<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
+<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
+<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
+<li>NULL总会被转换为空的字符串。</li>
+</ol>
+<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
+<ol>
+<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
+<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
+</ol>
+<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
+<ol>
+<li><code>0</code>:整数零</li>
+<li><code>0.0</code>：浮点数零</li>
+<li><code>&quot;0&quot;</code>：字符串零</li>
+<li><code>&quot;&quot;</code>：空字符串</li>
+<li><code>空数组</code>:没有任何值得数组</li>
+<li><code>空对象</code>：没有任何成员变量得对象</li>
+<li><code>NULL</code>：特殊类型NULL</li>
+<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
+<table>
+<thead>
+<tr>
+<th>检测函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>is_bool</td>
+<td>检测变量是否为布尔值</td>
+</tr>
+<tr>
+<td>is_string</td>
+<td>检测变量是否为字符串</td>
+</tr>
+<tr>
+<td>is_float</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+<tr>
+<td>is_int</td>
+<td>检测变量是否为整数</td>
+</tr>
+<tr>
+<td>is_null</td>
+<td>检测变量是否为空</td>
+</tr>
+<tr>
+<td>is_array</td>
+<td>检测变量是否为数组</td>
+</tr>
+<tr>
+<td>is_object</td>
+<td>检测变量是否为对象</td>
+</tr>
+<tr>
+<td>is_numeric</td>
+<td>检测变量是否为数字或者是数字组成得字符串</td>
+</tr>
+<tr>
+<td>is_double</td>
+<td>检测变量是否为浮点数</td>
+</tr>
+</tbody></table>
+<p>【<strong>示例1</strong>】判断是否为整数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>$int不是浮点数类型</code></p>
+<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
+<ul>
+<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
+<li><code>var_dump</code>函数即输出值也输出类型</li>
+</ul>
+<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：<code>double</code>也就是浮点数类型</p>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自学PHP笔记(四) PHP变量和常量</title>
     <url>/2025/01/13/2025011301/</url>
     <content><![CDATA[<p>PHP中变量有普通变量、可变变量和预定义变量，而常量就是普通变量和预定义变量。</p>
@@ -5182,326 +5335,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学PHP笔记 (三) 类型转换</title>
-    <url>/2025/01/13/2025011302/</url>
-    <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>转换类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>(bool)(boolean)</td>
-<td>转换为布尔值</td>
-</tr>
-<tr>
-<td>(string)</td>
-<td>转换为字符串</td>
-</tr>
-<tr>
-<td>(int)(integer)</td>
-<td>转换为整数</td>
-</tr>
-<tr>
-<td>(float)(double)(real)</td>
-<td>转换为浮点型</td>
-</tr>
-<tr>
-<td>(array)</td>
-<td>转换为数组</td>
-</tr>
-<tr>
-<td>(object)</td>
-<td>转换为对象</td>
-</tr>
-<tr>
-<td>(unset)</td>
-<td>转换为NULL，也就是删除变量</td>
-</tr>
-<tr>
-<td>(binary)b前缀</td>
-<td>转换为二进制字符串</td>
-</tr>
-<tr>
-<td>除了上面几种转换方式还有一个使用<code>settype()</code>函数进行转换</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>【<strong>示例</strong>】使用<code>settype()</code>函数进行数据类型转换</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">123</span>;</span><br><span class="line">	<span class="title function_ invoke__">settype</span>( <span class="variable">$b</span>, <span class="string">&quot;float&quot;</span>);</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>(<span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>float(123)</code><br>【<strong>方法</strong>】<code>settype()</code>使用方法<br>函数内第一个为变量，在上面示例中为<code>$b</code>，第二个参数为数据类型，也就是你想将这个变量值转换为哪种类型，在上面示例中使用的是<code>float</code>，在PHP7版本中支持boolean、float、integer、string、null、array、object。<strong>注意</strong>：此函数只能返回布尔值，可用于判断，类型转换成功则返回<code>true</code>，转换失败则返回<code>false</code><br>【<strong>示例</strong>】转换数据类型的常用方法</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$num</span> = <span class="string">&#x27;123abc&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">integer</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">float</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">float</span>(<span class="number">123</span>)</span><br><span class="line"><span class="keyword">string</span>(<span class="number">6</span>) <span class="string">&quot;123abc&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-转换为字符串"><a href="#1-转换为字符串" class="headerlink" title="1.转换为字符串"></a>1.转换为字符串</h2><p>一个值可以通过在值前面加上<code>(string)</code>或者<code>(strval)</code>函数来转换为字符串，在一个需要字符串的表达式中，字符串会自动转换，在使用函数<code>echo()</code>或者<code>print()</code>时，或者在一个变量和一个字符串进行比较时，就会发生这种转型。**<code>print()</code>类似于<code>print_r()</code><strong>。<br>【</strong>示例**】</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abcdef&#x27;</span>;</span><br><span class="line">	<span class="variable">$num</span> = <span class="number">12345.123</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">string</span>)<span class="variable">$num</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$str</span> == <span class="string">&#x27;abcdef&#x27;</span>) &#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;12345.123&quot;</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>【<strong>注意</strong>】在进行字符串转换时应注意以下几点：</p>
-<ol>
-<li>一个布尔值被转换时则会将<code>true</code>转换成<code>1</code>，而<code>false</code>值将会被转换为空<code>&quot;&quot;</code><strong>这里空不是NULL，而是空的字符串</strong>，这种转换可以在布尔值和字符串之间随意转换。</li>
-<li>一个整数或者浮点数被转换字符串，则会转换为数字的字面样式的字符串，包括采用科学技术法记录的浮点数。</li>
-<li>数组被转换为字符串<code>Aaary</code>，因此使用函数<code>echo()</code>或者<code>print()</code>无法正确的显示出数组的值，如果想要正确输出数组中的值则需要采用<code>echo (array(&#39;$a&#39;))</code>这种方式进行，也就是读取数组中值的方法。</li>
-<li>资源总会被转换为<code>Resource id#1</code>结构的字符串，其中1是PHP分配给该资源独有的数字。</li>
-<li>NULL总会被转换为空的字符串。</li>
-</ol>
-<h2 id="2-转换为整数"><a href="#2-转换为整数" class="headerlink" title="2.转换为整数"></a>2.转换为整数</h2><p>想要将一个值转换为整数，可以使用<code>(int)</code>或者<code>(integer)</code>进行强制转换，不过大多数都不需要进行转换，在使用运算符、函数或者判断数值需要一个整数值时，值会自动转换为整数，还可以通过<code>intval()</code>函数进行转换。<br>【<strong>注意</strong>】在进行转换整数时需要注意以下两点：</p>
-<ol>
-<li>当要将布尔值转换为整数时，则会将布尔值中<code>true</code>转换为<code>1</code>，<code>false</code>则会被转换为<code>0</code>。</li>
-<li>当要将浮点数转换为整数时，将向零取整，如果浮点数超出了整数范围，则转换结果变得不容易控制，这里不建议将未知的浮点数转换为整数，因为获取的结果可能不是你想象的那样哦，还有就是向零取整并不是四舍五入。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$bool</span> = <span class="literal">true</span>;</span><br><span class="line">	<span class="variable">$float</span> = <span class="number">10.6111</span>;</span><br><span class="line">	<span class="variable">$abc</span> = ( <span class="number">0.1</span> + <span class="number">0.7</span> ) *<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$bool</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$float</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$abc</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
-这个示例可以看出正常情况下<code>$abc</code>运算结果为<code>8</code>，但是当转换为整型后确输出了<code>7</code>，输出结果不正确，所以在浮点数转换整数时一定要注意。</li>
-</ol>
-<h2 id="3-转换为布尔值"><a href="#3-转换为布尔值" class="headerlink" title="3. 转换为布尔值"></a>3. 转换为布尔值</h2><p>想要将一个值转换为布尔值是比较简单的，只需要使用<code>(bool)</code>或者<code>(boolean)</code>来强制转换为布尔值即可，大部分情况下是不需要进行转换的，当使用运算符、函数或者做判断时都可以自动转换为布尔值的。<br>【<strong>注意</strong>】在转换布尔值时需要注意下面几个值转换则会转换为<code>false</code></p>
-<ol>
-<li><code>0</code>:整数零</li>
-<li><code>0.0</code>：浮点数零</li>
-<li><code>&quot;0&quot;</code>：字符串零</li>
-<li><code>&quot;&quot;</code>：空字符串</li>
-<li><code>空数组</code>:没有任何值得数组</li>
-<li><code>空对象</code>：没有任何成员变量得对象</li>
-<li><code>NULL</code>：特殊类型NULL</li>
-<li>从没有任何标记得XML文档生成得SimpleXML对象<br>除了以上值所有类型所有值都会转换为<code>true</code>。<br>【<strong>示例</strong>】<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$int</span> = <span class="number">1</span>;</span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$array</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$int</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">	<span class="title function_ invoke__">var_dump</span>((<span class="keyword">bool</span>)<span class="variable">$str</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">bool</span>(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="4-检测数据类型"><a href="#4-检测数据类型" class="headerlink" title="4. 检测数据类型"></a>4. 检测数据类型</h2><p>在很多时候都需要由程序自动去判断数据类型，PHP内置了一些检测数据类型得函数，可以根据不同得类型进行检测，判断是否属于某种类型，如果符合则返回<code>true</code>，如果不符合则返回<code>false</code>。常用得数据类型检测函数：</p>
-<table>
-<thead>
-<tr>
-<th>检测函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>is_bool</td>
-<td>检测变量是否为布尔值</td>
-</tr>
-<tr>
-<td>is_string</td>
-<td>检测变量是否为字符串</td>
-</tr>
-<tr>
-<td>is_float</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-<tr>
-<td>is_int</td>
-<td>检测变量是否为整数</td>
-</tr>
-<tr>
-<td>is_null</td>
-<td>检测变量是否为空</td>
-</tr>
-<tr>
-<td>is_array</td>
-<td>检测变量是否为数组</td>
-</tr>
-<tr>
-<td>is_object</td>
-<td>检测变量是否为对象</td>
-</tr>
-<tr>
-<td>is_numeric</td>
-<td>检测变量是否为数字或者是数字组成得字符串</td>
-</tr>
-<tr>
-<td>is_double</td>
-<td>检测变量是否为浮点数</td>
-</tr>
-</tbody></table>
-<p>【<strong>示例1</strong>】判断是否为整数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_int</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是整数类型，并且整数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是整数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int是整数类型，并且整数值为100</code><br>【<strong>示例2</strong>】判断是否为浮点数</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_ invoke__">is_float</span>(<span class="variable">$int</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;是浮点数类型，并且浮点数值为<span class="subst">$int</span>&quot;</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;$int&#x27;</span>.<span class="string">&quot;不是浮点数类型&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>$int不是浮点数类型</code></p>
-<p>【<strong>小灶</strong>】在测试字符时经常会遇到不知道会输出什么类型得值，也不知道自己写得变量是什么类型时，可以采用<code>gettype()</code>或者<code>var_dump()</code>查看变量或者值得数据类型</p>
-<ul>
-<li><code>gettype</code>函数只输出值或变量得类型，不会输出值</li>
-<li><code>var_dump</code>函数即输出值也输出类型</li>
-</ul>
-<p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：<code>double</code>也就是浮点数类型</p>
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>华为云-容器引擎CCE-部署Nginx应用</title>
-    <url>/2025/01/13/2025011305/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="注册华为云账号"><a href="#注册华为云账号" class="headerlink" title="注册华为云账号"></a>注册华为云账号</h3><p>进入华为云官网，点击右上角“注册账号”，选择“华为云”，输入信息进行注册。</p>
-<span id="more"></span>
-<!-- ![注册页面](https://i-blog.csdnimg.cn/blog_migrate/0cf4387f3d30d0e641735d531bc4c802.png) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/0cf4387f3d30d0e641735d531bc4c802.png">'); </script><br>
-<p>输入相关信息注册，如已有账号可直接参考下面登录进行登录操作</p>
-<h3 id="登录华为云账号"><a href="#登录华为云账号" class="headerlink" title="登录华为云账号"></a>登录华为云账号</h3><!-- ![登录页面](https://i-blog.csdnimg.cn/blog_migrate/9bb1c32fb70a4745e37b6b310e9a5d1c.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736733082/9bb1c32fb70a4745e37b6b310e9a5d1c.png">'); </script>
-
-<h3 id="实名认证"><a href="#实名认证" class="headerlink" title="实名认证"></a>实名认证</h3><p>登录后需进行实名认证后才可进行接下来的一些列操作</p>
-<p><strong>单击账号名下拉框中的“账号中心”。</strong><br>进入“账号中心”页面。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ae5aff820065a68f196e493f07e7e96b.png) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/ae5aff820065a68f196e493f07e7e96b.png">'); </script><br>
-
-<p><strong>单击左侧导航中的“实名认证”，选择账号类型（个人账号&#x2F;企业账号），根据页面提示进行实名认证。</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7c54e4c7c4f47c8b4d15b88188442859.png) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/7c54e4c7c4f47c8b4d15b88188442859.png">'); </script>
-
-<p><strong>实名认证类型介绍</strong><br>实名认证详细介绍</p>
-<table>
-<thead>
-<tr>
-<th>账号类型</th>
-<th>认证类型</th>
-<th>详细操作知道</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>个人账号</td>
-<td>推荐扫码认证（即时完成认证）</td>
-<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0133456714.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行扫码认证</a>。</td>
-</tr>
-<tr>
-<td>-</td>
-<td>银行卡认证（即时完成认证）</td>
-<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0076156874.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行个人银行卡认证</a>。</td>
-</tr>
-<tr>
-<td>-</td>
-<td>证件认证（1-3个工作日）</td>
-<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810647.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行个人证件认证</a>。</td>
-</tr>
-<tr>
-<td>企业账号</td>
-<td>推荐银行对公账户认证（最快30分钟）</td>
-<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810651.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行企业银行对公账户认证。</a></td>
-</tr>
-<tr>
-<td></td>
-<td>企业证件认证（0-3个工作日）</td>
-<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810649.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行企业证件认证</a>。</td>
-</tr>
-</tbody></table>
-<h2 id="创建用于隔离集群的VPC"><a href="#创建用于隔离集群的VPC" class="headerlink" title="创建用于隔离集群的VPC"></a>创建用于隔离集群的VPC</h2><p><strong>访问VPC</strong><br>进入虚拟私有云，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“网络”-&gt;“虚拟私有云VPC”，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f51edf626740e2d35fb39f5b48146d2b.png) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/f51edf626740e2d35fb39f5b48146d2b.png">'); </script><br>
-
-<p><strong>创建VPC</strong><br>于虚拟私有云操作页面，右上角点击“创建虚拟私有云”，进入创建详情，配置参数如下：[基本信息]①区域：华北-北京四，②名称：自定义(记录下VPC名称后续步骤使用)，③网段：192.168.0.0&#x2F;16，[子网配置]可用区：任意选择一项，名称：默认，子网网段：192.168.0.0&#x2F;24，点击“立即创建”-&gt;“返回虚拟私有云列表”查找到该VPC。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/77578adf588867fa6a047d1541f7b027.png) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/77578adf588867fa6a047d1541f7b027.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8951a6fb04cdaea6f58764591181bd7f.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/8951a6fb04cdaea6f58764591181bd7f.jpeg">'); </script><br>
-
-<h2 id="创建密钥对"><a href="#创建密钥对" class="headerlink" title="创建密钥对"></a>创建密钥对</h2><p><strong>创建密钥对</strong><br>进入华为云控制台，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“计算”-&gt;“弹性云服务器ECS”，左侧菜单栏目中选择“密钥对”，进入创建界面。后于右侧的“密钥对管理”区域，点击标注的“创建密钥对”按钮，进行密钥对创建，如下图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/00ddb8195d097dcad8838560823dc514.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/00ddb8195d097dcad8838560823dc514.jpeg">'); </script><br>
-
-<p>在弹出的“创建密钥对”窗口中，配置参数如下：名称：自定义，不勾选 “我同意将密钥对私钥托管到华为云”，勾选 “我已经阅读并同意《密钥对管理服务免责声明》”如下图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6019ee4dd7346fcbfce0d31655ed191b.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/6019ee4dd7346fcbfce0d31655ed191b.jpeg">'); </script><br>
-
-<p>点击“确定”，完成创建。在弹出的保存文件的提示窗口，选择“保存文件”，将包含密钥对的文件保存到实验环境（可在下方列表中看到创建的密钥对，该密钥用于创建CCE集群），如下图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/07509c3561c4cdb2c67e9ca982b5709d.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/07509c3561c4cdb2c67e9ca982b5709d.jpeg">'); </script><br>
-
-<h2 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h2><p><strong>访问集群服务</strong><br>进入集群服务，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“容器服务”-&gt;“云容器引擎CCE”，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7ba16d5144422a0954c54903b084c5f9.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/7ba16d5144422a0954c54903b084c5f9.jpeg">'); </script><br>
-
-<p><strong>创建CCE</strong><br>进入云容器引擎，于页面右侧点击“购买Kubernetes集群”开始购买集群。第一步“服务选型”参数配置如下：①计费模式：按需计费，②区域：华北-北京四，③集群名称：(自定义)，④版本：v1.15.11，⑤集群管理规模：50节点，⑥控制节点数：1（勾选“我已知晓如下约束”），⑦虚拟私有云：选择步骤2.2创建的VPC，⑧所在子网：默认，⑨网络模型：容器隧道网络，⑩容器网段：172.16.0.0&#x2F;16，⑪服务网段：默认，⑫鉴权方式：默认，⑬认证方式：不选，⑭高级设置：采用默认设置，<br>点击下一步进入“创建节点”，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/014240513f1e0f43c557df3b2db6f605.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/014240513f1e0f43c557df3b2db6f605.jpeg">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b1697cc17a6b6fde21342a92048b572b.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/b1697cc17a6b6fde21342a92048b572b.jpeg">'); </script><br>
-
-<p>第二步“创建节点”参数配置：①创建节点：现在添加，②计费模式：按需计费，③当前区域：华北-北京四，④可选区：任选一项，⑤节点类型：虚拟机节点，⑥节点名称：默认，⑦节点规格：通用型 s6.large.2 2核|4GB，⑧操作系统：EulerOS 2.5，⑨系统盘：高IO(100-1000 IOPS) 40GB,⑩数据盘：高IO(100-1000 IOPS) 100GB,⑪虚拟私有云：默认，⑫所在子网：默认，⑬弹性IP：自动创建，⑭规格：全动态BGP，⑮计费模式：按流量计费，⑯带宽类型：独享，⑰带宽大小：1Mbit&#x2F;s，⑱登录方式：密钥对，⑲密钥对：(选择步骤3.1创建的密钥并勾选我确认以获取到密钥文件)；⑳云服务器高级设置：采用默认设置，㉑Kubemetes高级设置：采用默认设置，㉒节点购买数量：1，点击下一步“配置确认”，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/26579bc0da5f811399f1527549cfebdd.jpeg#pic_center) -->
-<script> 
-    document.write('<img src="'+ imgurl +'1736733082/26579bc0da5f811399f1527549cfebdd.jpeg">'); 
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/93b0a3e439015f791c851c2f20264ec7.jpeg#pic_center) -->
-    document.write('<img src="'+ imgurl +'1736733082/93b0a3e439015f791c851c2f20264ec7.jpeg">'); 
-    // ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fb3630462a34951801eb273d13c6f7ac.jpeg#pic_center)
-    document.write('<img src="'+ imgurl +'1736733082/fb3630462a34951801eb273d13c6f7ac.jpeg">'); 
-    // ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/217c7ec8cd62f64da265d596ec4600d0.jpeg#pic_center)
-    document.write('<img src="'+ imgurl +'1736733082/217c7ec8cd62f64da265d596ec4600d0.jpeg">'); 
-</script><br>
-
-<p>勾选“我已知晓上述限制”，检查集群配置无误后点击“提交”</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6b65930751418b315b40ab1e1a39e568.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/6b65930751418b315b40ab1e1a39e568.jpeg">'); </script><br>
-
-<p>提交后开始进行创建，大约需要6分钟创建完成，如下图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a3b5ed22a389b4d41fbcf6d243f257fb.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/a3b5ed22a389b4d41fbcf6d243f257fb.jpeg">'); </script><br>
-
-<p>创建完成后，点击“返回集群管理”，“集群状态”显示为“正常”表示该集群创建成功：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/99a510ae0c7832f307b6ffaf3891b2fb.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/99a510ae0c7832f307b6ffaf3891b2fb.jpeg">'); </script><br>
-
-<h2 id="创建容器应用"><a href="#创建容器应用" class="headerlink" title="创建容器应用"></a>创建容器应用</h2><p><strong>进入创建工作负载操作</strong><br>在“云容器引擎”页左侧栏目点击“工作负载”-&gt;“无状态负载 Deployment”进入创建无状态工作负载界面，右上角点击“创建无状态工作负载”进入创建无状态工作负载页面，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f27d5390080f3dad73b981a20214a156.png#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/f27d5390080f3dad73b981a20214a156.png">'); </script><br>
-
-<p><strong>创建工作负载并测试</strong><br>操作步骤如下：第一步“工作负载基本信息”，配置参数如下：①工作负载名称：自定义，②集群名称：(选择刚创建的集群)，③命名空间：default，④实例数量：1；<br>点击“下一步”完成创建并进入“容器设置”界面</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/83e6bf8c1e1d0bd1ecd96134423bf631.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/83e6bf8c1e1d0bd1ecd96134423bf631.jpeg">'); </script><br>
-
-<p>第二步“容器设置”，点击“添加容器”，在弹出的“选择镜像”对话框中选择“开源镜像中心”，搜索栏中输入“nginx”，点击“确定”完成添加。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e15c1427de6d98f7ea9e111389a8683a.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/e15c1427de6d98f7ea9e111389a8683a.jpeg">'); </script><br>
-
-<p>进入[基本信息]参数配置：①镜像版本：perl，②容器名称：默认或自定义，③特权容器：不开启，④容器规格：cpu配额：申请 0.25core，限制 0.25core内存配额：申请 512MiB，限制 512MiBGPU配额：不勾选GPU显卡：不限制昇腾310配额：不勾选⑤生命周期：采用默认配置，⑥健康检查：采用默认配置，⑦环境变量：采用默认配置，⑧数据存储：采用默认配置，⑨安全设置：采用默认配置，⑩容器日志：采用默认配置，点击“下一步”进入“工作负载访问设置”，</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7211787bf4be7f936e9e2ff0ec1efcb0.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/7211787bf4be7f936e9e2ff0ec1efcb0.jpeg">'); </script><br>
-
-<p>第三步“工作负载访问设置”，点击“添加服务”按钮，在弹出“添加服务”对话框中，参数配置如下：①访问类型：节点访问(NodePort)，②服务名称：自定义，③服务亲和：集群级别，④端口配置：协议：TCP容器端口：80，访问端口：指定端口 30758点击”确定”完成添加。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/143aa33121bd2dd5ea3e30334815e088.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/143aa33121bd2dd5ea3e30334815e088.jpeg">'); </script><br>
-
-<p>继续点击“下一步”，进入第四步“高级设置”，配置参数：①升级策略：升级方式：滚动升级， 最大无效实例：1②缩容策略：缩容时间窗 30，缩容优先级 默认③迁移策略：迁移时间窗 300④调度策略：采用默认设置⑤Pod高级设置：不设置⑥客户端DNS配置：不设置⑦自定义指标监控：不设置⑧性能管理配置：不设置点击“创建”完成此步骤。</p>
-<script>
-    document.write('<img src="'+ imgurl +'1736733082/576192cb68968848a8cb1315559517c9.jpeg">');
-// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/576192cb68968848a8cb1315559517c9.jpeg#pic_center)
-    dcument.write('<img src="'+ imgurl +'1736733082/a2052c4d4cf9ebab0ef07f9172b33553.jpeg">');
-// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a2052c4d4cf9ebab0ef07f9172b33553.jpeg#pic_center)
-    document.write('<img src="'+ imgurl +'1736733082/9ee1f016d6b8de05aeaeec752459f642.jpeg">');
-// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9ee1f016d6b8de05aeaeec752459f642.jpeg#pic_center)
-    document.write('<img src="'+ imgurl +'1736733082/d66de1fa8dbe39dcc062d50a135fd817.jpeg">');
-// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d66de1fa8dbe39dcc062d50a135fd817.jpeg#pic_center)
-</script>
-<p>第五步“完成”，点击“返回工作负载列表”</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ae2eedcefd32acb0aa473129427318f2.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/ae2eedcefd32acb0aa473129427318f2.jpeg">'); </script><br>
-
-<p>返回云容器引擎的工作负载列表（“服务列表”-&gt;“计算”-&gt;“云容器引擎CCE”-&gt;“工作负载”-&gt;“无状态”）查看到状态为“运行中”的nginx工作负载，如图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d11a2a22a7a205d18539998ccb4a717d.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/d11a2a22a7a205d18539998ccb4a717d.jpeg">'); </script><br>
-
-<p>点击nginx工作负载的“外部访问地址”下的超链接，打开的新窗口为nginx的欢迎页面，表明容器添加成功，如下图所示：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8e5fc9f672dcd81a7f2b23cda1bd3fbc.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736733082/8e5fc9f672dcd81a7f2b23cda1bd3fbc.jpeg">'); </script><br>
-<p>部分内容来自<strong>华为云官网</strong></p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>容器</tag>
-        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -5838,6 +5671,173 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>华为云-容器引擎CCE-部署Nginx应用</title>
+    <url>/2025/01/13/2025011305/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="注册华为云账号"><a href="#注册华为云账号" class="headerlink" title="注册华为云账号"></a>注册华为云账号</h3><p>进入华为云官网，点击右上角“注册账号”，选择“华为云”，输入信息进行注册。</p>
+<span id="more"></span>
+<!-- ![注册页面](https://i-blog.csdnimg.cn/blog_migrate/0cf4387f3d30d0e641735d531bc4c802.png) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/0cf4387f3d30d0e641735d531bc4c802.png">'); </script><br>
+<p>输入相关信息注册，如已有账号可直接参考下面登录进行登录操作</p>
+<h3 id="登录华为云账号"><a href="#登录华为云账号" class="headerlink" title="登录华为云账号"></a>登录华为云账号</h3><!-- ![登录页面](https://i-blog.csdnimg.cn/blog_migrate/9bb1c32fb70a4745e37b6b310e9a5d1c.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736733082/9bb1c32fb70a4745e37b6b310e9a5d1c.png">'); </script>
+
+<h3 id="实名认证"><a href="#实名认证" class="headerlink" title="实名认证"></a>实名认证</h3><p>登录后需进行实名认证后才可进行接下来的一些列操作</p>
+<p><strong>单击账号名下拉框中的“账号中心”。</strong><br>进入“账号中心”页面。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ae5aff820065a68f196e493f07e7e96b.png) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/ae5aff820065a68f196e493f07e7e96b.png">'); </script><br>
+
+<p><strong>单击左侧导航中的“实名认证”，选择账号类型（个人账号&#x2F;企业账号），根据页面提示进行实名认证。</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7c54e4c7c4f47c8b4d15b88188442859.png) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/7c54e4c7c4f47c8b4d15b88188442859.png">'); </script>
+
+<p><strong>实名认证类型介绍</strong><br>实名认证详细介绍</p>
+<table>
+<thead>
+<tr>
+<th>账号类型</th>
+<th>认证类型</th>
+<th>详细操作知道</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>个人账号</td>
+<td>推荐扫码认证（即时完成认证）</td>
+<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0133456714.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行扫码认证</a>。</td>
+</tr>
+<tr>
+<td>-</td>
+<td>银行卡认证（即时完成认证）</td>
+<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0076156874.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行个人银行卡认证</a>。</td>
+</tr>
+<tr>
+<td>-</td>
+<td>证件认证（1-3个工作日）</td>
+<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810647.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行个人证件认证</a>。</td>
+</tr>
+<tr>
+<td>企业账号</td>
+<td>推荐银行对公账户认证（最快30分钟）</td>
+<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810651.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行企业银行对公账户认证。</a></td>
+</tr>
+<tr>
+<td></td>
+<td>企业证件认证（0-3个工作日）</td>
+<td>请参见<a href="https://support.huaweicloud.com/usermanual-account/zh-cn_topic_0066810649.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">如何进行企业证件认证</a>。</td>
+</tr>
+</tbody></table>
+<h2 id="创建用于隔离集群的VPC"><a href="#创建用于隔离集群的VPC" class="headerlink" title="创建用于隔离集群的VPC"></a>创建用于隔离集群的VPC</h2><p><strong>访问VPC</strong><br>进入虚拟私有云，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“网络”-&gt;“虚拟私有云VPC”，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f51edf626740e2d35fb39f5b48146d2b.png) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/f51edf626740e2d35fb39f5b48146d2b.png">'); </script><br>
+
+<p><strong>创建VPC</strong><br>于虚拟私有云操作页面，右上角点击“创建虚拟私有云”，进入创建详情，配置参数如下：[基本信息]①区域：华北-北京四，②名称：自定义(记录下VPC名称后续步骤使用)，③网段：192.168.0.0&#x2F;16，[子网配置]可用区：任意选择一项，名称：默认，子网网段：192.168.0.0&#x2F;24，点击“立即创建”-&gt;“返回虚拟私有云列表”查找到该VPC。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/77578adf588867fa6a047d1541f7b027.png) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/77578adf588867fa6a047d1541f7b027.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8951a6fb04cdaea6f58764591181bd7f.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/8951a6fb04cdaea6f58764591181bd7f.jpeg">'); </script><br>
+
+<h2 id="创建密钥对"><a href="#创建密钥对" class="headerlink" title="创建密钥对"></a>创建密钥对</h2><p><strong>创建密钥对</strong><br>进入华为云控制台，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“计算”-&gt;“弹性云服务器ECS”，左侧菜单栏目中选择“密钥对”，进入创建界面。后于右侧的“密钥对管理”区域，点击标注的“创建密钥对”按钮，进行密钥对创建，如下图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/00ddb8195d097dcad8838560823dc514.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/00ddb8195d097dcad8838560823dc514.jpeg">'); </script><br>
+
+<p>在弹出的“创建密钥对”窗口中，配置参数如下：名称：自定义，不勾选 “我同意将密钥对私钥托管到华为云”，勾选 “我已经阅读并同意《密钥对管理服务免责声明》”如下图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6019ee4dd7346fcbfce0d31655ed191b.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/6019ee4dd7346fcbfce0d31655ed191b.jpeg">'); </script><br>
+
+<p>点击“确定”，完成创建。在弹出的保存文件的提示窗口，选择“保存文件”，将包含密钥对的文件保存到实验环境（可在下方列表中看到创建的密钥对，该密钥用于创建CCE集群），如下图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/07509c3561c4cdb2c67e9ca982b5709d.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/07509c3561c4cdb2c67e9ca982b5709d.jpeg">'); </script><br>
+
+<h2 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h2><p><strong>访问集群服务</strong><br>进入集群服务，鼠标移动到云桌面浏览器页面中左侧菜单栏，点击服务列表-&gt;“容器服务”-&gt;“云容器引擎CCE”，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7ba16d5144422a0954c54903b084c5f9.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/7ba16d5144422a0954c54903b084c5f9.jpeg">'); </script><br>
+
+<p><strong>创建CCE</strong><br>进入云容器引擎，于页面右侧点击“购买Kubernetes集群”开始购买集群。第一步“服务选型”参数配置如下：①计费模式：按需计费，②区域：华北-北京四，③集群名称：(自定义)，④版本：v1.15.11，⑤集群管理规模：50节点，⑥控制节点数：1（勾选“我已知晓如下约束”），⑦虚拟私有云：选择步骤2.2创建的VPC，⑧所在子网：默认，⑨网络模型：容器隧道网络，⑩容器网段：172.16.0.0&#x2F;16，⑪服务网段：默认，⑫鉴权方式：默认，⑬认证方式：不选，⑭高级设置：采用默认设置，<br>点击下一步进入“创建节点”，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/014240513f1e0f43c557df3b2db6f605.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/014240513f1e0f43c557df3b2db6f605.jpeg">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b1697cc17a6b6fde21342a92048b572b.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/b1697cc17a6b6fde21342a92048b572b.jpeg">'); </script><br>
+
+<p>第二步“创建节点”参数配置：①创建节点：现在添加，②计费模式：按需计费，③当前区域：华北-北京四，④可选区：任选一项，⑤节点类型：虚拟机节点，⑥节点名称：默认，⑦节点规格：通用型 s6.large.2 2核|4GB，⑧操作系统：EulerOS 2.5，⑨系统盘：高IO(100-1000 IOPS) 40GB,⑩数据盘：高IO(100-1000 IOPS) 100GB,⑪虚拟私有云：默认，⑫所在子网：默认，⑬弹性IP：自动创建，⑭规格：全动态BGP，⑮计费模式：按流量计费，⑯带宽类型：独享，⑰带宽大小：1Mbit&#x2F;s，⑱登录方式：密钥对，⑲密钥对：(选择步骤3.1创建的密钥并勾选我确认以获取到密钥文件)；⑳云服务器高级设置：采用默认设置，㉑Kubemetes高级设置：采用默认设置，㉒节点购买数量：1，点击下一步“配置确认”，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/26579bc0da5f811399f1527549cfebdd.jpeg#pic_center) -->
+<script> 
+    document.write('<img src="'+ imgurl +'1736733082/26579bc0da5f811399f1527549cfebdd.jpeg">'); 
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/93b0a3e439015f791c851c2f20264ec7.jpeg#pic_center) -->
+    document.write('<img src="'+ imgurl +'1736733082/93b0a3e439015f791c851c2f20264ec7.jpeg">'); 
+    // ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fb3630462a34951801eb273d13c6f7ac.jpeg#pic_center)
+    document.write('<img src="'+ imgurl +'1736733082/fb3630462a34951801eb273d13c6f7ac.jpeg">'); 
+    // ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/217c7ec8cd62f64da265d596ec4600d0.jpeg#pic_center)
+    document.write('<img src="'+ imgurl +'1736733082/217c7ec8cd62f64da265d596ec4600d0.jpeg">'); 
+</script><br>
+
+<p>勾选“我已知晓上述限制”，检查集群配置无误后点击“提交”</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6b65930751418b315b40ab1e1a39e568.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/6b65930751418b315b40ab1e1a39e568.jpeg">'); </script><br>
+
+<p>提交后开始进行创建，大约需要6分钟创建完成，如下图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a3b5ed22a389b4d41fbcf6d243f257fb.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/a3b5ed22a389b4d41fbcf6d243f257fb.jpeg">'); </script><br>
+
+<p>创建完成后，点击“返回集群管理”，“集群状态”显示为“正常”表示该集群创建成功：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/99a510ae0c7832f307b6ffaf3891b2fb.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/99a510ae0c7832f307b6ffaf3891b2fb.jpeg">'); </script><br>
+
+<h2 id="创建容器应用"><a href="#创建容器应用" class="headerlink" title="创建容器应用"></a>创建容器应用</h2><p><strong>进入创建工作负载操作</strong><br>在“云容器引擎”页左侧栏目点击“工作负载”-&gt;“无状态负载 Deployment”进入创建无状态工作负载界面，右上角点击“创建无状态工作负载”进入创建无状态工作负载页面，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f27d5390080f3dad73b981a20214a156.png#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/f27d5390080f3dad73b981a20214a156.png">'); </script><br>
+
+<p><strong>创建工作负载并测试</strong><br>操作步骤如下：第一步“工作负载基本信息”，配置参数如下：①工作负载名称：自定义，②集群名称：(选择刚创建的集群)，③命名空间：default，④实例数量：1；<br>点击“下一步”完成创建并进入“容器设置”界面</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/83e6bf8c1e1d0bd1ecd96134423bf631.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/83e6bf8c1e1d0bd1ecd96134423bf631.jpeg">'); </script><br>
+
+<p>第二步“容器设置”，点击“添加容器”，在弹出的“选择镜像”对话框中选择“开源镜像中心”，搜索栏中输入“nginx”，点击“确定”完成添加。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e15c1427de6d98f7ea9e111389a8683a.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/e15c1427de6d98f7ea9e111389a8683a.jpeg">'); </script><br>
+
+<p>进入[基本信息]参数配置：①镜像版本：perl，②容器名称：默认或自定义，③特权容器：不开启，④容器规格：cpu配额：申请 0.25core，限制 0.25core内存配额：申请 512MiB，限制 512MiBGPU配额：不勾选GPU显卡：不限制昇腾310配额：不勾选⑤生命周期：采用默认配置，⑥健康检查：采用默认配置，⑦环境变量：采用默认配置，⑧数据存储：采用默认配置，⑨安全设置：采用默认配置，⑩容器日志：采用默认配置，点击“下一步”进入“工作负载访问设置”，</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/7211787bf4be7f936e9e2ff0ec1efcb0.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/7211787bf4be7f936e9e2ff0ec1efcb0.jpeg">'); </script><br>
+
+<p>第三步“工作负载访问设置”，点击“添加服务”按钮，在弹出“添加服务”对话框中，参数配置如下：①访问类型：节点访问(NodePort)，②服务名称：自定义，③服务亲和：集群级别，④端口配置：协议：TCP容器端口：80，访问端口：指定端口 30758点击”确定”完成添加。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/143aa33121bd2dd5ea3e30334815e088.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/143aa33121bd2dd5ea3e30334815e088.jpeg">'); </script><br>
+
+<p>继续点击“下一步”，进入第四步“高级设置”，配置参数：①升级策略：升级方式：滚动升级， 最大无效实例：1②缩容策略：缩容时间窗 30，缩容优先级 默认③迁移策略：迁移时间窗 300④调度策略：采用默认设置⑤Pod高级设置：不设置⑥客户端DNS配置：不设置⑦自定义指标监控：不设置⑧性能管理配置：不设置点击“创建”完成此步骤。</p>
+<script>
+    document.write('<img src="'+ imgurl +'1736733082/576192cb68968848a8cb1315559517c9.jpeg">');
+// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/576192cb68968848a8cb1315559517c9.jpeg#pic_center)
+    dcument.write('<img src="'+ imgurl +'1736733082/a2052c4d4cf9ebab0ef07f9172b33553.jpeg">');
+// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a2052c4d4cf9ebab0ef07f9172b33553.jpeg#pic_center)
+    document.write('<img src="'+ imgurl +'1736733082/9ee1f016d6b8de05aeaeec752459f642.jpeg">');
+// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9ee1f016d6b8de05aeaeec752459f642.jpeg#pic_center)
+    document.write('<img src="'+ imgurl +'1736733082/d66de1fa8dbe39dcc062d50a135fd817.jpeg">');
+// ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d66de1fa8dbe39dcc062d50a135fd817.jpeg#pic_center)
+</script>
+<p>第五步“完成”，点击“返回工作负载列表”</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/ae2eedcefd32acb0aa473129427318f2.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/ae2eedcefd32acb0aa473129427318f2.jpeg">'); </script><br>
+
+<p>返回云容器引擎的工作负载列表（“服务列表”-&gt;“计算”-&gt;“云容器引擎CCE”-&gt;“工作负载”-&gt;“无状态”）查看到状态为“运行中”的nginx工作负载，如图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d11a2a22a7a205d18539998ccb4a717d.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/d11a2a22a7a205d18539998ccb4a717d.jpeg">'); </script><br>
+
+<p>点击nginx工作负载的“外部访问地址”下的超链接，打开的新窗口为nginx的欢迎页面，表明容器添加成功，如下图所示：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8e5fc9f672dcd81a7f2b23cda1bd3fbc.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736733082/8e5fc9f672dcd81a7f2b23cda1bd3fbc.jpeg">'); </script><br>
+<p>部分内容来自<strong>华为云官网</strong></p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>容器</tag>
+        <tag>华为云</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>你会系统备份及恢复吗？来看看吧</title>
     <url>/2025/01/13/2025011306/</url>
     <content><![CDATA[<h2 id="tar-命令"><a href="#tar-命令" class="headerlink" title="tar 命令"></a>tar 命令</h2><p>副本（本机备份整个系统，以后还原还是还原到本机）<br>注意根目录下要有充足的可用空间用于备份。</p>
@@ -5861,6 +5861,71 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一起来看看华为云的裸金属服务器</title>
+    <url>/2025/01/13/2025011308/</url>
+    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
+<span id="more"></span>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
+
+<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
+<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
+<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
+<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
+<ul>
+<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
+<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
+<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
+<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
+<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
+<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
+</ul>
+<p><strong>图1 BMS产品架构</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
+
+<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
+<blockquote>
+<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
+</blockquote>
+<p><strong>表1 特性对比</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
+
+<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
+
+<p><strong>常用概念</strong></p>
+<ul>
+<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
+<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
+<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
+<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
+<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
+<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
+</ul>
+<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
+<ul>
+<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
+<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
+</ul>
+<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
+<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
+<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
+<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
+<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -5970,71 +6035,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一起来看看华为云的裸金属服务器</title>
-    <url>/2025/01/13/2025011308/</url>
-    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
-<span id="more"></span>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
-
-<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
-<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
-<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
-<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
-<ul>
-<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
-<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
-<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
-<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
-<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
-<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
-</ul>
-<p><strong>图1 BMS产品架构</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
-
-<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
-<blockquote>
-<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
-</blockquote>
-<p><strong>表1 特性对比</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
-
-<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
-
-<p><strong>常用概念</strong></p>
-<ul>
-<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
-<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
-<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
-<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
-<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
-<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
-</ul>
-<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
-<ul>
-<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
-<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
-</ul>
-<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
-<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
-<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
-<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
-<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -7302,38 +7302,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>制作网页黑白背景</title>
-    <url>/2025/01/13/2025011315/</url>
-    <content><![CDATA[<p>2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图</p>
-<span id="more"></span>
-<p><strong>百度</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8124fda7dcb9a157d959da7ba6d8c3e9.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/8124fda7dcb9a157d959da7ba6d8c3e9.png">'); </script><br>
-
-<p><strong>CSDN</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/af84e6f2928db749add6450bbcf9fba5.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/af84e6f2928db749add6450bbcf9fba5.png">'); </script><br>
-
-<p><strong>JD</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bcb82835c541799c1ea4804ee0089b3.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/9bcb82835c541799c1ea4804ee0089b3.png">'); </script><br>
-
-<p><strong>淘宝</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc79fd0603e61cf8f3c8a4c3b53b2079.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/cc79fd0603e61cf8f3c8a4c3b53b2079.png">'); </script><br>
-
-<p>那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">-webkit-filter: grayscale(100%);</span><br><span class="line">-moz-filter: grayscale(100%);</span><br><span class="line">-ms-filter: grayscale(100%);</span><br><span class="line">-o-filter: grayscale(100%);</span><br><span class="line">filter: grayscale(100%);</span><br><span class="line">filter: gray; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python内置函数列表</title>
     <url>/2025/01/13/2025011314/</url>
     <content><![CDATA[<p>Python内置函数列表</p>
@@ -7597,6 +7565,38 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>制作网页黑白背景</title>
+    <url>/2025/01/13/2025011315/</url>
+    <content><![CDATA[<p>2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图</p>
+<span id="more"></span>
+<p><strong>百度</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8124fda7dcb9a157d959da7ba6d8c3e9.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/8124fda7dcb9a157d959da7ba6d8c3e9.png">'); </script><br>
+
+<p><strong>CSDN</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/af84e6f2928db749add6450bbcf9fba5.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/af84e6f2928db749add6450bbcf9fba5.png">'); </script><br>
+
+<p><strong>JD</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bcb82835c541799c1ea4804ee0089b3.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/9bcb82835c541799c1ea4804ee0089b3.png">'); </script><br>
+
+<p><strong>淘宝</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc79fd0603e61cf8f3c8a4c3b53b2079.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/cc79fd0603e61cf8f3c8a4c3b53b2079.png">'); </script><br>
+
+<p>那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">-webkit-filter: grayscale(100%);</span><br><span class="line">-moz-filter: grayscale(100%);</span><br><span class="line">-ms-filter: grayscale(100%);</span><br><span class="line">-o-filter: grayscale(100%);</span><br><span class="line">filter: grayscale(100%);</span><br><span class="line">filter: gray; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
