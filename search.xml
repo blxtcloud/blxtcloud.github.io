@@ -53,201 +53,6 @@
       </tags>
   </entry>
   <entry>
-    <title>openEuler大版本升级方法</title>
-    <url>/2024/12/24/2024122403/</url>
-    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
-<li>检查当前系统版本：</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/openEuler<span class="literal">-latest</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>输出结果如下</p>
-<blockquote>
-<p>openeulerversion&#x3D;openEuler-20.03-LTS-SP3</p>
-<p>compiletime&#x3D;2022-01-01-11-20-51</p>
-<p>gccversion&#x3D;7.3.0-20211123.43.oe1</p>
-<p>kernelversion&#x3D;4.19.90-2112.8.0.0131.oe1</p>
-<p>openjdkversion&#x3D;1.8.0.312.b07-10.oe1</p>
-</blockquote>
-<p>我这里openEuler的版本是20.03-LTS-SP3的版本，其他版本操作方法都是比较类似的</p>
-<ol start="2">
-<li>清除软件库缓存并重新缓存软件库</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清除缓存</span></span><br><span class="line">dnf clean all</span><br><span class="line"><span class="comment"># 重建软件库</span></span><br><span class="line">dnf makecache</span><br></pre></td></tr></table></figure>
-
-<p>清楚缓存输出内容如下：</p>
-<blockquote>
-<p>36 files removed</p>
-</blockquote>
-<p>重建软件库输出内容如下：</p>
-<blockquote>
-<p>OS                                              5.6 MB&#x2F;s | 3.5 MB<br>00:00    </p>
-<p>everything                                       16 MB&#x2F;s |  15 MB<br>00:00    </p>
-<p>EPOL                                            6.5 MB&#x2F;s | 4.0 MB<br>00:00    </p>
-<p>debuginfo                                       6.0 MB&#x2F;s | 3.7 MB<br>00:00    </p>
-<p>source                                          2.4 MB&#x2F;s | 1.3 MB<br>00:00    </p>
-<p>update                                           15 MB&#x2F;s |  76 MB<br>00:04    </p>
-<p>Metadata cache created.</p>
-</blockquote>
-<ol start="3">
-<li>备份软件源配置文件</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/yum.repo.d/openEuler.repo /etc/yum.repo.d/openEuler.repo.bak</span><br></pre></td></tr></table></figure>
-
-<p>此命令执行完成后无任何输出</p>
-<h2 id="安装升级"><a href="#安装升级" class="headerlink" title="安装升级"></a>安装升级</h2><ol>
-<li>安装openEuler-release软件包</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-release-</span>&#123;此处为版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>示例：以当前最新版本24.03LTS版本为例</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-release-24</span>.<span class="number">03</span>LTS<span class="literal">-55</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>输出内容如下：</p>
-<blockquote>
-<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-release-24.03LTS-55.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-release-24.03LTS-55.oe2403.x86_64.rpm</a><br>Verifying…<br>########################################</p>
-<p>Preparing…<br>########################################</p>
-<p>Updating &#x2F; installing…</p>
-<p>openEuler-release-24.03LTS-55.oe2403<br>########################################</p>
-<p> Attention: openEuler-performance package files are backed up to<br>&#x2F;etc&#x2F;profile.d&#x2F;performance.sh.bak </p>
-<p>Cleaning up &#x2F; removing…</p>
-<p>openEuler-performance-20.03LTS_SP3-52.########################################</p>
-<p>openEuler-release-20.03LTS_SP3-52.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.3pbqGD: Header V4 RSA&#x2F;SHA256 Signature, key ID b67560<br>0b: NOKEY</p>
-</blockquote>
-<ol>
-<li>安装openEuler-repos软件仓库</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-repos-</span>&#123;此处为版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>示例：以当前最新版本24.03LTS版本为例</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-repos-1</span>.<span class="number">0</span><span class="literal">-3</span>.<span class="number">7</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>输出内容如下：</p>
-<blockquote>
-<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-repos-1.0-3.7.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64&#x2F;Packages&#x2F;openEuler-repos-1.0-3.7.oe2403.x86_64.rpm</a></p>
-<p>Verifying…<br>########################################</p>
-<p>Preparing…<br>########################################</p>
-<p>Updating &#x2F; installing…</p>
-<p>openEuler-repos-1.0-3.7.oe2403<br>########################################</p>
-<p>Cleaning up &#x2F; removing…</p>
-<p>openEuler-repos-1.0-3.1.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.7VGSLJ: Header V4 RSA&#x2F;SHA256 Signature, key ID<br>fb37bc6f: NOKEY</p>
-</blockquote>
-<ol start="3">
-<li>安装openEuler-gpg-keys密钥</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为系统版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-gpg-keys-</span>&#123;此处为软件版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>示例：以当前最新版本24.03LTS版本为例</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-gpg-keys-1</span>.<span class="number">0</span><span class="literal">-3</span>.<span class="number">7</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
-
-<p>输出内容如下：</p>
-<blockquote>
-<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-gpg-keys-1.0-3.7.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64&#x2F;Packages&#x2F;openEuler-gpg-keys-1.0-3.7.oe2403.x86_64.rpm</a></p>
-<p>Verifying…<br>########################################</p>
-<p>Preparing…<br>########################################</p>
-<p>Updating &#x2F; installing…</p>
-<p>openEuler-gpg-keys-1.0-3.7.oe2403<br>########################################</p>
-<p>Cleaning up &#x2F; removing…</p>
-<p>openEuler-gpg-keys-1.0-3.1.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.9e75Wy: Header V4 RSA&#x2F;SHA256 Signature, key ID<br>fb37bc6f: NOKEY</p>
-</blockquote>
-<ol start="4">
-<li>清除软件库缓存</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf clean all</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>系统升级</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="literal">-y</span> <span class="literal">--releasever</span>=<span class="string">&#x27;&#123;此处为软件版本&#125;&#x27;</span> <span class="literal">--allowerasing</span> <span class="literal">--setopt</span>=deltarpm=false distro<span class="literal">-sync</span> <span class="literal">--nogpgcheck</span></span><br></pre></td></tr></table></figure>
-
-<p>示例：以当前最新版本24.03LTS版本为例</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="literal">-y</span> <span class="literal">--releasever</span>=<span class="string">&#x27;24.03LTS&#x27;</span> <span class="literal">--allowerasing</span> <span class="literal">--setopt</span>=deltarpm=false distro<span class="literal">-sync</span> <span class="literal">--nogpgcheck</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li><font style="color:rgb(36, 41, 46);">重建 RPM 数据库</font></li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">--rebuilddb</span></span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>安装其他需要的组件</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="built_in">group</span> install <span class="string">&quot;Minimal Install&quot;</span> <span class="literal">-y</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>重启</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
-
-<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/openEuler<span class="literal">-latest</span></span><br></pre></td></tr></table></figure>
-
-<p>输出内容如下：</p>
-<blockquote>
-<p>openeulerversion&#x3D;openEuler-24.03-LTS</p>
-<p>compiletime&#x3D;2024-05-27-21-31-28</p>
-<p>gccversion&#x3D;12.3.1-30.oe2403</p>
-<p>kernelversion&#x3D;6.6.0-28.0.0.34.oe2403</p>
-<p>openjdkversion&#x3D;1.8.0.412.b08-5.oe2403</p>
-</blockquote>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>卸载删除旧内核版本</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf remove kernel-&#123; 内核版本&#125; <span class="literal">-y</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>linux</tag>
-        <tag>openEuler</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>schedule-执行周期性任务</title>
-    <url>/2024/12/24/2024122404/</url>
-    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
-<span id="more"></span>
-
-<p>相较于linux的crontab对比：</p>
-<ol>
-<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
-<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
-<li>轻量级，无需任何依赖</li>
-</ol>
-<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
-
-<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-
-<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
-</blockquote>
-<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
-
-
-<blockquote>
-<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
-</blockquote>
-<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>python</tag>
-        <tag>schedule</tag>
-        <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ansible开局配置-openEuler</title>
     <url>/2024/12/24/2024122402/</url>
     <content><![CDATA[<p>ansible干啥用的就不多介绍了，这篇文章主要在说ansible的安装、开局配置、免密登录。</p>
@@ -518,10 +323,205 @@
       </categories>
       <tags>
         <tag>技术笔记</tag>
+        <tag>ansible</tag>
         <tag>openEuler</tag>
         <tag>云计算</tag>
-        <tag>ansible</tag>
         <tag>运维</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>openEuler大版本升级方法</title>
+    <url>/2024/12/24/2024122403/</url>
+    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>检查当前系统版本：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/openEuler<span class="literal">-latest</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>输出结果如下</p>
+<blockquote>
+<p>openeulerversion&#x3D;openEuler-20.03-LTS-SP3</p>
+<p>compiletime&#x3D;2022-01-01-11-20-51</p>
+<p>gccversion&#x3D;7.3.0-20211123.43.oe1</p>
+<p>kernelversion&#x3D;4.19.90-2112.8.0.0131.oe1</p>
+<p>openjdkversion&#x3D;1.8.0.312.b07-10.oe1</p>
+</blockquote>
+<p>我这里openEuler的版本是20.03-LTS-SP3的版本，其他版本操作方法都是比较类似的</p>
+<ol start="2">
+<li>清除软件库缓存并重新缓存软件库</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清除缓存</span></span><br><span class="line">dnf clean all</span><br><span class="line"><span class="comment"># 重建软件库</span></span><br><span class="line">dnf makecache</span><br></pre></td></tr></table></figure>
+
+<p>清楚缓存输出内容如下：</p>
+<blockquote>
+<p>36 files removed</p>
+</blockquote>
+<p>重建软件库输出内容如下：</p>
+<blockquote>
+<p>OS                                              5.6 MB&#x2F;s | 3.5 MB<br>00:00    </p>
+<p>everything                                       16 MB&#x2F;s |  15 MB<br>00:00    </p>
+<p>EPOL                                            6.5 MB&#x2F;s | 4.0 MB<br>00:00    </p>
+<p>debuginfo                                       6.0 MB&#x2F;s | 3.7 MB<br>00:00    </p>
+<p>source                                          2.4 MB&#x2F;s | 1.3 MB<br>00:00    </p>
+<p>update                                           15 MB&#x2F;s |  76 MB<br>00:04    </p>
+<p>Metadata cache created.</p>
+</blockquote>
+<ol start="3">
+<li>备份软件源配置文件</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/yum.repo.d/openEuler.repo /etc/yum.repo.d/openEuler.repo.bak</span><br></pre></td></tr></table></figure>
+
+<p>此命令执行完成后无任何输出</p>
+<h2 id="安装升级"><a href="#安装升级" class="headerlink" title="安装升级"></a>安装升级</h2><ol>
+<li>安装openEuler-release软件包</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-release-</span>&#123;此处为版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>示例：以当前最新版本24.03LTS版本为例</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-release-24</span>.<span class="number">03</span>LTS<span class="literal">-55</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>输出内容如下：</p>
+<blockquote>
+<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-release-24.03LTS-55.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-release-24.03LTS-55.oe2403.x86_64.rpm</a><br>Verifying…<br>########################################</p>
+<p>Preparing…<br>########################################</p>
+<p>Updating &#x2F; installing…</p>
+<p>openEuler-release-24.03LTS-55.oe2403<br>########################################</p>
+<p> Attention: openEuler-performance package files are backed up to<br>&#x2F;etc&#x2F;profile.d&#x2F;performance.sh.bak </p>
+<p>Cleaning up &#x2F; removing…</p>
+<p>openEuler-performance-20.03LTS_SP3-52.########################################</p>
+<p>openEuler-release-20.03LTS_SP3-52.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.3pbqGD: Header V4 RSA&#x2F;SHA256 Signature, key ID b67560<br>0b: NOKEY</p>
+</blockquote>
+<ol>
+<li>安装openEuler-repos软件仓库</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-repos-</span>&#123;此处为版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>示例：以当前最新版本24.03LTS版本为例</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-repos-1</span>.<span class="number">0</span><span class="literal">-3</span>.<span class="number">7</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>输出内容如下：</p>
+<blockquote>
+<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-repos-1.0-3.7.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64&#x2F;Packages&#x2F;openEuler-repos-1.0-3.7.oe2403.x86_64.rpm</a></p>
+<p>Verifying…<br>########################################</p>
+<p>Preparing…<br>########################################</p>
+<p>Updating &#x2F; installing…</p>
+<p>openEuler-repos-1.0-3.7.oe2403<br>########################################</p>
+<p>Cleaning up &#x2F; removing…</p>
+<p>openEuler-repos-1.0-3.1.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.7VGSLJ: Header V4 RSA&#x2F;SHA256 Signature, key ID<br>fb37bc6f: NOKEY</p>
+</blockquote>
+<ol start="3">
+<li>安装openEuler-gpg-keys密钥</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/&#123;此处为系统版本信息&#125;/OS/x86_64/Packages/openEuler<span class="literal">-gpg-keys-</span>&#123;此处为软件版本信息&#125;.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>示例：以当前最新版本24.03LTS版本为例</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">-Uvh</span> <span class="literal">--nodeps</span> <span class="literal">--force</span> https://repo.openeuler.org/openEuler<span class="literal">-24</span>.<span class="number">03</span><span class="literal">-LTS</span>/OS/x86_64/Packages/openEuler<span class="literal">-gpg-keys-1</span>.<span class="number">0</span><span class="literal">-3</span>.<span class="number">7</span>.oe2403.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>输出内容如下：</p>
+<blockquote>
+<p>Retrieving<br><a href="https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64/Packages/openEuler-gpg-keys-1.0-3.7.oe2403.x86_64.rpm">https://repo.openeuler.org/openEuler-24.03-LTS/OS/x86_64&#x2F;Packages&#x2F;openEuler-gpg-keys-1.0-3.7.oe2403.x86_64.rpm</a></p>
+<p>Verifying…<br>########################################</p>
+<p>Preparing…<br>########################################</p>
+<p>Updating &#x2F; installing…</p>
+<p>openEuler-gpg-keys-1.0-3.7.oe2403<br>########################################</p>
+<p>Cleaning up &#x2F; removing…</p>
+<p>openEuler-gpg-keys-1.0-3.1.oe1<br>########################################warning: &#x2F;var&#x2F;tmp&#x2F;rpm-tmp.9e75Wy: Header V4 RSA&#x2F;SHA256 Signature, key ID<br>fb37bc6f: NOKEY</p>
+</blockquote>
+<ol start="4">
+<li>清除软件库缓存</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf clean all</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>系统升级</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="literal">-y</span> <span class="literal">--releasever</span>=<span class="string">&#x27;&#123;此处为软件版本&#125;&#x27;</span> <span class="literal">--allowerasing</span> <span class="literal">--setopt</span>=deltarpm=false distro<span class="literal">-sync</span> <span class="literal">--nogpgcheck</span></span><br></pre></td></tr></table></figure>
+
+<p>示例：以当前最新版本24.03LTS版本为例</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="literal">-y</span> <span class="literal">--releasever</span>=<span class="string">&#x27;24.03LTS&#x27;</span> <span class="literal">--allowerasing</span> <span class="literal">--setopt</span>=deltarpm=false distro<span class="literal">-sync</span> <span class="literal">--nogpgcheck</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><font style="color:rgb(36, 41, 46);">重建 RPM 数据库</font></li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">rpm <span class="literal">--rebuilddb</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>安装其他需要的组件</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf <span class="built_in">group</span> install <span class="string">&quot;Minimal Install&quot;</span> <span class="literal">-y</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>重启</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/openEuler<span class="literal">-latest</span></span><br></pre></td></tr></table></figure>
+
+<p>输出内容如下：</p>
+<blockquote>
+<p>openeulerversion&#x3D;openEuler-24.03-LTS</p>
+<p>compiletime&#x3D;2024-05-27-21-31-28</p>
+<p>gccversion&#x3D;12.3.1-30.oe2403</p>
+<p>kernelversion&#x3D;6.6.0-28.0.0.34.oe2403</p>
+<p>openjdkversion&#x3D;1.8.0.412.b08-5.oe2403</p>
+</blockquote>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>卸载删除旧内核版本</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">dnf remove kernel-&#123; 内核版本&#125; <span class="literal">-y</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>openEuler</tag>
+        <tag>linux</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>schedule-执行周期性任务</title>
+    <url>/2024/12/24/2024122404/</url>
+    <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><p>该模块主要用于python的任务调度，使用简便友好的python语法定期运行python函数或者一些其他的调用对象，这个模块就类似于windows的任务计划和linux的crontab，都是用于在服务器上周期性执行某段python脚本。</p>
+<span id="more"></span>
+
+<p>相较于linux的crontab对比：</p>
+<ol>
+<li>schedule模块支持以秒为单位的周期性任务，而crontab只能完成以分钟为单位的。</li>
+<li>schedule模块当有很多个任务需要执行时管理起来很方便，直接内嵌到代码当中，crontab还需要每一个脚本去设置一次，增加了复杂度。</li>
+<li>轻量级，无需任何依赖</li>
+</ol>
+<h2 id="模块安装"><a href="#模块安装" class="headerlink" title="模块安装"></a>模块安装</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install schedule</span><br><span class="line"><span class="comment"># pip3 安装</span></span><br><span class="line">pip3 install schedule</span><br></pre></td></tr></table></figure>
+
+<p>国内安装获取软件包可能会很慢，可以采用国内各大加速进行安装</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清华大学源</span></span><br><span class="line">pip install schedule -i https://pypi.tuna.tsinghua.edu.cn/simple	</span><br><span class="line"><span class="comment"># 阿里云源</span></span><br><span class="line">pip install schedule -i https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="comment"># 豆瓣源</span></span><br><span class="line">pip instal lschedule -i http://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块案例"><a href="#模块案例" class="headerlink" title="模块案例"></a>模块案例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>代码解释：以上代码是定义了每分钟执行一次job方法，执行完成后中间间隔一秒执行下一次job方法</p>
+</blockquote>
+<h2 id="模块参数用法"><a href="#模块参数用法" class="headerlink" title="模块参数用法"></a>模块参数用法</h2><p>schedule模块提供了多种定时方法，比如按秒、按分钟、按小时、按周、按月、按年等等，都可以进行自定义，针对不同的定时任务选用特定的定时方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每秒执行一次</span></span><br><span class="line">schedule.every().seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30秒执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).seconds.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每分钟执行一次</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每30分钟执行一次</span></span><br><span class="line">schedule.every(<span class="number">30</span>).minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每小时执行一次</span></span><br><span class="line">schedule.every().hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次</span></span><br><span class="line">schedule.every(<span class="number">2</span>).hour.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天执行一次 </span></span><br><span class="line">schedule.every().day.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天11点执行一次</span></span><br><span class="line">schedule.every().day。at(<span class="string">&quot;11:00&quot;</span>).do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周执行一次</span></span><br><span class="line">schedule.every().week.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周三执行一次</span></span><br><span class="line">schedule.every().wednesday.do(job)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>周一到周日用 monday、tuesday、wednesday、thursday、friday、saturday、sunday</p>
+</blockquote>
+<h2 id="单次执行"><a href="#单次执行" class="headerlink" title="单次执行"></a>单次执行</h2><p>上面说的都是重复执行的任务，如果想单词执行一次任务的话，可以return一下就可以了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="取消指定任务"><a href="#取消指定任务" class="headerlink" title="取消指定任务"></a>取消指定任务</h2><p>如果有多个任务想单独某个任务停止执行或者可以设置判断某个情况下停止执行任务</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输出结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> schedule.CancelJob	<span class="comment"># 取消执行任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job).tag(job)	<span class="comment"># 设置标签为job</span></span><br><span class="line">schedule.every(<span class="number">10</span>).minutes.do(job).tag(job10)	<span class="comment"># 设置标签为job10</span></span><br><span class="line">schedule.every(<span class="number">20</span>).minutes.do(job).tag(job20)	<span class="comment"># 设置标签为job20</span></span><br><span class="line"></span><br><span class="line">schedule.clear(<span class="string">&#x27;job&#x27;</span>)	<span class="comment"># 取消标签为job的定时任务</span></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法传输参数"><a href="#方法传输参数" class="headerlink" title="方法传输参数"></a>方法传输参数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 载入模块</span></span><br><span class="line"><span class="keyword">import</span> schedule </span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建需要的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行方法</span></span><br><span class="line">schedule.every().minutes.do(job, name=job)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置循环执行</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    schedule.run_pending()	<span class="comment"># 运行定时任务</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)	<span class="comment"># 上一次定时任务执行完后间隔1S再执行第二次</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>python</tag>
+        <tag>schedule</tag>
       </tags>
   </entry>
   <entry>
@@ -3520,103 +3520,8 @@ MySql：经典安装 MySql 5.6
       </categories>
       <tags>
         <tag>技术笔记</tag>
+        <tag>云计算</tag>
         <tag>python</tag>
-        <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
-    <url>/2024/12/28/2024122802/</url>
-    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
-<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP</strong></li>
-</ol>
-<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
-
-<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
-<ol>
-<li><strong>IPv6-双栈</strong></li>
-</ol>
-<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
-
-<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
-<ol>
-<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
-
-<ol>
-<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
-</ol>
-<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP使用指导</strong></li>
-</ol>
-<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
-
-<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
-
-<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
-
-<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
-
-<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
-
-<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
-<ol>
-<li><strong>IPv6-双栈使用指导</strong></li>
-</ol>
-<ol start="2">
-<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
-</ol>
-<ul>
-<li>创建IPv6子网，开启子网的IPv6功能：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
-
-<ul>
-<li>添加IPv6安全组规则和ACL规则：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
-
-<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
-
-<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
-
-<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
-<ul>
-<li>购买共享带宽：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
-
-<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
-
-<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
-<ul>
-<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
-<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
-<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
-<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
-
-<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
-<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -3719,73 +3624,103 @@ MySql：经典安装 MySql 5.6
         <category>python</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>云计算</tag>
+        <tag>python</tag>
         <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
-    <title>IPV6改造 华为云如此简单</title>
-    <url>/2024/12/28/2024122804/</url>
-    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
-<ul>
-<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
-<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
-<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
-<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
-<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
-</ul>
-<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
-<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
-<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
-
-<blockquote>
-<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
-</blockquote>
-<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
-<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
-</li>
-<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
-</li>
+    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
+    <url>/2024/12/28/2024122802/</url>
+    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
+<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP</strong></li>
 </ol>
-<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
 
-<ul>
-<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
-<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
-<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
-</ul>
-<blockquote>
-<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
-</blockquote>
-<ul>
-<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
-</ul>
+<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
 <ol>
-<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+<li><strong>IPv6-双栈</strong></li>
+</ol>
+<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
+
+<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
+<ol>
+<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
+
+<ol>
+<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
+</ol>
+<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP使用指导</strong></li>
+</ol>
+<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
+
+<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
+
+<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
+
+<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
+
+<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
+
+<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
+<ol>
+<li><strong>IPv6-双栈使用指导</strong></li>
+</ol>
+<ol start="2">
+<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
 </ol>
 <ul>
-<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
-<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+<li>创建IPv6子网，开启子网的IPv6功能：</li>
 </ul>
-<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
 
-<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+<ul>
+<li>添加IPv6安全组规则和ACL规则：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
 
-<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
-<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
 
-<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
-]]></content>
+<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
+
+<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
+<ul>
+<li>购买共享带宽：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
+
+<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
+
+<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
+<ul>
+<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
+<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
+<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
+<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
+
+<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
+<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
       <categories>
         <category>云计算</category>
       </categories>
       <tags>
-        <tag>技术笔记</tag>
         <tag>云计算</tag>
+        <tag>随笔</tag>
         <tag>IPV6</tag>
       </tags>
   </entry>
@@ -4109,6 +4044,71 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>云计算</tag>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IPV6改造 华为云如此简单</title>
+    <url>/2024/12/28/2024122804/</url>
+    <content><![CDATA[<p>现在很多企业都在搞这个IPV6改造，说实话这个IPV6改造我这边也不是特别精通，也是通过查阅各种资料来了解IPV6这个东西，下面是我查的一些资料大家可以借鉴一下。<span id="more"></span></p>
+<ul>
+<li><a href="https://blog.csdn.net/vecloud/article/details/114394285?ops_request_misc=&request_id=&biz_id=102&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-4-.pc_search_all_es&spm=1018.2226.3001.4187">IPv6改造三步曲——Vecloud</a></li>
+<li><a href="https://blog.csdn.net/wx_15323880413/article/details/108173997?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-108173997.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">IPv6改造思路及CDN改造</a></li>
+<li><a href="https://download.csdn.net/download/weixin_38743737/11634557?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754166416780261921888%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754166416780261921888&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~baidu_landing_v2~default-5-11634557.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">企业应用IPv6改造方案.pdf</a></li>
+<li><a href="https://blog.csdn.net/qq_34690340/article/details/109110521?ops_request_misc=&request_id=&biz_id=&utm_medium=distribute.pc_search_result.none-task-blog-2~all~es_rank~default-9-109110521.pc_search_all_es&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4187">docker nginx网站 ipv6改造方案和步骤</a></li>
+<li><a href="https://blog.csdn.net/weixin_38912070/article/details/106935054?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162754259516780262546350%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162754259516780262546350&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~sobaiduend~default-2-106935054.pc_v2_rank_blog_default&utm_term=ipv6%E6%94%B9%E9%80%A0%E6%96%B9%E6%A1%88&spm=1018.2226.3001.4450">汇报一下，闲鱼的ipv6改造之路</a><br>以上是我觉得不错的文章，大家也可以看看</li>
+</ul>
+<p>通过这些文章大概了解了IPV6改造的方法，我这边要说的是关于本地IDC机房的业务想要使用IPV6进行提供服务，我这边是通过华为云的弹性公网IP（EIP）实现的，下面我们来看看具体的一些操作吧，我觉得这是最简单的IPV6改造的方法了。</p>
+<h3 id="操作场景及工作原理"><a href="#操作场景及工作原理" class="headerlink" title="操作场景及工作原理"></a>操作场景及工作原理</h3><p>其实说白了这个我就是想实现我本地的IDC机房中的业务支持IPV6提供服务，但是如果做IPV4、IPV6双栈的话比较麻烦，而且本地IDC机房的网络情况很糟糕，设备老旧、设备不支持IPV6、机房无网络拓扑，这样做起来就很麻烦。<br>弹性公网IP（EIP）服务的IPv6功能可以将IPv4地址映射为公网IPv6地址。开启IPv6转换后，将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。<br>有了华为云的这个服务就感觉很简单了，我完全可以直接把本地IDC的所有IPV6出口通过华为云往外走就行了呗，一开始我是这么想的，直接采用VPN的方式把本地和华为云进行内网互联，然后再通过弹性公网IP（EIP）服务的IPV6去提供V6的服务，但是后来发现不太行，网络延迟太大，后来就直接将VPN换成了专线，这样延迟就小很多了。</p>
+<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>我这边不方便透露企业内部的一些信息，我这边就直接拿华为云官网上的相关案例跟大家说了<br>用户IDC网段：192.168.1.0&#x2F;24，VPC网段：192.168.0.0&#x2F;24。<br>实现方式如下：<br>通过虚拟专用网络（VPN）将用户IDC与VPC连通。<br>在VPC中搭建NAT网关，并绑定IPv6 EIP，对外提供公网IPv6服务。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/040d491611fa4a434582da4095a9e3e9.png">'); </script><br>
+
+<blockquote>
+<p><strong>说明：</strong><br> IPv6 EIP只能作为服务端地址对外提供服务，无法主动访问IPv6地址。 IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。</p>
+</blockquote>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>您需要在安全组的出方向和入方向中放通198.19.0.0&#x2F;16网段的IP地址。因为IPv6 EIP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li><p>购买EIP<br>根据出公网的实际业务需求，购买相应带宽的弹性公网IP并勾选IPv6转换。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-eip/eip_0008.html">申请弹性公网IP</a>。</p>
+</li>
+<li><p>配置VPN<br>VPN由VPN网关和VPN连接组成，VPN网关提供了虚拟私有云的公网出口，与用户IDC的远端网关对应。</p>
+</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735394055/c729c1de25bcaa83c3b73a4f80c2b379.png">'); </script><br>
+
+<ul>
+<li>创建VPC。<br>创建VPC，选择网段为192.168.0.0&#x2F;24，IDC私有网段为192.168.1.0&#x2F;24。<br>IDC的网段与云上VPC中的子网网段不能重叠，否则无法通信。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-vpc/zh-cn_topic_0013935842.html">创建虚拟私有云和子网</a>。</li>
+<li>创建VPN网关。<br>虚拟私有云：选择2.a中创建的VPC。<br>带宽大小：根据实际的业务需求，选择VPN连接需要的带宽大小。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0005.html">创建VPN网关</a>。</li>
+<li>创建VPN连接。<br>本端子网：选择网段，手动输入网段：192.168.0.0&#x2F;24,198.19.0.0&#x2F;16。<br>远端网关：选择线下IDC的VPN远端公网IP。<br>远端子网：选择线下IDC的私有网段192.168.1.0&#x2F;24。<br>具体操作请参见<a href="https://support.huaweicloud.com/qs-vpn/vpn_03_0006.html">创建VPN连接</a>。</li>
+</ul>
+<blockquote>
+<p><strong>说明：</strong><br>由于EIP开启IPv6转换后，源IP会被替换成198.19.0.0&#x2F;16网段，因此需要将该网段加入到本端子网中。由于Console页面的校验，需要先填写VPC的子网，再填写198.19.0.0&#x2F;16。</p>
+</blockquote>
+<ul>
+<li>配置IDC侧VPN设备。<br>完成云端的VPN配置后，需要对线下IDC侧的VPN设备进行相应配置，具体操作请参见<a href="https://support.huaweicloud.com/admin-vpn/zh-cn_topic_0175318163.html">《虚拟专用网络管理员指南》</a>。</li>
+</ul>
+<ol>
+<li>配置NAT网关<br>购买NAT网关，通过添加DNAT规则，可以通过映射方式使您的云主机或通过VPN扩展到云上的主机对互联网提供服务。</li>
+</ol>
+<ul>
+<li>购买NAT网关。<br>虚拟私有云：选择2中创建的VPC。<br>子网：选择2中创建的VPC下的子网。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0150270259.html">购买NAT网关</a>。</li>
+<li>添加DNAT规则。<br>选择1中购买的EIP，并根据线下IDC的私网IP地址和端口，设置DNAT规则。例如选择具体端口及TCP协议，添加私网IP：192.168.1.22，绑定EIP，如图2所示。<br>具体操作请参见<a href="https://support.huaweicloud.com/usermanual-natgateway/zh-cn_topic_0127489530.html">添加DNAT规则</a>。<br></li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735394055/4b59ec0922fbc00dea0312bf39bb2fb1.png">'); </script><br>
+
+<h3 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h3><p>操作完成后，就可以实现EIP服务的公网IPv6地址对外提供IPv6服务。<br>IPv6地址可以在EIP页面查询：<br>图3 查看IPv6地址</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/e6fba6176d0cb9eccf9d869ecc4a53c9.png">'); </script><br>
+
+<p>使用具有访问公网能力的IPv6客户端，测试IPv6 EIP的IPv6地址的连通性。</p>
+<script> document.write('<img src="'+ imgurl +'1735394055/f0e6050407b9a25b934ec16b9f0d1cdd.png">'); </script><br>
+
+<h3 id="END"><a href="#END" class="headerlink" title="END"></a>END</h3><p>到这里就结束了，这里总结一下，这个适用于对出口网络要求不高的情况，如果业务量太大的话这个要做一些相应的改变的，不然会出问题的。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -5610,6 +5610,67 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>自学PHP笔记（一）PHP语法</title>
+    <url>/2025/01/13/2025011304/</url>
+    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
+<span id="more"></span>
+<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
+<ol>
+<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+输出结果为：  <code>php$test变量为 false.</code></li>
+</ol>
+<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
+<ol>
+<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
+<ol>
+<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>123</code>不会显示我注释的内容。</li>
+<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
+<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
+
+<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
+<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
+
+<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>华为云-容器引擎CCE-部署Nginx应用</title>
     <url>/2025/01/13/2025011305/</url>
     <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="注册华为云账号"><a href="#注册华为云账号" class="headerlink" title="注册华为云账号"></a>注册华为云账号</h3><p>进入华为云官网，点击右上角“注册账号”，选择“华为云”，输入信息进行注册。</p>
@@ -5774,67 +5835,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>容器</tag>
         <tag>华为云</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学PHP笔记（一）PHP语法</title>
-    <url>/2025/01/13/2025011304/</url>
-    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
-<span id="more"></span>
-<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
-<ol>
-<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-输出结果为：  <code>php$test变量为 false.</code></li>
-</ol>
-<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
-<ol>
-<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
-<ol>
-<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>123</code>不会显示我注释的内容。</li>
-<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
-<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
-
-<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
-<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
-
-<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -7597,254 +7597,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>docker命令总结（一）</title>
-    <url>/2025/01/13/2025011317/</url>
-    <content><![CDATA[<p>个人简单总结：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>用途</th>
-<th>语法</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
-<td>在docker hub中搜索镜像</td>
-<td>docker search 镜像名称</td>
-<td>docker search nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
-<td>在docker hub中下载镜像到本地</td>
-<td>docker pull 镜像名：tag</td>
-<td>docker pull nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
-<td>推送指定镜像到docker镜像服务器</td>
-<td>docker push 本地镜像：tag</td>
-<td>docker push nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
-<td>查看本地所有docker镜像</td>
-<td>docker images</td>
-<td>docker imaegs</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
-<td>创建容器，并运行</td>
-<td>docker run 参数 镜像名：tag</td>
-<td>docker -d run nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
-<td>查看镜像形成过程</td>
-<td>docker history 本地镜像名：tag</td>
-<td>docker history nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
-<td>启动容器</td>
-<td>docker start 容器ID或容器名称</td>
-<td>docker strat 3d265463456</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
-<td>停止容器</td>
-<td>docker stop 容器ID或容器名称</td>
-<td>docker stop nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
-<td>通过dockerfile制作镜像</td>
-<td>docker build 参数 镜像名：tag dockerfile目录</td>
-<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
-<td>当前shell连接运行容器</td>
-<td>docker attach 容器名</td>
-<td>docker attach nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
-<td>保存当前容器为镜像&#x2F;快照</td>
-<td>docker commit 容器ID或容器名 新镜像名：tag</td>
-<td>docker commit nginx nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
-<td>容器与宿主机互相复制文件</td>
-<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
-<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
-<td>创建容器但不启动容器</td>
-<td>docker create  参数 镜像名称</td>
-<td>docker create nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
-<td>查看容器改动</td>
-<td>docker diff 容器ID或容器名称</td>
-<td>docker diff nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
-<td>在容器中执行命令</td>
-<td>docker exec 参数 容器ID或名称 命令</td>
-<td>docker exec centos echo ‘123’</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
-<td>登入docker镜像源服务器</td>
-<td>docker login 服务器地址</td>
-<td>docker login</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
-<td>退出登录镜像源服务器</td>
-<td>docker logout</td>
-<td>docker logout</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
-<td>输出当前容器的日志信息</td>
-<td>docker logs 容器ID或名称</td>
-<td>docker logs nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
-<td>查看容器的端口映射情况</td>
-<td>docker port 容器ID或名称</td>
-<td>docker port nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
-<td>列出容器列表</td>
-<td>docker ps 参数</td>
-<td>docker ps -a</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
-<td>重新启动容器</td>
-<td>docker restart 容器ID或名称</td>
-<td>docker restart nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
-<td>删除容器</td>
-<td>docker rm 参数 容器ID或名称</td>
-<td>docker rm nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
-<td>删除本地镜像</td>
-<td>docker rmi 镜像名：tag</td>
-<td>docker rmi nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
-<td>保存镜像为tar包</td>
-<td>docker save -o tar文件名 镜像名:tag</td>
-<td>docker save -o nginx.tar nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
-<td>查看容器中进程信息</td>
-<td>docker top 容器ID或名称</td>
-<td>docker top nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
-<td>查看docker软件版本</td>
-<td>docker version</td>
-<td>docker version</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
-<td>查看docker服务器实时时间</td>
-<td>docker events 参数</td>
-<td>docker events –since&#x3D;”1577321423”</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
-<td>从tar文件导入docker为镜像</td>
-<td>docker import 参数 tar文件 镜像名：tag</td>
-<td>docker import nginx.tar nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
-<td>从docker导出镜像为tar文件</td>
-<td>docker export 参数 镜像名：tag tar文件</td>
-<td>docker export nginx:V2 nginx2.tar</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
-<td>查看docker系统信息</td>
-<td>docker info</td>
-<td>docker info</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
-<td>查看容器详细信息</td>
-<td>docker inspect 容器ID或名称</td>
-<td>docker inspect nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
-<td>杀死正在运行的容器</td>
-<td>docker kill 参数 容器ID或名称</td>
-<td>docker kill nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
-<td>从tar文件中加载为docker镜像</td>
-<td>docker load -i tar文件 镜像名：tag</td>
-<td>docker load -i nginx2.tar nginx:V3</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
-<td>暂停容器</td>
-<td>docker pause 容器ID&#x2F;名称</td>
-<td>docker pause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
-<td>镜像打标签</td>
-<td>docker tag 镜像名：tag 新镜像名：tag</td>
-<td>docker tag nginx:V3 mynginx:V4</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
-<td>取消暂停的容器</td>
-<td>docker unpause 容器ID&#x2F;名称</td>
-<td>docker unpause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
-<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
-<td>docker wait CONTAINER</td>
-<td>docker wait CONTAINER</td>
-</tr>
-</tbody></table>
-<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -11894,8 +11646,256 @@ MySql：经典安装 MySql 5.6
       </categories>
       <tags>
         <tag>技术笔记</tag>
-        <tag>linux</tag>
         <tag>云计算</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker命令总结（一）</title>
+    <url>/2025/01/13/2025011317/</url>
+    <content><![CDATA[<p>个人简单总结：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>用途</th>
+<th>语法</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
+<td>在docker hub中搜索镜像</td>
+<td>docker search 镜像名称</td>
+<td>docker search nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
+<td>在docker hub中下载镜像到本地</td>
+<td>docker pull 镜像名：tag</td>
+<td>docker pull nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
+<td>推送指定镜像到docker镜像服务器</td>
+<td>docker push 本地镜像：tag</td>
+<td>docker push nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
+<td>查看本地所有docker镜像</td>
+<td>docker images</td>
+<td>docker imaegs</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
+<td>创建容器，并运行</td>
+<td>docker run 参数 镜像名：tag</td>
+<td>docker -d run nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
+<td>查看镜像形成过程</td>
+<td>docker history 本地镜像名：tag</td>
+<td>docker history nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
+<td>启动容器</td>
+<td>docker start 容器ID或容器名称</td>
+<td>docker strat 3d265463456</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
+<td>停止容器</td>
+<td>docker stop 容器ID或容器名称</td>
+<td>docker stop nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
+<td>通过dockerfile制作镜像</td>
+<td>docker build 参数 镜像名：tag dockerfile目录</td>
+<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
+<td>当前shell连接运行容器</td>
+<td>docker attach 容器名</td>
+<td>docker attach nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
+<td>保存当前容器为镜像&#x2F;快照</td>
+<td>docker commit 容器ID或容器名 新镜像名：tag</td>
+<td>docker commit nginx nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
+<td>容器与宿主机互相复制文件</td>
+<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
+<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
+<td>创建容器但不启动容器</td>
+<td>docker create  参数 镜像名称</td>
+<td>docker create nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
+<td>查看容器改动</td>
+<td>docker diff 容器ID或容器名称</td>
+<td>docker diff nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
+<td>在容器中执行命令</td>
+<td>docker exec 参数 容器ID或名称 命令</td>
+<td>docker exec centos echo ‘123’</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
+<td>登入docker镜像源服务器</td>
+<td>docker login 服务器地址</td>
+<td>docker login</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
+<td>退出登录镜像源服务器</td>
+<td>docker logout</td>
+<td>docker logout</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
+<td>输出当前容器的日志信息</td>
+<td>docker logs 容器ID或名称</td>
+<td>docker logs nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
+<td>查看容器的端口映射情况</td>
+<td>docker port 容器ID或名称</td>
+<td>docker port nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
+<td>列出容器列表</td>
+<td>docker ps 参数</td>
+<td>docker ps -a</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
+<td>重新启动容器</td>
+<td>docker restart 容器ID或名称</td>
+<td>docker restart nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
+<td>删除容器</td>
+<td>docker rm 参数 容器ID或名称</td>
+<td>docker rm nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
+<td>删除本地镜像</td>
+<td>docker rmi 镜像名：tag</td>
+<td>docker rmi nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
+<td>保存镜像为tar包</td>
+<td>docker save -o tar文件名 镜像名:tag</td>
+<td>docker save -o nginx.tar nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
+<td>查看容器中进程信息</td>
+<td>docker top 容器ID或名称</td>
+<td>docker top nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
+<td>查看docker软件版本</td>
+<td>docker version</td>
+<td>docker version</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
+<td>查看docker服务器实时时间</td>
+<td>docker events 参数</td>
+<td>docker events –since&#x3D;”1577321423”</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
+<td>从tar文件导入docker为镜像</td>
+<td>docker import 参数 tar文件 镜像名：tag</td>
+<td>docker import nginx.tar nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
+<td>从docker导出镜像为tar文件</td>
+<td>docker export 参数 镜像名：tag tar文件</td>
+<td>docker export nginx:V2 nginx2.tar</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
+<td>查看docker系统信息</td>
+<td>docker info</td>
+<td>docker info</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
+<td>查看容器详细信息</td>
+<td>docker inspect 容器ID或名称</td>
+<td>docker inspect nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
+<td>杀死正在运行的容器</td>
+<td>docker kill 参数 容器ID或名称</td>
+<td>docker kill nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
+<td>从tar文件中加载为docker镜像</td>
+<td>docker load -i tar文件 镜像名：tag</td>
+<td>docker load -i nginx2.tar nginx:V3</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
+<td>暂停容器</td>
+<td>docker pause 容器ID&#x2F;名称</td>
+<td>docker pause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
+<td>镜像打标签</td>
+<td>docker tag 镜像名：tag 新镜像名：tag</td>
+<td>docker tag nginx:V3 mynginx:V4</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
+<td>取消暂停的容器</td>
+<td>docker unpause 容器ID&#x2F;名称</td>
+<td>docker unpause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
+<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
+<td>docker wait CONTAINER</td>
+<td>docker wait CONTAINER</td>
+</tr>
+</tbody></table>
+<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -12050,228 +12050,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>resin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nginx location匹配及rewrite规则</title>
-    <url>/2025/01/13/2025011319/</url>
-    <content><![CDATA[<p>nginx location匹配及rewrite规则</p>
-<span id="more"></span>
-<h1 id="location匹配规则"><a href="#location匹配规则" class="headerlink" title="location匹配规则"></a>location匹配规则</h1><h2 id="1-实例"><a href="#1-实例" class="headerlink" title="1. 实例"></a>1. 实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">		location = \ &#123;</span><br><span class="line">			[配置A]</span><br><span class="line">		&#125;</span><br><span class="line">		location / &#123;</span><br><span class="line">			[配置B]</span><br><span class="line">		&#125;</span><br><span class="line">		location = /images/ &#123;</span><br><span class="line">			[配置C]</span><br><span class="line">		&#125;</span><br><span class="line">		location ^~ /static/&#123;</span><br><span class="line">			[配置D]</span><br><span class="line">		&#125;</span><br><span class="line">		localtion ~* \.(gif|jpg|png)&#123;</span><br><span class="line">			[配置E]</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-location语法规则"><a href="#2-location语法规则" class="headerlink" title="2. location语法规则"></a>2. location语法规则</h2><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location  = | ~ | ~* | ^~ | @  /url/&#123;		//注意 =、~、~*、^~ 、@是location的匹配规则，”|“表示或者</span><br><span class="line">“</span><br><span class="line">	......省略其他配置</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>规则说明：</strong></p>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x3D;</td>
-<td>字面精准匹配，如果匹配，则跳出匹配过程（不再进行正则匹配）</td>
-</tr>
-<tr>
-<td>~</td>
-<td>开头区分大小写的正则匹配</td>
-</tr>
-<tr>
-<td>~*</td>
-<td>开头不区分大小写的正则匹配</td>
-</tr>
-<tr>
-<td>^~</td>
-<td>开头表示uri以某哥常规字符串开头，理解为匹配url路径即可</td>
-</tr>
-<tr>
-<td>&#x2F;</td>
-<td>通用匹配，在没有正则表达式匹配时，任何请求都会匹配到</td>
-</tr>
-<tr>
-<td>@</td>
-<td>不是普通的location匹配，用于location内部重定向的变量</td>
-</tr>
-<tr>
-<td>~</td>
-<td>开头区分大小写的正则匹配</td>
-</tr>
-</tbody></table>
-<p><strong>多个location配置的匹配顺序：</strong></p>
-<ul>
-<li>首先匹配：”&#x3D;”</li>
-<li>其次匹配：”^~”</li>
-<li>再匹配：文件location书写顺序</li>
-<li>最后把所有请求交给通配符（”&#x2F;“）</li>
-</ul>
-<p>注意：每次匹配成功后，停止匹配，会按照本匹配的location处理请求</p>
-<p><strong>按照上面实例进行说明匹配顺序：</strong></p>
-<ul>
-<li>首先对比第一个location，如果匹配就会停止匹配，并按照配置A进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = \ &#123;</span><br><span class="line">	[配置A]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>其次对比第二个location，如果匹配就会停止匹配，并按照配置D进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/&#123;</span><br><span class="line">		[配置D]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li>再按照顺序依此进行对比，直到找到匹配的才会停止，并按照所匹配的配置*进行处理请求</li>
-<li>如果以上无任何匹配项则会选择通用选项，并按照所匹配的配置B进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">		[配置B]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="3-应用举例"><a href="#3-应用举例" class="headerlink" title="3. 应用举例"></a>3. 应用举例</h2><ul>
-<li>精准规则（&#x3D;）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = / &#123;</span><br><span class="line">	root /var/ww/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配以默认地址进行访问的请求，访问地址：<a href="http://nginxip/">http://NginxIP/</a></li>
-<li>匹配url路径（^~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/ &#123;</span><br><span class="line">	root /var/www/html/static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配以” &#x2F;static&#x2F; “开头的地址进行访问的请求，访问地址：<a href="http://nginxip/static/">http://NginxIP/static/</a></li>
-<li>忽略大小写（~*）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(png|gif|jpg)&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配” *.png | *.gif | *.jpg “的文件，访问地址：<a href="http://nginxip/test.png">http://NginxIP/test.png</a><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* /Test/ &#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配url地址中存在Test的访问请求，不区分大小写test也可以，访问地址：<a href="http://nginxip/test/">http://NginxIP/test/</a></li>
-<li>区分大小写（~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~ /Test/&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配url地址中存在Test的访问请求，区分大小写,test是进行匹配的，访问地址：<a href="http://nginxip/Test/">http://NginxIP/Test/</a></li>
-<li>默认匹配（所有规则都可匹配）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">	root /var/www/html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则为默认匹配，他可以匹配所有以默认地址访问的链接，访问地址：<a href="http://nginxip/login.html">http://NginxIP/login.html</a></li>
-<li>内部跳转（@）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location @index_error&#123;</span><br><span class="line">	root /var/www/error/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配以 “&#x2F;index&#x2F; “开头的请求，如果链接状态404，会匹配到这条规则</li>
-</ul>
-<h1 id="rewrite规则详解"><a href="#rewrite规则详解" class="headerlink" title="rewrite规则详解"></a>rewrite规则详解</h1><p>nginx的rewrite功能和apache一样，rewrite的主要功能是实现RUL地址的重定向。Nginx的rewrite功能是由PCRE软件支持，rewrite模块即<code>ngx_http_rewrite_module</code>模块。从某种意义上可以说为了美观或者搜索引起的友好搜索，提高排名等</p>
-<h2 id="1-实例-1"><a href="#1-实例-1" class="headerlink" title="1.实例"></a>1.实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span> )&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www.jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">	location ~.*\.(png|gif|jpg)&#123;</span><br><span class="line">		<span class="built_in">return</span> 403;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-rewrite语法规则"><a href="#2-rewrite语法规则" class="headerlink" title="2.rewrite语法规则"></a>2.rewrite语法规则</h2><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite		regex		replacement		[flag]</span><br></pre></td></tr></table></figure>
-<p>rewrite：rewrite重写的关键字不可省略<br>regex：这里写的是正则表达式<br>replacement：这里是重新内容<br>flag：这里是最后的flag标记</p>
-<p><strong>flag标记说明：</strong></p>
-<table>
-<thead>
-<tr>
-<th>flag标记</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>last</td>
-<td>也就是apache里的（L）标记，表示完成rewrite，URL地址不会改变</td>
-</tr>
-<tr>
-<td>break</td>
-<td>本条规则匹配成功后，会停止匹配，不再匹配后面的规则，URL地址不会改变</td>
-</tr>
-<tr>
-<td>redirect</td>
-<td>返回302临时重定向，浏览器地址会显示跳转后的URL地址</td>
-</tr>
-<tr>
-<td>permanent</td>
-<td>返回301永久重定向，浏览器地址栏显示跳转后的URL地址，Nginx返回response状态码301</td>
-</tr>
-<tr>
-<td><strong>相关符号说明：</strong></td>
-<td></td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>*</td>
-<td>代表前面0或者多个字符</td>
-</tr>
-<tr>
-<td>+</td>
-<td>代表前面1或者多个字符</td>
-</tr>
-<tr>
-<td>?</td>
-<td>代表前面0或1个字符</td>
-</tr>
-<tr>
-<td>^</td>
-<td>代表字符串的开始位置</td>
-</tr>
-<tr>
-<td>$</td>
-<td>代表字符串结束位置</td>
-</tr>
-<tr>
-<td>$n</td>
-<td>代表字符串结束第n个参数</td>
-</tr>
-<tr>
-<td>.</td>
-<td>通配符，代表任何字符</td>
-</tr>
-</tbody></table>
-<h2 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h2><ul>
-<li>多域名跳转到同一域名<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz abc.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span>)&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www,jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>当访问 abc.jkyst.xyz 时会自动跳转到 <a href="http://www.jkyst.xyz/">www.jkyst.xyz</a> ，这里出现if语句用于判断，判断结果为true则执行语句内部的 rewrite重写</p>
-<ul>
-<li>当文件不存在时重定向到指定文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>当访问 “test” 目录下的文件或目录不存在时，则跳转到 “test1”下面的此文件或者目录，跳转后会将URL进行转换</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ index.html last;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>表示当访问 “test” 目录下的文件或目录不存在时，则重定向到 “index.html”文件，跳转后URl不会进行转换</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">		listen 80;</span><br><span class="line">		server_name www.jkyst.xyz;</span><br><span class="line">		<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">			rewrite ^/test/([0-9a-z]+)/([0-9a-z]+)/(.*)$ http://www.jkyst.xyz/test/$1$2<span class="variable">$3</span> permanent;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>目录切换，表示将原目录转换成其他目录，【0-9a-z】表示转换后目录名称</p>
-<ul>
-<li>禁止访问.sh后缀的文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">	......其他配置</span><br><span class="line">	location ~.*\.(sh)<span class="variable">$&#123;</span></span><br><span class="line"><span class="variable">		return 405;</span></span><br><span class="line"><span class="variable">	&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>表示当访问 “*.sh”的文件就会返回405错误</p>
-<ul>
-<li>匹配用户浏览器代理信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="variable">$http_user_agent</span> ~* (<span class="string">&quot;Android&quot;</span>)|(iPhone))&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ http://www.jkyst.xyz/test/<span class="variable">$1</span>  permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>表示当匹配到浏览代理为Android和iPhone时进行重定向 “test”目录下的文件，改变访问的地址</p>
-<ul>
-<li>禁止htaccess<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	location ~//.ht &#123;</span><br><span class="line">         deny all;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="4-文件目录匹配"><a href="#4-文件目录匹配" class="headerlink" title="4.文件目录匹配"></a>4.文件目录匹配</h2><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-f</td>
-<td>判断文件是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-f</td>
-<td>判断文件是否存在 返回值false为不存在</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>判断目录是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-d</td>
-<td>判断目录是否存在 返回值true为不存在</td>
-</tr>
-<tr>
-<td>-e</td>
-<td>判断文件或目录是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-e</td>
-<td>判断文件或目录是否存在 返回值true为不存在</td>
-</tr>
-<tr>
-<td>-x</td>
-<td>判断文件是否可执行 返回值true为可执行</td>
-</tr>
-<tr>
-<td>!-x</td>
-<td>判断文件是否可执行 返回值true为不可执行</td>
-</tr>
-</tbody></table>
-<p><strong>举例说明：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>判断文件或目录是否存在</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
@@ -13734,6 +13512,228 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
       </tags>
   </entry>
   <entry>
+    <title>nginx location匹配及rewrite规则</title>
+    <url>/2025/01/13/2025011319/</url>
+    <content><![CDATA[<p>nginx location匹配及rewrite规则</p>
+<span id="more"></span>
+<h1 id="location匹配规则"><a href="#location匹配规则" class="headerlink" title="location匹配规则"></a>location匹配规则</h1><h2 id="1-实例"><a href="#1-实例" class="headerlink" title="1. 实例"></a>1. 实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">		location = \ &#123;</span><br><span class="line">			[配置A]</span><br><span class="line">		&#125;</span><br><span class="line">		location / &#123;</span><br><span class="line">			[配置B]</span><br><span class="line">		&#125;</span><br><span class="line">		location = /images/ &#123;</span><br><span class="line">			[配置C]</span><br><span class="line">		&#125;</span><br><span class="line">		location ^~ /static/&#123;</span><br><span class="line">			[配置D]</span><br><span class="line">		&#125;</span><br><span class="line">		localtion ~* \.(gif|jpg|png)&#123;</span><br><span class="line">			[配置E]</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-location语法规则"><a href="#2-location语法规则" class="headerlink" title="2. location语法规则"></a>2. location语法规则</h2><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location  = | ~ | ~* | ^~ | @  /url/&#123;		//注意 =、~、~*、^~ 、@是location的匹配规则，”|“表示或者</span><br><span class="line">“</span><br><span class="line">	......省略其他配置</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>规则说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;</td>
+<td>字面精准匹配，如果匹配，则跳出匹配过程（不再进行正则匹配）</td>
+</tr>
+<tr>
+<td>~</td>
+<td>开头区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td>~*</td>
+<td>开头不区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td>^~</td>
+<td>开头表示uri以某哥常规字符串开头，理解为匹配url路径即可</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>通用匹配，在没有正则表达式匹配时，任何请求都会匹配到</td>
+</tr>
+<tr>
+<td>@</td>
+<td>不是普通的location匹配，用于location内部重定向的变量</td>
+</tr>
+<tr>
+<td>~</td>
+<td>开头区分大小写的正则匹配</td>
+</tr>
+</tbody></table>
+<p><strong>多个location配置的匹配顺序：</strong></p>
+<ul>
+<li>首先匹配：”&#x3D;”</li>
+<li>其次匹配：”^~”</li>
+<li>再匹配：文件location书写顺序</li>
+<li>最后把所有请求交给通配符（”&#x2F;“）</li>
+</ul>
+<p>注意：每次匹配成功后，停止匹配，会按照本匹配的location处理请求</p>
+<p><strong>按照上面实例进行说明匹配顺序：</strong></p>
+<ul>
+<li>首先对比第一个location，如果匹配就会停止匹配，并按照配置A进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = \ &#123;</span><br><span class="line">	[配置A]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>其次对比第二个location，如果匹配就会停止匹配，并按照配置D进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/&#123;</span><br><span class="line">		[配置D]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li>再按照顺序依此进行对比，直到找到匹配的才会停止，并按照所匹配的配置*进行处理请求</li>
+<li>如果以上无任何匹配项则会选择通用选项，并按照所匹配的配置B进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">		[配置B]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-应用举例"><a href="#3-应用举例" class="headerlink" title="3. 应用举例"></a>3. 应用举例</h2><ul>
+<li>精准规则（&#x3D;）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = / &#123;</span><br><span class="line">	root /var/ww/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配以默认地址进行访问的请求，访问地址：<a href="http://nginxip/">http://NginxIP/</a></li>
+<li>匹配url路径（^~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/ &#123;</span><br><span class="line">	root /var/www/html/static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配以” &#x2F;static&#x2F; “开头的地址进行访问的请求，访问地址：<a href="http://nginxip/static/">http://NginxIP/static/</a></li>
+<li>忽略大小写（~*）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(png|gif|jpg)&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配” *.png | *.gif | *.jpg “的文件，访问地址：<a href="http://nginxip/test.png">http://NginxIP/test.png</a><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* /Test/ &#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配url地址中存在Test的访问请求，不区分大小写test也可以，访问地址：<a href="http://nginxip/test/">http://NginxIP/test/</a></li>
+<li>区分大小写（~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~ /Test/&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配url地址中存在Test的访问请求，区分大小写,test是进行匹配的，访问地址：<a href="http://nginxip/Test/">http://NginxIP/Test/</a></li>
+<li>默认匹配（所有规则都可匹配）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">	root /var/www/html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则为默认匹配，他可以匹配所有以默认地址访问的链接，访问地址：<a href="http://nginxip/login.html">http://NginxIP/login.html</a></li>
+<li>内部跳转（@）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location @index_error&#123;</span><br><span class="line">	root /var/www/error/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配以 “&#x2F;index&#x2F; “开头的请求，如果链接状态404，会匹配到这条规则</li>
+</ul>
+<h1 id="rewrite规则详解"><a href="#rewrite规则详解" class="headerlink" title="rewrite规则详解"></a>rewrite规则详解</h1><p>nginx的rewrite功能和apache一样，rewrite的主要功能是实现RUL地址的重定向。Nginx的rewrite功能是由PCRE软件支持，rewrite模块即<code>ngx_http_rewrite_module</code>模块。从某种意义上可以说为了美观或者搜索引起的友好搜索，提高排名等</p>
+<h2 id="1-实例-1"><a href="#1-实例-1" class="headerlink" title="1.实例"></a>1.实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span> )&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www.jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">	location ~.*\.(png|gif|jpg)&#123;</span><br><span class="line">		<span class="built_in">return</span> 403;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-rewrite语法规则"><a href="#2-rewrite语法规则" class="headerlink" title="2.rewrite语法规则"></a>2.rewrite语法规则</h2><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite		regex		replacement		[flag]</span><br></pre></td></tr></table></figure>
+<p>rewrite：rewrite重写的关键字不可省略<br>regex：这里写的是正则表达式<br>replacement：这里是重新内容<br>flag：这里是最后的flag标记</p>
+<p><strong>flag标记说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>flag标记</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>last</td>
+<td>也就是apache里的（L）标记，表示完成rewrite，URL地址不会改变</td>
+</tr>
+<tr>
+<td>break</td>
+<td>本条规则匹配成功后，会停止匹配，不再匹配后面的规则，URL地址不会改变</td>
+</tr>
+<tr>
+<td>redirect</td>
+<td>返回302临时重定向，浏览器地址会显示跳转后的URL地址</td>
+</tr>
+<tr>
+<td>permanent</td>
+<td>返回301永久重定向，浏览器地址栏显示跳转后的URL地址，Nginx返回response状态码301</td>
+</tr>
+<tr>
+<td><strong>相关符号说明：</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>代表前面0或者多个字符</td>
+</tr>
+<tr>
+<td>+</td>
+<td>代表前面1或者多个字符</td>
+</tr>
+<tr>
+<td>?</td>
+<td>代表前面0或1个字符</td>
+</tr>
+<tr>
+<td>^</td>
+<td>代表字符串的开始位置</td>
+</tr>
+<tr>
+<td>$</td>
+<td>代表字符串结束位置</td>
+</tr>
+<tr>
+<td>$n</td>
+<td>代表字符串结束第n个参数</td>
+</tr>
+<tr>
+<td>.</td>
+<td>通配符，代表任何字符</td>
+</tr>
+</tbody></table>
+<h2 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h2><ul>
+<li>多域名跳转到同一域名<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz abc.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span>)&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www,jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>当访问 abc.jkyst.xyz 时会自动跳转到 <a href="http://www.jkyst.xyz/">www.jkyst.xyz</a> ，这里出现if语句用于判断，判断结果为true则执行语句内部的 rewrite重写</p>
+<ul>
+<li>当文件不存在时重定向到指定文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>当访问 “test” 目录下的文件或目录不存在时，则跳转到 “test1”下面的此文件或者目录，跳转后会将URL进行转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ index.html last;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表示当访问 “test” 目录下的文件或目录不存在时，则重定向到 “index.html”文件，跳转后URl不会进行转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">		listen 80;</span><br><span class="line">		server_name www.jkyst.xyz;</span><br><span class="line">		<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">			rewrite ^/test/([0-9a-z]+)/([0-9a-z]+)/(.*)$ http://www.jkyst.xyz/test/$1$2<span class="variable">$3</span> permanent;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>目录切换，表示将原目录转换成其他目录，【0-9a-z】表示转换后目录名称</p>
+<ul>
+<li>禁止访问.sh后缀的文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">	......其他配置</span><br><span class="line">	location ~.*\.(sh)<span class="variable">$&#123;</span></span><br><span class="line"><span class="variable">		return 405;</span></span><br><span class="line"><span class="variable">	&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>表示当访问 “*.sh”的文件就会返回405错误</p>
+<ul>
+<li>匹配用户浏览器代理信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="variable">$http_user_agent</span> ~* (<span class="string">&quot;Android&quot;</span>)|(iPhone))&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ http://www.jkyst.xyz/test/<span class="variable">$1</span>  permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>表示当匹配到浏览代理为Android和iPhone时进行重定向 “test”目录下的文件，改变访问的地址</p>
+<ul>
+<li>禁止htaccess<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	location ~//.ht &#123;</span><br><span class="line">         deny all;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-文件目录匹配"><a href="#4-文件目录匹配" class="headerlink" title="4.文件目录匹配"></a>4.文件目录匹配</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f</td>
+<td>判断文件是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-f</td>
+<td>判断文件是否存在 返回值false为不存在</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>判断目录是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-d</td>
+<td>判断目录是否存在 返回值true为不存在</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>判断文件或目录是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-e</td>
+<td>判断文件或目录是否存在 返回值true为不存在</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>判断文件是否可执行 返回值true为可执行</td>
+</tr>
+<tr>
+<td>!-x</td>
+<td>判断文件是否可执行 返回值true为不可执行</td>
+</tr>
+</tbody></table>
+<p><strong>举例说明：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断文件或目录是否存在</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Rocky部署OpenVPN</title>
     <url>/2024/12/20/Rocky%E9%83%A8%E7%BD%B2OpenVPN/</url>
     <content><![CDATA[<!-- ### 参考文献
@@ -13934,8 +13934,8 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
       </categories>
       <tags>
         <tag>技术笔记</tag>
-        <tag>linux</tag>
         <tag>云计算</tag>
+        <tag>linux</tag>
         <tag>openvpn</tag>
       </tags>
   </entry>
