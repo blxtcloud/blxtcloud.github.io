@@ -555,20 +555,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/linux/</loc>
-    <lastmod>2025-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2025-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/python/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
@@ -577,6 +563,20 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/schedule/</loc>
+    <lastmod>2025-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/linux/</loc>
+    <lastmod>2025-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -604,13 +604,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/pip/</loc>
-    <lastmod>2025-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/windwos/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
@@ -618,7 +611,7 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/nginx/</loc>
+    <loc>https://blxtcloud.github.io/tags/pip/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -632,7 +625,7 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/%E5%A0%A1%E5%9E%92%E6%9C%BA/</loc>
+    <loc>https://blxtcloud.github.io/tags/nginx/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -640,6 +633,13 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/IPV6/</loc>
+    <lastmod>2025-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/%E5%A0%A1%E5%9E%92%E6%9C%BA/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -667,6 +667,13 @@
   </url>
   
   <url>
+    <loc>https://blxtcloud.github.io/tags/DNS/</loc>
+    <lastmod>2025-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blxtcloud.github.io/tags/%E5%AE%B9%E5%99%A8/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
@@ -675,13 +682,6 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/</loc>
-    <lastmod>2025-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/DNS/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
