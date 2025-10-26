@@ -653,14 +653,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
+    <loc>https://blxtcloud.github.io/tags/php/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/php/</loc>
+    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -695,13 +695,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/docker/</loc>
-    <lastmod>2025-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/resin/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -709,7 +702,7 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/openvpn/</loc>
+    <loc>https://blxtcloud.github.io/tags/docker/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -724,6 +717,13 @@
   
   <url>
     <loc>https://blxtcloud.github.io/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2025-10-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/openvpn/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
