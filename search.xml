@@ -619,6 +619,29 @@
       </tags>
   </entry>
   <entry>
+    <title>记一次pip/pip3安装uwsgi报错</title>
+    <url>/2024/12/26/2024122601/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
+<span id="more"></span>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
+</blockquote>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
+<p>安装好之后再pip安装uwsgi就没问题了。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>随笔</tag>
+        <tag>pip</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows之应用安装程序 —— winget</title>
     <url>/2024/12/26/2024122602/</url>
     <content><![CDATA[<p>大家都用过Linux中的应用程序安装工具，如yum、apt、rpm等工具进行安装自己想要的一些工具或则软件之类的，当然Linux操作系统还是很强大的有很多类似的命令来安装我们所需要的程序，但是windwos有没有类似于windows这样的应用安装程序呢？想必大家看标题就能看的出来肯定是有的，那就是微软提供的<strong>winget</strong>官网提供的名称叫<strong>应用安装程序</strong>又叫<strong>windows程序包管理器</strong>，今天我们就来说一说这个windows版的命令程序安装工具，这个工具对于大家来说还是很合谐的，使用也是非常简单和Linux中的安装程序的工具很类似，只不过windows操作系统更注重于图形化操作，所以很少有人去注意或者关注命令行中的一些操作，这个也和windows操作系统闭源有很大一部分关系的，好了废话不多说了我们开始我们的<strong>winget</strong>之旅吧!</p>
@@ -1413,29 +1436,6 @@
       </tags>
   </entry>
   <entry>
-    <title>记一次pip/pip3安装uwsgi报错</title>
-    <url>/2024/12/26/2024122601/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>本来是想着在centos 7.9的主机上面部署一个flask应用，采用的方式是linux+nginx+uwsgi来进行发布，其他的都没有问题，但是在使用pip安装uwsgi时报错了，安装不成功，查了很多方法：试过把pip更新、安装python3-devel等等，但都是不行，最后还是得靠自己，研究了下pip安装方式，发现安装uwsgi是编译安装的，最后一查询发现gcc-c++没有装，安装之后再去安装uwsgi发现就成功。</p>
-<span id="more"></span>
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>下面是我安装的时候的报错：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# <span class="built_in">sudo</span> pip3 install uwsgi</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>WARNING: Running pip install with root privileges is generally not a good idea. Try <code>pip3 install --user</code> instead.<br>Collecting uwsgi<br>  Using cached <a href="https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz">https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz</a><br>Installing collected packages: uwsgi<br>  Running setup.py install for uwsgi … error<br>    Complete output from command &#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile:<br>    &#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py:261: UserWarning: Unknown distribution option: ‘descriptions’<br>      warnings.warn(msg)<br>    running install<br>    using profile: buildconf&#x2F;default.ini<br>    detected include path: [‘&#x2F;usr&#x2F;include’, ‘&#x2F;usr&#x2F;local&#x2F;include’]<br>    Traceback (most recent call last):<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 750, in <strong>init</strong><br>        gcc_version_components &#x3D; gcc_version.split(‘.’)<br>    AttributeError: ‘NoneType’ object has no attribute ‘split’<br>    During handling of the above exception, another exception occurred:<br>    Traceback (most recent call last):<br>      File “<string>“, line 1, in <module><br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 143, in <module><br>        ‘Programming Language :: Python :: 3.11’,<br>      File “&#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;setuptools&#x2F;<strong>init</strong>.py”, line 129, in setup<br>        return distutils.core.setup(**attrs)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;core.py”, line 148, in setup<br>        dist.run_commands()<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 955, in run_commands<br>        self.run_command(cmd)<br>      File “&#x2F;usr&#x2F;lib64&#x2F;python3.6&#x2F;distutils&#x2F;dist.py”, line 974, in run_command<br>        cmd_obj.run()<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py”, line 77, in run<br>        conf &#x3D; uc.uConf(get_profile())<br>      File “&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;uwsgiconfig.py”, line 758, in <strong>init</strong><br>        raise Exception(“you need a C compiler to build uWSGI”)<br>    Exception: you need a C compiler to build uWSGI<br>    —————————————-<br>Command “&#x2F;usr&#x2F;bin&#x2F;python3 -u -c “import setuptools, tokenize;<strong>file</strong>&#x3D;’&#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;setup.py’;f&#x3D;getattr(tokenize, ‘open’, open)(<strong>file</strong>);code&#x3D;f.read().replace(‘\r\n’, ‘\n’);f.close();exec(compile(code, <strong>file</strong>, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-2_lro4bs-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;tmp&#x2F;pip-build-8796okps&#x2F;uwsgi&#x2F;</p>
-</blockquote>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@* ~]# yum -y install python3-devel</span><br><span class="line">[root@* ~]# yum -y installl gcc-c++</span><br></pre></td></tr></table></figure>
-<p>安装好之后再pip安装uwsgi就没问题了。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>随笔</tag>
-        <tag>pip</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次云主机如何挂载对象存储</title>
     <url>/2024/12/26/2024122603/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>随着云计算的发展，公有云成为中小型企业建设业务系统的首选，而对象存储则是存储里面必不可少的存储产品，对象存储不仅可以提供海量、高可靠、安全的服务，而且价格相对普通存储来说会便宜很多，并且不受带宽的限制，仅限于本地下载和上传的网速，对象存储应用场景更适用于静态网站托管、多媒体存储、数据备份等等应用场景；对象存储使用相对来说是比较简单的我这里就不重点说了；</p>
@@ -1996,28 +1996,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>随笔</tag>
         <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>入门级别 Nginx 常用配置清单</title>
-    <url>/2024/12/26/2024122605/</url>
-    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
-<span id="more"></span>
-<p><strong>侦听端口</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>访问日志</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>域名</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -3385,6 +3363,28 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>入门级别 Nginx 常用配置清单</title>
+    <url>/2024/12/26/2024122605/</url>
+    <content><![CDATA[<p>本文为转发文章，转发来自“<a href="https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg%E2%80%9D%EF%BC%8C%E8%A7%89%E5%BE%97%E4%B8%8D%E9%94%99%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">https://mp.weixin.qq.com/s/ipUHaFPcDfIM9MsyqDGSEg”，觉得不错分享给大家</a><br>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP&#x2F;POP3&#x2F;SMTP 服务，其因丰富的功能集、稳定性、示例配置文件和低系统资源的消耗受到了开发者的欢迎。本文，我们总结了一些常用的 Nginx 配置代码，希望对大家有所帮助。</p>
+<span id="more"></span>
+<p><strong>侦听端口</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Standard HTTP Protocol</span></span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="comment"># Standard HTTPS Protocol</span></span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  <span class="comment"># For http2</span></span><br><span class="line">  listen 443 ssl http2;</span><br><span class="line">  <span class="comment"># Listen on 80 using IPv6</span></span><br><span class="line">  listen [::]:80;</span><br><span class="line">  <span class="comment"># Listen only on using IPv6</span></span><br><span class="line">  listen [::]:80 ipv6only=on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>访问日志</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Relative or full path to log file</span></span><br><span class="line">  access_log /path/to/file.log;</span><br><span class="line">  <span class="comment"># Turn &#x27;on&#x27; or &#x27;off&#x27;</span></span><br><span class="line">  access_log on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  <span class="comment"># Listen to yourdomain.com</span></span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to multiple domains</span></span><br><span class="line">  server_name yourdomain.com www.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all domains</span></span><br><span class="line">  server_name *.yourdomain.com;</span><br><span class="line">  <span class="comment"># Listen to all top-level domains</span></span><br><span class="line">  server_name yourdomain.*;</span><br><span class="line">  <span class="comment"># Listen to unspecified Hostnames (Listens to IP address itself)</span></span><br><span class="line">  server_name <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>静态资源</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">          root /path/to/website;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>重定向</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 http://yourdomain.com<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.yourdomain.com;</span><br><span class="line">  location /redirect-url &#123;</span><br><span class="line">     <span class="built_in">return</span> 301 http://otherdomain.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>反向代理</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://0.0.0.0:3000;</span><br><span class="line">     <span class="comment"># where 0.0.0.0:3000 is your application server (Ex: node.js) bound on 0.0.0.0 listening on port 3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>负载均衡</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> upstream node_js &#123;</span><br><span class="line">  server 0.0.0.0:3000;</span><br><span class="line">  server 0.0.0.0:4000;</span><br><span class="line">  server 123.131.121.122;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">     proxy_pass http://node_js;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br> <strong>SSL 协议</strong><br> <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate /path/to/cert.pem;</span><br><span class="line">  ssl_certificate_key /path/to/privatekey.pem;</span><br><span class="line">  ssl_stapling on;</span><br><span class="line">  ssl_stapling_verify on;</span><br><span class="line">  ssl_trusted_certificate /path/to/fullchain.pem;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_session_timeout 1h;</span><br><span class="line">  ssl_session_cache shared:SSL:50m;</span><br><span class="line">  add_header Strict-Transport-Security max-age=15768000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># Permanent Redirect for HTTP to HTTPS</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name yourdomain.com;</span><br><span class="line">  <span class="built_in">return</span> 301 https://$host<span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python实现AI图像识别-身份证识别</title>
     <url>/2024/12/28/2024122801/</url>
     <content><![CDATA[<p>图像识别说白了就是把一张照片上面的文字进行提取，提供工作效率</p>
@@ -3525,101 +3525,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
-    <url>/2024/12/28/2024122802/</url>
-    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
-<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP</strong></li>
-</ol>
-<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
-
-<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
-<ol>
-<li><strong>IPv6-双栈</strong></li>
-</ol>
-<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
-
-<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
-<ol>
-<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
-
-<ol>
-<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
-</ol>
-<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
-<li><strong>IPv6-EIP使用指导</strong></li>
-</ol>
-<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
-
-<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
-
-<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
-
-<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
-
-<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
-
-<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
-<ol>
-<li><strong>IPv6-双栈使用指导</strong></li>
-</ol>
-<ol start="2">
-<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
-</ol>
-<ul>
-<li>创建IPv6子网，开启子网的IPv6功能：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
-
-<ul>
-<li>添加IPv6安全组规则和ACL规则：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
-
-<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
-
-<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
-
-<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
-<ul>
-<li>购买共享带宽：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
-
-<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
-<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
-
-<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
-<ul>
-<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
-<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
-<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
-<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
-</ul>
-<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
-
-<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
-<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
-        <tag>IPV6</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>（超全）Python汇总篇，200+Python标准库介绍</title>
     <url>/2024/12/28/2024122803/</url>
     <content><![CDATA[<h3 id="关于Python标准库"><a href="#关于Python标准库" class="headerlink" title="关于Python标准库"></a>关于Python标准库</h3><p>众所周知，Python是一个依赖强大的组件库完成对应功能的语言，为了便捷实现各项功能，前辈大牛们打造了多种多样的工具库公开提供给大众使用，而越来越多的库已经因为使用的广泛和普遍及其功能的强大，已经成为Python的标准库。</p>
@@ -3722,6 +3627,101 @@ MySql：经典安装 MySql 5.6
         <tag>云计算</tag>
         <tag>python</tag>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一文快速掌握华为云IPv6基础知识及使用指南</title>
+    <url>/2024/12/28/2024122802/</url>
+    <content><![CDATA[<p>随着5G、物联网等新兴技术领域的发展，IP空间需求巨大，IPv6成为万物互联的基础，势在必行；华为云作为IPv6成熟商用开拓者，针对金融、广电、媒资等不同行业推出IPv6解决方案，助力企业平滑升级到IPv6基础架构。本文带您十分钟了解华为云IPv6。<span id="more"></span></p>
+<h3 id="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"><a href="#一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈" class="headerlink" title="一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈"></a>一、华为云IPv6解决方案：IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP</strong></li>
+</ol>
+<p>简单来说，IPv6-EIP就是申请一个弹性公网IP（EIP），此EIP既有一个IPv4地址，又有一个IPv6地址。当然也可以将已有的IPv4 EIP开启IPv6转换。开启IPv6转换后，此EIP将提供IPv4和IPv6弹性公网IP地址，原有IPv4业务可以快速为IPv6用户提供访问能力。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/70c2b91f31207da58a604671566d132d.png">'); </script><br>
+
+<p>IPv6-EIP的原理如上图所示：前端网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，后端业务网络和应用暂不改造，在后端网络和前端网络之间部署NAT64网络转换（即华为云IPv6-EIP），将前端IPv6地址转换为后端IPv4地址；客户内部业务网络侧实现“零”改造支持IPv6。</p>
+<ol>
+<li><strong>IPv6-双栈</strong></li>
+</ol>
+<p>相较于IPv6-EIP，IPv6-双栈进行的IPv6改造更加彻底和复杂。IPv6双栈为实例提供两个不同版本的IP地址：IPv4地址和IPv6地址，这两个IP地址不仅可以被其它网络访问，也可以主动访问其他IP，是所谓的“真”IPv6。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/b8f3ae85f724e0aab0d5ca2499999749.png">'); </script><br>
+
+<p>IPv6-双栈的原理如上图所示：前端接入网络改造成能够同时支持IPv4和IPv6终端访问的双栈网络，企业后端应用系统也改造成双栈，网络端到端支持IPv4和IPv6的业务接入。</p>
+<ol>
+<li><strong>IPv6-EIP和IPv6-双栈的异同</strong><br>如果做个形象的比喻，我们可以这么理解：<br>IPv4——“<strong>法语</strong>”<br>IPv6——“<strong>英语</strong>”<br>IPv4和IPv6是两门不同的“语言”，二者之间不可直接进行通信。如果把IPv4比作法语，把IPv6比作英语，一个只会其中一门语言的人是无法理解另外一门语言的，IPv4地址也不可与IPv6地址直接通信。<br>IPv6-EIP——“<strong>英语</strong>”**-<strong>“</strong>法语<strong>”</strong>翻译器**<br>IPv6-EIP相当于在两个人之间加了一个“英语”-“法语”翻译器，可以将IPv6地址NAT成IPv4地址。但是这个翻译器的翻译功能是单向的，只支持将外部网络的IPv6地址转换为IPv4地址。<br>IPv6-双栈——既懂法语又懂英语的人<br>IPv6-双栈相当于将后端的服务器训练成了一个既能理解法语也能理解英语的人，服务器不仅能“听懂”IPv4和IPv6，也能主动进行IPv4和IPv6访问。</li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1735393144/a721999c4936e63afa4cc73dda481c5a.png">'); </script><br>
+
+<ol>
+<li><strong>如何选择IPv6-EIP和IPv6-双栈？</strong><br>如果只需要为使用IPv6客户端的用户提供访问服务，则可使用：IPv6-EIP或者IPv6-双栈。推荐使用IPv6-EIP，更加简单便捷。<br>如果应用既需要为使用IPv6终端的用户提供访问服务，又需要对这些访问来源进行数据分析处理，则必须使用IPv6-双栈。<br>如果应用系统与其他系统（例如：数据库系统）、应用系统之间需要使用IPv6进行访问，则必须使用IPv6-双栈。</li>
+</ol>
+<h3 id="二、如何使用华为云IPv6-EIP和IPv6-双栈"><a href="#二、如何使用华为云IPv6-EIP和IPv6-双栈" class="headerlink" title="二、如何使用华为云IPv6-EIP和IPv6-双栈"></a>二、如何使用华为云IPv6-EIP和IPv6-双栈</h3><ol>
+<li><strong>IPv6-EIP使用指导</strong></li>
+</ol>
+<p>1)IPv6-EIP目前正在公测中，目前已支持华南-广州、华北-北京一、华北-北京四、华东-上海二、华东-上海一，使用前请确认是否已申请IPv6-EIP公测。可以在管理控制台选择“网络 &gt; 弹性公网IP”，单击“IPv6 EIP”进入公测申请页面。<br>2)使用方法<br>a)购买EIP时开启IPv6转换，如下图所示：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/5b8a73abef21d28b81fca199df025d6d.png">'); </script><br>
+
+<p>或者购买后在EIP界面“更多”处开启IPv6转换：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/cfbdfb3a5553518ccec5a355c54f5082.png">'); </script><br>
+
+<p>b) EIP绑定的ECS的安全组出入方向放通198.19.0.0&#x2F;16。<br>如果ECS所在的子网设置了网络ACL，ACL中同样要放通198.19.0.0&#x2F;16。<br>因为IPv6 弹性公网IP采用NAT64技术，入方向的源IP地址经过NAT64转换后，会从IPv6地址转换为198.19.0.0&#x2F;16之间的某个IPv4地址，源端口随机，目的IP为本机的内部私有IPv4地址，目的端口不变。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/d074c2da8f163ac988d74e38dc7c92f8.png">'); </script><br>
+
+<p>如果在后端服务器内抓包，可以看到源IP确实是198.19.0.0&#x2F;16网段的一个地址，如下图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/7bbd8eca4df220544149e177a0184bb3.png">'); </script><br>
+
+<p>3)功能验证<br>如何测试IPv6-EIP是否能被访问？可以使用Ping探测网站进行ping测试，如图：</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/abd23fe7a13f28dd0edfbf82604d2c0c.png">'); </script><br>
+
+<p>由于IPv6的广域网尚未成熟，出现少量丢包属于正常现象，可以忽略。</p>
+<ol>
+<li><strong>IPv6-双栈使用指导</strong></li>
+</ol>
+<ol start="2">
+<li>重点说明<br>a) IPv6-双栈目前正在公测中，使用前请确认是否已申请了IPv6-双栈公测。公测期间，只有选择如下类型的ECS才能体验IPv6-双栈，请务必选择支持的区域和规格：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。<br>b) 当前IPv6-双栈仅支持按带宽计费（按流量计费正在开发中）。<br>2)使用方法<br>IPv6-双栈要在VPC侧、ECS侧和镜像侧三方面进行配置。<br>a) 申请公测。<br>b) 进行VPC侧配置：</li>
+</ol>
+<ul>
+<li>创建IPv6子网，开启子网的IPv6功能：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/63ffba85e58a252f59ffbb6cff7d961e.png">'); </script><br>
+
+<ul>
+<li>添加IPv6安全组规则和ACL规则：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/1cfb81cef301aac19e6dbf9a72961600.png">'); </script><br>
+
+<script> document.write('<img src="'+ imgurl +'1735393144/c872d41292b220f671b3af1dabda5e14.png">'); </script><br>
+
+<p>IPv6代表所有IP地址的IP：::&#x2F;0（冒号为英文冒号），对应IPv4的0.0.0.0&#x2F;0。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/43d3c05fd7195728a923754b3508c4d1.png">'); </script><br>
+
+<p>IPv6地址的表示方法：八组四位16进制，可以省略前导0，::代表一系列0。</p>
+<ul>
+<li>购买共享带宽：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/bd3ee8dc7628514f32917dd32ccc7618.png">'); </script><br>
+
+<p>c) 进行ECS侧配置：<br>购买指定region指定机型的ECS：<br>“华北-北京四”区域，“可用区2”：sn3；<br>“华东-上海一”区域，“可用区1”：c3，m3，“可用区2”：c3。</p>
+<script> document.write('<img src="'+ imgurl +'1735393144/1d43324bac01f95e5ad1dd36f733aa56.png">'); </script><br>
+
+<p>如果出现上述提示则说明选择的机型可以使用IPv6-双栈，选择“自动分配IPv6地址”。<br>d) 进行镜像侧配置，根据不同的操作系统配置IPv6：<br>以常见的CentOS公共镜像为例，手动获取IPv6地址：</p>
+<ul>
+<li>下载对应系统版本的工具ipv6-setup-rhel。执行命令：wget <a href="https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel">https://ecs-instance-driver.obs.cn-north-1.myhwclouds.com/ipv6/ipv6-setup-rhel</a></li>
+<li>添加执行权限：chmod +x ipv6-setup-rhel</li>
+<li>指定一个网卡设备，配置动态获取IPv6地址：.&#x2F;ipv6-setup-rhel –dev eth0</li>
+<li>执行ifconfig eth0，如果能看到与console网卡界面一致IPv6地址，即说明配置成功：</li>
+</ul>
+<script> document.write('<img src="'+ imgurl +'1735393144/945458a567cb550ac6d3bc5a4a0df153.png">'); </script><br>
+
+<p>更多操作系统的配置可以参考：<a href="https://support.huaweicloud.com/ims_faq/ims_faq_0046.html">https://support.huaweicloud.com/ims_faq/ims_faq_0046.html</a><br>3)功能验证<br>被访问连通性测试：同IPv6-EIP。<br>访问连通性测试：ping常见的支持IPv6访问的网站，比如ping6 <a href="http://www.qq.com/">www.qq.com</a></p>
+<script> document.write('<img src="'+ imgurl +'1735393144/c1fb2af626d48b884021d62453de96b5.png">'); </script><br>]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+        <tag>IPV6</tag>
       </tags>
   </entry>
   <entry>
@@ -4112,6 +4112,81 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>全局负载均衡、CDN内容分发的原理与实践</title>
+    <url>/2024/12/28/2024122806/</url>
+    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
+<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
+<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
+<blockquote>
+<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+</blockquote>
+<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
+<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
+
+<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
+<ul>
+<li>节省骨干网带宽，减少带宽需求量；</li>
+<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
+<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
+<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
+<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
+</ul>
+<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
+<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
+<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
+<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
+<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
+<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
+<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
+<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
+<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
+<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
+<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
+<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
+
+<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
+<p>下图展示两种流程的不同：</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
+
+<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
+<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
+<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
+<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
+<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
+
+<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
+<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
+<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
+<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
+<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
+<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
+
+<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
+<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
+<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
+<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
+<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
+<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
+<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
+<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
+<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
+<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
+<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
+<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
+<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机网络的 89 个核心概念</title>
     <url>/2024/12/28/2024122807/</url>
     <content><![CDATA[<p>计算机网络中的概念非常庞杂，理解起来比较困难，所以这里，我给大家汇总了计算机网络中 89 个常见的概念，希望对你有所帮助。<span id="more"></span></p>
@@ -4245,81 +4320,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>随笔</tag>
         <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>全局负载均衡、CDN内容分发的原理与实践</title>
-    <url>/2024/12/28/2024122806/</url>
-    <content><![CDATA[<h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。<span id="more"></span></p>
-<p>CDN的关键技术主要有内容存储和分发技术。简而言之，就是将数据部署在各地的服务器中，通过负载均衡技术，让用户就近获取服务器中的数据。</p>
-<h3 id="CDN-原理"><a href="#CDN-原理" class="headerlink" title="CDN 原理"></a>CDN 原理</h3><p>CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。</p>
-<blockquote>
-<p>全局负载均衡主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-</blockquote>
-<p>CDN的基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。</p>
-<p>通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/410ede08ff0448f69055cf060f676e07.png">'); </script><br>
-
-<h3 id="CDN-的价值"><a href="#CDN-的价值" class="headerlink" title="CDN 的价值"></a>CDN 的价值</h3><p>归纳起来，CDN具有以下主要功能：</p>
-<ul>
-<li>节省骨干网带宽，减少带宽需求量；</li>
-<li>提供服务器端加速，解决由于用户访问量大造成的服务器过载问题；</li>
-<li>服务商能使用Web Cache技术在本地缓存用户访问过的Web页面和对象，实现相同对象的访问无须占用主干的出口带宽，并提高用户访问因特网页面的相应时间的需求；</li>
-<li>能克服网站分布不均的问题，并且能降低网站自身建设和维护成本；</li>
-<li>降低“通信风暴”的影响，提高网络访问的稳定性。</li>
-</ul>
-<h3 id="CDN-服务模式"><a href="#CDN-服务模式" class="headerlink" title="CDN 服务模式"></a>CDN 服务模式</h3><p>简单地说，内容分发网络（CDN）是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。</p>
-<p>通过用户就近性和服务器负载的判断，CDN确保内容以一种极为高效的方式为用户的请求提供服务。总的来说，内容服务基于缓存服务器，也称作代理缓存（Surrogate），它位于网络的边缘，距用户仅有”一跳”（Single Hop）之遥。</p>
-<p>同时，代理缓存是内容提供商源服务器（通常位于CDN服务提供商的数据中心）的一个透明镜像。这样的架构使得CDN服务提供商能够代表他们客户，即内容供应商，向最终用户提供尽可能好的体验，而这些用户是不能容忍请求响应时间有任何延迟的。</p>
-<h3 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h3><p>全局负载均衡（Global Server Load Balance, GSLB）,全局负载均衡是指对分别放置在不同的地理位置的服务器群间作负载均衡。</p>
-<p>服务器负载均衡是指对本地的服务器群做负载均衡。主要用于在多个区域拥有自己服务器的站点，为了使全球用户只以一个IP地址或域名就能访问到离自己最近的服务器，从而获得最快的访问速度。</p>
-<h3 id="服务器群选择"><a href="#服务器群选择" class="headerlink" title="服务器群选择"></a>服务器群选择</h3><p>对于全局负载均衡而言，其核心就是服务器群的选择。对于某个特定的客户，应该将其定向到哪一个服务群？应该使用什么标准来进行这种选择？一般情况下，主要考虑两个因素：临近程度和负载大小。</p>
-<p>临近机制主要考察服务器群与用户之间的物理距离。选择地理位置最接近用户的服务器集群，可以减少服务响应到达用户所经过的中转次数，从而降低中转节点对服务质量的影响。</p>
-<p>常见的有两种方式，一种是静态配置，例如根据静态的IP地址配置表进行IP地址到服务器群的映射。另一种方式是动态的检测，例如实时地探测到目标IP的距离（可以采用到达目标IP经过的跳数作为度量单位），然后比较探测结果进行选择。</p>
-<p>负载机制比较各个服务器群的负载，确定由哪一个服务器群来响应请求。在全局负载均衡中，考察的是服务器群的负载，而不是单个服务器的负载，因此，需要更多地考虑普遍的问题，比如，需要考虑站点的最大连接数、站点的平均响应时间、服务质量等。</p>
-<p>常见的GSLB实现方式有三种：DNS轮询、HTTP重定向、IP欺骗（又称三角传输）。这三种实现方式都是在用户通过域名来访问目标服务器时，由GSLB设备进行智能决策，将用户引导到一个最佳的服务IP。</p>
-<h3 id="基于-DNS-的-GSLB"><a href="#基于-DNS-的-GSLB" class="headerlink" title="基于 DNS 的 GSLB"></a>基于 DNS 的 GSLB</h3><p>用户访问某个网站时，需要首先通过域名解析服务（DNS）获得网站的IP。域名解析通常不是一次性完成的，常常需要查询若干不同的域名服务器才能找到对应的IP。</p>
-<p>如下图所示，用户首先在本地配置一个本地DNS服务器地址，本地DNS服务器收到DNS请求后若不能解析，会将请求转发给更高一级的DNS服务器直到找到域名对应的IP或确定域名不存在。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/f28be903910bfbd9009362e0b36f3840.png">'); </script><br>
-
-<p>对于加入了GSLB的情况，一个GSLB设备（可能是一个4层交换机）会最终代替DNS服务器完成域名解析。</p>
-<p>下图展示两种流程的不同：</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/382ae923ed92539a65f4c54b51feae33.png">'); </script><br>
-
-<h3 id="基于-DNS-的-GSLB-优缺点"><a href="#基于-DNS-的-GSLB-优缺点" class="headerlink" title="基于 DNS 的 GSLB 优缺点"></a>基于 DNS 的 GSLB 优缺点</h3><p>优点是：实现简单、实施容易、成本低。</p>
-<p>缺点是：当GSLB设备采用“用户就近访问”的原则作为选择最优服务器的策略时，会存在判断不准的现象。</p>
-<p>原因是在这种策略下，GSLB设备是根据用户IP地址和内容服务器IP地址比较来判断其就近性的，但由于DNS响应是通过本地DNS服务器到达用户的，GSLB设备实际上只能得到用户的本地DNS服务器地址，若用户指定的DNS服务器IP不能正确代表用户的实际位置，就会出现判断不准的现象。</p>
-<h3 id="基于-HTTP-重定向的-GSLB"><a href="#基于-HTTP-重定向的-GSLB" class="headerlink" title="基于 HTTP 重定向的 GSLB"></a>基于 HTTP 重定向的 GSLB</h3><p>为了解决基于DNS实现方式判断不准的问题，又出现了基于HTTP重定向的GSLB。</p>
-<p>这种方案中GSLB使用HTTP重定向技术，将用户访问重定向到最合适的服务器上。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/59e2855e093b458cd1b72db1b1639487.png">'); </script><br>
-
-<p>使用基于HTTP重定向方案，首先在DNS中将GSLB设备的IP地址登记为域名的A记录（既域名对应的IP）。</p>
-<p>如上图所示，用户首先通过DNS得到GSLB设备的IP地址，此时用户以为这就是站点服务器的IP，并向其发送HTTP请求。</p>
-<p>GSLB设备收到HTTP请求后使用一定策略选择一个最合适的服务器，然后GSLB设备向用户发送一个HTTP重定向指令（HTTP302），并附上选出的服务器的IP地址。最后，用户根据重定向IP访问站点的服务器。</p>
-<h3 id="基于-HTTP-重定向的-GSLB-优缺点"><a href="#基于-HTTP-重定向的-GSLB-优缺点" class="headerlink" title="基于 HTTP 重定向的 GSLB 优缺点"></a>基于 HTTP 重定向的 GSLB 优缺点</h3><p>优点：由于直接向用户发送HTTP重定向指令，可以得到用户的真实IP，从而解决了判断不准确的问题。</p>
-<p>缺点是只能为HTTP访问重定向。<br><strong>基于IP欺骗的GSLB</strong><br>HTTP重定向方案解决了判断不准确的问题，但只能针对HTTP协议应用使用。对于HTTP协议以外的访问，就需要使用基于IP欺骗（又称三角传输）的GSLB。</p>
-<script> document.write('<img src="'+ imgurl +'1735396214/e891614d18736256d8ac71e2b82e5da4.png">'); </script><br>
-
-<p>基于IP欺骗的方案同样需要首先将GSLB设备的IP地址在DNS中登记为域名的A记录，这样用户对该域名的请求包都会先发送到GSLB设备。</p>
-<p>如上图所示，GSLB设备首次收到服务请求包后，会选择一个最合适的服务器，并将服务请求包发送到该服务器。服务器在向用户发送响应包时，将其源IP地址字段改为GSLB设备的IP，发送给用户。</p>
-<p>这样，整个过程对用户来说，感觉到的只是GSLB设备在为其提供服务，并不知道其中经历这样一个三角传输的过程。</p>
-<p>而且这种方案可以对所有类型的访问如HTTP、FTP等进行重定向，但其速度和效率相对比前两种方案要差一点，因为用户所有的访问请求都通过三个点才能响应，经历了更多的路径和处理，所以其主要作为HTTP重定向方案的补充方案在同一GSLB设备中实现。</p>
-<h3 id="服务器群选择策略"><a href="#服务器群选择策略" class="headerlink" title="服务器群选择策略"></a>服务器群选择策略</h3><p>上文中介绍的三种方案，解决了如何将用户引导到指定服务器群的问题，而在此之前首先需要使用某种方式选出最适合用户的服务器群，也就是GSLB在选择服务器群时所采用的策略。接下来介绍一些常用的GSLB策略。<br><strong>（1)地理区域或用户自定义区域</strong>：将若干条IP地址前缀划分一个区域为。根据用户本地DNS的IP地址，将特定IP范围的用户优先分配到某个通过健康检查的站点。</p>
-<p><strong>（2)IP地址权重</strong>：可以为DNS应答中的每个IP地址分配权重，权重决定与其他候选IP相比分配到该IP的流量比例。</p>
-<p><strong>（3)往返时间（Round Trip Time, RTT）</strong>：RTT策略是基于区域之外最常用的策略。有两种模式的RTT测量：Active RTT测量与Passive RTT测量。在实际部署中，由于网络限制和性能原因，Active RTT往往无法使用，Passive RTT更实用一些。</p>
-<p><strong>（a) Active RTT 测量</strong>：<br>当GSLB Controller收到来自LDNS的DNS请求时，GSLB Controller会通知所有站点负载均衡设备对该LDNS进行RTT测量。根据采集到的RTT值，GSLB Controller会选择RTT值最小的站点的VIP返回给LDNS。</p>
-<p>由于Active RTT采用DNS Query或ICMP进行RTT测量，在有些网络中可能会被安全策略所过滤而无法工作。</p>
-<p>Active RTT测量会产生额外的DNS Query或ICMP流量，在有些网络中用户不希望有太多类似的非用户流量。</p>
-<p><strong>（b) Passive RTT测量</strong>：<br>Passive RTT测量指从内容站点收到一个用户发出连接请求(发送TCN SYN)到接收到用户的确认(收到TCP ACK)所经历的时间。而不是简单的PING的响应时间，可以更精确的衡量访问最快的站点。</p>
-<p>Passive RTT测量不会主动去进行测量，也不会产生额外的数据流量，而是在用户向返回的VIP建立连接时进行采集。</p>
-<p>Passive RTT的测量值真正反映了用户的上网感受，在运营商网络中也不会产生额外流量。也不会受到其他运营商或网络的安全策略的影响。</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -4930,6 +4930,57 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>python+ffmpeg视频转码转格式</title>
+    <url>/2025/01/11/2025011102/</url>
+    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
+<span id="more"></span>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
+<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
+
+<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
+<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
+<p>最后效果图：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
+
+<p>显示写出来了，后面该弄功能了</p>
+<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
+<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
+<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
+<p><strong>示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
+<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
+<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
+<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
+<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
+
+<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>python</tag>
+        <tag>ffmpeg</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自学PHP笔记(四) PHP变量和常量</title>
     <url>/2025/01/13/2025011301/</url>
     <content><![CDATA[<p>PHP中变量有普通变量、可变变量和预定义变量，而常量就是普通变量和预定义变量。</p>
@@ -5134,57 +5185,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>python+ffmpeg视频转码转格式</title>
-    <url>/2025/01/11/2025011102/</url>
-    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
-<span id="more"></span>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
-<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
-<p>执行结果：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
-
-<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
-<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
-<p>最后效果图：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
-
-<p>显示写出来了，后面该弄功能了</p>
-<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
-<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
-<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
-<p><strong>示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
-<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
-<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
-<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
-<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
-<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
-
-<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>python</tag>
-        <tag>ffmpeg</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自学PHP笔记 (三) 类型转换</title>
     <url>/2025/01/13/2025011302/</url>
     <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
@@ -5328,6 +5328,67 @@ MySql：经典安装 MySql 5.6
 <p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>输出结果为：<code>double</code>也就是浮点数类型</p>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学PHP笔记（一）PHP语法</title>
+    <url>/2025/01/13/2025011304/</url>
+    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
+<span id="more"></span>
+<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
+<ol>
+<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+输出结果为：  <code>php$test变量为 false.</code></li>
+</ol>
+<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
+<ol>
+<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
+<ol>
+<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>123</code>不会显示我注释的内容。</li>
+<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
+<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
+
+<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
+<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
+
+<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
+
+
+
+
+
 ]]></content>
       <categories>
         <category>php</category>
@@ -5610,64 +5671,29 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>自学PHP笔记（一）PHP语法</title>
-    <url>/2025/01/13/2025011304/</url>
-    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
+    <title>你会系统备份及恢复吗？来看看吧</title>
+    <url>/2025/01/13/2025011306/</url>
+    <content><![CDATA[<h2 id="tar-命令"><a href="#tar-命令" class="headerlink" title="tar 命令"></a>tar 命令</h2><p>副本（本机备份整个系统，以后还原还是还原到本机）<br>注意根目录下要有充足的可用空间用于备份。</p>
 <span id="more"></span>
-<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
-<ol>
-<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-输出结果为：  <code>php$test变量为 false.</code></li>
-</ol>
-<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
-<ol>
-<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
-<ol>
-<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>123</code>不会显示我注释的内容。</li>
-<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
-<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
-
-<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
-<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
-
-<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
-
-
-
-
-
-]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#tar.gz格式</span></span><br><span class="line">tar cvpzf system_backup.tar.gz / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.gz --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"><span class="comment">#tar.bz2格式</span></span><br><span class="line">tar cvpjf system_backup.tar.bz2 / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.bz2 --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复系统</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#上传文件到根目录下</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /</span><br><span class="line">或</span><br><span class="line">tar xvpfj system_backup.tar.bz2 -C /</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建备份时排除的目录</span></span><br><span class="line"><span class="built_in">mkdir</span> proc</span><br><span class="line"><span class="built_in">mkdir</span> lost+found</span><br><span class="line"><span class="built_in">mkdir</span> mnt</span><br><span class="line"><span class="built_in">mkdir</span> sys</span><br></pre></td></tr></table></figure>
+<ul>
+<li>&#x2F;proc 权限：文件所有者：root群组：root 所有者：读取 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;lost+found 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;mnt 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+<li>&#x2F;sys 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
+</ul>
+<p>恢复完成重启以后，所以的事情都会和你备份的时候一模一样。<br>镜像（本机备份系统，还原到新主机上）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1,检查系统版本，在目标机上安装一样版本的系统(最简安装即可),分区格式，类型也一样（我没试过不一样的情况，不知道能否成功）</span><br><span class="line">lsb_release -a</span><br><span class="line"><span class="built_in">uname</span> -a</span><br><span class="line"><span class="built_in">df</span> -Th</span><br><span class="line">free -h</span><br><span class="line"></span><br><span class="line">2，备份源系统</span><br><span class="line"><span class="comment"># 因为目标机和源主机硬件配置不同，所以排除dev，tmp；再适当增加你要排除的文件，如：--exclude=/root/*.bz2</span></span><br><span class="line"><span class="comment"># 这里再mnt下有充足空间，所以保存到mnt下。</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">tar cvpzf /mnt/system_backup.tar.gz / --exclude=/mnt/system_backup.tar.gz \</span><br><span class="line">--exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/dev \</span><br><span class="line">--exclude=/tmp --exclude=/media</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传到目标主机</span></span><br><span class="line">scp /mnt/system_backup.tar.gz root@192.168.0.166:/mnt</span><br><span class="line"></span><br><span class="line">3,在目标机上用ISO、LiveCD等启动，挂载磁盘（一般会自动挂载到/media文件夹）</span><br><span class="line"><span class="built_in">sudo</span> -s  </span><br><span class="line"><span class="built_in">cd</span> /media/&lt;对应的uuid号&gt;</span><br><span class="line"><span class="comment"># 备份重要配置文件/boot/gurb/gurb.cfg /etc/fstab</span></span><br><span class="line">记录里面的UUID，</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除重复文件</span></span><br><span class="line"><span class="comment"># 除了上面备份系统时排除的一些文件夹外，比如说dev mnt media sys这些文件夹，其他全部删除。</span></span><br><span class="line"><span class="built_in">rm</span> -rf root home usr lib lib64 etc var bin sbin opt boot run selinux vmlinuz initrd.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原备份</span></span><br><span class="line">mount /dev/vda1 /mnt/1</span><br><span class="line"><span class="comment"># 这里注意千万不要写/目录，会把现有的系统搞挂！！！应该是挂载的目录</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /mnt/1</span><br><span class="line"><span class="built_in">cd</span> /mnt/1       <span class="comment">#此时你可以看到根目录的结构，但是编辑fstab文件发现是现有系统的fstab</span></span><br><span class="line"><span class="built_in">chroot</span> ./       <span class="comment">#执行chroot后会以./目录为根目录，这时编辑的文件就是真正的目标源文件了。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">还原后修改/etc/fstab里的UUID为刚刚备份的文件里面的信息，注意分区格式也要对应。</span><br><span class="line">修改/boot/gurb/gurb.cfg里的UUID为刚刚备份的文件里面的信息。</span><br><span class="line">修改网卡、IP配置文件，以防无法分配IP。（如果是虚拟机记得添加网卡，配置中等性能的显卡）</span><br><span class="line"></span><br><span class="line">如果有依赖于原有平台的服务，如内建NTP，Agent等监控程序；关闭服务，关闭开机自启；</span><br><span class="line">Ubuntu：在命令行输入runleve可以查看当前运行级别，一般默认是2</span><br><span class="line">查看/etc/rc2.d目录中的S开头的服务都是会开机自动运行的；里面是软链接，想添加的话自己建一个链接文件就可以，S代表start，后面数字是启动顺序，删除软链接。同时删除/etc/init.d/下对应的脚本。</span><br><span class="line">vim /etc/init.d/rc.local</span><br><span class="line">Centos:用systemctl</span><br><span class="line"></span><br><span class="line">完成上述步骤后</span><br><span class="line"><span class="built_in">exit</span>      <span class="comment">#退出chroot</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">umount /mnt/1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一切完成后就可以重启了，不出意外就正常启动系统了（启动后原来安装系统时设置的账户等全部消失；账户和源主机一致）。</span></span><br><span class="line">若开机Grub提示“boot error 15 :Error 15 file not found”</span><br><span class="line">解决方法：请检查GRUB相关文件的内核文件所在位置。通常与/boot分区有关。</span><br><span class="line"></span><br><span class="line">若开机Grub提示“dracut:dono<span class="string">&#x27;t how to hand root=f078”</span></span><br><span class="line"><span class="string">解决方法：将root=UUID改成root=/dev/sdaX这种格式。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">若开机系统提示/usr/libexec/gconf-sanity-check-2退出状态256的解决</span></span><br><span class="line"><span class="string">解决方法：chmod 777 /tmp</span></span><br></pre></td></tr></table></figure>
+<h2 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h2><p>注意目标分区的格式最好是NTFS、FAT、EXT之类的格式，避免遇到大于4G的文件无法备份的问题。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最好有其他分区或外接存储设备，挂载好，df -lh看挂载点。</span></span><br><span class="line"><span class="comment">#备份</span></span><br><span class="line">rsync -Pa / /media/usb/backup_20170410 --exclude=/media/* --exclude=/sys/* --exclude=/proc/* --exclude=/mnt/* --exclude=/tmp/*</span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line">rsync -Pa /media/usb/backup_20170410 /</span><br></pre></td></tr></table></figure>
+<h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><p>dd命令属于扇区克隆，目标分区要比备份分区要大，即使没有使用的空间也会被原样克隆下来，会比较慢。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#备份</span></span><br><span class="line"><span class="built_in">df</span> -h   <span class="comment">#查看系统所在分区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sda1 of=/dev/sdb3     <span class="comment">#备份sda1到sdb3中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb3 of=/dev/sda1     <span class="comment">#恢复sdb3到sdb1中</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>php</category>
+        <category>linux</category>
       </categories>
       <tags>
         <tag>技术笔记</tag>
-        <tag>php</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -5835,32 +5861,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>容器</tag>
         <tag>华为云</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>你会系统备份及恢复吗？来看看吧</title>
-    <url>/2025/01/13/2025011306/</url>
-    <content><![CDATA[<h2 id="tar-命令"><a href="#tar-命令" class="headerlink" title="tar 命令"></a>tar 命令</h2><p>副本（本机备份整个系统，以后还原还是还原到本机）<br>注意根目录下要有充足的可用空间用于备份。</p>
-<span id="more"></span>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#tar.gz格式</span></span><br><span class="line">tar cvpzf system_backup.tar.gz / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.gz --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"><span class="comment">#tar.bz2格式</span></span><br><span class="line">tar cvpjf system_backup.tar.bz2 / --exclude=/proc --exclude=/lost+found --exclude=/system_backup.tar.bz2 --exclude=/mnt --exclude=/sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复系统</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#上传文件到根目录下</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /</span><br><span class="line">或</span><br><span class="line">tar xvpfj system_backup.tar.bz2 -C /</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建备份时排除的目录</span></span><br><span class="line"><span class="built_in">mkdir</span> proc</span><br><span class="line"><span class="built_in">mkdir</span> lost+found</span><br><span class="line"><span class="built_in">mkdir</span> mnt</span><br><span class="line"><span class="built_in">mkdir</span> sys</span><br></pre></td></tr></table></figure>
-<ul>
-<li>&#x2F;proc 权限：文件所有者：root群组：root 所有者：读取 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;lost+found 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;mnt 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-<li>&#x2F;sys 权限：文件所有者：root群组：root 所有者：读取 写入 执行 群组：读取 执行 其它：读取 执行</li>
-</ul>
-<p>恢复完成重启以后，所以的事情都会和你备份的时候一模一样。<br>镜像（本机备份系统，还原到新主机上）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1,检查系统版本，在目标机上安装一样版本的系统(最简安装即可),分区格式，类型也一样（我没试过不一样的情况，不知道能否成功）</span><br><span class="line">lsb_release -a</span><br><span class="line"><span class="built_in">uname</span> -a</span><br><span class="line"><span class="built_in">df</span> -Th</span><br><span class="line">free -h</span><br><span class="line"></span><br><span class="line">2，备份源系统</span><br><span class="line"><span class="comment"># 因为目标机和源主机硬件配置不同，所以排除dev，tmp；再适当增加你要排除的文件，如：--exclude=/root/*.bz2</span></span><br><span class="line"><span class="comment"># 这里再mnt下有充足空间，所以保存到mnt下。</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">tar cvpzf /mnt/system_backup.tar.gz / --exclude=/mnt/system_backup.tar.gz \</span><br><span class="line">--exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/dev \</span><br><span class="line">--exclude=/tmp --exclude=/media</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传到目标主机</span></span><br><span class="line">scp /mnt/system_backup.tar.gz root@192.168.0.166:/mnt</span><br><span class="line"></span><br><span class="line">3,在目标机上用ISO、LiveCD等启动，挂载磁盘（一般会自动挂载到/media文件夹）</span><br><span class="line"><span class="built_in">sudo</span> -s  </span><br><span class="line"><span class="built_in">cd</span> /media/&lt;对应的uuid号&gt;</span><br><span class="line"><span class="comment"># 备份重要配置文件/boot/gurb/gurb.cfg /etc/fstab</span></span><br><span class="line">记录里面的UUID，</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除重复文件</span></span><br><span class="line"><span class="comment"># 除了上面备份系统时排除的一些文件夹外，比如说dev mnt media sys这些文件夹，其他全部删除。</span></span><br><span class="line"><span class="built_in">rm</span> -rf root home usr lib lib64 etc var bin sbin opt boot run selinux vmlinuz initrd.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原备份</span></span><br><span class="line">mount /dev/vda1 /mnt/1</span><br><span class="line"><span class="comment"># 这里注意千万不要写/目录，会把现有的系统搞挂！！！应该是挂载的目录</span></span><br><span class="line">tar xvpfz system_backup.tar.gz -C /mnt/1</span><br><span class="line"><span class="built_in">cd</span> /mnt/1       <span class="comment">#此时你可以看到根目录的结构，但是编辑fstab文件发现是现有系统的fstab</span></span><br><span class="line"><span class="built_in">chroot</span> ./       <span class="comment">#执行chroot后会以./目录为根目录，这时编辑的文件就是真正的目标源文件了。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">还原后修改/etc/fstab里的UUID为刚刚备份的文件里面的信息，注意分区格式也要对应。</span><br><span class="line">修改/boot/gurb/gurb.cfg里的UUID为刚刚备份的文件里面的信息。</span><br><span class="line">修改网卡、IP配置文件，以防无法分配IP。（如果是虚拟机记得添加网卡，配置中等性能的显卡）</span><br><span class="line"></span><br><span class="line">如果有依赖于原有平台的服务，如内建NTP，Agent等监控程序；关闭服务，关闭开机自启；</span><br><span class="line">Ubuntu：在命令行输入runleve可以查看当前运行级别，一般默认是2</span><br><span class="line">查看/etc/rc2.d目录中的S开头的服务都是会开机自动运行的；里面是软链接，想添加的话自己建一个链接文件就可以，S代表start，后面数字是启动顺序，删除软链接。同时删除/etc/init.d/下对应的脚本。</span><br><span class="line">vim /etc/init.d/rc.local</span><br><span class="line">Centos:用systemctl</span><br><span class="line"></span><br><span class="line">完成上述步骤后</span><br><span class="line"><span class="built_in">exit</span>      <span class="comment">#退出chroot</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">umount /mnt/1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一切完成后就可以重启了，不出意外就正常启动系统了（启动后原来安装系统时设置的账户等全部消失；账户和源主机一致）。</span></span><br><span class="line">若开机Grub提示“boot error 15 :Error 15 file not found”</span><br><span class="line">解决方法：请检查GRUB相关文件的内核文件所在位置。通常与/boot分区有关。</span><br><span class="line"></span><br><span class="line">若开机Grub提示“dracut:dono<span class="string">&#x27;t how to hand root=f078”</span></span><br><span class="line"><span class="string">解决方法：将root=UUID改成root=/dev/sdaX这种格式。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">若开机系统提示/usr/libexec/gconf-sanity-check-2退出状态256的解决</span></span><br><span class="line"><span class="string">解决方法：chmod 777 /tmp</span></span><br></pre></td></tr></table></figure>
-<h2 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h2><p>注意目标分区的格式最好是NTFS、FAT、EXT之类的格式，避免遇到大于4G的文件无法备份的问题。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#最好有其他分区或外接存储设备，挂载好，df -lh看挂载点。</span></span><br><span class="line"><span class="comment">#备份</span></span><br><span class="line">rsync -Pa / /media/usb/backup_20170410 --exclude=/media/* --exclude=/sys/* --exclude=/proc/* --exclude=/mnt/* --exclude=/tmp/*</span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line">rsync -Pa /media/usb/backup_20170410 /</span><br></pre></td></tr></table></figure>
-<h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><p>dd命令属于扇区克隆，目标分区要比备份分区要大，即使没有使用的空间也会被原样克隆下来，会比较慢。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#备份</span></span><br><span class="line"><span class="built_in">df</span> -h   <span class="comment">#查看系统所在分区</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sda1 of=/dev/sdb3     <span class="comment">#备份sda1到sdb3中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#恢复</span></span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb3 of=/dev/sda1     <span class="comment">#恢复sdb3到sdb1中</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -6274,226 +6274,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>阿里云</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>当输入一个 URL，实际会发生什么？</title>
-    <url>/2025/01/13/2025011310/</url>
-    <content><![CDATA[<h2 id="从一个经典的面试题说起"><a href="#从一个经典的面试题说起" class="headerlink" title="从一个经典的面试题说起"></a>从一个经典的面试题说起</h2><p>从输入URL到页面展现的过程:</p>
-<span id="more"></span>
-
-<ol>
-<li>输入URL后，会先进行域名解析。优先查找本地host文件有无对应的IP地址，没有的话去本地DNS服务器查找，还不行的话，本地DNS服务器会去找根DNS服务器要一个域服务器的地址进行查询，域服务器将要查询的域名的解析服务器地址返回给本地DNS，本地DNS去这里查询就OK了。</li>
-<li>浏览器拿到服务器的IP地址后，会向它发送HTTP请求。HTTP请求经由一层层的处理、封装、发出之后，最终经由网络到达服务器，建立TCP&#x2F;IP连接，服务器接收到请求并开始处理。</li>
-<li>服务器构建响应，再经由一层层的处理、封装、发出后，到达客户端，浏览器处理请求。</li>
-<li>浏览器开始渲染页面，解析HTML，构建render树，根据render树的节点和CSS的对应关系，进行布局，绘制页面。</li>
-</ol>
-<p>这4个步骤包含了一个HTTP请求的完整生命周期，文章着重介绍第2步和第3步，也就是请求是如何在两个物理端点之间进行通信的。数据的发出和接收必然会经历一些处理、解析的过程，这些过程在系统的不同层次进行。</p>
-<h2 id="分层"><a href="#分层" class="headerlink" title="分层"></a>分层</h2><p>一个HTTP请求从源端发出到在终端接收的处理过程都是要经过以下四层。其中每一层都有各自的协议。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/28c13e41b8db6dbbc737deaa0d664896.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/28c13e41b8db6dbbc737deaa0d664896.jpeg">'); </script><br>
-
-<p>我们先来理解一下协议是什么，协议是经过约定，双方共同承认，并且需要共同遵守的规则。上面的每一层，都有各自的协议，协议的执行者是通信链路两端内的对应层。每一层通过协议来理解数据，并进行处理。</p>
-<p>上图中只举例出了最常见的协议，实际上每一层都有细分的协议：</p>
-<ul>
-<li>应用层：应用程序负责将数据以相应规则（协议）进行包装，发给传输层<ul>
-<li>HTTP：超文本传输协议</li>
-<li>FTP：文件传输协议</li>
-<li>SMTP：简单邮件传送协议</li>
-<li>SNMP：简单网络管理协议</li>
-</ul>
-</li>
-<li>传输层：负责将应用层传过来的数据进行分组，为确保终端接收数据的顺序和完整性，会对每个分组进行标记，交给网络层<ul>
-<li>TCP：传输控制协议</li>
-<li>UDP：用户数据协议</li>
-</ul>
-</li>
-<li>网络层：负责将传输层发来的数据分组发送到目标终端<ul>
-<li>IP：网际协议</li>
-<li>ICMP：Internet互联网控制报文协议</li>
-<li>IGMP：Internet组管理协议</li>
-</ul>
-</li>
-<li>链路层：为网络层发送和接收数据单元<ul>
-<li>ARP：地址解析协议</li>
-<li>RARP：逆地址解析协议</li>
-</ul>
-</li>
-</ul>
-<h2 id="封装和分用"><a href="#封装和分用" class="headerlink" title="封装和分用"></a>封装和分用</h2><p>数据在经过每一层的时候都要被对应的协议包装，到达终端的时候，要一层一层的解包。这两个过程叫封装和分用。</p>
-<p>发送时，用户数据被HTTP封装为报文，每一层会将上层传过来的报文作为本层的数据块，并添加自己的首部，其中包含了协议标识，这一整体作为本层报文向下传递。</p>
-<p>接收时，数据自下而上流动，经过每一层时被去掉报文首部，根据报文标识确定正确的上层协议，最终到应用层被应用程序处理。</p>
-<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>源端发送HTTP报文时，报文会以数据流的形式通过一条已经打开的TCP连接按序传输，TCP收到数据流后会将其分割成小的数据块，每个小块被添加的TCP首部与数据块共同组成了TCP分组，分组经由网络层发送，网络层遵循IP协议，当收到分组发送请求后，会将分组其放入IP数据报，填充报头，将数据报发经由链路层发送出去。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1de02df81aa591dae332c7142457a9a6.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/1de02df81aa591dae332c7142457a9a6.jpeg">'); </script><br>
-
-<p>这一过程经过每层的时候都会被增加一些首部信息，有时还需要增加尾部信息，每一层都会把数据封装到各自的报文中， 并在报文首部添加协议标识，这个过程叫<strong>封装</strong>。</p>
-<h2 id="分用"><a href="#分用" class="headerlink" title="分用"></a>分用</h2><p>终端接收到一个以太网数据帧时，数据自底层向上流动，去掉发送时各层协议加上的报文首部，每层协议都要检查报文首部的协议标识，从而确定上层协议，保证数据被正确处理，这个过程叫分用。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/08feeaac386b56b1484eba3aa83f6f69.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/08feeaac386b56b1484eba3aa83f6f69.jpeg">'); </script><br>
-
-<p>终端从链路层接收到数据请求后，进入网络层对数据进行解析，交给给传输层，校验分组顺序和完整性，从数据块中取出数据，得到HTTP报文，交给应用层进行处理。这个过程会逐层剥离报头还原数据。</p>
-<h2 id="逐层分析"><a href="#逐层分析" class="headerlink" title="逐层分析"></a>逐层分析</h2><p>我们已经知道，数据是从源端自上而下到终端自下而上被一层层处理的，现在就来看一下每层都做了什么事情。</p>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>HTTP属于应用层，用户触发交互所产生的行为数据和服务端对此的响应都由它封装成HTTP报文，再交由下层协议进行处理。报文的作用是客户端与服务端沟通的载体，双方都要遵循统一规则对信息进行处理，这一规则称为HTTP。</p>
-<p>客户端与服务端的交互往往非常复杂，为了使双方都能高效、明确、安全地通信（例如传递意图与状态、承载数据、携带认证信息、控制连接行为与缓存），需要依赖报文中的结构来实现，下面先从结构开始看。</p>
-<h2 id="报文结构"><a href="#报文结构" class="headerlink" title="报文结构"></a>报文结构</h2><p>HTTP报文的结构分为请求和响应两种，请求报文封装用户操作产生的动作，告知服务器应采取什么行为，响应报文来告知客户端请求的结果。<br>请求报文格式：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">method</span>&gt;</span> <span class="tag">&lt;<span class="name">request-url</span>&gt;</span> <span class="tag">&lt;<span class="name">version</span>&gt;</span> // 起始行格式</span><br><span class="line"><span class="tag">&lt;<span class="name">headers</span>&gt;</span> // 首部</span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> // 实体</span><br></pre></td></tr></table></figure>
-<p>响应报文格式：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">method</span>&gt;</span> <span class="tag">&lt;<span class="name">status</span>&gt;</span> <span class="tag">&lt;<span class="name">reason-phrase</span>&gt;</span> // 起始行格式</span><br><span class="line"><span class="tag">&lt;<span class="name">headers</span>&gt;</span> // 首部</span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> // 实体</span><br></pre></td></tr></table></figure>
-<h2 id="起始行"><a href="#起始行" class="headerlink" title="起始行"></a>起始行</h2><p>报文的起始行表明了报文的开始，请求和响应各自的起始行的格式也不相同。</p>
-<p>请求报文的起始行说明要做什么，结构为方法 + 请求URL + 协议版本，中间用空格做分隔：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">GET /api/nht/blog/example HTTP/1.1</span><br></pre></td></tr></table></figure>
-<p>响应报头的起始行说明发生了什么，结构为协议版本 + 状态码 + 描述文本，中间用空格做分隔：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br></pre></td></tr></table></figure>
-<h2 id="方法与状态码"><a href="#方法与状态码" class="headerlink" title="方法与状态码"></a>方法与状态码</h2><p>方法来告诉服务端请求报文要做的事情，状态码来通知客户端服务端依据请求报文完成动作之后的大致结果。常见的HTTP方法如下：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">| 方法 | 含义 | 有无主体 | | ------- | ---------------------------------------------- | -------- | | GET | 从服务端获取资源 | 无 | | HEAD | 只获取资源头部 | 无 | | POST | 向服务端发送数据 | 有 | | PUT | 将客户端发送的数据存到服务端，应用场景多为修改 | 有 | | OPTIONS | 对服务端进行预检，例如服务端支持哪些方法 | 无 | | DELETE | 从服务端删除资源 | 无 |</span><br><span class="line"></span><br><span class="line">请求完成时，响应报文中会有一个状态码，用来表示此次请求的状态，是成功了还是失败了，或者时需要重定向。状态码的范围从100到599， 其中有部分是已经定义的。不同的范围表示的含义也不同：</span><br><span class="line"></span><br><span class="line">| 范围 | 已定义范围 | 含义 | | ------- | ---------------------------------------------- | ---------- | | 100~199 | 100~101 | 信息提示 | | 200~299 | 200~206 | 成功 | | 300~399 | 300~305 | 重定向 | | 400~499 | 400~415 | 客户端错误 | | 500~599 | 500~505 | 服务端错误 |</span><br></pre></td></tr></table></figure>
-<h2 id="首部"><a href="#首部" class="headerlink" title="首部"></a>首部</h2><p>首部是请求和响应报文中的一些信息，形式为键值对，每对键值结尾是CRLF换行符，它决定了请求或者响应报文的属性，比如Content-Type表明了请求主体的数据类型，Date说明了请求的创建时间。客户端与服务端通过首部来协商具体行为。可以根据请求、响应、结构等，将首部分为五种。</p>
-<ul>
-<li>请求首部：是放在请求报文中的首部，它被用来告诉服务端一些信息。</li>
-<li>响应首部：为客户端提供一些可能用到的信息。</li>
-<li>通用首部：请求与响应报文都包含的首部，例如Date首部</li>
-<li>实体首部：对于报文实体主体部分的描述，比如Content-Type，表明其数据类型。</li>
-<li>扩展首部：开发者自己添加的首部字段，用来满足定制化需求。</li>
-</ul>
-<h2 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">HTTP/1.0 200 OK</span><br><span class="line">Server: xxxxxxx</span><br><span class="line">Date: Sun,17 Sep 2019 02:01:16 GMT</span><br><span class="line">--------------------------------实体首部</span><br><span class="line">Content-Type: text/plain</span><br><span class="line">Content-length: 18</span><br><span class="line">--------------------------------实体主体</span><br><span class="line"></span><br><span class="line">Hi! I&quot;m a message!</span><br><span class="line">--------------------------------</span><br></pre></td></tr></table></figure>
-<p>实体部分是可选的，它被用来运送请求或者响应的数据，实体由实体首部 + 实体主体组成，实体首部对实体主体做描述。HTTP&#x2F;1.1定义了以下的基本实体首部字段：</p>
-<ul>
-<li>Content-Type: 实体主体中的数据类型。</li>
-<li>Content-Length: 实体主体的长度或者大小。</li>
-<li>Content-Language: 和传输的数据最匹配的语言。</li>
-<li>Content-Encoding: 来标识服务端编码时所用的编码方式。</li>
-<li>Content-Location: 要返回的数据的地址。</li>
-<li>Content-Range: 如果是部分实体，用来标记它是实体的哪个部分。</li>
-<li>Content-MD5: 实体主体内容的校验和。</li>
-<li>Last-Modified: 所传输内容在服务器上创建或者最后修改的日期时间。</li>
-<li>Expires: 实体数据试下的日期时间。</li>
-<li>Allow: 所请求资源允许的请求方法。</li>
-<li>ETag: 资源的特定版本的标识符。可以让缓存更高效，并节省带宽。</li>
-<li>Cache-Control: 控制缓存机制的指令。</li>
-</ul>
-<p>以上是HTTP报文包含的主要结构，当请求报文到达服务器时，服务器会对报文中的内容解析出来，根据方法、资源路径、首部、和主体来处理请求，然后通过对请求资源的访问结果，来构建响应，回送给客户端。</p>
-<h2 id="传输层-TCP"><a href="#传输层-TCP" class="headerlink" title="传输层-TCP"></a>传输层-TCP</h2><p>HTTP连接是建立在TCP连接的基础之上的，TCP提供可靠的数据连接。当要传输一个HTTP报文时，报文数据会以流的形式通过一条已经打开的TCP连接按顺序传输，TCP会将收到的数据分成小块，每块是一个TCP分组。</p>
-<p>由于数据是分成小块发送的，所以完整可靠的数据传输主要体现在：分组是否完整、分组顺序是否正常、分组是否损坏、分组数据是否重复。这些可以通过TCP的检验和、序列号、确认应答、重发控制、连接管理和窗口机制来控制。</p>
-<p>TCP是传输控制协议，传输控制主要依赖首部包含的6个标志，它们控制报文的传输状态，以及发送端和接收端应对数据采取的动作。当它们的值为1时，标志对应的各自功能才允许被执行，比如当URG为1时，报文首部的紧急指针部分才有效。</p>
-<ul>
-<li>URG 紧急指针</li>
-<li>ACK 确认序号有效</li>
-<li>PSH 接收方应该尽快将这个报文段交给应用层。</li>
-<li>RST 重建连接</li>
-<li>SYN 同步序号用来发起一个连接</li>
-<li>FIN 发端完成发送任务<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/16b46ed733bf98601210dec418d1ef75.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/16b46ed733bf98601210dec418d1ef75.jpeg">'); </script><br></li>
-</ul>
-<p>源端口和目的端口：标识发送方和接收方的端口号，一个TCP连接通过4个值确认：源IP、源端口、目的IP、目的端口，其中源IP和目的IP包含在IP分组内。</p>
-<p>首部长度：表示TCP首部的字节长度，也能标记出从多少个字节开始，才是需要传输的数据。</p>
-<p>TCP段序号：本段报文发送的数据第一个字节的序号，每段报文中的数据的每个字节都有序号，第一个字节的序号从0开始，依次加1，加到2的32次方减1后再次从0开始。</p>
-<p>TCP段确认序号 ：当首部标志ACK为1时，确认序号有效。TCP段被接收端接收后，会回送给发送端一个确认号，为上次接受的最后一个字节序号加1。</p>
-<p>检验和：由发送端计算，接收端验证，如果接收方检测到检验和不正确，表明该TCP段可能有损坏，会被丢弃，同时接收端向回送一个重复的确认号（与最近的一次正确的报文传输的确认号重复），表明接收到的TCP段是错误的，并告知自己希望收到的序号。这时发送端需要立即重传出错的TCP段。</p>
-<p>紧急指针：当首部标志URG为1时，紧急指针有效，表示发送端向接收端要发送紧急数据。紧急指针是一个正偏移量，它和TCP段序号相加，计算出紧急数据的最后一个字节的序号。比如接收方接收到数据，从序号为1000的字节开始读取，紧急指针为1000，那么紧急数据就是序号从1000到2000之间的字节。这些数据由接收方决定如何处理。</p>
-<p>窗口尺寸：决定了TCP一次成块数据流的吞吐量。需要注意的是，它表示的是发送一方的允许对方发送的数据量，比如发送方首部中的窗口大小为1000，就表示发送方最多可以接受对方发来的1000个字节的数据量。这与发送方的数据缓存空间有关，会影响TCP的性能。</p>
-<p>首部标志PSH：如果需要告诉接收方将数据立即全部提交给接收进程，发送方需要将PSH置为1，这里的数据是和PSH一起传送的数据以及之前接收到的全部数据。如果接收方收到了PSH为1的标志，需要立即将数据提交给接收进程，不用再等待有没有其他数据进来。</p>
-<p>复位标志RST：当RST为1时，表示连接出现了异常情况，接收方将终止连接，通知应用层重新建立连接。</p>
-<p>同步序号SYN：用来建立连接，涉及到TCP的三次握手。</p>
-<ol>
-<li>开始建立连接时，客户端向服务器发送一个TCP分组，分组首部的SYN为1，并携带一个初始序号，表明这是一个连接请求。</li>
-<li>如果服务器接受了连接，会向客户端发送一个TCP分组，分组中会包含SYN和ACK，都为1，同时包含一个确认序号，值为来自客户端的初始序号   + 1，表示连接已经被接受。</li>
-<li>客户端收到上一步发来的分组后，会再向服务器发送一段确认报文分组，ACK为1，会再次携带确认序号，值是第二步来自客户端的确认序号 +1。服务端收到确认信息后，进入已经连接的状态。<br>在第三步的确认分组中，是可以携带要发送的数据的。</li>
-</ol>
-<p>连接终止标志FIN：用来关闭连接，当一端完成数据发送任务后会发送一个FIN标志来终止连接，但因为TCP在两个方向（C-S,S-C）上会有数据传递，每个方向有各自的发送FIN &amp; 确认关闭流程，所以会有四次交互，也称为四次挥手。</p>
-<ol>
-<li>如果客户端应用层的数据发送完毕，会导致客户端的TCP报文发送一个FIN，告知服务器准备关闭数据传送。</li>
-<li>服务器接收到这个标志后，它发回一个ACK，确认序号为收到的序号加1，同时TCP还要向应用程序发一个文件结束符。</li>
-<li>此时服务器关闭这个方向的连接，导致它的TCP也会发送一个FIN。</li>
-<li>客户端接收到之后发回一个确认ACK，序号为收到的序号 + 1，连接完全关闭。</li>
-</ol>
-<p>TCP段序号与确认序号保证了数据的顺序，检验和确保数据的完整性，紧急指针保证紧急数据可被及时处理。另外，TCP还有一些超时重传、 拥塞避免、慢启动的机制，都可以保证分组数据按照顺序完整的传到目标端。</p>
-<h2 id="网络层-IP"><a href="#网络层-IP" class="headerlink" title="网络层-IP"></a>网络层-IP</h2><p>如果说TCP分组是包装货物的集装箱，那么IP就是运送集装箱的卡车。IP协议提供了两个节点之间的连接，保证将TCP数据尽可能快地从源端送到终端，但却不能保证传输的可靠性。</p>
-<p>IP层会将上层传过来的TCP分组封装，带上自己的首部，再进行选路、是否分片以及重组的工作，最终到达目的地，这个过程中，IP首部起了重要的作用，下面让我们看一下首部的结构。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a5f3a2b38bac4db9dc02e1192dea09b0.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/a5f3a2b38bac4db9dc02e1192dea09b0.jpeg">'); </script><br>
-
-<p><strong>版本：</strong>表示当前IP协议的版本，目前版本号是4，还有一种是6，也就是IPV4和IPV6，如果发送和接收这两端的版本不一致，那么当前IP数据报会被丢弃。</p>
-<p><strong>首部长度：</strong>整个首部的长度，最长为60字节。</p>
-<p><strong>服务类型（TOS）：</strong>用来区分服务的类型，但其实IP层在工作的时候一直没有实际使用过，现有的TOS只有4bit的子字段，和1bit的未用位。未用位必须置为0。TOS的4个bit中只能将一个置成1，用来表示当前服务类型。4bit对应的4个服务类型分别为：最小时延、最大吞吐量、最高可靠性和最小费用。</p>
-<p><strong>总长度：</strong>表示当前的数据报报文的总长度，单位为字节，可以结合首部长度计算出报文内数据的大小以及起始位置。</p>
-<p>下面这三个首部字段涉及到IP数据报的分片与重组过程，由于网络层一般会限制每个数据帧的最大长度，IP层发送数据报会在选路的同时查询当前设备网络层的每个数据帧的最大传输长度，一旦超出，数据报就会被进行分片，到达目的地之后再进行重组，此时就会用以下三个字段作为重组依据。需要注意的是：因为存在选路的过程，数据报经过的每层路由设备对于数据帧的最大传输长度都不同，所以分片可能发生在任意一次选路的过程中。</p>
-<p><strong>分组标识：</strong>这个标识相当于ID，每成功发送一个分片，IP层就会把这个分组ID加1。</p>
-<p><strong>标志：</strong>共占用三位，分别是R、D、M，R目前还没有被使用，有用的是D、和M。这个字段表示了数据报的分片行为。D如果为1的话，表示数据无需分片，一次传输完；M如果为1，表示数据是分片的，后边还有数据，当它为0时，就表示当前数据报是最后一个分片，或者只有这一个分片。</p>
-<p><strong>片偏移：</strong>标识了当前分片距离原始数据报开始处的位置，分片之后，每一片的总长度会改成这一片的长度值，而不是整个数据报的长度。</p>
-<p><strong>生存时间：</strong>（TTL） 可以决定数据报是否被丢弃。因为IP发送数据是逐跳的，数据有可能在被设置了路由功能的不同的IP层之间转发，所以生存时间表示了数据报最多个可以经过多少个处理过它的路由，每经过一层路由，值减去1，当值为0时数据报就被丢弃，并且发送一个带有错误消息的报文（ICMP，IP层的组成部分，被用来传递一些错误信息）给源端。生存时间可以有效解决数据报在一个路由环路中一直转发的问题。</p>
-<p><strong>首部检验和：</strong>校验数据报的完整性，发送端对首部进行求和，将结果存在检验和中，接收端再计算一遍，如果计算结果与存在检验和中的结果一致，则说明传输过程是OK的，否则这个数据报就会被丢弃。<br>上层协议：决定了接收端在分用的时候将数据交给哪个上层协议去处理，例如TCP或者UDP。</p>
-<p><strong>源IP：</strong>记录了发送端的IP，在回送错误消息时用到。</p>
-<p><strong>目的IP：</strong>表示目的IP，每一次选路都要以它来做决策。</p>
-<h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a>路由选择</h2><p>因为IP首部只包含了目的IP地址，并不体现完整的路径，当向外发送数据时，IP层会根据目的IP在本机路由表中的查询结果来做出选路决策，数据报会逐跳地被运送到目的地，这里的每一跳，就是一次路由选择。</p>
-<p>IP层既可配置成路由器，也可以配置成主机。当配置成路由功能时，可以对数据报进行转发，配置成主机时，如果目的IP不是本机IP，数据报会被丢弃。</p>
-<p>具有路由功能的IP层在当目标IP不是本机地址的时候是根据什么判断转发到哪一站呢？要理解这个问题，需要先明白路由表的结构，以下是IP层维护的路由表，（windows系统可以在控制台输入netstat -r来查看路由表）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">| Destination | Gateway | Flags| Refcnt| Use | Interface| | ------------------ | --------------- | -----|------ |---- | ---------| | 140.252.13.65</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Destination（目的IP）：表示IP数据报最终要到达或者经过的网络地址或者主机地址。</li>
-<li>Gateway（下一跳地址）：当前维护路由表设备的相邻路由器的地址</li>
-<li>Flags（标志）：表示当前这一条路由记录的属性，具体用五个不同的标志来表示：<ul>
-<li>U：该路由可以使用</li>
-<li>G：如果有这个标志，表示是下一跳是一个网关，如果没有，表示下一跳是和当前设备在一个网段，也就是可以直接把数据报发过去</li>
-<li>H: 下一跳是一个主机还是一个网络，有这个标志，表示主机，没有，则表示下一跳的路由是一个网络</li>
-<li>D：该路由是由重定向报文创建的</li>
-<li>M：该路由已被重定向报文修改</li>
-<li>Interface：当前路由项的物理端口</li>
-</ul>
-</li>
-</ul>
-<p>每收到一个数据报时候，IP层就会根据目的IP在路由表里查询，根据查询状态会导向三种结果：</p>
-<ol>
-<li>找到了与目的IP完全匹配的路由项，将报文发给该路由项的下一站路由（Gateway）或者网络接口（Interface）</li>
-<li>找到了与目的IP的网络号匹配的路由项，将报文发给该路由项的下一站路由（Gateway）或者网络接口（Interface）</li>
-<li>前两者都没有找到，就看路由表里有没有默认路由项（default），有的话发给它指定的下一站路由（Gateway）</li>
-</ol>
-<p>要是上边三个都没有结果，那么数据报就不能被发送。IP数据报就是这样一跳一跳地被送往目的主机的，但数据报有固有的长度，一旦超出了目的主机的MTU，就会被分片。</p>
-<h2 id="数据报分片的概念"><a href="#数据报分片的概念" class="headerlink" title="数据报分片的概念"></a>数据报分片的概念</h2><p>TCP在进行握手的时候，会根据目的端IP层的最大传输单元（MTU）来决定TCP数据每次能传输的最大数据量（MSS），之后TCP会对数据依照MSS来进行分组，每个分组会被包装进一个IP数据报内。当IP数据报经过选路过程中的任意一层路由时，有可能被MTU限制住从而被分片，这时IP首部的3bit标志中的M标志被置为1，表示需要分片。每个分片的首部基本一样，只是片偏移有所不同。依据片偏移，这些分片在目的端被重组成一个完整的IP数据报（一个TCP分组）。IP传输是无序的，所以得到的数据报也是无序的，但如果数据完整，TCP会根据首部中的字段对其进行排序。一旦IP分片丢失，IP层无法组成完整的数据报，就会告诉TCP层，TCP进行重传。</p>
-<p>当IP层将数据封装好之后，只有目标主机的IP地址。光有IP地址并不能直接把数据报发送过去，因为每一台硬件设备都有自己的MAC地址，是一个48bit的值。现在知道目标IP的地址，需要找到这个IP对应的MAC地址。这个过程要通过查询路由表，再结合链路层的ARP协议，最终获得目标IP对应的MAC地址。</p>
-<h2 id="地址解析协议：ARP"><a href="#地址解析协议：ARP" class="headerlink" title="地址解析协议：ARP"></a>地址解析协议：ARP</h2><p>IP只能让数据在逻辑端点之间流动，但是IP之下还有网络接口层，这一层也有自己的地址（MAC地址：用于在网络中唯一标识一个网卡），从IP地址到MAC地址需要一个转换的过程，ARP就是提供这一服务的。</p>
-<p>ARP协议实现了从IP地址到MAC地址的映射。一开始，起点并不知道目标的MAC地址，只有目标IP，要获取这个地址就涉及到了ARP的请求和应答。同样，ARP也有自己的分组，先看一下分组格式。</p>
-<h2 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/275aa1fb202513a910a06fb5ff2db19d.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/275aa1fb202513a910a06fb5ff2db19d.jpeg">'); </script><br>
-
-<p>以太网目的地址：目的端的MAC地址，当ARP缓存表中没有的时候，这里为广播地址。</p>
-<p>以太网源地址：发送端的MAC地址。</p>
-<p>帧类型：不同的帧类型有不同的格式和MTU值，不同的类型有不同的编号，这里ARP对应的编号是0x0806。</p>
-<p>硬件类型：指链路层网络类型，1为以太网。</p>
-<p>协议类型：指的是要转换的地址类型，0x0800为IP地址。比如将以太网地址转换为IP地址。</p>
-<p>op（操作类型）：有四种，分别是ARP请求（1），ARP应答（2），RARP请求（3），RARP应答（4）。</p>
-<p>源MAC地址：表示发送端MAC地址。</p>
-<p>源IP地址：表示发送端IP地址。</p>
-<p>目的以太网地址：表示目标设备的MAC物理地址。</p>
-<p>目的IP地址：表示目标设备的IP地址。</p>
-<p>当两台设备发送报文之前，源端的链路层会用ARP协议去询问目的端的MAC地址，ARP会将一个请求广播出去，以太网上的每一个主机都会收到这份广播，广播的目的是询问目标IP的MAC地址，内容主要是先介绍自己的IP和MAC地址，再询问如果你有目标IP，请回复你的硬件地址。如果一个主机收到广播后看到自己有这个IP，并且请求内有源IP和MAC地址，那么就会向源主机回应一个ARP应答。如果没有目标IP，就会丢弃这个请求。可以看出请求是向外广播的，而应答是单独回应的。</p>
-<p>但不能每次通信之前都去经历一次请求-应答过程，在成功地接收到应答之后，IP和MAC地址的映射关系就会缓存在ARP缓存表中，有效期一般为20分钟，便于网络层下次直接进行封装，所以，完整的过程应该是：<br>IP层接收到TCP分组后，发送或者封装之前，通过查询路由表：</p>
-<ol>
-<li>当目标IP和自己在同一个网段时，先去ARP缓存表里找有没有目标IP对应的MAC地址，有的话交给链路层进行封装发送出去。如果缓存表内没有，进行广播，获得MAC地址后缓存起来，IP层再对TCP进行封装，然后交给链路层再封装发送出去。</li>
-<li>当目标IP和自己不在同一个网段，需要将报文发给默认的网关。如果ARP缓存表中有网关IP对应的MAC地址，那么交给链路层进行封装发送出去。如果没有，进行广播，获得地址后缓存起来，IP层再对TCP进行封装，然后交给链路层再封装发送出去。</li>
-</ol>
-<h2 id="以太网数据帧"><a href="#以太网数据帧" class="headerlink" title="以太网数据帧"></a>以太网数据帧</h2><p>上面所有东西都准备好了，封装发送的其实是以太网数据帧。以太网目的地址、以太网源地址、帧类型这三者组成了帧首部。在首部之前还会插入前同步码和帧开始定界符，告知接收端做一些准备工作。帧检验序列 FCS被添加进尾部，用来检测帧是否出错。</p>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e424cb9b1feddf997a6f61c80d80c77d.jpeg#pic_center) -->
-<script> document.write('<img src="'+ imgurl +'1736749038/e424cb9b1feddf997a6f61c80d80c77d.jpeg">'); </script><br>
-<p><strong>前同步码：</strong>协调终端接收适配器的时钟频率，让它与发送端频率相同。</p>
-<p><strong>帧开始定界符：</strong>帧开始的标志，表示帧信息要来了，准备接收。</p>
-<p><strong>目的地址：</strong>接收帧的网络适配器的MAC地址，接收端收到帧时，会首先检查目的地址与本机地址是否相符，不是的话就会丢弃。</p>
-<p><strong>源地址：</strong>发送端设备的MAC地址。</p>
-<p><strong>类型：</strong>决定接收到帧之后将数据交由那种协议处理。</p>
-<p><strong>数据：</strong>交给上层的数据。在本文的场景中指IP数据报。</p>
-<p><strong>帧检验序列：</strong>检测这一帧是否出错，发送方计算帧的循环冗余码校验（CRC）值，把这个值写到帧里。接收方计算机重新计算 CRC，与 FCS 字段的值进行比较。如果两个值不相同，则表示传输过程中发生了数据丢失或改变。这时，就需要重新传输这一帧。<br><strong>传输和接收</strong></p>
-<ol>
-<li>接收到上层传过来的数据报之后，根据MTU以及数据报大小来决定是否分割成小块，也就是IP数据报被分片的过程。</li>
-<li>把数据报（块）封装成一帧，传给底层组件，底层组件将帧转换为比特流，并发送出去。</li>
-<li>以太网上的设备接收到帧，检查帧里边的目标地址，如果与本机地址匹配，帧就会被处理，一层一层向上传递（分用过程）。</li>
-</ol>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>一个网络请求从源端一层层封装，再到终端一层层拆分，最后的所有过程基本梳理清楚，文章只是简单梳理了一下大概流程，并且只以HTTP报文通过TCP协议经过IP传送这一过程为例，实际还有很多概念没有覆盖，比如链路层的尾部封装、 IP的动态选路、逆地址解析协议RARP、UDP协议相关的概念，建议大家可以阅读下面列出的参考资料，相信会有更多收获。</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
@@ -7160,6 +6940,226 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>当输入一个 URL，实际会发生什么？</title>
+    <url>/2025/01/13/2025011310/</url>
+    <content><![CDATA[<h2 id="从一个经典的面试题说起"><a href="#从一个经典的面试题说起" class="headerlink" title="从一个经典的面试题说起"></a>从一个经典的面试题说起</h2><p>从输入URL到页面展现的过程:</p>
+<span id="more"></span>
+
+<ol>
+<li>输入URL后，会先进行域名解析。优先查找本地host文件有无对应的IP地址，没有的话去本地DNS服务器查找，还不行的话，本地DNS服务器会去找根DNS服务器要一个域服务器的地址进行查询，域服务器将要查询的域名的解析服务器地址返回给本地DNS，本地DNS去这里查询就OK了。</li>
+<li>浏览器拿到服务器的IP地址后，会向它发送HTTP请求。HTTP请求经由一层层的处理、封装、发出之后，最终经由网络到达服务器，建立TCP&#x2F;IP连接，服务器接收到请求并开始处理。</li>
+<li>服务器构建响应，再经由一层层的处理、封装、发出后，到达客户端，浏览器处理请求。</li>
+<li>浏览器开始渲染页面，解析HTML，构建render树，根据render树的节点和CSS的对应关系，进行布局，绘制页面。</li>
+</ol>
+<p>这4个步骤包含了一个HTTP请求的完整生命周期，文章着重介绍第2步和第3步，也就是请求是如何在两个物理端点之间进行通信的。数据的发出和接收必然会经历一些处理、解析的过程，这些过程在系统的不同层次进行。</p>
+<h2 id="分层"><a href="#分层" class="headerlink" title="分层"></a>分层</h2><p>一个HTTP请求从源端发出到在终端接收的处理过程都是要经过以下四层。其中每一层都有各自的协议。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/28c13e41b8db6dbbc737deaa0d664896.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/28c13e41b8db6dbbc737deaa0d664896.jpeg">'); </script><br>
+
+<p>我们先来理解一下协议是什么，协议是经过约定，双方共同承认，并且需要共同遵守的规则。上面的每一层，都有各自的协议，协议的执行者是通信链路两端内的对应层。每一层通过协议来理解数据，并进行处理。</p>
+<p>上图中只举例出了最常见的协议，实际上每一层都有细分的协议：</p>
+<ul>
+<li>应用层：应用程序负责将数据以相应规则（协议）进行包装，发给传输层<ul>
+<li>HTTP：超文本传输协议</li>
+<li>FTP：文件传输协议</li>
+<li>SMTP：简单邮件传送协议</li>
+<li>SNMP：简单网络管理协议</li>
+</ul>
+</li>
+<li>传输层：负责将应用层传过来的数据进行分组，为确保终端接收数据的顺序和完整性，会对每个分组进行标记，交给网络层<ul>
+<li>TCP：传输控制协议</li>
+<li>UDP：用户数据协议</li>
+</ul>
+</li>
+<li>网络层：负责将传输层发来的数据分组发送到目标终端<ul>
+<li>IP：网际协议</li>
+<li>ICMP：Internet互联网控制报文协议</li>
+<li>IGMP：Internet组管理协议</li>
+</ul>
+</li>
+<li>链路层：为网络层发送和接收数据单元<ul>
+<li>ARP：地址解析协议</li>
+<li>RARP：逆地址解析协议</li>
+</ul>
+</li>
+</ul>
+<h2 id="封装和分用"><a href="#封装和分用" class="headerlink" title="封装和分用"></a>封装和分用</h2><p>数据在经过每一层的时候都要被对应的协议包装，到达终端的时候，要一层一层的解包。这两个过程叫封装和分用。</p>
+<p>发送时，用户数据被HTTP封装为报文，每一层会将上层传过来的报文作为本层的数据块，并添加自己的首部，其中包含了协议标识，这一整体作为本层报文向下传递。</p>
+<p>接收时，数据自下而上流动，经过每一层时被去掉报文首部，根据报文标识确定正确的上层协议，最终到应用层被应用程序处理。</p>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>源端发送HTTP报文时，报文会以数据流的形式通过一条已经打开的TCP连接按序传输，TCP收到数据流后会将其分割成小的数据块，每个小块被添加的TCP首部与数据块共同组成了TCP分组，分组经由网络层发送，网络层遵循IP协议，当收到分组发送请求后，会将分组其放入IP数据报，填充报头，将数据报发经由链路层发送出去。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/1de02df81aa591dae332c7142457a9a6.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/1de02df81aa591dae332c7142457a9a6.jpeg">'); </script><br>
+
+<p>这一过程经过每层的时候都会被增加一些首部信息，有时还需要增加尾部信息，每一层都会把数据封装到各自的报文中， 并在报文首部添加协议标识，这个过程叫<strong>封装</strong>。</p>
+<h2 id="分用"><a href="#分用" class="headerlink" title="分用"></a>分用</h2><p>终端接收到一个以太网数据帧时，数据自底层向上流动，去掉发送时各层协议加上的报文首部，每层协议都要检查报文首部的协议标识，从而确定上层协议，保证数据被正确处理，这个过程叫分用。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/08feeaac386b56b1484eba3aa83f6f69.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/08feeaac386b56b1484eba3aa83f6f69.jpeg">'); </script><br>
+
+<p>终端从链路层接收到数据请求后，进入网络层对数据进行解析，交给给传输层，校验分组顺序和完整性，从数据块中取出数据，得到HTTP报文，交给应用层进行处理。这个过程会逐层剥离报头还原数据。</p>
+<h2 id="逐层分析"><a href="#逐层分析" class="headerlink" title="逐层分析"></a>逐层分析</h2><p>我们已经知道，数据是从源端自上而下到终端自下而上被一层层处理的，现在就来看一下每层都做了什么事情。</p>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>HTTP属于应用层，用户触发交互所产生的行为数据和服务端对此的响应都由它封装成HTTP报文，再交由下层协议进行处理。报文的作用是客户端与服务端沟通的载体，双方都要遵循统一规则对信息进行处理，这一规则称为HTTP。</p>
+<p>客户端与服务端的交互往往非常复杂，为了使双方都能高效、明确、安全地通信（例如传递意图与状态、承载数据、携带认证信息、控制连接行为与缓存），需要依赖报文中的结构来实现，下面先从结构开始看。</p>
+<h2 id="报文结构"><a href="#报文结构" class="headerlink" title="报文结构"></a>报文结构</h2><p>HTTP报文的结构分为请求和响应两种，请求报文封装用户操作产生的动作，告知服务器应采取什么行为，响应报文来告知客户端请求的结果。<br>请求报文格式：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">method</span>&gt;</span> <span class="tag">&lt;<span class="name">request-url</span>&gt;</span> <span class="tag">&lt;<span class="name">version</span>&gt;</span> // 起始行格式</span><br><span class="line"><span class="tag">&lt;<span class="name">headers</span>&gt;</span> // 首部</span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> // 实体</span><br></pre></td></tr></table></figure>
+<p>响应报文格式：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">method</span>&gt;</span> <span class="tag">&lt;<span class="name">status</span>&gt;</span> <span class="tag">&lt;<span class="name">reason-phrase</span>&gt;</span> // 起始行格式</span><br><span class="line"><span class="tag">&lt;<span class="name">headers</span>&gt;</span> // 首部</span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> // 实体</span><br></pre></td></tr></table></figure>
+<h2 id="起始行"><a href="#起始行" class="headerlink" title="起始行"></a>起始行</h2><p>报文的起始行表明了报文的开始，请求和响应各自的起始行的格式也不相同。</p>
+<p>请求报文的起始行说明要做什么，结构为方法 + 请求URL + 协议版本，中间用空格做分隔：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">GET /api/nht/blog/example HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>响应报头的起始行说明发生了什么，结构为协议版本 + 状态码 + 描述文本，中间用空格做分隔：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br></pre></td></tr></table></figure>
+<h2 id="方法与状态码"><a href="#方法与状态码" class="headerlink" title="方法与状态码"></a>方法与状态码</h2><p>方法来告诉服务端请求报文要做的事情，状态码来通知客户端服务端依据请求报文完成动作之后的大致结果。常见的HTTP方法如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">| 方法 | 含义 | 有无主体 | | ------- | ---------------------------------------------- | -------- | | GET | 从服务端获取资源 | 无 | | HEAD | 只获取资源头部 | 无 | | POST | 向服务端发送数据 | 有 | | PUT | 将客户端发送的数据存到服务端，应用场景多为修改 | 有 | | OPTIONS | 对服务端进行预检，例如服务端支持哪些方法 | 无 | | DELETE | 从服务端删除资源 | 无 |</span><br><span class="line"></span><br><span class="line">请求完成时，响应报文中会有一个状态码，用来表示此次请求的状态，是成功了还是失败了，或者时需要重定向。状态码的范围从100到599， 其中有部分是已经定义的。不同的范围表示的含义也不同：</span><br><span class="line"></span><br><span class="line">| 范围 | 已定义范围 | 含义 | | ------- | ---------------------------------------------- | ---------- | | 100~199 | 100~101 | 信息提示 | | 200~299 | 200~206 | 成功 | | 300~399 | 300~305 | 重定向 | | 400~499 | 400~415 | 客户端错误 | | 500~599 | 500~505 | 服务端错误 |</span><br></pre></td></tr></table></figure>
+<h2 id="首部"><a href="#首部" class="headerlink" title="首部"></a>首部</h2><p>首部是请求和响应报文中的一些信息，形式为键值对，每对键值结尾是CRLF换行符，它决定了请求或者响应报文的属性，比如Content-Type表明了请求主体的数据类型，Date说明了请求的创建时间。客户端与服务端通过首部来协商具体行为。可以根据请求、响应、结构等，将首部分为五种。</p>
+<ul>
+<li>请求首部：是放在请求报文中的首部，它被用来告诉服务端一些信息。</li>
+<li>响应首部：为客户端提供一些可能用到的信息。</li>
+<li>通用首部：请求与响应报文都包含的首部，例如Date首部</li>
+<li>实体首部：对于报文实体主体部分的描述，比如Content-Type，表明其数据类型。</li>
+<li>扩展首部：开发者自己添加的首部字段，用来满足定制化需求。</li>
+</ul>
+<h2 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">HTTP/1.0 200 OK</span><br><span class="line">Server: xxxxxxx</span><br><span class="line">Date: Sun,17 Sep 2019 02:01:16 GMT</span><br><span class="line">--------------------------------实体首部</span><br><span class="line">Content-Type: text/plain</span><br><span class="line">Content-length: 18</span><br><span class="line">--------------------------------实体主体</span><br><span class="line"></span><br><span class="line">Hi! I&quot;m a message!</span><br><span class="line">--------------------------------</span><br></pre></td></tr></table></figure>
+<p>实体部分是可选的，它被用来运送请求或者响应的数据，实体由实体首部 + 实体主体组成，实体首部对实体主体做描述。HTTP&#x2F;1.1定义了以下的基本实体首部字段：</p>
+<ul>
+<li>Content-Type: 实体主体中的数据类型。</li>
+<li>Content-Length: 实体主体的长度或者大小。</li>
+<li>Content-Language: 和传输的数据最匹配的语言。</li>
+<li>Content-Encoding: 来标识服务端编码时所用的编码方式。</li>
+<li>Content-Location: 要返回的数据的地址。</li>
+<li>Content-Range: 如果是部分实体，用来标记它是实体的哪个部分。</li>
+<li>Content-MD5: 实体主体内容的校验和。</li>
+<li>Last-Modified: 所传输内容在服务器上创建或者最后修改的日期时间。</li>
+<li>Expires: 实体数据试下的日期时间。</li>
+<li>Allow: 所请求资源允许的请求方法。</li>
+<li>ETag: 资源的特定版本的标识符。可以让缓存更高效，并节省带宽。</li>
+<li>Cache-Control: 控制缓存机制的指令。</li>
+</ul>
+<p>以上是HTTP报文包含的主要结构，当请求报文到达服务器时，服务器会对报文中的内容解析出来，根据方法、资源路径、首部、和主体来处理请求，然后通过对请求资源的访问结果，来构建响应，回送给客户端。</p>
+<h2 id="传输层-TCP"><a href="#传输层-TCP" class="headerlink" title="传输层-TCP"></a>传输层-TCP</h2><p>HTTP连接是建立在TCP连接的基础之上的，TCP提供可靠的数据连接。当要传输一个HTTP报文时，报文数据会以流的形式通过一条已经打开的TCP连接按顺序传输，TCP会将收到的数据分成小块，每块是一个TCP分组。</p>
+<p>由于数据是分成小块发送的，所以完整可靠的数据传输主要体现在：分组是否完整、分组顺序是否正常、分组是否损坏、分组数据是否重复。这些可以通过TCP的检验和、序列号、确认应答、重发控制、连接管理和窗口机制来控制。</p>
+<p>TCP是传输控制协议，传输控制主要依赖首部包含的6个标志，它们控制报文的传输状态，以及发送端和接收端应对数据采取的动作。当它们的值为1时，标志对应的各自功能才允许被执行，比如当URG为1时，报文首部的紧急指针部分才有效。</p>
+<ul>
+<li>URG 紧急指针</li>
+<li>ACK 确认序号有效</li>
+<li>PSH 接收方应该尽快将这个报文段交给应用层。</li>
+<li>RST 重建连接</li>
+<li>SYN 同步序号用来发起一个连接</li>
+<li>FIN 发端完成发送任务<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/16b46ed733bf98601210dec418d1ef75.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/16b46ed733bf98601210dec418d1ef75.jpeg">'); </script><br></li>
+</ul>
+<p>源端口和目的端口：标识发送方和接收方的端口号，一个TCP连接通过4个值确认：源IP、源端口、目的IP、目的端口，其中源IP和目的IP包含在IP分组内。</p>
+<p>首部长度：表示TCP首部的字节长度，也能标记出从多少个字节开始，才是需要传输的数据。</p>
+<p>TCP段序号：本段报文发送的数据第一个字节的序号，每段报文中的数据的每个字节都有序号，第一个字节的序号从0开始，依次加1，加到2的32次方减1后再次从0开始。</p>
+<p>TCP段确认序号 ：当首部标志ACK为1时，确认序号有效。TCP段被接收端接收后，会回送给发送端一个确认号，为上次接受的最后一个字节序号加1。</p>
+<p>检验和：由发送端计算，接收端验证，如果接收方检测到检验和不正确，表明该TCP段可能有损坏，会被丢弃，同时接收端向回送一个重复的确认号（与最近的一次正确的报文传输的确认号重复），表明接收到的TCP段是错误的，并告知自己希望收到的序号。这时发送端需要立即重传出错的TCP段。</p>
+<p>紧急指针：当首部标志URG为1时，紧急指针有效，表示发送端向接收端要发送紧急数据。紧急指针是一个正偏移量，它和TCP段序号相加，计算出紧急数据的最后一个字节的序号。比如接收方接收到数据，从序号为1000的字节开始读取，紧急指针为1000，那么紧急数据就是序号从1000到2000之间的字节。这些数据由接收方决定如何处理。</p>
+<p>窗口尺寸：决定了TCP一次成块数据流的吞吐量。需要注意的是，它表示的是发送一方的允许对方发送的数据量，比如发送方首部中的窗口大小为1000，就表示发送方最多可以接受对方发来的1000个字节的数据量。这与发送方的数据缓存空间有关，会影响TCP的性能。</p>
+<p>首部标志PSH：如果需要告诉接收方将数据立即全部提交给接收进程，发送方需要将PSH置为1，这里的数据是和PSH一起传送的数据以及之前接收到的全部数据。如果接收方收到了PSH为1的标志，需要立即将数据提交给接收进程，不用再等待有没有其他数据进来。</p>
+<p>复位标志RST：当RST为1时，表示连接出现了异常情况，接收方将终止连接，通知应用层重新建立连接。</p>
+<p>同步序号SYN：用来建立连接，涉及到TCP的三次握手。</p>
+<ol>
+<li>开始建立连接时，客户端向服务器发送一个TCP分组，分组首部的SYN为1，并携带一个初始序号，表明这是一个连接请求。</li>
+<li>如果服务器接受了连接，会向客户端发送一个TCP分组，分组中会包含SYN和ACK，都为1，同时包含一个确认序号，值为来自客户端的初始序号   + 1，表示连接已经被接受。</li>
+<li>客户端收到上一步发来的分组后，会再向服务器发送一段确认报文分组，ACK为1，会再次携带确认序号，值是第二步来自客户端的确认序号 +1。服务端收到确认信息后，进入已经连接的状态。<br>在第三步的确认分组中，是可以携带要发送的数据的。</li>
+</ol>
+<p>连接终止标志FIN：用来关闭连接，当一端完成数据发送任务后会发送一个FIN标志来终止连接，但因为TCP在两个方向（C-S,S-C）上会有数据传递，每个方向有各自的发送FIN &amp; 确认关闭流程，所以会有四次交互，也称为四次挥手。</p>
+<ol>
+<li>如果客户端应用层的数据发送完毕，会导致客户端的TCP报文发送一个FIN，告知服务器准备关闭数据传送。</li>
+<li>服务器接收到这个标志后，它发回一个ACK，确认序号为收到的序号加1，同时TCP还要向应用程序发一个文件结束符。</li>
+<li>此时服务器关闭这个方向的连接，导致它的TCP也会发送一个FIN。</li>
+<li>客户端接收到之后发回一个确认ACK，序号为收到的序号 + 1，连接完全关闭。</li>
+</ol>
+<p>TCP段序号与确认序号保证了数据的顺序，检验和确保数据的完整性，紧急指针保证紧急数据可被及时处理。另外，TCP还有一些超时重传、 拥塞避免、慢启动的机制，都可以保证分组数据按照顺序完整的传到目标端。</p>
+<h2 id="网络层-IP"><a href="#网络层-IP" class="headerlink" title="网络层-IP"></a>网络层-IP</h2><p>如果说TCP分组是包装货物的集装箱，那么IP就是运送集装箱的卡车。IP协议提供了两个节点之间的连接，保证将TCP数据尽可能快地从源端送到终端，但却不能保证传输的可靠性。</p>
+<p>IP层会将上层传过来的TCP分组封装，带上自己的首部，再进行选路、是否分片以及重组的工作，最终到达目的地，这个过程中，IP首部起了重要的作用，下面让我们看一下首部的结构。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a5f3a2b38bac4db9dc02e1192dea09b0.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/a5f3a2b38bac4db9dc02e1192dea09b0.jpeg">'); </script><br>
+
+<p><strong>版本：</strong>表示当前IP协议的版本，目前版本号是4，还有一种是6，也就是IPV4和IPV6，如果发送和接收这两端的版本不一致，那么当前IP数据报会被丢弃。</p>
+<p><strong>首部长度：</strong>整个首部的长度，最长为60字节。</p>
+<p><strong>服务类型（TOS）：</strong>用来区分服务的类型，但其实IP层在工作的时候一直没有实际使用过，现有的TOS只有4bit的子字段，和1bit的未用位。未用位必须置为0。TOS的4个bit中只能将一个置成1，用来表示当前服务类型。4bit对应的4个服务类型分别为：最小时延、最大吞吐量、最高可靠性和最小费用。</p>
+<p><strong>总长度：</strong>表示当前的数据报报文的总长度，单位为字节，可以结合首部长度计算出报文内数据的大小以及起始位置。</p>
+<p>下面这三个首部字段涉及到IP数据报的分片与重组过程，由于网络层一般会限制每个数据帧的最大长度，IP层发送数据报会在选路的同时查询当前设备网络层的每个数据帧的最大传输长度，一旦超出，数据报就会被进行分片，到达目的地之后再进行重组，此时就会用以下三个字段作为重组依据。需要注意的是：因为存在选路的过程，数据报经过的每层路由设备对于数据帧的最大传输长度都不同，所以分片可能发生在任意一次选路的过程中。</p>
+<p><strong>分组标识：</strong>这个标识相当于ID，每成功发送一个分片，IP层就会把这个分组ID加1。</p>
+<p><strong>标志：</strong>共占用三位，分别是R、D、M，R目前还没有被使用，有用的是D、和M。这个字段表示了数据报的分片行为。D如果为1的话，表示数据无需分片，一次传输完；M如果为1，表示数据是分片的，后边还有数据，当它为0时，就表示当前数据报是最后一个分片，或者只有这一个分片。</p>
+<p><strong>片偏移：</strong>标识了当前分片距离原始数据报开始处的位置，分片之后，每一片的总长度会改成这一片的长度值，而不是整个数据报的长度。</p>
+<p><strong>生存时间：</strong>（TTL） 可以决定数据报是否被丢弃。因为IP发送数据是逐跳的，数据有可能在被设置了路由功能的不同的IP层之间转发，所以生存时间表示了数据报最多个可以经过多少个处理过它的路由，每经过一层路由，值减去1，当值为0时数据报就被丢弃，并且发送一个带有错误消息的报文（ICMP，IP层的组成部分，被用来传递一些错误信息）给源端。生存时间可以有效解决数据报在一个路由环路中一直转发的问题。</p>
+<p><strong>首部检验和：</strong>校验数据报的完整性，发送端对首部进行求和，将结果存在检验和中，接收端再计算一遍，如果计算结果与存在检验和中的结果一致，则说明传输过程是OK的，否则这个数据报就会被丢弃。<br>上层协议：决定了接收端在分用的时候将数据交给哪个上层协议去处理，例如TCP或者UDP。</p>
+<p><strong>源IP：</strong>记录了发送端的IP，在回送错误消息时用到。</p>
+<p><strong>目的IP：</strong>表示目的IP，每一次选路都要以它来做决策。</p>
+<h2 id="路由选择"><a href="#路由选择" class="headerlink" title="路由选择"></a>路由选择</h2><p>因为IP首部只包含了目的IP地址，并不体现完整的路径，当向外发送数据时，IP层会根据目的IP在本机路由表中的查询结果来做出选路决策，数据报会逐跳地被运送到目的地，这里的每一跳，就是一次路由选择。</p>
+<p>IP层既可配置成路由器，也可以配置成主机。当配置成路由功能时，可以对数据报进行转发，配置成主机时，如果目的IP不是本机IP，数据报会被丢弃。</p>
+<p>具有路由功能的IP层在当目标IP不是本机地址的时候是根据什么判断转发到哪一站呢？要理解这个问题，需要先明白路由表的结构，以下是IP层维护的路由表，（windows系统可以在控制台输入netstat -r来查看路由表）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">| Destination | Gateway | Flags| Refcnt| Use | Interface| | ------------------ | --------------- | -----|------ |---- | ---------| | 140.252.13.65</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Destination（目的IP）：表示IP数据报最终要到达或者经过的网络地址或者主机地址。</li>
+<li>Gateway（下一跳地址）：当前维护路由表设备的相邻路由器的地址</li>
+<li>Flags（标志）：表示当前这一条路由记录的属性，具体用五个不同的标志来表示：<ul>
+<li>U：该路由可以使用</li>
+<li>G：如果有这个标志，表示是下一跳是一个网关，如果没有，表示下一跳是和当前设备在一个网段，也就是可以直接把数据报发过去</li>
+<li>H: 下一跳是一个主机还是一个网络，有这个标志，表示主机，没有，则表示下一跳的路由是一个网络</li>
+<li>D：该路由是由重定向报文创建的</li>
+<li>M：该路由已被重定向报文修改</li>
+<li>Interface：当前路由项的物理端口</li>
+</ul>
+</li>
+</ul>
+<p>每收到一个数据报时候，IP层就会根据目的IP在路由表里查询，根据查询状态会导向三种结果：</p>
+<ol>
+<li>找到了与目的IP完全匹配的路由项，将报文发给该路由项的下一站路由（Gateway）或者网络接口（Interface）</li>
+<li>找到了与目的IP的网络号匹配的路由项，将报文发给该路由项的下一站路由（Gateway）或者网络接口（Interface）</li>
+<li>前两者都没有找到，就看路由表里有没有默认路由项（default），有的话发给它指定的下一站路由（Gateway）</li>
+</ol>
+<p>要是上边三个都没有结果，那么数据报就不能被发送。IP数据报就是这样一跳一跳地被送往目的主机的，但数据报有固有的长度，一旦超出了目的主机的MTU，就会被分片。</p>
+<h2 id="数据报分片的概念"><a href="#数据报分片的概念" class="headerlink" title="数据报分片的概念"></a>数据报分片的概念</h2><p>TCP在进行握手的时候，会根据目的端IP层的最大传输单元（MTU）来决定TCP数据每次能传输的最大数据量（MSS），之后TCP会对数据依照MSS来进行分组，每个分组会被包装进一个IP数据报内。当IP数据报经过选路过程中的任意一层路由时，有可能被MTU限制住从而被分片，这时IP首部的3bit标志中的M标志被置为1，表示需要分片。每个分片的首部基本一样，只是片偏移有所不同。依据片偏移，这些分片在目的端被重组成一个完整的IP数据报（一个TCP分组）。IP传输是无序的，所以得到的数据报也是无序的，但如果数据完整，TCP会根据首部中的字段对其进行排序。一旦IP分片丢失，IP层无法组成完整的数据报，就会告诉TCP层，TCP进行重传。</p>
+<p>当IP层将数据封装好之后，只有目标主机的IP地址。光有IP地址并不能直接把数据报发送过去，因为每一台硬件设备都有自己的MAC地址，是一个48bit的值。现在知道目标IP的地址，需要找到这个IP对应的MAC地址。这个过程要通过查询路由表，再结合链路层的ARP协议，最终获得目标IP对应的MAC地址。</p>
+<h2 id="地址解析协议：ARP"><a href="#地址解析协议：ARP" class="headerlink" title="地址解析协议：ARP"></a>地址解析协议：ARP</h2><p>IP只能让数据在逻辑端点之间流动，但是IP之下还有网络接口层，这一层也有自己的地址（MAC地址：用于在网络中唯一标识一个网卡），从IP地址到MAC地址需要一个转换的过程，ARP就是提供这一服务的。</p>
+<p>ARP协议实现了从IP地址到MAC地址的映射。一开始，起点并不知道目标的MAC地址，只有目标IP，要获取这个地址就涉及到了ARP的请求和应答。同样，ARP也有自己的分组，先看一下分组格式。</p>
+<h2 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/275aa1fb202513a910a06fb5ff2db19d.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/275aa1fb202513a910a06fb5ff2db19d.jpeg">'); </script><br>
+
+<p>以太网目的地址：目的端的MAC地址，当ARP缓存表中没有的时候，这里为广播地址。</p>
+<p>以太网源地址：发送端的MAC地址。</p>
+<p>帧类型：不同的帧类型有不同的格式和MTU值，不同的类型有不同的编号，这里ARP对应的编号是0x0806。</p>
+<p>硬件类型：指链路层网络类型，1为以太网。</p>
+<p>协议类型：指的是要转换的地址类型，0x0800为IP地址。比如将以太网地址转换为IP地址。</p>
+<p>op（操作类型）：有四种，分别是ARP请求（1），ARP应答（2），RARP请求（3），RARP应答（4）。</p>
+<p>源MAC地址：表示发送端MAC地址。</p>
+<p>源IP地址：表示发送端IP地址。</p>
+<p>目的以太网地址：表示目标设备的MAC物理地址。</p>
+<p>目的IP地址：表示目标设备的IP地址。</p>
+<p>当两台设备发送报文之前，源端的链路层会用ARP协议去询问目的端的MAC地址，ARP会将一个请求广播出去，以太网上的每一个主机都会收到这份广播，广播的目的是询问目标IP的MAC地址，内容主要是先介绍自己的IP和MAC地址，再询问如果你有目标IP，请回复你的硬件地址。如果一个主机收到广播后看到自己有这个IP，并且请求内有源IP和MAC地址，那么就会向源主机回应一个ARP应答。如果没有目标IP，就会丢弃这个请求。可以看出请求是向外广播的，而应答是单独回应的。</p>
+<p>但不能每次通信之前都去经历一次请求-应答过程，在成功地接收到应答之后，IP和MAC地址的映射关系就会缓存在ARP缓存表中，有效期一般为20分钟，便于网络层下次直接进行封装，所以，完整的过程应该是：<br>IP层接收到TCP分组后，发送或者封装之前，通过查询路由表：</p>
+<ol>
+<li>当目标IP和自己在同一个网段时，先去ARP缓存表里找有没有目标IP对应的MAC地址，有的话交给链路层进行封装发送出去。如果缓存表内没有，进行广播，获得MAC地址后缓存起来，IP层再对TCP进行封装，然后交给链路层再封装发送出去。</li>
+<li>当目标IP和自己不在同一个网段，需要将报文发给默认的网关。如果ARP缓存表中有网关IP对应的MAC地址，那么交给链路层进行封装发送出去。如果没有，进行广播，获得地址后缓存起来，IP层再对TCP进行封装，然后交给链路层再封装发送出去。</li>
+</ol>
+<h2 id="以太网数据帧"><a href="#以太网数据帧" class="headerlink" title="以太网数据帧"></a>以太网数据帧</h2><p>上面所有东西都准备好了，封装发送的其实是以太网数据帧。以太网目的地址、以太网源地址、帧类型这三者组成了帧首部。在首部之前还会插入前同步码和帧开始定界符，告知接收端做一些准备工作。帧检验序列 FCS被添加进尾部，用来检测帧是否出错。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/e424cb9b1feddf997a6f61c80d80c77d.jpeg#pic_center) -->
+<script> document.write('<img src="'+ imgurl +'1736749038/e424cb9b1feddf997a6f61c80d80c77d.jpeg">'); </script><br>
+<p><strong>前同步码：</strong>协调终端接收适配器的时钟频率，让它与发送端频率相同。</p>
+<p><strong>帧开始定界符：</strong>帧开始的标志，表示帧信息要来了，准备接收。</p>
+<p><strong>目的地址：</strong>接收帧的网络适配器的MAC地址，接收端收到帧时，会首先检查目的地址与本机地址是否相符，不是的话就会丢弃。</p>
+<p><strong>源地址：</strong>发送端设备的MAC地址。</p>
+<p><strong>类型：</strong>决定接收到帧之后将数据交由那种协议处理。</p>
+<p><strong>数据：</strong>交给上层的数据。在本文的场景中指IP数据报。</p>
+<p><strong>帧检验序列：</strong>检测这一帧是否出错，发送方计算帧的循环冗余码校验（CRC）值，把这个值写到帧里。接收方计算机重新计算 CRC，与 FCS 字段的值进行比较。如果两个值不相同，则表示传输过程中发生了数据丢失或改变。这时，就需要重新传输这一帧。<br><strong>传输和接收</strong></p>
+<ol>
+<li>接收到上层传过来的数据报之后，根据MTU以及数据报大小来决定是否分割成小块，也就是IP数据报被分片的过程。</li>
+<li>把数据报（块）封装成一帧，传给底层组件，底层组件将帧转换为比特流，并发送出去。</li>
+<li>以太网上的设备接收到帧，检查帧里边的目标地址，如果与本机地址匹配，帧就会被处理，一层一层向上传递（分用过程）。</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>一个网络请求从源端一层层封装，再到终端一层层拆分，最后的所有过程基本梳理清楚，文章只是简单梳理了一下大概流程，并且只以HTTP报文通过TCP协议经过IP传送这一过程为例，实际还有很多概念没有覆盖，比如链路层的尾部封装、 IP的动态选路、逆地址解析协议RARP、UDP协议相关的概念，建议大家可以阅读下面列出的参考资料，相信会有更多收获。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python内置函数示例</title>
     <url>/2025/01/13/2025011313/</url>
     <content><![CDATA[<p>本文内容较多，建议大家先查看<a href="https://blog.csdn.net/KH_FC/article/details/106135096">函数列表</a>，函数列表内置跳转链接可直接跳转至本文，方便大家快速阅读</p>
@@ -7299,6 +7299,38 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>制作网页黑白背景</title>
+    <url>/2025/01/13/2025011315/</url>
+    <content><![CDATA[<p>2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图</p>
+<span id="more"></span>
+<p><strong>百度</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8124fda7dcb9a157d959da7ba6d8c3e9.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/8124fda7dcb9a157d959da7ba6d8c3e9.png">'); </script><br>
+
+<p><strong>CSDN</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/af84e6f2928db749add6450bbcf9fba5.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/af84e6f2928db749add6450bbcf9fba5.png">'); </script><br>
+
+<p><strong>JD</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bcb82835c541799c1ea4804ee0089b3.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/9bcb82835c541799c1ea4804ee0089b3.png">'); </script><br>
+
+<p><strong>淘宝</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc79fd0603e61cf8f3c8a4c3b53b2079.png) -->
+<script> document.write('<img src="'+ imgurl +'1736750609/cc79fd0603e61cf8f3c8a4c3b53b2079.png">'); </script><br>
+
+<p>那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">-webkit-filter: grayscale(100%);</span><br><span class="line">-moz-filter: grayscale(100%);</span><br><span class="line">-ms-filter: grayscale(100%);</span><br><span class="line">-o-filter: grayscale(100%);</span><br><span class="line">filter: grayscale(100%);</span><br><span class="line">filter: gray; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
@@ -7565,6 +7597,254 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker命令总结（一）</title>
+    <url>/2025/01/13/2025011317/</url>
+    <content><![CDATA[<p>个人简单总结：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>用途</th>
+<th>语法</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
+<td>在docker hub中搜索镜像</td>
+<td>docker search 镜像名称</td>
+<td>docker search nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
+<td>在docker hub中下载镜像到本地</td>
+<td>docker pull 镜像名：tag</td>
+<td>docker pull nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
+<td>推送指定镜像到docker镜像服务器</td>
+<td>docker push 本地镜像：tag</td>
+<td>docker push nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
+<td>查看本地所有docker镜像</td>
+<td>docker images</td>
+<td>docker imaegs</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
+<td>创建容器，并运行</td>
+<td>docker run 参数 镜像名：tag</td>
+<td>docker -d run nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
+<td>查看镜像形成过程</td>
+<td>docker history 本地镜像名：tag</td>
+<td>docker history nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
+<td>启动容器</td>
+<td>docker start 容器ID或容器名称</td>
+<td>docker strat 3d265463456</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
+<td>停止容器</td>
+<td>docker stop 容器ID或容器名称</td>
+<td>docker stop nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
+<td>通过dockerfile制作镜像</td>
+<td>docker build 参数 镜像名：tag dockerfile目录</td>
+<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
+<td>当前shell连接运行容器</td>
+<td>docker attach 容器名</td>
+<td>docker attach nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
+<td>保存当前容器为镜像&#x2F;快照</td>
+<td>docker commit 容器ID或容器名 新镜像名：tag</td>
+<td>docker commit nginx nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
+<td>容器与宿主机互相复制文件</td>
+<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
+<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
+<td>创建容器但不启动容器</td>
+<td>docker create  参数 镜像名称</td>
+<td>docker create nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
+<td>查看容器改动</td>
+<td>docker diff 容器ID或容器名称</td>
+<td>docker diff nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
+<td>在容器中执行命令</td>
+<td>docker exec 参数 容器ID或名称 命令</td>
+<td>docker exec centos echo ‘123’</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
+<td>登入docker镜像源服务器</td>
+<td>docker login 服务器地址</td>
+<td>docker login</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
+<td>退出登录镜像源服务器</td>
+<td>docker logout</td>
+<td>docker logout</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
+<td>输出当前容器的日志信息</td>
+<td>docker logs 容器ID或名称</td>
+<td>docker logs nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
+<td>查看容器的端口映射情况</td>
+<td>docker port 容器ID或名称</td>
+<td>docker port nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
+<td>列出容器列表</td>
+<td>docker ps 参数</td>
+<td>docker ps -a</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
+<td>重新启动容器</td>
+<td>docker restart 容器ID或名称</td>
+<td>docker restart nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
+<td>删除容器</td>
+<td>docker rm 参数 容器ID或名称</td>
+<td>docker rm nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
+<td>删除本地镜像</td>
+<td>docker rmi 镜像名：tag</td>
+<td>docker rmi nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
+<td>保存镜像为tar包</td>
+<td>docker save -o tar文件名 镜像名:tag</td>
+<td>docker save -o nginx.tar nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
+<td>查看容器中进程信息</td>
+<td>docker top 容器ID或名称</td>
+<td>docker top nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
+<td>查看docker软件版本</td>
+<td>docker version</td>
+<td>docker version</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
+<td>查看docker服务器实时时间</td>
+<td>docker events 参数</td>
+<td>docker events –since&#x3D;”1577321423”</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
+<td>从tar文件导入docker为镜像</td>
+<td>docker import 参数 tar文件 镜像名：tag</td>
+<td>docker import nginx.tar nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
+<td>从docker导出镜像为tar文件</td>
+<td>docker export 参数 镜像名：tag tar文件</td>
+<td>docker export nginx:V2 nginx2.tar</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
+<td>查看docker系统信息</td>
+<td>docker info</td>
+<td>docker info</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
+<td>查看容器详细信息</td>
+<td>docker inspect 容器ID或名称</td>
+<td>docker inspect nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
+<td>杀死正在运行的容器</td>
+<td>docker kill 参数 容器ID或名称</td>
+<td>docker kill nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
+<td>从tar文件中加载为docker镜像</td>
+<td>docker load -i tar文件 镜像名：tag</td>
+<td>docker load -i nginx2.tar nginx:V3</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
+<td>暂停容器</td>
+<td>docker pause 容器ID&#x2F;名称</td>
+<td>docker pause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
+<td>镜像打标签</td>
+<td>docker tag 镜像名：tag 新镜像名：tag</td>
+<td>docker tag nginx:V3 mynginx:V4</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
+<td>取消暂停的容器</td>
+<td>docker unpause 容器ID&#x2F;名称</td>
+<td>docker unpause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
+<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
+<td>docker wait CONTAINER</td>
+<td>docker wait CONTAINER</td>
+</tr>
+</tbody></table>
+<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -11616,286 +11896,6 @@ MySql：经典安装 MySql 5.6
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>制作网页黑白背景</title>
-    <url>/2025/01/13/2025011315/</url>
-    <content><![CDATA[<p>2020年4月4日为悼念次重大疫情逝去的人们，各大网站整体变为了黑白背景，下面是各大网站的相关截图</p>
-<span id="more"></span>
-<p><strong>百度</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8124fda7dcb9a157d959da7ba6d8c3e9.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/8124fda7dcb9a157d959da7ba6d8c3e9.png">'); </script><br>
-
-<p><strong>CSDN</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/af84e6f2928db749add6450bbcf9fba5.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/af84e6f2928db749add6450bbcf9fba5.png">'); </script><br>
-
-<p><strong>JD</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/9bcb82835c541799c1ea4804ee0089b3.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/9bcb82835c541799c1ea4804ee0089b3.png">'); </script><br>
-
-<p><strong>淘宝</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cc79fd0603e61cf8f3c8a4c3b53b2079.png) -->
-<script> document.write('<img src="'+ imgurl +'1736750609/cc79fd0603e61cf8f3c8a4c3b53b2079.png">'); </script><br>
-
-<p>那么下面我们就来说一下如何使设置网站背景为黑白，其实很简单只需要加入一段CSS样式就可以了，具体代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">html&#123;</span><br><span class="line">-webkit-filter: grayscale(100%);</span><br><span class="line">-moz-filter: grayscale(100%);</span><br><span class="line">-ms-filter: grayscale(100%);</span><br><span class="line">-o-filter: grayscale(100%);</span><br><span class="line">filter: grayscale(100%);</span><br><span class="line">filter: gray; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>docker命令总结（一）</title>
-    <url>/2025/01/13/2025011317/</url>
-    <content><![CDATA[<p>个人简单总结：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>用途</th>
-<th>语法</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
-<td>在docker hub中搜索镜像</td>
-<td>docker search 镜像名称</td>
-<td>docker search nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
-<td>在docker hub中下载镜像到本地</td>
-<td>docker pull 镜像名：tag</td>
-<td>docker pull nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
-<td>推送指定镜像到docker镜像服务器</td>
-<td>docker push 本地镜像：tag</td>
-<td>docker push nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
-<td>查看本地所有docker镜像</td>
-<td>docker images</td>
-<td>docker imaegs</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
-<td>创建容器，并运行</td>
-<td>docker run 参数 镜像名：tag</td>
-<td>docker -d run nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
-<td>查看镜像形成过程</td>
-<td>docker history 本地镜像名：tag</td>
-<td>docker history nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
-<td>启动容器</td>
-<td>docker start 容器ID或容器名称</td>
-<td>docker strat 3d265463456</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
-<td>停止容器</td>
-<td>docker stop 容器ID或容器名称</td>
-<td>docker stop nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
-<td>通过dockerfile制作镜像</td>
-<td>docker build 参数 镜像名：tag dockerfile目录</td>
-<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
-<td>当前shell连接运行容器</td>
-<td>docker attach 容器名</td>
-<td>docker attach nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
-<td>保存当前容器为镜像&#x2F;快照</td>
-<td>docker commit 容器ID或容器名 新镜像名：tag</td>
-<td>docker commit nginx nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
-<td>容器与宿主机互相复制文件</td>
-<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
-<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
-<td>创建容器但不启动容器</td>
-<td>docker create  参数 镜像名称</td>
-<td>docker create nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
-<td>查看容器改动</td>
-<td>docker diff 容器ID或容器名称</td>
-<td>docker diff nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
-<td>在容器中执行命令</td>
-<td>docker exec 参数 容器ID或名称 命令</td>
-<td>docker exec centos echo ‘123’</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
-<td>登入docker镜像源服务器</td>
-<td>docker login 服务器地址</td>
-<td>docker login</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
-<td>退出登录镜像源服务器</td>
-<td>docker logout</td>
-<td>docker logout</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
-<td>输出当前容器的日志信息</td>
-<td>docker logs 容器ID或名称</td>
-<td>docker logs nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
-<td>查看容器的端口映射情况</td>
-<td>docker port 容器ID或名称</td>
-<td>docker port nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
-<td>列出容器列表</td>
-<td>docker ps 参数</td>
-<td>docker ps -a</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
-<td>重新启动容器</td>
-<td>docker restart 容器ID或名称</td>
-<td>docker restart nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
-<td>删除容器</td>
-<td>docker rm 参数 容器ID或名称</td>
-<td>docker rm nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
-<td>删除本地镜像</td>
-<td>docker rmi 镜像名：tag</td>
-<td>docker rmi nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
-<td>保存镜像为tar包</td>
-<td>docker save -o tar文件名 镜像名:tag</td>
-<td>docker save -o nginx.tar nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
-<td>查看容器中进程信息</td>
-<td>docker top 容器ID或名称</td>
-<td>docker top nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
-<td>查看docker软件版本</td>
-<td>docker version</td>
-<td>docker version</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
-<td>查看docker服务器实时时间</td>
-<td>docker events 参数</td>
-<td>docker events –since&#x3D;”1577321423”</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
-<td>从tar文件导入docker为镜像</td>
-<td>docker import 参数 tar文件 镜像名：tag</td>
-<td>docker import nginx.tar nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
-<td>从docker导出镜像为tar文件</td>
-<td>docker export 参数 镜像名：tag tar文件</td>
-<td>docker export nginx:V2 nginx2.tar</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
-<td>查看docker系统信息</td>
-<td>docker info</td>
-<td>docker info</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
-<td>查看容器详细信息</td>
-<td>docker inspect 容器ID或名称</td>
-<td>docker inspect nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
-<td>杀死正在运行的容器</td>
-<td>docker kill 参数 容器ID或名称</td>
-<td>docker kill nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
-<td>从tar文件中加载为docker镜像</td>
-<td>docker load -i tar文件 镜像名：tag</td>
-<td>docker load -i nginx2.tar nginx:V3</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
-<td>暂停容器</td>
-<td>docker pause 容器ID&#x2F;名称</td>
-<td>docker pause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
-<td>镜像打标签</td>
-<td>docker tag 镜像名：tag 新镜像名：tag</td>
-<td>docker tag nginx:V3 mynginx:V4</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
-<td>取消暂停的容器</td>
-<td>docker unpause 容器ID&#x2F;名称</td>
-<td>docker unpause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
-<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
-<td>docker wait CONTAINER</td>
-<td>docker wait CONTAINER</td>
-</tr>
-</tbody></table>
-<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
