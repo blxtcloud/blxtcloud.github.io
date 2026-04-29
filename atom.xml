@@ -6,7 +6,7 @@
   <link href="https://blxtcloud.github.io/atom.xml" rel="self"/>
   
   <link href="https://blxtcloud.github.io/"/>
-  <updated>2025-02-15T08:05:48.941Z</updated>
+  <updated>2026-04-29T03:21:41.410Z</updated>
   <id>https://blxtcloud.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>win11 pin码不可用，无法重置完美解决方案</title>
+    <link href="https://blxtcloud.github.io/2026/04/29/2026042901/"/>
+    <id>https://blxtcloud.github.io/2026/04/29/2026042901/</id>
+    <published>2026-04-29T03:19:35.000Z</published>
+    <updated>2026-04-29T03:21:41.410Z</updated>
+    
+    <content type="html"><![CDATA[<p>你有没有遇到过，电脑按下开机键进入账号登录页面，发现提示你<strong>发现问题，您的PIN码不可用，单击以重置PIN</strong>，但是点击设置PIN码按钮一直再转圈，转一会儿又回到了刚开机的状况。今天我就遇到这样的问题了，在网上找了很多办法尝试都没有如愿解决问题，最后用了下面的方法才解决问题。</p><h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p><img src="https://i-blog.csdnimg.cn/direct/502203e84cf84793ba7d9a7de377f5cd.png#pic_center" alt="在这里插入图片描述"><br>出现这种问题一般是由于PIN文件丢失或者损坏导致的，这种是没有办法直接进行修复的，甚至进入PE也不太好修复。<strong>注意千万不要尝试将启动模式改为诊断模式，不但不能解决问题还会导致系统进入不到登录界面</strong></p><h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><ol><li>需要手机或者其他电脑先登录你电脑的微软的账号，这里主要是为了拿到<strong>BitLocker 恢复密钥</strong>如果你的没有设置BitLocker 恢复密钥，这一个准备可以跳过。<br><strong>登录地址：<a href="https://account.microsoft.com/?ref=MeControl&refd=account.microsoft.com">https://account.microsoft.com/?ref=MeControl&amp;refd=account.microsoft.com</a></strong><br><img src="https://i-blog.csdnimg.cn/direct/9152198db8614e9f8e2fa4d2cc14ed64.jpeg#pic_center" alt="在这里插入图片描述"><br>右边选择<strong>设备</strong><br><img src="https://i-blog.csdnimg.cn/direct/12358545d3f244e38595b59b7ad07855.jpeg#pic_center" alt="在这里插入图片描述"><br>找到你对应的电脑，选择下面的<strong>信息和支持</strong><br><img src="https://i-blog.csdnimg.cn/direct/86238a79fcad4b4c86f791f10bc41aa4.png" alt="在这里插入图片描述"><br>选择<strong>Bitlocker 数据保护</strong>，点击下面的管理恢复密钥，点击之后需要通过各种验证，验证成功后你就可以获取到<strong>BitLocker 恢复密钥</strong>，这个页面不要关等下你要在你无法登录的电脑上输入<strong>BitLocker 恢复密钥</strong>。</li></ol><h3 id="重启进入高级模式"><a href="#重启进入高级模式" class="headerlink" title="重启进入高级模式"></a>重启进入高级模式</h3><p>win11 用户登录页面，可以采用<strong>shift + 重启</strong>方式进入电脑高级模式，<strong>记住一定要按shift键鼠标去点击右下角的重启按钮，不是直接按关机键哦</strong>，然后电脑就会重启，重启后会进入高级模式。<br><img src="https://i-blog.csdnimg.cn/direct/c19d01ef772f438ba74aa6d00ee3926f.png" alt="在这里插入图片描述"><br>点击<strong>疑难解答</strong><br><img src="https://i-blog.csdnimg.cn/direct/486e5cf555644d308f5034720a443aa8.png" alt="在这里插入图片描述"><br>选择<strong>高级选项</strong><br><img src="https://i-blog.csdnimg.cn/direct/3082743a4d244ff6b361644462ce41c7.jpeg#pic_center" alt="在这里插入图片描述"><br>选择<strong>命令提示符</strong>，在这里不出意外就要让你输入<strong>BitLocker 恢复密钥</strong>了，你就按照正常情况输入密钥就可以，输入完成点继续就会出现<strong>命令提示符的黑框</strong>了。</p><h3 id="将辅助功能按钮改为命令提示符按钮"><a href="#将辅助功能按钮改为命令提示符按钮" class="headerlink" title="将辅助功能按钮改为命令提示符按钮"></a>将辅助功能按钮改为命令提示符按钮</h3><p>在命令提示符里面输入下面2条命令</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">move C:\windows\system32\utilman.exe C:\ <span class="comment">#这条命令是把原有的辅助功能程序移动到C盘根目录下</span></span><br><span class="line">copy C:\windows\system32\cmd.exe C:\windows\system32\utilman.exe  <span class="comment">#这条命令是把cmd命令行程序复制成辅助功能程序</span></span><br></pre></td></tr></table></figure><p>执行完这两条命令可以点击命令提示符窗口的<strong>x</strong>号，然后返回高级模式点击继续重启进入用户登录页面。此时登录页面还是提示PIN码不可用的。</p><p>点击右下角<strong>辅助功能</strong>，就是小人那个按钮，就会出现cmd窗口。</p><h3 id="修改注册表"><a href="#修改注册表" class="headerlink" title="修改注册表"></a>修改注册表</h3><p>输入<strong>regedit</strong>，进入注册表<br><img src="https://i-blog.csdnimg.cn/direct/6c8fc69e30c047e0887c2b878fc4ed6a.png" alt="在这里插入图片描述"><br>进入下面注册表页面<br><img src="https://i-blog.csdnimg.cn/direct/90e707ef60f446349b072079e2523d25.png" alt="在这里插入图片描述"><br>注册表路径：<strong>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device</strong><br><img src="https://i-blog.csdnimg.cn/direct/d01080b008fc4bf2baf56778f623f119.png" alt="在这里插入图片描述"><br>里面有个<strong>DevicePasswordLessBuildVersion</strong>，里面值默认是2，修改为0。<br><img src="https://i-blog.csdnimg.cn/direct/829ff8a427bd4075af5983ec1b7437f8.png#pic_center" alt="在这里插入图片描述"><br>保存后重启电脑，重启后输入微软账号的密码，就可以正常登录到操作系统了。</p><h3 id="后续管理"><a href="#后续管理" class="headerlink" title="后续管理"></a>后续管理</h3><p>出现这种情况我建议开启密码和PIN都用，PIN码不能用了还可以有密码可以登录。<br>可以在下面路径里面设置：<strong>设置-账户-你的信息-改为本地账户登录</strong>，这里会让你创建一个本地账户，如果说已经有本地账户了就会直接启用了。<br>再回到账户里面：<strong>设置-账户-登录选项</strong>，把PIN和密码同时设置上密码。<br><img src="https://i-blog.csdnimg.cn/direct/1b650eafbcbb45378fed8e988cf9675b.png" alt="在这里插入图片描述"><br>设置完成之后锁屏，你就会发现会有一个登录时选择PIN和密码的选项。<br><img src="https://i-blog.csdnimg.cn/direct/6b3e5637402745c584475bad8cea8f86.png#pic_center" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <summary type="html">本篇文章描述了win11出现PIN码不可用，无法重置的解决方法</summary>
+    
+    
+    
+    <category term="小记" scheme="https://blxtcloud.github.io/categories/%E5%B0%8F%E8%AE%B0/"/>
+    
+    
+    <category term="技术笔记" scheme="https://blxtcloud.github.io/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="windows" scheme="https://blxtcloud.github.io/tags/windows/"/>
+    
+    <category term="故障处理" scheme="https://blxtcloud.github.io/tags/%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx location匹配及rewrite规则</title>
