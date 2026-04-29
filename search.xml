@@ -642,6 +642,483 @@
       </tags>
   </entry>
   <entry>
+    <title>记一次云主机如何挂载对象存储</title>
+    <url>/2024/12/26/2024122603/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>随着云计算的发展，公有云成为中小型企业建设业务系统的首选，而对象存储则是存储里面必不可少的存储产品，对象存储不仅可以提供海量、高可靠、安全的服务，而且价格相对普通存储来说会便宜很多，并且不受带宽的限制，仅限于本地下载和上传的网速，对象存储应用场景更适用于静态网站托管、多媒体存储、数据备份等等应用场景；对象存储使用相对来说是比较简单的我这里就不重点说了；</p>
+<span id="more"></span>
+<p>为什么会有云主机挂载对象存储的需求呢？这个还要来源于业务系统的要求，正常来说对象存储基本上都提供S3的一个接口提供上传下载，更是各大云厂商都提供S3的工具，华为云的OBS Browser+以及移动云的S3 Browser等等，不过这些工具无法实现自动化的操作，你想自动化操作有两种方式一种是直接程序调用对象存储的S3接口，另一个方法就说直接将对象存储挂载为本地文件夹或映射为磁盘的方式进行操作，接下来我要说的就是如何将对象存储挂载到云主机，这次采用的是RCLONE这个管理工具，下面使用linux系统进行演示，windows其实和linux操作步骤几乎一致，不过参数可能多少有点不一样，后面也把windows的简单教程放到了最后。</p>
+<hr>
+<h1 id="一、RCLONE是什么？"><a href="#一、RCLONE是什么？" class="headerlink" title="一、RCLONE是什么？"></a>一、RCLONE是什么？</h1><p>Rclone是一款免费的云存储管理工具，能够像使用本地文件一样便捷的使用云存储，被誉为“云存储界的瑞士军刀”。<br>您可以使用Rclone工具，对对象存储进行数据导入、数据同步、迁移备份或者挂载等操作。<br>通过使用Rclone，您可以轻松的完成以下工作：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>概述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据导入</td>
+<td>支持将存放在其它数据源上的数据导入到对象存储</td>
+</tr>
+<tr>
+<td>数据同步</td>
+<td>支持在对象存储不同的桶之间，或者对象存储和其它数据源之间进行数据同步</td>
+</tr>
+<tr>
+<td>数据迁移备份</td>
+<td>支持在对象存储不同的桶之间进行数据迁移、备份操作</td>
+</tr>
+<tr>
+<td>挂载到本地磁盘</td>
+<td>支持将对象存储挂载为本地磁盘，像操作本地文件一样，对云存储的数据进行操作</td>
+</tr>
+</tbody></table>
+<h1 id="二、操作步骤"><a href="#二、操作步骤" class="headerlink" title="二、操作步骤"></a>二、操作步骤</h1><h2 id="1-下载和安装"><a href="#1-下载和安装" class="headerlink" title="1.下载和安装"></a>1.下载和安装</h2><p>下载链接：<a href="https://download.csdn.net/download/KH_FC/85448323">https://download.csdn.net/download/KH_FC/85448323</a></p>
+<h2 id="2-配置对象存储数据源"><a href="#2-配置对象存储数据源" class="headerlink" title="2.配置对象存储数据源"></a>2.配置对象存储数据源</h2><pre><code>windows打开CMD程序执行窗口，输入rclone config命令执行
+linux系统直接输入rclone config命令执行
+</code></pre>
+<p>执行后屏幕将显示如下的配置向导菜单，如果已有配置编辑输入“e”，如无配置新建配置输入“n”即可；我这里新建配置</p>
+<pre><code>No remotes found - make a new one
+n) New remote
+s) Set configuration password
+q) Quit config
+n/s/q&gt; n
+</code></pre>
+<p>输入自定义的连接配置的别名后回车，此处以”test“为例：</p>
+<pre><code>name&gt; EOS
+</code></pre>
+<p>选择存储类型，输入”s3“后回车：</p>
+<pre><code>Option Storage.
+Type of storage to configure.
+Choose a number from below, or type in your own value.
+ 1 / 1Fichier
+   \ (fichier)
+ 2 / Akamai NetStorage
+   \ (netstorage)
+ 3 / Alias for an existing remote
+   \ (alias)
+ 4 / Amazon Drive
+   \ (amazon cloud drive)
+ 5 / Amazon S3 Compliant Storage Providers including AWS, Alibaba, Ceph, ChinaMobile, Digital Ocean, Dreamhost, IBM COS, Lyve Cloud, Minio, RackCorp, SeaweedFS, and Tencent COS
+   \ (s3)
+ 6 / Backblaze B2
+   \ (b2)
+ 7 / Better checksums for other remotes
+   \ (hasher)
+ 8 / Box
+   \ (box)
+ 9 / Cache a remote
+   \ (cache)
+10 / Citrix Sharefile
+   \ (sharefile)
+11 / Compress a remote
+   \ (compress)
+12 / Dropbox
+   \ (dropbox)
+13 / Encrypt/Decrypt a remote
+   \ (crypt)
+14 / Enterprise File Fabric
+   \ (filefabric)
+15 / FTP Connection
+   \ (ftp)
+16 / Google Cloud Storage (this is not Google Drive)
+   \ (google cloud storage)
+17 / Google Drive
+   \ (drive)
+18 / Google Photos
+   \ (google photos)
+19 / Hadoop distributed file system
+   \ (hdfs)
+20 / Hubic
+   \ (hubic)
+21 / In memory object storage system.
+   \ (memory)
+22 / Jottacloud
+   \ (jottacloud)
+23 / Koofr, Digi Storage and other Koofr-compatible storage providers
+   \ (koofr)
+24 / Local Disk
+   \ (local)
+25 / Mail.ru Cloud
+   \ (mailru)
+26 / Mega
+   \ (mega)
+27 / Microsoft Azure Blob Storage
+   \ (azureblob)
+28 / Microsoft OneDrive
+   \ (onedrive)
+29 / OpenDrive
+   \ (opendrive)
+30 / OpenStack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
+   \ (swift)
+31 / Pcloud
+   \ (pcloud)
+32 / Put.io
+   \ (putio)
+33 / QingCloud Object Storage
+   \ (qingstor)
+34 / SSH/SFTP Connection
+   \ (sftp)
+35 / Sia Decentralized Cloud
+   \ (sia)
+36 / Storj Decentralized Cloud Storage
+   \ (storj)
+37 / Sugarsync
+   \ (sugarsync)
+38 / Transparently chunk/split large files
+   \ (chunker)
+39 / Union merges the contents of several upstream fs
+   \ (union)
+40 / Uptobox
+   \ (uptobox)
+41 / Webdav
+   \ (webdav)
+42 / Yandex Disk
+   \ (yandex)
+43 / Zoho
+   \ (zoho)
+44 / http Connection
+   \ (http)
+45 / premiumize.me
+   \ (premiumizeme)
+46 / seafile
+   \ (seafile)
+Storage&gt; s3
+</code></pre>
+<p>选择服务提供商，这个选择自己的对象存储云厂商即可，我这里采用的移动云的对象存储，所以选用”ChinaMobile“即可，输入”ChinaMobile“后回车：</p>
+<pre><code>Option provider.
+Choose your S3 provider.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+ 1 / Amazon Web Services (AWS) S3
+   \ (AWS)
+ 2 / Alibaba Cloud Object Storage System (OSS) formerly Aliyun
+   \ (Alibaba)
+ 3 / Ceph Object Storage
+   \ (Ceph)
+ 4 / China Mobile Ecloud Elastic Object Storage (EOS)
+   \ (ChinaMobile)
+ 5 / Digital Ocean Spaces
+   \ (DigitalOcean)
+ 6 / Dreamhost DreamObjects
+   \ (Dreamhost)
+ 7 / IBM COS S3
+   \ (IBMCOS)
+ 8 / Seagate Lyve Cloud
+   \ (LyveCloud)
+ 9 / Minio Object Storage
+   \ (Minio)
+10 / Netease Object Storage (NOS)
+   \ (Netease)
+11 / RackCorp Object Storage
+   \ (RackCorp)
+12 / Scaleway Object Storage
+   \ (Scaleway)
+13 / SeaweedFS S3
+   \ (SeaweedFS)
+14 / StackPath Object Storage
+   \ (StackPath)
+15 / Storj (S3 Compatible Gateway)
+   \ (Storj)
+16 / Tencent Cloud Object Storage (COS)
+   \ (TencentCOS)
+17 / Wasabi Object Storage
+   \ (Wasabi)
+18 / Any other S3 compatible provider
+   \ (Other)
+provider&gt; ChinaMobile
+</code></pre>
+<p>选择是否开启验证，输入”false“后回车：</p>
+<pre><code>Option env_auth.
+Get AWS credentials from runtime (environment variables or EC2/ECS meta data if no env vars).
+Only applies if access_key_id and secret_access_key is blank.
+Choose a number from below, or type in your own boolean value (true or false).
+Press Enter for the default (false).
+ 1 / Enter AWS credentials in the next step.
+   \ (false)
+ 2 / Get AWS credentials from the environment (env vars or IAM).
+   \ (true)
+env_auth&gt; false
+</code></pre>
+<p>输入用户API认证信息中的AccessID，不同云厂商叫法不同华为云上面是使用AK&#x2F;SK，其实就是名字不同而已其实都是一样：</p>
+<pre><code>Option access_key_id.
+AWS Access Key ID.
+Leave blank for anonymous access or runtime credentials.	
+Enter a value. Press Enter to leave empty.
+access_key_id&gt; AccessID
+</code></pre>
+<p>输入用户API认证信息中的AccessSecretKey，这里就是指的AK&#x2F;SK，这个是成对出现的：</p>
+<pre><code>Option secret_access_key.
+AWS Secret Access Key (password).
+Leave blank for anonymous access or runtime credentials.
+Enter a value. Press Enter to leave empty.
+secret_access_key&gt; AccessSecretKey
+</code></pre>
+<p>选择对象存储服务接口地址，这个接口地址是指的云厂商所提供的对象存储接口地址，这个云厂商一般按照资源池来定的，输入对应的数字后回车即可，我这里是移动云的，选择不同的就会出现不同的地址：</p>
+<pre><code>Option endpoint.
+Endpoint for China Mobile Ecloud Elastic Object Storage (EOS) API.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+   / The default endpoint - a good choice if you are unsure.
+ 1 | East China (Suzhou)
+   \ (eos-wuxi-1.cmecloud.cn)
+ 2 / East China (Jinan)
+   \ (eos-jinan-1.cmecloud.cn)
+ 3 / East China (Hangzhou)
+   \ (eos-ningbo-1.cmecloud.cn)
+ 4 / East China (Shanghai-1)
+   \ (eos-shanghai-1.cmecloud.cn)
+ 5 / Central China (Zhengzhou)
+   \ (eos-zhengzhou-1.cmecloud.cn)
+ 6 / Central China (Changsha-1)
+   \ (eos-hunan-1.cmecloud.cn)
+ 7 / Central China (Changsha-2)
+   \ (eos-zhuzhou-1.cmecloud.cn)
+ 8 / South China (Guangzhou-2)
+   \ (eos-guangzhou-1.cmecloud.cn)
+ 9 / South China (Guangzhou-3)
+   \ (eos-dongguan-1.cmecloud.cn)
+10 / North China (Beijing-1)
+   \ (eos-beijing-1.cmecloud.cn)
+11 / North China (Beijing-2)
+   \ (eos-beijing-2.cmecloud.cn)
+12 / North China (Beijing-3)
+   \ (eos-beijing-4.cmecloud.cn)
+13 / North China (Huhehaote)
+   \ (eos-huhehaote-1.cmecloud.cn)
+14 / Southwest China (Chengdu)
+   \ (eos-chengdu-1.cmecloud.cn)
+15 / Southwest China (Chongqing)
+   \ (eos-chongqing-1.cmecloud.cn)
+16 / Southwest China (Guiyang)
+   \ (eos-guiyang-1.cmecloud.cn)
+17 / Nouthwest China (Xian)
+   \ (eos-xian-1.cmecloud.cn)
+18 / Yunnan China (Kunming)
+   \ (eos-yunnan.cmecloud.cn)
+19 / Yunnan China (Kunming-2)
+   \ (eos-yunnan-2.cmecloud.cn)
+20 / Tianjin China (Tianjin)
+   \ (eos-tianjin-1.cmecloud.cn)
+21 / Jilin China (Changchun)
+   \ (eos-jilin-1.cmecloud.cn)
+22 / Hubei China (Xiangyan)
+   \ (eos-hubei-1.cmecloud.cn)
+23 / Jiangxi China (Nanchang)
+   \ (eos-jiangxi-1.cmecloud.cn)
+24 / Gansu China (Lanzhou)
+   \ (eos-gansu-1.cmecloud.cn)
+25 / Shanxi China (Taiyuan)
+   \ (eos-shanxi-1.cmecloud.cn)
+26 / Liaoning China (Shenyang)
+   \ (eos-liaoning-1.cmecloud.cn)
+27 / Hebei China (Shijiazhuang)
+   \ (eos-hebei-1.cmecloud.cn)
+28 / Fujian China (Xiamen)
+   \ (eos-fujian-1.cmecloud.cn)
+29 / Guangxi China (Nanning)
+   \ (eos-guangxi-1.cmecloud.cn)
+30 / Anhui China (Huainan)
+   \ (eos-anhui-1.cmecloud.cn)
+endpoint&gt; 1
+</code></pre>
+<p>选择”location_constraint“，需要与之前的对象存储服务接口地址保持一致，一般这里让你选择你对象存储所存在的资源池，输入对应的数字后回车：</p>
+<pre><code>Option location_constraint.
+Location constraint - must match endpoint.
+Used when creating buckets only.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+ 1 / East China (Suzhou)
+   \ (wuxi1)
+ 2 / East China (Jinan)
+   \ (jinan1)
+ 3 / East China (Hangzhou)
+   \ (ningbo1)
+ 4 / East China (Shanghai-1)
+   \ (shanghai1)
+ 5 / Central China (Zhengzhou)
+   \ (zhengzhou1)
+ 6 / Central China (Changsha-1)
+   \ (hunan1)
+ 7 / Central China (Changsha-2)
+   \ (zhuzhou1)
+ 8 / South China (Guangzhou-2)
+   \ (guangzhou1)
+ 9 / South China (Guangzhou-3)
+   \ (dongguan1)
+10 / North China (Beijing-1)
+   \ (beijing1)
+11 / North China (Beijing-2)
+   \ (beijing2)
+12 / North China (Beijing-3)
+   \ (beijing4)
+13 / North China (Huhehaote)
+   \ (huhehaote1)
+14 / Southwest China (Chengdu)
+   \ (chengdu1)
+15 / Southwest China (Chongqing)
+   \ (chongqing1)
+16 / Southwest China (Guiyang)
+   \ (guiyang1)
+17 / Nouthwest China (Xian)
+   \ (xian1)
+18 / Yunnan China (Kunming)
+   \ (yunnan)
+19 / Yunnan China (Kunming-2)
+   \ (yunnan2)
+20 / Tianjin China (Tianjin)
+   \ (tianjin1)
+21 / Jilin China (Changchun)
+   \ (jilin1)
+22 / Hubei China (Xiangyan)
+   \ (hubei1)
+23 / Jiangxi China (Nanchang)
+   \ (jiangxi1)
+24 / Gansu China (Lanzhou)
+   \ (gansu1)
+25 / Shanxi China (Taiyuan)
+   \ (shanxi1)
+26 / Liaoning China (Shenyang)
+   \ (liaoning1)
+27 / Hebei China (Shijiazhuang)
+   \ (hebei1)
+28 / Fujian China (Xiamen)
+   \ (fujian1)
+29 / Guangxi China (Nanning)
+   \ (guangxi1)
+30 / Anhui China (Huainan)
+   \ (anhui1)
+location_constraint&gt; 1	
+</code></pre>
+<p>输入默认权限，一般设置成公共可读写即可：</p>
+<pre><code>Option acl.
+Canned ACL used when creating buckets and storing or copying objects.
+This ACL is used for creating objects and if bucket_acl isn&#39;t set, for creating buckets too.
+For more info visit https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+Note that this ACL is applied when server-side copying objects as S3
+doesn&#39;t copy the ACL from the source but rather writes a fresh one.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+   / Owner gets FULL_CONTROL.
+ 1 | No one else has access rights (default).
+   \ (private)
+   / Owner gets FULL_CONTROL.
+ 2 | The AllUsers group gets READ access.
+   \ (public-read)
+   / Owner gets FULL_CONTROL.
+ 3 | The AllUsers group gets READ and WRITE access.
+   | Granting this on a bucket is generally not recommended.
+   \ (public-read-write)
+   / Owner gets FULL_CONTROL.
+ 4 | The AuthenticatedUsers group gets READ access.
+   \ (authenticated-read)
+acl&gt; public-read-write
+</code></pre>
+<p>选择服务端加密方式，不使用该功能时直接回车：</p>
+<pre><code>Option server_side_encryption.
+The server-side encryption algorithm used when storing this object in S3.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+ 1 / None
+   \ ()
+ 2 / AES256
+   \ (AES256)
+server_side_encryption&gt;
+</code></pre>
+<p>选择上传对象的默认存储类型，不选择时默认使用桶的存储类型：</p>
+<pre><code>Option storage_class.
+The storage class to use when storing new objects in ChinaMobile.
+Choose a number from below, or type in your own value.
+Press Enter to leave empty.
+ 1 / Default
+   \ ()
+ 2 / Standard storage class
+   \ (STANDARD)
+ 3 / Archive storage mode
+   \ (GLACIER)
+ 4 / Infrequent access storage mode
+   \ (STANDARD_IA)
+storage_class&gt;
+</code></pre>
+<p>选择是否设置进阶配置，这里不设置，直接回车：</p>
+<pre><code>Edit advanced config?
+y) Yes
+n) No (default)
+y/n&gt;
+</code></pre>
+<p>确认刚才配置的连接信息，确认无误后输入”y“后回车，保存配置：</p>
+<pre><code>--------------------
+[EOS]
+type = s3
+provider = ChinaMobile
+access_key_id = AccessID
+secret_access_key = AccessSecretKey
+endpoint = eos-wuxi-1.cmecloud.cn
+location_constraint = wuxi1
+acl = private
+--------------------
+y) Yes this is OK (default)
+e) Edit this remote
+d) Delete this remote
+y/e/d&gt; y
+</code></pre>
+<p>此时回到了配置向导的初始菜单，刚才的配置会显示出来，可继续执行创建新的配置（输入“n”）、编辑已有的配置（输入“e”）、删除配置（输入“d”）等操作，或者完成配置向导退出（输入“q”）：</p>
+<pre><code>Current remotes:
+
+Name                 Type
+====                 ====
+EOS                  s3
+
+e) Edit existing remote
+n) New remote
+d) Delete remote
+r) Rename remote
+c) Copy remote
+s) Set configuration password
+q) Quit config
+e/n/d/r/c/s/q&gt;		
+</code></pre>
+<p>到这里配置文件配置已经完成了。</p>
+<hr>
+<h2 id="3-挂载到操作系统"><a href="#3-挂载到操作系统" class="headerlink" title="3.挂载到操作系统"></a>3.挂载到操作系统</h2><h3 id="3-1-挂载到windows操作系统"><a href="#3-1-挂载到windows操作系统" class="headerlink" title="3.1.挂载到windows操作系统"></a>3.1.挂载到windows操作系统</h3><p>安装依赖软件：WINFSP<br>下载地址：<a href="https://ecloud.10086.cn/op-help-center/doc/article/resource/file/ced6e21813cf60f2828cfc1eb0f5993325f4da56564b5afd1fdfa244830573db">https://ecloud.10086.cn/op-help-center/doc/article/resource/file/ced6e21813cf60f2828cfc1eb0f5993325f4da56564b5afd1fdfa244830573db</a><br>下载好后直接双运行即可，安装也是按照默认的选项走就可以的</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/89e3c845dd1a98ee3537178f57441ae6.png) -->
+<!-- <img src="89e3c845dd1a98ee3537178f57441ae6.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386513/89e3c845dd1a98ee3537178f57441ae6.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8d1180285add33eb194a216ebcc24322.png) -->
+<!-- <img src="8d1180285add33eb194a216ebcc24322.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386513/8d1180285add33eb194a216ebcc24322.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0cf3e3b1fe1b78afd8d50f15f56dd29c.png) -->
+<!-- <img src="0cf3e3b1fe1b78afd8d50f15f56dd29c.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386513/0cf3e3b1fe1b78afd8d50f15f56dd29c.png">'); </script>>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6a8b7909a0d424d6768909e298f55367.png) -->
+<!-- <img src="6a8b7909a0d424d6768909e298f55367.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386513/6a8b7909a0d424d6768909e298f55367.png">'); </script>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/41e5982e6bfebb75988936b73114a387.png) -->
+<!-- <img src="41e5982e6bfebb75988936b73114a387.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386513/41e5982e6bfebb75988936b73114a387.png">'); </script>
+<p>一步步安装完成即可；<br>下面就是挂载对象存储了，挂载也比较简单一条命令搞定</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rclone mount 配置文件名称:桶名称 挂载路径  --cache-dir 缓存路径 --vfs-cache-mode writes</span><br></pre></td></tr></table></figure>
+<p>输入敲回车即可，你会发现对象存储已经挂载到了你想要的挂载目录上面了，这样就可以上传下载文件了</p>
+<h3 id="3-2-挂载到linux操作系统"><a href="#3-2-挂载到linux操作系统" class="headerlink" title="3.2.挂载到linux操作系统"></a>3.2.挂载到linux操作系统</h3><p>安装依赖软件：FUSE<br>centos安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install fuse</span><br></pre></td></tr></table></figure>
+<p>ubuntu安装:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt -y insyall fuse</span><br></pre></td></tr></table></figure>
+<p>等待安装完成即可，下面就是挂载对象存储了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建挂载路径</span></span><br><span class="line"><span class="built_in">mkdir</span> -p 挂载目录</span><br><span class="line">rclone mount 配置文件名称:桶名称 挂载路径 --daemon --allow-other  --cache-dir 缓存路径 --vfs-cache-mode writes</span><br></pre></td></tr></table></figure>
+<p>执行即可</p>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><pre><code>1. 需要注意缓存可能会和你上传文件的大小一样，默认缓存保存时间为1小时，如果需要设置缓存时间你可以加”--vfs-cache-max-age“参数设置缓存时间
+2. 如果需要删除桶中的对象，建议从系统中删除，如果在对象存储控制台删除的话，会出现所挂载的目录中还是有这个文件的问题
+</code></pre>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows之应用安装程序 —— winget</title>
     <url>/2024/12/26/2024122602/</url>
     <content><![CDATA[<p>大家都用过Linux中的应用程序安装工具，如yum、apt、rpm等工具进行安装自己想要的一些工具或则软件之类的，当然Linux操作系统还是很强大的有很多类似的命令来安装我们所需要的程序，但是windwos有没有类似于windows这样的应用安装程序呢？想必大家看标题就能看的出来肯定是有的，那就是微软提供的<strong>winget</strong>官网提供的名称叫<strong>应用安装程序</strong>又叫<strong>windows程序包管理器</strong>，今天我们就来说一说这个windows版的命令程序安装工具，这个工具对于大家来说还是很合谐的，使用也是非常简单和Linux中的安装程序的工具很类似，只不过windows操作系统更注重于图形化操作，所以很少有人去注意或者关注命令行中的一些操作，这个也和windows操作系统闭源有很大一部分关系的，好了废话不多说了我们开始我们的<strong>winget</strong>之旅吧!</p>
@@ -1433,483 +1910,6 @@
       <tags>
         <tag>技术笔记</tag>
         <tag>windwos</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次云主机如何挂载对象存储</title>
-    <url>/2024/12/26/2024122603/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>随着云计算的发展，公有云成为中小型企业建设业务系统的首选，而对象存储则是存储里面必不可少的存储产品，对象存储不仅可以提供海量、高可靠、安全的服务，而且价格相对普通存储来说会便宜很多，并且不受带宽的限制，仅限于本地下载和上传的网速，对象存储应用场景更适用于静态网站托管、多媒体存储、数据备份等等应用场景；对象存储使用相对来说是比较简单的我这里就不重点说了；</p>
-<span id="more"></span>
-<p>为什么会有云主机挂载对象存储的需求呢？这个还要来源于业务系统的要求，正常来说对象存储基本上都提供S3的一个接口提供上传下载，更是各大云厂商都提供S3的工具，华为云的OBS Browser+以及移动云的S3 Browser等等，不过这些工具无法实现自动化的操作，你想自动化操作有两种方式一种是直接程序调用对象存储的S3接口，另一个方法就说直接将对象存储挂载为本地文件夹或映射为磁盘的方式进行操作，接下来我要说的就是如何将对象存储挂载到云主机，这次采用的是RCLONE这个管理工具，下面使用linux系统进行演示，windows其实和linux操作步骤几乎一致，不过参数可能多少有点不一样，后面也把windows的简单教程放到了最后。</p>
-<hr>
-<h1 id="一、RCLONE是什么？"><a href="#一、RCLONE是什么？" class="headerlink" title="一、RCLONE是什么？"></a>一、RCLONE是什么？</h1><p>Rclone是一款免费的云存储管理工具，能够像使用本地文件一样便捷的使用云存储，被誉为“云存储界的瑞士军刀”。<br>您可以使用Rclone工具，对对象存储进行数据导入、数据同步、迁移备份或者挂载等操作。<br>通过使用Rclone，您可以轻松的完成以下工作：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>概述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据导入</td>
-<td>支持将存放在其它数据源上的数据导入到对象存储</td>
-</tr>
-<tr>
-<td>数据同步</td>
-<td>支持在对象存储不同的桶之间，或者对象存储和其它数据源之间进行数据同步</td>
-</tr>
-<tr>
-<td>数据迁移备份</td>
-<td>支持在对象存储不同的桶之间进行数据迁移、备份操作</td>
-</tr>
-<tr>
-<td>挂载到本地磁盘</td>
-<td>支持将对象存储挂载为本地磁盘，像操作本地文件一样，对云存储的数据进行操作</td>
-</tr>
-</tbody></table>
-<h1 id="二、操作步骤"><a href="#二、操作步骤" class="headerlink" title="二、操作步骤"></a>二、操作步骤</h1><h2 id="1-下载和安装"><a href="#1-下载和安装" class="headerlink" title="1.下载和安装"></a>1.下载和安装</h2><p>下载链接：<a href="https://download.csdn.net/download/KH_FC/85448323">https://download.csdn.net/download/KH_FC/85448323</a></p>
-<h2 id="2-配置对象存储数据源"><a href="#2-配置对象存储数据源" class="headerlink" title="2.配置对象存储数据源"></a>2.配置对象存储数据源</h2><pre><code>windows打开CMD程序执行窗口，输入rclone config命令执行
-linux系统直接输入rclone config命令执行
-</code></pre>
-<p>执行后屏幕将显示如下的配置向导菜单，如果已有配置编辑输入“e”，如无配置新建配置输入“n”即可；我这里新建配置</p>
-<pre><code>No remotes found - make a new one
-n) New remote
-s) Set configuration password
-q) Quit config
-n/s/q&gt; n
-</code></pre>
-<p>输入自定义的连接配置的别名后回车，此处以”test“为例：</p>
-<pre><code>name&gt; EOS
-</code></pre>
-<p>选择存储类型，输入”s3“后回车：</p>
-<pre><code>Option Storage.
-Type of storage to configure.
-Choose a number from below, or type in your own value.
- 1 / 1Fichier
-   \ (fichier)
- 2 / Akamai NetStorage
-   \ (netstorage)
- 3 / Alias for an existing remote
-   \ (alias)
- 4 / Amazon Drive
-   \ (amazon cloud drive)
- 5 / Amazon S3 Compliant Storage Providers including AWS, Alibaba, Ceph, ChinaMobile, Digital Ocean, Dreamhost, IBM COS, Lyve Cloud, Minio, RackCorp, SeaweedFS, and Tencent COS
-   \ (s3)
- 6 / Backblaze B2
-   \ (b2)
- 7 / Better checksums for other remotes
-   \ (hasher)
- 8 / Box
-   \ (box)
- 9 / Cache a remote
-   \ (cache)
-10 / Citrix Sharefile
-   \ (sharefile)
-11 / Compress a remote
-   \ (compress)
-12 / Dropbox
-   \ (dropbox)
-13 / Encrypt/Decrypt a remote
-   \ (crypt)
-14 / Enterprise File Fabric
-   \ (filefabric)
-15 / FTP Connection
-   \ (ftp)
-16 / Google Cloud Storage (this is not Google Drive)
-   \ (google cloud storage)
-17 / Google Drive
-   \ (drive)
-18 / Google Photos
-   \ (google photos)
-19 / Hadoop distributed file system
-   \ (hdfs)
-20 / Hubic
-   \ (hubic)
-21 / In memory object storage system.
-   \ (memory)
-22 / Jottacloud
-   \ (jottacloud)
-23 / Koofr, Digi Storage and other Koofr-compatible storage providers
-   \ (koofr)
-24 / Local Disk
-   \ (local)
-25 / Mail.ru Cloud
-   \ (mailru)
-26 / Mega
-   \ (mega)
-27 / Microsoft Azure Blob Storage
-   \ (azureblob)
-28 / Microsoft OneDrive
-   \ (onedrive)
-29 / OpenDrive
-   \ (opendrive)
-30 / OpenStack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
-   \ (swift)
-31 / Pcloud
-   \ (pcloud)
-32 / Put.io
-   \ (putio)
-33 / QingCloud Object Storage
-   \ (qingstor)
-34 / SSH/SFTP Connection
-   \ (sftp)
-35 / Sia Decentralized Cloud
-   \ (sia)
-36 / Storj Decentralized Cloud Storage
-   \ (storj)
-37 / Sugarsync
-   \ (sugarsync)
-38 / Transparently chunk/split large files
-   \ (chunker)
-39 / Union merges the contents of several upstream fs
-   \ (union)
-40 / Uptobox
-   \ (uptobox)
-41 / Webdav
-   \ (webdav)
-42 / Yandex Disk
-   \ (yandex)
-43 / Zoho
-   \ (zoho)
-44 / http Connection
-   \ (http)
-45 / premiumize.me
-   \ (premiumizeme)
-46 / seafile
-   \ (seafile)
-Storage&gt; s3
-</code></pre>
-<p>选择服务提供商，这个选择自己的对象存储云厂商即可，我这里采用的移动云的对象存储，所以选用”ChinaMobile“即可，输入”ChinaMobile“后回车：</p>
-<pre><code>Option provider.
-Choose your S3 provider.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
- 1 / Amazon Web Services (AWS) S3
-   \ (AWS)
- 2 / Alibaba Cloud Object Storage System (OSS) formerly Aliyun
-   \ (Alibaba)
- 3 / Ceph Object Storage
-   \ (Ceph)
- 4 / China Mobile Ecloud Elastic Object Storage (EOS)
-   \ (ChinaMobile)
- 5 / Digital Ocean Spaces
-   \ (DigitalOcean)
- 6 / Dreamhost DreamObjects
-   \ (Dreamhost)
- 7 / IBM COS S3
-   \ (IBMCOS)
- 8 / Seagate Lyve Cloud
-   \ (LyveCloud)
- 9 / Minio Object Storage
-   \ (Minio)
-10 / Netease Object Storage (NOS)
-   \ (Netease)
-11 / RackCorp Object Storage
-   \ (RackCorp)
-12 / Scaleway Object Storage
-   \ (Scaleway)
-13 / SeaweedFS S3
-   \ (SeaweedFS)
-14 / StackPath Object Storage
-   \ (StackPath)
-15 / Storj (S3 Compatible Gateway)
-   \ (Storj)
-16 / Tencent Cloud Object Storage (COS)
-   \ (TencentCOS)
-17 / Wasabi Object Storage
-   \ (Wasabi)
-18 / Any other S3 compatible provider
-   \ (Other)
-provider&gt; ChinaMobile
-</code></pre>
-<p>选择是否开启验证，输入”false“后回车：</p>
-<pre><code>Option env_auth.
-Get AWS credentials from runtime (environment variables or EC2/ECS meta data if no env vars).
-Only applies if access_key_id and secret_access_key is blank.
-Choose a number from below, or type in your own boolean value (true or false).
-Press Enter for the default (false).
- 1 / Enter AWS credentials in the next step.
-   \ (false)
- 2 / Get AWS credentials from the environment (env vars or IAM).
-   \ (true)
-env_auth&gt; false
-</code></pre>
-<p>输入用户API认证信息中的AccessID，不同云厂商叫法不同华为云上面是使用AK&#x2F;SK，其实就是名字不同而已其实都是一样：</p>
-<pre><code>Option access_key_id.
-AWS Access Key ID.
-Leave blank for anonymous access or runtime credentials.	
-Enter a value. Press Enter to leave empty.
-access_key_id&gt; AccessID
-</code></pre>
-<p>输入用户API认证信息中的AccessSecretKey，这里就是指的AK&#x2F;SK，这个是成对出现的：</p>
-<pre><code>Option secret_access_key.
-AWS Secret Access Key (password).
-Leave blank for anonymous access or runtime credentials.
-Enter a value. Press Enter to leave empty.
-secret_access_key&gt; AccessSecretKey
-</code></pre>
-<p>选择对象存储服务接口地址，这个接口地址是指的云厂商所提供的对象存储接口地址，这个云厂商一般按照资源池来定的，输入对应的数字后回车即可，我这里是移动云的，选择不同的就会出现不同的地址：</p>
-<pre><code>Option endpoint.
-Endpoint for China Mobile Ecloud Elastic Object Storage (EOS) API.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
-   / The default endpoint - a good choice if you are unsure.
- 1 | East China (Suzhou)
-   \ (eos-wuxi-1.cmecloud.cn)
- 2 / East China (Jinan)
-   \ (eos-jinan-1.cmecloud.cn)
- 3 / East China (Hangzhou)
-   \ (eos-ningbo-1.cmecloud.cn)
- 4 / East China (Shanghai-1)
-   \ (eos-shanghai-1.cmecloud.cn)
- 5 / Central China (Zhengzhou)
-   \ (eos-zhengzhou-1.cmecloud.cn)
- 6 / Central China (Changsha-1)
-   \ (eos-hunan-1.cmecloud.cn)
- 7 / Central China (Changsha-2)
-   \ (eos-zhuzhou-1.cmecloud.cn)
- 8 / South China (Guangzhou-2)
-   \ (eos-guangzhou-1.cmecloud.cn)
- 9 / South China (Guangzhou-3)
-   \ (eos-dongguan-1.cmecloud.cn)
-10 / North China (Beijing-1)
-   \ (eos-beijing-1.cmecloud.cn)
-11 / North China (Beijing-2)
-   \ (eos-beijing-2.cmecloud.cn)
-12 / North China (Beijing-3)
-   \ (eos-beijing-4.cmecloud.cn)
-13 / North China (Huhehaote)
-   \ (eos-huhehaote-1.cmecloud.cn)
-14 / Southwest China (Chengdu)
-   \ (eos-chengdu-1.cmecloud.cn)
-15 / Southwest China (Chongqing)
-   \ (eos-chongqing-1.cmecloud.cn)
-16 / Southwest China (Guiyang)
-   \ (eos-guiyang-1.cmecloud.cn)
-17 / Nouthwest China (Xian)
-   \ (eos-xian-1.cmecloud.cn)
-18 / Yunnan China (Kunming)
-   \ (eos-yunnan.cmecloud.cn)
-19 / Yunnan China (Kunming-2)
-   \ (eos-yunnan-2.cmecloud.cn)
-20 / Tianjin China (Tianjin)
-   \ (eos-tianjin-1.cmecloud.cn)
-21 / Jilin China (Changchun)
-   \ (eos-jilin-1.cmecloud.cn)
-22 / Hubei China (Xiangyan)
-   \ (eos-hubei-1.cmecloud.cn)
-23 / Jiangxi China (Nanchang)
-   \ (eos-jiangxi-1.cmecloud.cn)
-24 / Gansu China (Lanzhou)
-   \ (eos-gansu-1.cmecloud.cn)
-25 / Shanxi China (Taiyuan)
-   \ (eos-shanxi-1.cmecloud.cn)
-26 / Liaoning China (Shenyang)
-   \ (eos-liaoning-1.cmecloud.cn)
-27 / Hebei China (Shijiazhuang)
-   \ (eos-hebei-1.cmecloud.cn)
-28 / Fujian China (Xiamen)
-   \ (eos-fujian-1.cmecloud.cn)
-29 / Guangxi China (Nanning)
-   \ (eos-guangxi-1.cmecloud.cn)
-30 / Anhui China (Huainan)
-   \ (eos-anhui-1.cmecloud.cn)
-endpoint&gt; 1
-</code></pre>
-<p>选择”location_constraint“，需要与之前的对象存储服务接口地址保持一致，一般这里让你选择你对象存储所存在的资源池，输入对应的数字后回车：</p>
-<pre><code>Option location_constraint.
-Location constraint - must match endpoint.
-Used when creating buckets only.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
- 1 / East China (Suzhou)
-   \ (wuxi1)
- 2 / East China (Jinan)
-   \ (jinan1)
- 3 / East China (Hangzhou)
-   \ (ningbo1)
- 4 / East China (Shanghai-1)
-   \ (shanghai1)
- 5 / Central China (Zhengzhou)
-   \ (zhengzhou1)
- 6 / Central China (Changsha-1)
-   \ (hunan1)
- 7 / Central China (Changsha-2)
-   \ (zhuzhou1)
- 8 / South China (Guangzhou-2)
-   \ (guangzhou1)
- 9 / South China (Guangzhou-3)
-   \ (dongguan1)
-10 / North China (Beijing-1)
-   \ (beijing1)
-11 / North China (Beijing-2)
-   \ (beijing2)
-12 / North China (Beijing-3)
-   \ (beijing4)
-13 / North China (Huhehaote)
-   \ (huhehaote1)
-14 / Southwest China (Chengdu)
-   \ (chengdu1)
-15 / Southwest China (Chongqing)
-   \ (chongqing1)
-16 / Southwest China (Guiyang)
-   \ (guiyang1)
-17 / Nouthwest China (Xian)
-   \ (xian1)
-18 / Yunnan China (Kunming)
-   \ (yunnan)
-19 / Yunnan China (Kunming-2)
-   \ (yunnan2)
-20 / Tianjin China (Tianjin)
-   \ (tianjin1)
-21 / Jilin China (Changchun)
-   \ (jilin1)
-22 / Hubei China (Xiangyan)
-   \ (hubei1)
-23 / Jiangxi China (Nanchang)
-   \ (jiangxi1)
-24 / Gansu China (Lanzhou)
-   \ (gansu1)
-25 / Shanxi China (Taiyuan)
-   \ (shanxi1)
-26 / Liaoning China (Shenyang)
-   \ (liaoning1)
-27 / Hebei China (Shijiazhuang)
-   \ (hebei1)
-28 / Fujian China (Xiamen)
-   \ (fujian1)
-29 / Guangxi China (Nanning)
-   \ (guangxi1)
-30 / Anhui China (Huainan)
-   \ (anhui1)
-location_constraint&gt; 1	
-</code></pre>
-<p>输入默认权限，一般设置成公共可读写即可：</p>
-<pre><code>Option acl.
-Canned ACL used when creating buckets and storing or copying objects.
-This ACL is used for creating objects and if bucket_acl isn&#39;t set, for creating buckets too.
-For more info visit https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
-Note that this ACL is applied when server-side copying objects as S3
-doesn&#39;t copy the ACL from the source but rather writes a fresh one.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
-   / Owner gets FULL_CONTROL.
- 1 | No one else has access rights (default).
-   \ (private)
-   / Owner gets FULL_CONTROL.
- 2 | The AllUsers group gets READ access.
-   \ (public-read)
-   / Owner gets FULL_CONTROL.
- 3 | The AllUsers group gets READ and WRITE access.
-   | Granting this on a bucket is generally not recommended.
-   \ (public-read-write)
-   / Owner gets FULL_CONTROL.
- 4 | The AuthenticatedUsers group gets READ access.
-   \ (authenticated-read)
-acl&gt; public-read-write
-</code></pre>
-<p>选择服务端加密方式，不使用该功能时直接回车：</p>
-<pre><code>Option server_side_encryption.
-The server-side encryption algorithm used when storing this object in S3.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
- 1 / None
-   \ ()
- 2 / AES256
-   \ (AES256)
-server_side_encryption&gt;
-</code></pre>
-<p>选择上传对象的默认存储类型，不选择时默认使用桶的存储类型：</p>
-<pre><code>Option storage_class.
-The storage class to use when storing new objects in ChinaMobile.
-Choose a number from below, or type in your own value.
-Press Enter to leave empty.
- 1 / Default
-   \ ()
- 2 / Standard storage class
-   \ (STANDARD)
- 3 / Archive storage mode
-   \ (GLACIER)
- 4 / Infrequent access storage mode
-   \ (STANDARD_IA)
-storage_class&gt;
-</code></pre>
-<p>选择是否设置进阶配置，这里不设置，直接回车：</p>
-<pre><code>Edit advanced config?
-y) Yes
-n) No (default)
-y/n&gt;
-</code></pre>
-<p>确认刚才配置的连接信息，确认无误后输入”y“后回车，保存配置：</p>
-<pre><code>--------------------
-[EOS]
-type = s3
-provider = ChinaMobile
-access_key_id = AccessID
-secret_access_key = AccessSecretKey
-endpoint = eos-wuxi-1.cmecloud.cn
-location_constraint = wuxi1
-acl = private
---------------------
-y) Yes this is OK (default)
-e) Edit this remote
-d) Delete this remote
-y/e/d&gt; y
-</code></pre>
-<p>此时回到了配置向导的初始菜单，刚才的配置会显示出来，可继续执行创建新的配置（输入“n”）、编辑已有的配置（输入“e”）、删除配置（输入“d”）等操作，或者完成配置向导退出（输入“q”）：</p>
-<pre><code>Current remotes:
-
-Name                 Type
-====                 ====
-EOS                  s3
-
-e) Edit existing remote
-n) New remote
-d) Delete remote
-r) Rename remote
-c) Copy remote
-s) Set configuration password
-q) Quit config
-e/n/d/r/c/s/q&gt;		
-</code></pre>
-<p>到这里配置文件配置已经完成了。</p>
-<hr>
-<h2 id="3-挂载到操作系统"><a href="#3-挂载到操作系统" class="headerlink" title="3.挂载到操作系统"></a>3.挂载到操作系统</h2><h3 id="3-1-挂载到windows操作系统"><a href="#3-1-挂载到windows操作系统" class="headerlink" title="3.1.挂载到windows操作系统"></a>3.1.挂载到windows操作系统</h3><p>安装依赖软件：WINFSP<br>下载地址：<a href="https://ecloud.10086.cn/op-help-center/doc/article/resource/file/ced6e21813cf60f2828cfc1eb0f5993325f4da56564b5afd1fdfa244830573db">https://ecloud.10086.cn/op-help-center/doc/article/resource/file/ced6e21813cf60f2828cfc1eb0f5993325f4da56564b5afd1fdfa244830573db</a><br>下载好后直接双运行即可，安装也是按照默认的选项走就可以的</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/89e3c845dd1a98ee3537178f57441ae6.png) -->
-<!-- <img src="89e3c845dd1a98ee3537178f57441ae6.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386513/89e3c845dd1a98ee3537178f57441ae6.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8d1180285add33eb194a216ebcc24322.png) -->
-<!-- <img src="8d1180285add33eb194a216ebcc24322.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386513/8d1180285add33eb194a216ebcc24322.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0cf3e3b1fe1b78afd8d50f15f56dd29c.png) -->
-<!-- <img src="0cf3e3b1fe1b78afd8d50f15f56dd29c.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386513/0cf3e3b1fe1b78afd8d50f15f56dd29c.png">'); </script>>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6a8b7909a0d424d6768909e298f55367.png) -->
-<!-- <img src="6a8b7909a0d424d6768909e298f55367.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386513/6a8b7909a0d424d6768909e298f55367.png">'); </script>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/41e5982e6bfebb75988936b73114a387.png) -->
-<!-- <img src="41e5982e6bfebb75988936b73114a387.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386513/41e5982e6bfebb75988936b73114a387.png">'); </script>
-<p>一步步安装完成即可；<br>下面就是挂载对象存储了，挂载也比较简单一条命令搞定</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rclone mount 配置文件名称:桶名称 挂载路径  --cache-dir 缓存路径 --vfs-cache-mode writes</span><br></pre></td></tr></table></figure>
-<p>输入敲回车即可，你会发现对象存储已经挂载到了你想要的挂载目录上面了，这样就可以上传下载文件了</p>
-<h3 id="3-2-挂载到linux操作系统"><a href="#3-2-挂载到linux操作系统" class="headerlink" title="3.2.挂载到linux操作系统"></a>3.2.挂载到linux操作系统</h3><p>安装依赖软件：FUSE<br>centos安装：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install fuse</span><br></pre></td></tr></table></figure>
-<p>ubuntu安装:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt -y insyall fuse</span><br></pre></td></tr></table></figure>
-<p>等待安装完成即可，下面就是挂载对象存储了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建挂载路径</span></span><br><span class="line"><span class="built_in">mkdir</span> -p 挂载目录</span><br><span class="line">rclone mount 配置文件名称:桶名称 挂载路径 --daemon --allow-other  --cache-dir 缓存路径 --vfs-cache-mode writes</span><br></pre></td></tr></table></figure>
-<p>执行即可</p>
-<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><pre><code>1. 需要注意缓存可能会和你上传文件的大小一样，默认缓存保存时间为1小时，如果需要设置缓存时间你可以加”--vfs-cache-max-age“参数设置缓存时间
-2. 如果需要删除桶中的对象，建议从系统中删除，如果在对象存储控制台删除的话，会出现所挂载的目录中还是有这个文件的问题
-</code></pre>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -3132,6 +3132,101 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>在浏览器输入 URL 回车之后发生了什么（流程图，超详细版）</title>
+    <url>/2024/12/26/2024122608/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个问题已经是老生常谈了，更是经常被作为面试的压轴题出现，网上也有很多文章，但最近闲的无聊，然后就自己做了一篇笔记，感觉比之前理解更透彻了。</p>
+<span id="more"></span>
+<p>这篇笔记是我这两天看了数十篇文章总结出来的，所以相对全面一点，但由于我是做前端的，所以会比较重点分析浏览器渲染页面那一部分，至于其他部分我会罗列出关键词，感兴趣的可以自行查阅，<br><strong>注意</strong>：本文的步骤是建立在，请求的是一个简单的 HTTP 请求，没有 HTTPS、HTTP2、最简单的 DNS、没有代理、并且服务器没有任何问题的基础上，尽管这是不切实际的。</p>
+<h2 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h2><p>1、URL 解析<br>2、DNS 查询<br>3、TCP 连接<br>4、处理请求<br>5、接受响应<br>6、渲染页面</p>
+<h2 id="一、URL-解析"><a href="#一、URL-解析" class="headerlink" title="一、URL 解析"></a>一、URL 解析</h2><p><strong>地址解析</strong><br>首先判断你输入的是一个合法的 URL 还是一个待搜索的关键词，并且根据你输入的内容进行自动完成、字符编码等操作。<br><strong>HSTS</strong><br>由于安全隐患，会使用 HSTS 强制客户端使用 HTTPS 访问页面。详见：你所不知道的 HSTS。<br><strong>其他操作</strong><br>浏览器还会进行一些额外的操作，比如安全检查、访问限制（之前国产浏览器限制 996.icu）。<br><strong>检查缓存</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b9b57a779e5085cacb5c5b2db12aa9c3.png) -->
+<!-- <img src="b9b57a779e5085cacb5c5b2db12aa9c3.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/b9b57a779e5085cacb5c5b2db12aa9c3.png">'); </script><br>
+<h2 id="二、DNS-查询"><a href="#二、DNS-查询" class="headerlink" title="二、DNS 查询"></a>二、DNS 查询</h2><p><strong>基本步骤</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0f9b976d36f36f136f057f7ab1b754fc.png) -->
+<!-- <img src="0f9b976d36f36f136f057f7ab1b754fc.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/0f9b976d36f36f136f057f7ab1b754fc.png">'); </script><br>
+<p><strong>1、浏览器缓存</strong><br>浏览器会先检查是否在缓存中，没有则调用系统库函数进行查询。<br><strong>2、操作系统缓存</strong><br>操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。<br><strong>3、路由器缓存</strong><br>路由器也有自己的缓存。<br><strong>4、ISP DNS 缓存</strong><br>ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大多数情况下都会有缓存。<br><strong>根域名服务器查询</strong><br>在前面所有步骤没有缓存的情况下，本地 DNS 服务器会将请求转发到互联网上的根域，下面这个图很好的诠释了整个流程：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/096b6a430ae57261fa68cebe7afbbd2c.png) -->
+<!-- <img src="096b6a430ae57261fa68cebe7afbbd2c.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/096b6a430ae57261fa68cebe7afbbd2c.png">'); </script><br>
+<p><strong>需要注意的点</strong><br>1、递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地DNS服务器的过程）<br>2、迭代方式，就是本地DNS服务器到根域名服务器查询的方式。<br>3、什么是 DNS 劫持<br>4、前端 dns-prefetch 优化</p>
+<h2 id="三、TCP-连接"><a href="#三、TCP-连接" class="headerlink" title="三、TCP 连接"></a>三、TCP 连接</h2><p>TCP&#x2F;IP 分为四层，在发送数据时，每层都要对数据进行封装：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8773a5b2ee999becaa836ffcaf4c7126.png) -->
+<!-- <img src="8773a5b2ee999becaa836ffcaf4c7126.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/8773a5b2ee999becaa836ffcaf4c7126.png">'); </script><br>
+<p><strong>1、应用层：发送 HTTP 请求</strong><br>在前面的步骤我们已经得到服务器的 IP 地址，浏览器会开始构造一个 HTTP 报文，其中包括：<br><strong>请求报头（Request Header）：</strong><br>请求方法、目标地址、遵循的协议等等<br><strong>请求主体（其他参数）</strong><br>其中需要注意的点：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">浏览器只能发送 GET、POST 方法，而打开网页使用的是 GET 方法</span><br></pre></td></tr></table></figure>
+<p><strong>2、传输层：TCP 传输报文</strong><br>传输层会发起一条到达服务器的 TCP 连接，为了方便传输，会对数据进行分割（以报文段为单位），并标记编号，方便服务器接受时能够准确地还原报文信息。整编：微信公众号，搜云库技术团队，ID：souyunku<br>在建立连接前，会先进行 TCP 三次握手。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于 TCP/IP 三次握手，网上已经有很多段子和图片生动地描述了。</span><br><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
+<p><strong>1、SYN 泛洪攻击</strong><br><strong>3、网络层：IP协议查询Mac地址</strong><br>将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。<br>判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：在 OSI 参考模型中 ARP 协议位于链路层，但在 TCP/IP 中，它位于网络层。</span><br></pre></td></tr></table></figure>
+<p><strong>4、链路层：以太网协议</strong><br><strong>以太网协议</strong><br>根据以太网协议将数据分为以“帧”为单位的数据包，每一帧分为两个部分：<br><strong>标头：</strong><br>数据包的发送者、接受者、数据类型<br><strong>数据：</strong><br>数据包具体内容<br><strong>Mac 地址</strong><br>以太网规定了连入网络的所有设备都必须具备“网卡”接口，数据包都是从一块网卡传递到另一块网卡，网卡的地址就是 Mac 地址。每一个 Mac 地址都是独一无二的，具备了一对一的能力。<br><strong>广播</strong><br>发送数据的方法很原始，直接把数据通过 ARP 协议，向本网络的所有机器发送，接收方根据标头信息与自身 Mac 地址比较，一致就接受，否则丢弃。<br><strong>注意</strong>：接收方回应是单播。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
+<p>1、ARP 攻击<br><strong>服务器接受请求</strong><br>接受过程就是把以上步骤逆转过来，参见上图。</p>
+<h2 id="四、服务器处理请求"><a href="#四、服务器处理请求" class="headerlink" title="四、服务器处理请求"></a>四、服务器处理请求</h2><p><strong>大致流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c9d52bbe4ea956afd57f0a8333c5b41e.png) -->
+<!-- <img src="c9d52bbe4ea956afd57f0a8333c5b41e.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/c9d52bbe4ea956afd57f0a8333c5b41e.png">'); </script><br>
+<p><strong>HTTPD</strong><br>最常见的 HTTPD 有 Linux 上常用的 Apache 和 Nginx，以及 Windows 上的 IIS。<br>它会监听得到的请求，然后开启一个子进程去处理这个请求。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>处理请求</strong><br>接受 TCP 报文后，会对连接进行处理，对HTTP协议进行解析（请求方法、域名、路径等），并且进行一些验证：<br>1、验证是否配置虚拟主机<br>2、验证虚拟主机是否接受此方法<br>3、验证该用户可以使用该方法（根据 IP 地址、身份信息等）<br><strong>重定向</strong><br>假如服务器配置了 HTTP 重定向，就会返回一个 301永久重定向响应，浏览器就会根据响应，重新发送 HTTP 请求（重新执行上面的过程）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于更多：详见这篇文章</span><br></pre></td></tr></table></figure>
+<p><strong>URL 重写</strong><br>然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js文件等，则会直接把这个文件返回。<br>否则服务器会按照规则把请求重写到 一个 REST 风格的 URL 上。<br>然后根据动态语言的脚本，来决定调用什么类型的动态文件解释器来处理这个请求。<br>以 PHP 语言的 MVC 框架举例，它首先会初始化一些环境的参数，根据 URL 由上到下地去匹配路由，然后让路由所定义的方法去处理请求。</p>
+<h2 id="五、浏览器接受响应"><a href="#五、浏览器接受响应" class="headerlink" title="五、浏览器接受响应"></a>五、浏览器接受响应</h2><p>浏览器接收到来自服务器的响应资源后，会对资源进行分析。<br>首先查看 Response header，根据不同状态码做不同的事（比如上面提到的重定向）。<br>如果响应资源进行了压缩（比如 gzip），还需要进行解压。整编：微信公众号，搜云库技术团队，ID：souyunku<br>然后，对响应资源做缓存。<br>接下来，根据响应资源里的 MIME 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。</p>
+<h2 id="六、渲染页面"><a href="#六、渲染页面" class="headerlink" title="六、渲染页面"></a>六、渲染页面</h2><p><strong>浏览器内核</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d8a939e1e262163834a46250b2abcd79.jpeg) -->
+<!-- <img src="d8a939e1e262163834a46250b2abcd79.jpeg"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/d8a939e1e262163834a46250b2abcd79.jpeg">'); </script><br>
+<p>不同的浏览器内核，渲染过程也不完全相同，但大致流程都差不多。<br><strong>基本流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/487084912cc7985eef359b22fb7d4938.png) -->
+<!-- <img src="487084912cc7985eef359b22fb7d4938.png"><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/487084912cc7985eef359b22fb7d4938.png">'); </script><br>
+<p><strong>1、HTML 解析</strong><br>首先要知道浏览器解析是从上往下一行一行地解析的。<br>解析的过程可以分为四个步骤：<br><strong>1. 解码（encoding）</strong><br>传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如UTF-8）转换成字符串，也就是HTML 代码。<br><strong>2. 预解析（pre-parsing）</strong><br>预解析做的事情是提前加载资源，减少处理时间，它会识别一些会请求资源的属性，比如 img标签的 src属性，并将这个请求加到请求队列中。<br><strong>3. 符号化（Tokenization）</strong><br>符号化是词法分析的过程，将输入解析成符号，HTML 符号包括，开始标签、结束标签、属性名和属性值。<br>它通过一个状态机去识别符号的状态，比如遇到 &lt;， &gt;状态都会产生变化。<br><strong>4. 构建树（tree construction）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：符号化和构建树是并行操作的，也就是说只要解析到一个开始标签，就会创建一个 DOM 节点。</span><br></pre></td></tr></table></figure>
+<p>在上一步符号化中，解析器获得这些标记，然后以合适的方法创建 DOM对象并把这些符号插入到 DOM对象中。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">		Web page parsing</span><br><span class="line">		<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">				Web page parsing</span><br><span class="line">			<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">				This is an example Web page.</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8349c36acaf157ad48e41c5735538f9a.jpeg) -->
+<!-- <img src="8349c36acaf157ad48e41c5735538f9a.jpeg"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/8349c36acaf157ad48e41c5735538f9a.jpeg">'); </script><br>
+<p><strong>浏览器容错进制</strong><br>你从来没有在浏览器看过类似”语法无效”的错误，这是因为浏览器去纠正错误的语法，然后继续工作。<br><strong>事件</strong><br>当整个解析的过程完成以后，浏览器会通过 DOMContentLoaded事件来通知 DOM解析完成。<br><strong>2、CSS 解析</strong><br>一旦浏览器下载了 CSS，CSS 解析器就会处理它遇到的任何 CSS，根据语法规范解析出所有的 CSS 并进行标记化，然后我们得到一个规则表。<br><strong>CSS 匹配规则</strong><br>在匹配一个节点对应的 CSS 规则时，是按照从右到左的顺序的，例如：div p{font-size:14px}会先寻找所有的 p标签然后判断它的父元素是否为 div。<br>所以我们写 CSS 时，尽量用 id 和 class，千万不要过度层叠。<br><strong>3、 渲染树</strong><br>其实这就是一个 DOM 树和 CSS 规则树合并的过程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：渲染树会忽略那些不需要渲染的节点，比如设置了 display:none的节点。</span><br></pre></td></tr></table></figure>
+<p><strong>计算</strong><br>通过计算让任何尺寸值都减少到三个可能之一：auto、百分比、px，比如把 rem转化为 px。<br><strong>级联</strong><br>浏览器需要一种方法来确定哪些样式才真正需要应用到对应元素，所以它使用一个叫做 specificity的公式，这个公式会通过：<br>1、标签名、class、id<br>2、是否内联样式<br>3、 !important<br>然后得出一个权重值，取最高的那个。<br><strong>渲染阻塞</strong><br>当遇到一个 script标签时，DOM 构建会被暂停，直至脚本完成执行，然后继续构建 DOM 树。<br>但如果 JS 依赖 CSS 样式，而它还没有被下载和构建时，浏览器就会延迟脚本执行，直至 CSS Rules 被构建。<br>所有我们知道：<br>1、CSS 会阻塞 JS 执行<br>2、JS 会阻塞后面的 DOM 解析<br><strong>为了避免这种情况，应该以下原则：</strong><br>1、CSS 资源排在 JavaScript 资源前面<br>2、JS 放在 HTML 最底部，也就是 </body>前<br>另外，如果要改变阻塞模式，可以使用 defer 与 async，详见：这篇文章<br><strong>4、布局与绘制</strong><br>确定渲染树种所有节点的几何属性，比如：位置、大小等等，最后输入一个盒子模型，它能精准地捕获到每个元素在屏幕内的准确位置与大小。<br>然后遍历渲染树，调用渲染器的 paint() 方法在屏幕上显示其内容。<br><strong>5、合并渲染层</strong><br>把以上绘制的所有图片合并，最终输出一张图片。<br><strong>6、 回流与重绘</strong><br><strong>回流(reflow)</strong><br>当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从 html标签开始递归往下，重新计算位置和大小。整编：微信公众号，搜云库技术团队，ID：souyunku<br>reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。<br><strong>重绘(repaint)</strong><br>改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。<br>每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。<br>回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。<br>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">display:none 会触发回流，而 visibility:hidden 只会触发重绘。</span><br></pre></td></tr></table></figure>
+<p>7、JavaScript 编译执行<br><strong>大致流程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/912706ef255b4493f3a9ef2f5212a88c.jpeg) -->
+<!-- <img src="912706ef255b4493f3a9ef2f5212a88c.jpeg"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/912706ef255b4493f3a9ef2f5212a88c.jpeg">'); </script><br>
+<p><strong>可以分为三个阶段：</strong><br>1、词法分析<br>JS 脚本加载完毕后，会首先进入语法分析阶段，它首先会分析代码块的语法是否正确，不正确则抛出“语法错误”，停止执行。<br><strong>几个步骤：</strong><br><strong>分词</strong>，例如将 vara&#x3D;2，，分成 var、 a、 &#x3D;、 2这样的词法单元。<br><strong>解析</strong>，将词法单元转换成抽象语法树（AST）。<br><strong>代码生成</strong>，将抽象语法树转换成机器指令。*2、预编译<br>JS 有三种运行环境：<br>1、全局环境<br>2、函数环境<br>3、eval<br>每进入一个不同的运行环境都会创建一个对应的执行上下文，根据不同的上下文环境，形成一个函数调用栈，栈底永远是全局执行上下文，栈顶则永远是当前执行上下文。<br>创建执行上下文<br><strong>创建执行上下文的过程中，主要做了以下三件事：</strong><br>创建变量对象</p>
+<pre><code> - 参数、函数、变量
+</code></pre>
+<p>建立作用域链</p>
+<pre><code>- 确认当前执行环境是否能访问变量
+</code></pre>
+<p>确定 This 指向<br>3、执行<br><strong>JS 线程</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/269e3d81242e87140a5061e292ab4e25.png) -->
+<!-- <img src="269e3d81242e87140a5061e292ab4e25.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/269e3d81242e87140a5061e292ab4e25.png">'); </script><br>
+<p>虽然 JS 是单线程的，但实际上参与工作的线程一共有四个：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">其中三个只是协助，只有 JS 引擎线程是真正执行的</span><br></pre></td></tr></table></figure>
+<p><strong>JS 引擎线程：</strong><br>也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎<br><strong>事件触发线程：</strong><br>属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>定时器触发线程：</strong><br>主要控制 setInterval和 setTimeout，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。<br><strong>HTTP 异步请求线程：</strong><br>通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。<br><strong>注：浏览器对同一域名的并发连接数是有限的，通常为 6 个。</strong><br><strong>宏任务</strong><br>分为：<br>1、同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务<br>2、异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。<br><strong>微任务</strong><br>微任务是ES6和Node环境下的，主要 API 有：Promise， process.nextTick。<br>微任务的执行在宏任务的同步任务之后，在异步任务之前。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19421fb446e9602f86aa8ac82b3b5cef.png) -->
+<!-- <img src="19421fb446e9602f86aa8ac82b3b5cef.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/19421fb446e9602f86aa8ac82b3b5cef.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c10709fc073f6e13f1a5951872ef7c6a.png) -->
+<!-- <img src="c10709fc073f6e13f1a5951872ef7c6a.png"/><br> -->
+<script> document.write('<img src="'+ imgurl +'1735386886/c10709fc073f6e13f1a5951872ef7c6a.png">'); </script><br>
+<p><strong>代码例子</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">console.log(<span class="string">&#x27;1&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;2&#x27;</span>);    <span class="comment">// 宏任务 异步</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">newPromise(function(resolve) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;3&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;4&#x27;</span>)   <span class="comment">// 微任务</span></span><br><span class="line">&#125;)</span><br><span class="line">console.log(<span class="string">&#x27;5&#x27;</span>)   <span class="comment">// 宏任务 同步</span></span><br></pre></td></tr></table></figure>
+<p>以上代码输出顺序为：1,3,5,4,2</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>分享一款开源堡垒机-jumpserver</title>
     <url>/2024/12/26/2024122607/</url>
     <content><![CDATA[<p>JumpServer是由FIT2CLOUD（飞致远）公司旗下一款开源的堡垒机，这款也是全球首款开源的堡垒机，使用 GNU GPL v2.0 开源协议，是符合 4A 规范的运维安全审计系统，使用 Python 开发，遵循 Web 2.0 规范，配备了业界领先的 Web Terminal 方案，交互界面美观、用户体验好，同时采纳分布式架构，支持多机房跨区域部署以及横向扩展，无资产数量及并发限制。这款开源堡垒机不但提供了社区开源版本并且还提供了企业使用的企业版本，企业版功能更加强大。</p>
@@ -3290,98 +3385,143 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>在浏览器输入 URL 回车之后发生了什么（流程图，超详细版）</title>
-    <url>/2024/12/26/2024122608/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个问题已经是老生常谈了，更是经常被作为面试的压轴题出现，网上也有很多文章，但最近闲的无聊，然后就自己做了一篇笔记，感觉比之前理解更透彻了。</p>
+    <title>Python实现AI图像识别-身份证识别</title>
+    <url>/2024/12/28/2024122801/</url>
+    <content><![CDATA[<p>图像识别说白了就是把一张照片上面的文字进行提取，提供工作效率</p>
 <span id="more"></span>
-<p>这篇笔记是我这两天看了数十篇文章总结出来的，所以相对全面一点，但由于我是做前端的，所以会比较重点分析浏览器渲染页面那一部分，至于其他部分我会罗列出关键词，感兴趣的可以自行查阅，<br><strong>注意</strong>：本文的步骤是建立在，请求的是一个简单的 HTTP 请求，没有 HTTPS、HTTP2、最简单的 DNS、没有代理、并且服务器没有任何问题的基础上，尽管这是不切实际的。</p>
-<h2 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h2><p>1、URL 解析<br>2、DNS 查询<br>3、TCP 连接<br>4、处理请求<br>5、接受响应<br>6、渲染页面</p>
-<h2 id="一、URL-解析"><a href="#一、URL-解析" class="headerlink" title="一、URL 解析"></a>一、URL 解析</h2><p><strong>地址解析</strong><br>首先判断你输入的是一个合法的 URL 还是一个待搜索的关键词，并且根据你输入的内容进行自动完成、字符编码等操作。<br><strong>HSTS</strong><br>由于安全隐患，会使用 HSTS 强制客户端使用 HTTPS 访问页面。详见：你所不知道的 HSTS。<br><strong>其他操作</strong><br>浏览器还会进行一些额外的操作，比如安全检查、访问限制（之前国产浏览器限制 996.icu）。<br><strong>检查缓存</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/b9b57a779e5085cacb5c5b2db12aa9c3.png) -->
-<!-- <img src="b9b57a779e5085cacb5c5b2db12aa9c3.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/b9b57a779e5085cacb5c5b2db12aa9c3.png">'); </script><br>
-<h2 id="二、DNS-查询"><a href="#二、DNS-查询" class="headerlink" title="二、DNS 查询"></a>二、DNS 查询</h2><p><strong>基本步骤</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0f9b976d36f36f136f057f7ab1b754fc.png) -->
-<!-- <img src="0f9b976d36f36f136f057f7ab1b754fc.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/0f9b976d36f36f136f057f7ab1b754fc.png">'); </script><br>
-<p><strong>1、浏览器缓存</strong><br>浏览器会先检查是否在缓存中，没有则调用系统库函数进行查询。<br><strong>2、操作系统缓存</strong><br>操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。<br><strong>3、路由器缓存</strong><br>路由器也有自己的缓存。<br><strong>4、ISP DNS 缓存</strong><br>ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大多数情况下都会有缓存。<br><strong>根域名服务器查询</strong><br>在前面所有步骤没有缓存的情况下，本地 DNS 服务器会将请求转发到互联网上的根域，下面这个图很好的诠释了整个流程：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/096b6a430ae57261fa68cebe7afbbd2c.png) -->
-<!-- <img src="096b6a430ae57261fa68cebe7afbbd2c.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/096b6a430ae57261fa68cebe7afbbd2c.png">'); </script><br>
-<p><strong>需要注意的点</strong><br>1、递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地DNS服务器的过程）<br>2、迭代方式，就是本地DNS服务器到根域名服务器查询的方式。<br>3、什么是 DNS 劫持<br>4、前端 dns-prefetch 优化</p>
-<h2 id="三、TCP-连接"><a href="#三、TCP-连接" class="headerlink" title="三、TCP 连接"></a>三、TCP 连接</h2><p>TCP&#x2F;IP 分为四层，在发送数据时，每层都要对数据进行封装：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8773a5b2ee999becaa836ffcaf4c7126.png) -->
-<!-- <img src="8773a5b2ee999becaa836ffcaf4c7126.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/8773a5b2ee999becaa836ffcaf4c7126.png">'); </script><br>
-<p><strong>1、应用层：发送 HTTP 请求</strong><br>在前面的步骤我们已经得到服务器的 IP 地址，浏览器会开始构造一个 HTTP 报文，其中包括：<br><strong>请求报头（Request Header）：</strong><br>请求方法、目标地址、遵循的协议等等<br><strong>请求主体（其他参数）</strong><br>其中需要注意的点：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">浏览器只能发送 GET、POST 方法，而打开网页使用的是 GET 方法</span><br></pre></td></tr></table></figure>
-<p><strong>2、传输层：TCP 传输报文</strong><br>传输层会发起一条到达服务器的 TCP 连接，为了方便传输，会对数据进行分割（以报文段为单位），并标记编号，方便服务器接受时能够准确地还原报文信息。整编：微信公众号，搜云库技术团队，ID：souyunku<br>在建立连接前，会先进行 TCP 三次握手。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于 TCP/IP 三次握手，网上已经有很多段子和图片生动地描述了。</span><br><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
-<p><strong>1、SYN 泛洪攻击</strong><br><strong>3、网络层：IP协议查询Mac地址</strong><br>将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。<br>判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：在 OSI 参考模型中 ARP 协议位于链路层，但在 TCP/IP 中，它位于网络层。</span><br></pre></td></tr></table></figure>
-<p><strong>4、链路层：以太网协议</strong><br><strong>以太网协议</strong><br>根据以太网协议将数据分为以“帧”为单位的数据包，每一帧分为两个部分：<br><strong>标头：</strong><br>数据包的发送者、接受者、数据类型<br><strong>数据：</strong><br>数据包具体内容<br><strong>Mac 地址</strong><br>以太网规定了连入网络的所有设备都必须具备“网卡”接口，数据包都是从一块网卡传递到另一块网卡，网卡的地址就是 Mac 地址。每一个 Mac 地址都是独一无二的，具备了一对一的能力。<br><strong>广播</strong><br>发送数据的方法很原始，直接把数据通过 ARP 协议，向本网络的所有机器发送，接收方根据标头信息与自身 Mac 地址比较，一致就接受，否则丢弃。<br><strong>注意</strong>：接收方回应是单播。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">相关知识点：</span><br></pre></td></tr></table></figure>
-<p>1、ARP 攻击<br><strong>服务器接受请求</strong><br>接受过程就是把以上步骤逆转过来，参见上图。</p>
-<h2 id="四、服务器处理请求"><a href="#四、服务器处理请求" class="headerlink" title="四、服务器处理请求"></a>四、服务器处理请求</h2><p><strong>大致流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c9d52bbe4ea956afd57f0a8333c5b41e.png) -->
-<!-- <img src="c9d52bbe4ea956afd57f0a8333c5b41e.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/c9d52bbe4ea956afd57f0a8333c5b41e.png">'); </script><br>
-<p><strong>HTTPD</strong><br>最常见的 HTTPD 有 Linux 上常用的 Apache 和 Nginx，以及 Windows 上的 IIS。<br>它会监听得到的请求，然后开启一个子进程去处理这个请求。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>处理请求</strong><br>接受 TCP 报文后，会对连接进行处理，对HTTP协议进行解析（请求方法、域名、路径等），并且进行一些验证：<br>1、验证是否配置虚拟主机<br>2、验证虚拟主机是否接受此方法<br>3、验证该用户可以使用该方法（根据 IP 地址、身份信息等）<br><strong>重定向</strong><br>假如服务器配置了 HTTP 重定向，就会返回一个 301永久重定向响应，浏览器就会根据响应，重新发送 HTTP 请求（重新执行上面的过程）。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于更多：详见这篇文章</span><br></pre></td></tr></table></figure>
-<p><strong>URL 重写</strong><br>然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js文件等，则会直接把这个文件返回。<br>否则服务器会按照规则把请求重写到 一个 REST 风格的 URL 上。<br>然后根据动态语言的脚本，来决定调用什么类型的动态文件解释器来处理这个请求。<br>以 PHP 语言的 MVC 框架举例，它首先会初始化一些环境的参数，根据 URL 由上到下地去匹配路由，然后让路由所定义的方法去处理请求。</p>
-<h2 id="五、浏览器接受响应"><a href="#五、浏览器接受响应" class="headerlink" title="五、浏览器接受响应"></a>五、浏览器接受响应</h2><p>浏览器接收到来自服务器的响应资源后，会对资源进行分析。<br>首先查看 Response header，根据不同状态码做不同的事（比如上面提到的重定向）。<br>如果响应资源进行了压缩（比如 gzip），还需要进行解压。整编：微信公众号，搜云库技术团队，ID：souyunku<br>然后，对响应资源做缓存。<br>接下来，根据响应资源里的 MIME 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。</p>
-<h2 id="六、渲染页面"><a href="#六、渲染页面" class="headerlink" title="六、渲染页面"></a>六、渲染页面</h2><p><strong>浏览器内核</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/d8a939e1e262163834a46250b2abcd79.jpeg) -->
-<!-- <img src="d8a939e1e262163834a46250b2abcd79.jpeg"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/d8a939e1e262163834a46250b2abcd79.jpeg">'); </script><br>
-<p>不同的浏览器内核，渲染过程也不完全相同，但大致流程都差不多。<br><strong>基本流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/487084912cc7985eef359b22fb7d4938.png) -->
-<!-- <img src="487084912cc7985eef359b22fb7d4938.png"><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/487084912cc7985eef359b22fb7d4938.png">'); </script><br>
-<p><strong>1、HTML 解析</strong><br>首先要知道浏览器解析是从上往下一行一行地解析的。<br>解析的过程可以分为四个步骤：<br><strong>1. 解码（encoding）</strong><br>传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如UTF-8）转换成字符串，也就是HTML 代码。<br><strong>2. 预解析（pre-parsing）</strong><br>预解析做的事情是提前加载资源，减少处理时间，它会识别一些会请求资源的属性，比如 img标签的 src属性，并将这个请求加到请求队列中。<br><strong>3. 符号化（Tokenization）</strong><br>符号化是词法分析的过程，将输入解析成符号，HTML 符号包括，开始标签、结束标签、属性名和属性值。<br>它通过一个状态机去识别符号的状态，比如遇到 &lt;， &gt;状态都会产生变化。<br><strong>4. 构建树（tree construction）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：符号化和构建树是并行操作的，也就是说只要解析到一个开始标签，就会创建一个 DOM 节点。</span><br></pre></td></tr></table></figure>
-<p>在上一步符号化中，解析器获得这些标记，然后以合适的方法创建 DOM对象并把这些符号插入到 DOM对象中。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">		Web page parsing</span><br><span class="line">		<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">				Web page parsing</span><br><span class="line">			<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">				This is an example Web page.</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8349c36acaf157ad48e41c5735538f9a.jpeg) -->
-<!-- <img src="8349c36acaf157ad48e41c5735538f9a.jpeg"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/8349c36acaf157ad48e41c5735538f9a.jpeg">'); </script><br>
-<p><strong>浏览器容错进制</strong><br>你从来没有在浏览器看过类似”语法无效”的错误，这是因为浏览器去纠正错误的语法，然后继续工作。<br><strong>事件</strong><br>当整个解析的过程完成以后，浏览器会通过 DOMContentLoaded事件来通知 DOM解析完成。<br><strong>2、CSS 解析</strong><br>一旦浏览器下载了 CSS，CSS 解析器就会处理它遇到的任何 CSS，根据语法规范解析出所有的 CSS 并进行标记化，然后我们得到一个规则表。<br><strong>CSS 匹配规则</strong><br>在匹配一个节点对应的 CSS 规则时，是按照从右到左的顺序的，例如：div p{font-size:14px}会先寻找所有的 p标签然后判断它的父元素是否为 div。<br>所以我们写 CSS 时，尽量用 id 和 class，千万不要过度层叠。<br><strong>3、 渲染树</strong><br>其实这就是一个 DOM 树和 CSS 规则树合并的过程。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：渲染树会忽略那些不需要渲染的节点，比如设置了 display:none的节点。</span><br></pre></td></tr></table></figure>
-<p><strong>计算</strong><br>通过计算让任何尺寸值都减少到三个可能之一：auto、百分比、px，比如把 rem转化为 px。<br><strong>级联</strong><br>浏览器需要一种方法来确定哪些样式才真正需要应用到对应元素，所以它使用一个叫做 specificity的公式，这个公式会通过：<br>1、标签名、class、id<br>2、是否内联样式<br>3、 !important<br>然后得出一个权重值，取最高的那个。<br><strong>渲染阻塞</strong><br>当遇到一个 script标签时，DOM 构建会被暂停，直至脚本完成执行，然后继续构建 DOM 树。<br>但如果 JS 依赖 CSS 样式，而它还没有被下载和构建时，浏览器就会延迟脚本执行，直至 CSS Rules 被构建。<br>所有我们知道：<br>1、CSS 会阻塞 JS 执行<br>2、JS 会阻塞后面的 DOM 解析<br><strong>为了避免这种情况，应该以下原则：</strong><br>1、CSS 资源排在 JavaScript 资源前面<br>2、JS 放在 HTML 最底部，也就是 </body>前<br>另外，如果要改变阻塞模式，可以使用 defer 与 async，详见：这篇文章<br><strong>4、布局与绘制</strong><br>确定渲染树种所有节点的几何属性，比如：位置、大小等等，最后输入一个盒子模型，它能精准地捕获到每个元素在屏幕内的准确位置与大小。<br>然后遍历渲染树，调用渲染器的 paint() 方法在屏幕上显示其内容。<br><strong>5、合并渲染层</strong><br>把以上绘制的所有图片合并，最终输出一张图片。<br><strong>6、 回流与重绘</strong><br><strong>回流(reflow)</strong><br>当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从 html标签开始递归往下，重新计算位置和大小。整编：微信公众号，搜云库技术团队，ID：souyunku<br>reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。<br><strong>重绘(repaint)</strong><br>改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。<br>每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。<br>回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。<br>比如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">display:none 会触发回流，而 visibility:hidden 只会触发重绘。</span><br></pre></td></tr></table></figure>
-<p>7、JavaScript 编译执行<br><strong>大致流程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/912706ef255b4493f3a9ef2f5212a88c.jpeg) -->
-<!-- <img src="912706ef255b4493f3a9ef2f5212a88c.jpeg"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/912706ef255b4493f3a9ef2f5212a88c.jpeg">'); </script><br>
-<p><strong>可以分为三个阶段：</strong><br>1、词法分析<br>JS 脚本加载完毕后，会首先进入语法分析阶段，它首先会分析代码块的语法是否正确，不正确则抛出“语法错误”，停止执行。<br><strong>几个步骤：</strong><br><strong>分词</strong>，例如将 vara&#x3D;2，，分成 var、 a、 &#x3D;、 2这样的词法单元。<br><strong>解析</strong>，将词法单元转换成抽象语法树（AST）。<br><strong>代码生成</strong>，将抽象语法树转换成机器指令。*2、预编译<br>JS 有三种运行环境：<br>1、全局环境<br>2、函数环境<br>3、eval<br>每进入一个不同的运行环境都会创建一个对应的执行上下文，根据不同的上下文环境，形成一个函数调用栈，栈底永远是全局执行上下文，栈顶则永远是当前执行上下文。<br>创建执行上下文<br><strong>创建执行上下文的过程中，主要做了以下三件事：</strong><br>创建变量对象</p>
-<pre><code> - 参数、函数、变量
-</code></pre>
-<p>建立作用域链</p>
-<pre><code>- 确认当前执行环境是否能访问变量
-</code></pre>
-<p>确定 This 指向<br>3、执行<br><strong>JS 线程</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/269e3d81242e87140a5061e292ab4e25.png) -->
-<!-- <img src="269e3d81242e87140a5061e292ab4e25.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/269e3d81242e87140a5061e292ab4e25.png">'); </script><br>
-<p>虽然 JS 是单线程的，但实际上参与工作的线程一共有四个：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">其中三个只是协助，只有 JS 引擎线程是真正执行的</span><br></pre></td></tr></table></figure>
-<p><strong>JS 引擎线程：</strong><br>也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎<br><strong>事件触发线程：</strong><br>属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行。整编：微信公众号，搜云库技术团队，ID：souyunku<br><strong>定时器触发线程：</strong><br>主要控制 setInterval和 setTimeout，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。<br><strong>HTTP 异步请求线程：</strong><br>通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。<br><strong>注：浏览器对同一域名的并发连接数是有限的，通常为 6 个。</strong><br><strong>宏任务</strong><br>分为：<br>1、同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务<br>2、异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。<br><strong>微任务</strong><br>微任务是ES6和Node环境下的，主要 API 有：Promise， process.nextTick。<br>微任务的执行在宏任务的同步任务之后，在异步任务之前。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/19421fb446e9602f86aa8ac82b3b5cef.png) -->
-<!-- <img src="19421fb446e9602f86aa8ac82b3b5cef.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/19421fb446e9602f86aa8ac82b3b5cef.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c10709fc073f6e13f1a5951872ef7c6a.png) -->
-<!-- <img src="c10709fc073f6e13f1a5951872ef7c6a.png"/><br> -->
-<script> document.write('<img src="'+ imgurl +'1735386886/c10709fc073f6e13f1a5951872ef7c6a.png">'); </script><br>
-<p><strong>代码例子</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">console.log(<span class="string">&#x27;1&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;2&#x27;</span>);    <span class="comment">// 宏任务 异步</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">newPromise(function(resolve) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;3&#x27;</span>);    <span class="comment">// 宏任务 同步</span></span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;4&#x27;</span>)   <span class="comment">// 微任务</span></span><br><span class="line">&#125;)</span><br><span class="line">console.log(<span class="string">&#x27;5&#x27;</span>)   <span class="comment">// 宏任务 同步</span></span><br></pre></td></tr></table></figure>
-<p>以上代码输出顺序为：1,3,5,4,2</p>
+<h1 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h1><p>身份证识别主要是把一张身份证照片上面的文字信息进行提取，不用再使用人工去手动抄写了，下面给大家说的这个身份识别主要是使用python+flask+华为云OCR进行实现的。</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol>
+<li>申请华为云OCR接口</li>
+<li>获取token</li>
+<li>调用身份证识别接口</li>
+<li>提取身份证信息</li>
+</ol>
+<h1 id="申请华为云OCR接口"><a href="#申请华为云OCR接口" class="headerlink" title="申请华为云OCR接口"></a>申请华为云OCR接口</h1><p>图像识别主要使用的就是华为云OCR平台申请的接口，访问<a href="https://www.huaweicloud.com/">华为云</a>,访问申请的地址后点击菜单栏中的“控制台”，点击后会进入登录页面。<br><br></p>
+<script> document.write('<img src="'+ imgurl +'1735390928/b0c1befb904cc197a0c8a122c57965ef.png">'); </script><br>
+
+<script> document.write('<img src="'+ imgurl +'1735390928/a0d36bcb94af17c4c4d4f594efd4c104.png">'); </script><br>
+
+<p>登录成功后进入控制台，依次单击“服务列表”-“人工智能”-“文字识别OCR”</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/33ab766af91d413fe6d75ae8d4074cd7.png">'); </script><br>
+
+<p>进入后点击身份证识别后面的“开通服务”即可，（这里需要主要的是免费开通的身份证识别服务仅有1000次的免费调用次数，超过次数将会收费，建议购买套餐包，购买可以找我，我可以给优惠哦）</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/7d21941155eb2da1ae438965dd5c4fdd.png">'); </script><br>
+
+<h1 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h1><p>获取token值时你需要知道你的以下信息：</p>
+<ol>
+<li>IAM用户所属账号名</li>
+<li>IAM用户名</li>
+<li>IAM用户的登录密码</li>
+<li>IAM用户所属账号的项目名称</li>
+</ol>
+<p>首先就是获取IAM用户所属账号名，IAM用户所属账号名为你登陆的那个账号</p>
+<p>获取IAM用户名，选择右上角“用户名”-点击“统一身份认证”</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/388e53f47436cfc19c9bd88970ceafb3.png">'); </script><br>
+
+<p>里面的用户即为IAM用户名</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/e13b4ea6904a63fca1e441c31fa7cb0c.png">'); </script><br>
+
+<p>获取IAM用户所属账号的项目名称，点击“项目”</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/58566a314a9f1691e42caa14047659aa.png">'); </script><br>
+
+<p>里面的项目很多，你只需要记录你开启OCR身份证识别区域的项目名称ID就可以了，比如我选择的北京四所以我的项目名称就是：“cn-north-4”</p>
+<script> document.write('<img src="'+ imgurl +'1735390928/3452dc9bbad70281d681a016853feb09.png">'); </script><br>
+
+<p>知道了这些信息之后，后面就是如何通过这些信息去获取token了，下面我就直接上代码了哦</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 下面url为华为云获取token的接口，这个接口基本一致，需要注意的是“iam.cn-north-4.myhuaweicloud.com”这个需要根据具体需求进行修改，不同区域项目不同</span></span><br><span class="line">url = <span class="string">&quot;https://iam.cn-north-4.myhuaweicloud.com/v3/auth/tokens&quot;</span></span><br><span class="line"><span class="comment"># 头部信息</span></span><br><span class="line">headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line"><span class="comment"># json内容，需要上传进行做验证</span></span><br><span class="line">payload = &#123;</span><br><span class="line">            <span class="string">&quot;auth&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;identity&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;methods&quot;</span>: [</span><br><span class="line">                        <span class="string">&quot;password&quot;</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="string">&quot;password&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;user&quot;</span>: &#123;</span><br><span class="line">                        <span class="comment"># name值为你的IAM账号名</span></span><br><span class="line">                            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="comment"># password值为你的IAM密码</span></span><br><span class="line">                            <span class="string">&quot;password&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;domain&quot;</span>: &#123;</span><br><span class="line">                            <span class="comment"># name值为你的主账号的账号名</span></span><br><span class="line">                                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;scope&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;project&quot;</span>: &#123;</span><br><span class="line">                    <span class="comment"># name值为你的项目ID</span></span><br><span class="line">                        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cn-north-4&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment"># 使用POST上传头部内容和body内容</span></span><br><span class="line">response = requests.post(url, headers=headers, json=payload)</span><br><span class="line"><span class="comment"># 获取token值</span></span><br><span class="line">token = response.headers[<span class="string">&#x27;X-Subject-Token&#x27;</span>]</span><br><span class="line"><span class="comment"># 打印token值</span></span><br><span class="line"><span class="built_in">print</span>(token)</span><br></pre></td></tr></table></figure>
+<p>打印出来的值是类似于下面这种的字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">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UiOiJvcF9nYXRlZF9jaWUiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9zZnN0dXJibyIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX3Zwbl92Z3dfaW50bCIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2h2X3ZlbmRvciIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2FfY24tbm9ydGgtNGUiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9hX2NuLW5vcnRoLTRkIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfZWNzX2dwdV9nNnYiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9JRUMiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9kYXl1X2RsbV9jbHVzdGVyIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfaW50bF9jb25maWd1cmF0aW9uIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfY2NlX21jcF90aGFpIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZW456Rfc2VydmljZXN0YWdlX21ncl9kdG0iLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9hX2NuLW5vcnRoLTRmIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfdWdvX3B1YmxpY3Rlc3QiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9tdGQiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9lY3NfZ3B1X2c1ciIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX3drc19rcCIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2NjaV9rdW5wZW5nIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfcmlfZHdzIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfdnBjX2Zsb3dfbG9nIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfYXRjIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfYWFkX2JldGFfaWRjIiwiaWQiOiIwIn0seyJuY456W1lIjoib3Bf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-ZIS2UdDK-q7gBsR3mT2LRqjQ+J6vpcCzAe6v71IHAf77lgE+vwg7f6qOfhYjRNB9kSC2L1YxJ1eS9j5pzuqlnK+9BOv2U3BIaKsP9yNiP-luS78LzwuEG2rD9OInMst7bCr7HeWT2bZ8gCT4567BvsONvGqVvr3AA==</span><br></pre></td></tr></table></figure>
+<h1 id="调用身份证识别接口"><a href="#调用身份证识别接口" class="headerlink" title="调用身份证识别接口"></a>调用身份证识别接口</h1><p>下面就是调用识别接口，调用这个接口需要了解以下信息</p>
+<ol>
+<li>URL</li>
+<li>Header参数</li>
+<li>Body参数</li>
+</ol>
+<p>首先是<strong>URL</strong><br>POST https:&#x2F;&#x2F;{endpoint}&#x2F;v2&#x2F;{project_id}&#x2F;ocr&#x2F;id-card</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>endpoint</td>
+<td>项目接口域名，这里还是需要确定开通服务的区域，每个区域不同的域名</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td>项目ID，不出意外的话就是你上面获取token的项目ID</td>
+</tr>
+<tr>
+<td><strong>请求参数</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>请求Header参数</td>
+<td></td>
+</tr>
+<tr>
+<td>参数</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>X-Auth-Token</td>
+<td>用户Token，就是上面获取到的token值</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>发送的实体的MIME类型，参数值为“application&#x2F;json”</td>
+</tr>
+<tr>
+<td>请求Body参数</td>
+<td></td>
+</tr>
+<tr>
+<td>参数</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>image</td>
+<td>图像数据，base64编码，要求base64编码后大小不超过10MB。图片最小边不小于15px，最长边不超过8000px。支持JPEG、JPG、PNG、BMP、TIFF格式。</td>
+</tr>
+<tr>
+<td>url</td>
+<td>图片的url路径</td>
+</tr>
+<tr>
+<td>side</td>
+<td>front：身份证人像面，back：身份证国徽面</td>
+</tr>
+<tr>
+<td>了解了上面的一系列信息之后，后面就是如何写代码了，下面就是直接代码</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="comment"># url值</span></span><br><span class="line">url = https://&#123;endpoint&#125;/v2/&#123;project_id&#125;/ocr/<span class="built_in">id</span>-card</span><br><span class="line"><span class="comment"># 上面获取到的token值</span></span><br><span class="line">token = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment"># 设置头部信息</span></span><br><span class="line">headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>, <span class="string">&#x27;X-Auth-Token&#x27;</span>: token&#125;</span><br><span class="line"><span class="comment"># 图片路径</span></span><br><span class="line">imagepath = <span class="string">r&#x27;./static/XXX.jpg&#x27;</span></span><br><span class="line"><span class="comment"># 设置图片</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(imagepath, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> bin_data:</span><br><span class="line">     image_data = bin_data.read()</span><br><span class="line"><span class="comment"># 使用图片的base64编码</span></span><br><span class="line">image_base64 = base64.b64encode(image_data).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"><span class="comment"># url与image参数二选一</span></span><br><span class="line">payload = &#123;<span class="string">&quot;image&quot;</span>: image_base64&#125;</span><br><span class="line"><span class="comment"># 上传参数</span></span><br><span class="line">response = requests.post(url, headers=headers, json=payload)</span><br><span class="line"><span class="comment"># 打印识别的信息</span></span><br><span class="line">response = response.text</span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
+<p>最后识别出来的结果类似于下面的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;result&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;sex&quot;: &quot;男&quot;,</span><br><span class="line">    &quot;ethnicity&quot;: &quot;汉&quot;,</span><br><span class="line">    &quot;birth&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;address&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;number&quot;: &quot;XXX&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果想获取其中的某一个值的话需要先转换为字典，通过字典再进行单一读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为字典</span></span><br><span class="line">test = json.loads(response)</span><br><span class="line"><span class="comment"># 从字典中获取相应的值</span></span><br><span class="line">username = test[<span class="string">&#x27;result&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>到这里就已经完成了这个项目</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>上面已经简单说明了如何调用相应的接口去识别身份证了，下面我把源码给到大家吧，大家可以作为参考哦，下面是使用python+flask+redis+华为云OCR实现的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> flask_redis <span class="keyword">import</span> FlaskRedis</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis连接地址</span></span><br><span class="line">REDIS_URL = <span class="string">&#x27;redis://127.0.0.1:6379/0&#x27;</span></span><br><span class="line"><span class="comment"># 实例化redis</span></span><br><span class="line">rd = FlaskRedis(app, decode_responses=<span class="literal">True</span>)	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">	<span class="comment"># 获取redis缓存中token</span></span><br><span class="line">    token = rd.get(<span class="string">&#x27;token&#x27;</span>)</span><br><span class="line">    <span class="comment"># 判断redis中是否有token值，有则直接使用，没有则获取token值并写入redis中</span></span><br><span class="line">    <span class="keyword">if</span> token <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        url = <span class="string">&quot;https://iam.cn-north-4.myhuaweicloud.com/v3/auth/tokens&quot;</span></span><br><span class="line">        headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line">        payload = &#123;</span><br><span class="line">            <span class="string">&quot;auth&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;identity&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;methods&quot;</span>: [</span><br><span class="line">                        <span class="string">&quot;password&quot;</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="string">&quot;password&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;user&quot;</span>: &#123;</span><br><span class="line">                            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;password&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;domain&quot;</span>: &#123;</span><br><span class="line">                                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;scope&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;project&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cn-north-4&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        response = requests.post(url, headers=headers, json=payload)</span><br><span class="line">        requst = response.ok</span><br><span class="line">        <span class="comment"># 判断是否获取token值成功</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> requst:</span><br><span class="line">            error = <span class="string">&quot;获取token失败&quot;</span></span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">        <span class="comment"># 从返回值中获取token值    </span></span><br><span class="line">        token = response.headers[<span class="string">&#x27;X-Subject-Token&#x27;</span>]</span><br><span class="line">        <span class="comment"># 在redis添加token值，下次不再调用，并设置缓存时间为24小时</span></span><br><span class="line">        relue = rd.<span class="built_in">set</span>(<span class="string">&#x27;token&#x27;</span>, token, ex=<span class="number">60</span> * <span class="number">1440</span>)</span><br><span class="line">        <span class="comment"># 判断是否再redis中添加token值成功</span></span><br><span class="line">        <span class="keyword">if</span> relue != <span class="number">1</span>:</span><br><span class="line">            error = <span class="string">&quot;写入错误&quot;</span></span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">	</span><br><span class="line">    url = <span class="string">&quot;https://ocr.cn-north-4.myhuaweicloud.com/v2/cn-north-4/ocr/id-card&quot;</span></span><br><span class="line">    headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>, <span class="string">&#x27;X-Auth-Token&#x27;</span>: token&#125;</span><br><span class="line"></span><br><span class="line">    imagepath = <span class="string">r&#x27;./static/XXX.jpg&#x27;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(imagepath, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> bin_data:</span><br><span class="line">        image_data = bin_data.read()</span><br><span class="line">    image_base64 = base64.b64encode(image_data).decode(<span class="string">&quot;utf-8&quot;</span>)  <span class="comment"># 使用图片的base64编码</span></span><br><span class="line">    payload = &#123;<span class="string">&quot;image&quot;</span>: image_base64&#125;  <span class="comment"># url与image参数二选一</span></span><br><span class="line">    response = requests.post(url, headers=headers, json=payload)</span><br><span class="line">    <span class="comment"># 判断是否识别成功</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> response.ok:</span><br><span class="line">        error = <span class="string">&quot;识别失败，请联系管理员&quot;</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">    response = response.text</span><br><span class="line">    test = json.loads(response)</span><br><span class="line">    username = test[<span class="string">&#x27;result&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=username)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>云计算</category>
+        <category>python</category>
       </categories>
       <tags>
+        <tag>技术笔记</tag>
         <tag>云计算</tag>
-        <tag>随笔</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -3582,146 +3722,6 @@ MySql：经典安装 MySql 5.6
         <tag>云计算</tag>
         <tag>python</tag>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python实现AI图像识别-身份证识别</title>
-    <url>/2024/12/28/2024122801/</url>
-    <content><![CDATA[<p>图像识别说白了就是把一张照片上面的文字进行提取，提供工作效率</p>
-<span id="more"></span>
-<h1 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h1><p>身份证识别主要是把一张身份证照片上面的文字信息进行提取，不用再使用人工去手动抄写了，下面给大家说的这个身份识别主要是使用python+flask+华为云OCR进行实现的。</p>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol>
-<li>申请华为云OCR接口</li>
-<li>获取token</li>
-<li>调用身份证识别接口</li>
-<li>提取身份证信息</li>
-</ol>
-<h1 id="申请华为云OCR接口"><a href="#申请华为云OCR接口" class="headerlink" title="申请华为云OCR接口"></a>申请华为云OCR接口</h1><p>图像识别主要使用的就是华为云OCR平台申请的接口，访问<a href="https://www.huaweicloud.com/">华为云</a>,访问申请的地址后点击菜单栏中的“控制台”，点击后会进入登录页面。<br><br></p>
-<script> document.write('<img src="'+ imgurl +'1735390928/b0c1befb904cc197a0c8a122c57965ef.png">'); </script><br>
-
-<script> document.write('<img src="'+ imgurl +'1735390928/a0d36bcb94af17c4c4d4f594efd4c104.png">'); </script><br>
-
-<p>登录成功后进入控制台，依次单击“服务列表”-“人工智能”-“文字识别OCR”</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/33ab766af91d413fe6d75ae8d4074cd7.png">'); </script><br>
-
-<p>进入后点击身份证识别后面的“开通服务”即可，（这里需要主要的是免费开通的身份证识别服务仅有1000次的免费调用次数，超过次数将会收费，建议购买套餐包，购买可以找我，我可以给优惠哦）</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/7d21941155eb2da1ae438965dd5c4fdd.png">'); </script><br>
-
-<h1 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h1><p>获取token值时你需要知道你的以下信息：</p>
-<ol>
-<li>IAM用户所属账号名</li>
-<li>IAM用户名</li>
-<li>IAM用户的登录密码</li>
-<li>IAM用户所属账号的项目名称</li>
-</ol>
-<p>首先就是获取IAM用户所属账号名，IAM用户所属账号名为你登陆的那个账号</p>
-<p>获取IAM用户名，选择右上角“用户名”-点击“统一身份认证”</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/388e53f47436cfc19c9bd88970ceafb3.png">'); </script><br>
-
-<p>里面的用户即为IAM用户名</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/e13b4ea6904a63fca1e441c31fa7cb0c.png">'); </script><br>
-
-<p>获取IAM用户所属账号的项目名称，点击“项目”</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/58566a314a9f1691e42caa14047659aa.png">'); </script><br>
-
-<p>里面的项目很多，你只需要记录你开启OCR身份证识别区域的项目名称ID就可以了，比如我选择的北京四所以我的项目名称就是：“cn-north-4”</p>
-<script> document.write('<img src="'+ imgurl +'1735390928/3452dc9bbad70281d681a016853feb09.png">'); </script><br>
-
-<p>知道了这些信息之后，后面就是如何通过这些信息去获取token了，下面我就直接上代码了哦</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 下面url为华为云获取token的接口，这个接口基本一致，需要注意的是“iam.cn-north-4.myhuaweicloud.com”这个需要根据具体需求进行修改，不同区域项目不同</span></span><br><span class="line">url = <span class="string">&quot;https://iam.cn-north-4.myhuaweicloud.com/v3/auth/tokens&quot;</span></span><br><span class="line"><span class="comment"># 头部信息</span></span><br><span class="line">headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line"><span class="comment"># json内容，需要上传进行做验证</span></span><br><span class="line">payload = &#123;</span><br><span class="line">            <span class="string">&quot;auth&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;identity&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;methods&quot;</span>: [</span><br><span class="line">                        <span class="string">&quot;password&quot;</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="string">&quot;password&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;user&quot;</span>: &#123;</span><br><span class="line">                        <span class="comment"># name值为你的IAM账号名</span></span><br><span class="line">                            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="comment"># password值为你的IAM密码</span></span><br><span class="line">                            <span class="string">&quot;password&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;domain&quot;</span>: &#123;</span><br><span class="line">                            <span class="comment"># name值为你的主账号的账号名</span></span><br><span class="line">                                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;scope&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;project&quot;</span>: &#123;</span><br><span class="line">                    <span class="comment"># name值为你的项目ID</span></span><br><span class="line">                        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cn-north-4&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment"># 使用POST上传头部内容和body内容</span></span><br><span class="line">response = requests.post(url, headers=headers, json=payload)</span><br><span class="line"><span class="comment"># 获取token值</span></span><br><span class="line">token = response.headers[<span class="string">&#x27;X-Subject-Token&#x27;</span>]</span><br><span class="line"><span class="comment"># 打印token值</span></span><br><span class="line"><span class="built_in">print</span>(token)</span><br></pre></td></tr></table></figure>
-<p>打印出来的值是类似于下面这种的字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">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UiOiJvcF9nYXRlZF9jaWUiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9zZnN0dXJibyIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX3Zwbl92Z3dfaW50bCIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2h2X3ZlbmRvciIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2FfY24tbm9ydGgtNGUiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9hX2NuLW5vcnRoLTRkIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfZWNzX2dwdV9nNnYiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9JRUMiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9kYXl1X2RsbV9jbHVzdGVyIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfaW50bF9jb25maWd1cmF0aW9uIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfY2NlX21jcF90aGFpIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZW456Rfc2VydmljZXN0YWdlX21ncl9kdG0iLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9hX2NuLW5vcnRoLTRmIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfdWdvX3B1YmxpY3Rlc3QiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9tdGQiLCJpZCI6IjAifSx7Im5hbWUiOiJvcF9nYXRlZF9lY3NfZ3B1X2c1ciIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX3drc19rcCIsImlkIjoiMCJ9LHsibmFtZSI6Im9wX2dhdGVkX2NjaV9rdW5wZW5nIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfcmlfZHdzIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfdnBjX2Zsb3dfbG9nIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfYXRjIiwiaWQiOiIwIn0seyJuYW1lIjoib3BfZ2F0ZWRfYWFkX2JldGFfaWRjIiwiaWQiOiIwIn0seyJuY456W1lIjoib3Bf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-ZIS2UdDK-q7gBsR3mT2LRqjQ+J6vpcCzAe6v71IHAf77lgE+vwg7f6qOfhYjRNB9kSC2L1YxJ1eS9j5pzuqlnK+9BOv2U3BIaKsP9yNiP-luS78LzwuEG2rD9OInMst7bCr7HeWT2bZ8gCT4567BvsONvGqVvr3AA==</span><br></pre></td></tr></table></figure>
-<h1 id="调用身份证识别接口"><a href="#调用身份证识别接口" class="headerlink" title="调用身份证识别接口"></a>调用身份证识别接口</h1><p>下面就是调用识别接口，调用这个接口需要了解以下信息</p>
-<ol>
-<li>URL</li>
-<li>Header参数</li>
-<li>Body参数</li>
-</ol>
-<p>首先是<strong>URL</strong><br>POST https:&#x2F;&#x2F;{endpoint}&#x2F;v2&#x2F;{project_id}&#x2F;ocr&#x2F;id-card</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>endpoint</td>
-<td>项目接口域名，这里还是需要确定开通服务的区域，每个区域不同的域名</td>
-</tr>
-<tr>
-<td>project_id</td>
-<td>项目ID，不出意外的话就是你上面获取token的项目ID</td>
-</tr>
-<tr>
-<td><strong>请求参数</strong></td>
-<td></td>
-</tr>
-<tr>
-<td>请求Header参数</td>
-<td></td>
-</tr>
-<tr>
-<td>参数</td>
-<td>说明</td>
-</tr>
-<tr>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr>
-<td>X-Auth-Token</td>
-<td>用户Token，就是上面获取到的token值</td>
-</tr>
-<tr>
-<td>Content-Type</td>
-<td>发送的实体的MIME类型，参数值为“application&#x2F;json”</td>
-</tr>
-<tr>
-<td>请求Body参数</td>
-<td></td>
-</tr>
-<tr>
-<td>参数</td>
-<td>说明</td>
-</tr>
-<tr>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr>
-<td>image</td>
-<td>图像数据，base64编码，要求base64编码后大小不超过10MB。图片最小边不小于15px，最长边不超过8000px。支持JPEG、JPG、PNG、BMP、TIFF格式。</td>
-</tr>
-<tr>
-<td>url</td>
-<td>图片的url路径</td>
-</tr>
-<tr>
-<td>side</td>
-<td>front：身份证人像面，back：身份证国徽面</td>
-</tr>
-<tr>
-<td>了解了上面的一系列信息之后，后面就是如何写代码了，下面就是直接代码</td>
-<td></td>
-</tr>
-</tbody></table>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="comment"># url值</span></span><br><span class="line">url = https://&#123;endpoint&#125;/v2/&#123;project_id&#125;/ocr/<span class="built_in">id</span>-card</span><br><span class="line"><span class="comment"># 上面获取到的token值</span></span><br><span class="line">token = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment"># 设置头部信息</span></span><br><span class="line">headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>, <span class="string">&#x27;X-Auth-Token&#x27;</span>: token&#125;</span><br><span class="line"><span class="comment"># 图片路径</span></span><br><span class="line">imagepath = <span class="string">r&#x27;./static/XXX.jpg&#x27;</span></span><br><span class="line"><span class="comment"># 设置图片</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(imagepath, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> bin_data:</span><br><span class="line">     image_data = bin_data.read()</span><br><span class="line"><span class="comment"># 使用图片的base64编码</span></span><br><span class="line">image_base64 = base64.b64encode(image_data).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"><span class="comment"># url与image参数二选一</span></span><br><span class="line">payload = &#123;<span class="string">&quot;image&quot;</span>: image_base64&#125;</span><br><span class="line"><span class="comment"># 上传参数</span></span><br><span class="line">response = requests.post(url, headers=headers, json=payload)</span><br><span class="line"><span class="comment"># 打印识别的信息</span></span><br><span class="line">response = response.text</span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
-<p>最后识别出来的结果类似于下面的信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;result&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;sex&quot;: &quot;男&quot;,</span><br><span class="line">    &quot;ethnicity&quot;: &quot;汉&quot;,</span><br><span class="line">    &quot;birth&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;address&quot;: &quot;XXX&quot;,</span><br><span class="line">    &quot;number&quot;: &quot;XXX&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果想获取其中的某一个值的话需要先转换为字典，通过字典再进行单一读取</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为字典</span></span><br><span class="line">test = json.loads(response)</span><br><span class="line"><span class="comment"># 从字典中获取相应的值</span></span><br><span class="line">username = test[<span class="string">&#x27;result&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]</span><br></pre></td></tr></table></figure>
-<p>到这里就已经完成了这个项目</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>上面已经简单说明了如何调用相应的接口去识别身份证了，下面我把源码给到大家吧，大家可以作为参考哦，下面是使用python+flask+redis+华为云OCR实现的</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> flask_redis <span class="keyword">import</span> FlaskRedis</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis连接地址</span></span><br><span class="line">REDIS_URL = <span class="string">&#x27;redis://127.0.0.1:6379/0&#x27;</span></span><br><span class="line"><span class="comment"># 实例化redis</span></span><br><span class="line">rd = FlaskRedis(app, decode_responses=<span class="literal">True</span>)	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">	<span class="comment"># 获取redis缓存中token</span></span><br><span class="line">    token = rd.get(<span class="string">&#x27;token&#x27;</span>)</span><br><span class="line">    <span class="comment"># 判断redis中是否有token值，有则直接使用，没有则获取token值并写入redis中</span></span><br><span class="line">    <span class="keyword">if</span> token <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        url = <span class="string">&quot;https://iam.cn-north-4.myhuaweicloud.com/v3/auth/tokens&quot;</span></span><br><span class="line">        headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line">        payload = &#123;</span><br><span class="line">            <span class="string">&quot;auth&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;identity&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;methods&quot;</span>: [</span><br><span class="line">                        <span class="string">&quot;password&quot;</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="string">&quot;password&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;user&quot;</span>: &#123;</span><br><span class="line">                            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;password&quot;</span>: <span class="string">&quot;XXX&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;domain&quot;</span>: &#123;</span><br><span class="line">                                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;XXX&quot;</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;scope&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;project&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cn-north-4&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        response = requests.post(url, headers=headers, json=payload)</span><br><span class="line">        requst = response.ok</span><br><span class="line">        <span class="comment"># 判断是否获取token值成功</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> requst:</span><br><span class="line">            error = <span class="string">&quot;获取token失败&quot;</span></span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">        <span class="comment"># 从返回值中获取token值    </span></span><br><span class="line">        token = response.headers[<span class="string">&#x27;X-Subject-Token&#x27;</span>]</span><br><span class="line">        <span class="comment"># 在redis添加token值，下次不再调用，并设置缓存时间为24小时</span></span><br><span class="line">        relue = rd.<span class="built_in">set</span>(<span class="string">&#x27;token&#x27;</span>, token, ex=<span class="number">60</span> * <span class="number">1440</span>)</span><br><span class="line">        <span class="comment"># 判断是否再redis中添加token值成功</span></span><br><span class="line">        <span class="keyword">if</span> relue != <span class="number">1</span>:</span><br><span class="line">            error = <span class="string">&quot;写入错误&quot;</span></span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">	</span><br><span class="line">    url = <span class="string">&quot;https://ocr.cn-north-4.myhuaweicloud.com/v2/cn-north-4/ocr/id-card&quot;</span></span><br><span class="line">    headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>, <span class="string">&#x27;X-Auth-Token&#x27;</span>: token&#125;</span><br><span class="line"></span><br><span class="line">    imagepath = <span class="string">r&#x27;./static/XXX.jpg&#x27;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(imagepath, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> bin_data:</span><br><span class="line">        image_data = bin_data.read()</span><br><span class="line">    image_base64 = base64.b64encode(image_data).decode(<span class="string">&quot;utf-8&quot;</span>)  <span class="comment"># 使用图片的base64编码</span></span><br><span class="line">    payload = &#123;<span class="string">&quot;image&quot;</span>: image_base64&#125;  <span class="comment"># url与image参数二选一</span></span><br><span class="line">    response = requests.post(url, headers=headers, json=payload)</span><br><span class="line">    <span class="comment"># 判断是否识别成功</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> response.ok:</span><br><span class="line">        error = <span class="string">&quot;识别失败，请联系管理员&quot;</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=error)</span><br><span class="line">    response = response.text</span><br><span class="line">    test = json.loads(response)</span><br><span class="line">    username = test[<span class="string">&#x27;result&#x27;</span>][<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;test.html&#x27;</span>, db=username)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -4930,6 +4930,57 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>python+ffmpeg视频转码转格式</title>
+    <url>/2025/01/11/2025011102/</url>
+    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
+<span id="more"></span>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
+<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
+
+<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
+<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
+<p>最后效果图：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
+
+<p>显示写出来了，后面该弄功能了</p>
+<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
+<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
+<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
+<p><strong>示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
+<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
+<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
+<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
+<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
+<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
+
+<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>python</tag>
+        <tag>ffmpeg</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自学PHP笔记(四) PHP变量和常量</title>
     <url>/2025/01/13/2025011301/</url>
     <content><![CDATA[<p>PHP中变量有普通变量、可变变量和预定义变量，而常量就是普通变量和预定义变量。</p>
@@ -5134,57 +5185,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>python+ffmpeg视频转码转格式</title>
-    <url>/2025/01/11/2025011102/</url>
-    <content><![CDATA[<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>python目前自己也是在学习当中，对python也不是特别精通，写视频转码这个东西也是自己用的到，所以自己在查阅了一些资料后写的这样一个简单工具，这个工具自己使用就可以了，用到正式环境还是有很多不足的，这个有一些不完善，也希望有懂python的大神可以给完善一下哦。废话不多说了开整。</p>
-<span id="more"></span>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>一开始在想自己去写一个视频转码的工具的时候在想是用PHP写还是用python写，最后选择python是因为在PHP中碰壁了，到现在也没能解决那个问题，PHP写完出现的BUG是在大视频转码时会存在请求超时的问题，到现在也没能解决到这个BUG，试过修改PHP配置文件中的请求时间、缓存等等一些方法都没有解决，真的是快疯掉了，后面再想办法搞一下吧，后面就想着看看Python会不会有这个问题，结果真的没这个问题。<br>既然是要写思路当然是要考虑怎么去进行视频转码，一开始想的是用Flask框架，最后想想Flask框架最后还是要在网页上访问使用麻烦，不如直接使用windows框直接就转码，直接双击代码搞定多好。最后初步定下来的就是使用python中<strong>tkinter</strong>模块去弄，直接写一个windows GUI他不香嘛。显示方式有了，后面就是转码了，怎么转码呢？查阅了很多的网站，最后决定采用<strong>FFmpeg</strong>转码工具，工具选好了后面就是写代码的事情了。后面写的过程中确实又出现了一些问题，就是选用ffmpeg模块还是调用ffmpeg程序呢？本人本身是网络工程师出身，所以对代码很敏感，遇到比较难的就会头疼，我分别查了模块和程序的使用方法，模块我参考的是：<a href="https://blog.csdn.net/sinat_37967865/article/details/102650786">【Python】ffmpeg模块处理视频、音频信息</a>这篇文章，说实话写的真不错，就是我看不懂，太深奥了，估计我再学几年python就能看懂了，博主等我哈，千万别删文章。程序我是去官网上看的文档<a href="http://www.ffmpeg.org/">ffmpeg官网</a>，这个倒是挺简单的我倒是能看懂，也发现确实可以进行视频转码，好了有了方法了那后面就是思路了。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实这个思路也是蛮简单的，无非我想要的就是双击我写的python代码就可以直接弹出一个windows窗口，然后我输入原视频地址或者路径，然后输入一个转码后的名字，然后再弄个转码按钮不就直接可以转码了。没问题思路清晰，下面就是直接开整。</p>
-<h2 id="python-tkinter制作窗口"><a href="#python-tkinter制作窗口" class="headerlink" title="python+tkinter制作窗口"></a>python+tkinter制作窗口</h2><p>首先我既然要去弄这个窗口，当然我们得知道<strong>tkinter</strong>这个模块怎么用，下面我总结了一些简单的用法<br>【<strong>示例</strong>】</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter		<span class="comment">#导入Tkubter模块</span></span><br><span class="line">test = tkinter.Tk()</span><br><span class="line">test.mainloop()</span><br></pre></td></tr></table></figure>
-<p>执行结果：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fa709be98e13c2dbe6027da3bcab34ec.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/fa709be98e13c2dbe6027da3bcab34ec.png">'); </script><br>
-
-<p>这样一个简单的windows窗口就有了，tkinter模块用法有很多，这里就不细说了，下面继续说我们的转码。</p>
-<p>首先就是先制作一个windwos窗口然后让我输入一些信息，下面是我写的windows窗口。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk	<span class="comment">#导入tkinter模块，并起别名为tk</span></span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	<span class="comment">#建立顶层控件wind</span></span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	<span class="comment">#设置窗口大小</span></span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	<span class="comment">#设置窗口标题</span></span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#创建窗格标题内容，字体，颜色</span></span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	<span class="comment">#设置标题位置</span></span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>) <span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)	<span class="comment">#创建表单名字，并设置字体、颜色、大小</span></span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)	<span class="comment">#设置表单名字位置</span></span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	<span class="comment">#建立输入的控件entry，也就是表单</span></span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)	<span class="comment">#设置控件位置</span></span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>)	<span class="comment">#设置提交按钮，并设置字体样式、大小</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)	<span class="comment">#设置按钮位置</span></span><br><span class="line">wind.mainloop()	<span class="comment">#窗口的消息循环</span></span><br></pre></td></tr></table></figure>
-<p>最后效果图：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f5d4ef70feab53dedc8cb0967d8663d2.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736581566/f5d4ef70feab53dedc8cb0967d8663d2.png">'); </script><br>
-
-<p>显示写出来了，后面该弄功能了</p>
-<h2 id="ffmpeg转码"><a href="#ffmpeg转码" class="headerlink" title="ffmpeg转码"></a>ffmpeg转码</h2><p>在写功能之前首先得学习ffmpeg怎么用，不然的话功能也写不出来</p>
-<h4 id="1-ffmpeg工具软件"><a href="#1-ffmpeg工具软件" class="headerlink" title="1. ffmpeg工具软件"></a>1. ffmpeg工具软件</h4><p>首先我们需要下载ffmpeg工具，下面是下载地址，下载的速度还算比较快，如果有觉的下载慢的，可以私聊我，我把软件包发给大家或者直接在我的资源里面下载也行<br><a href="https://www.ffmpeg.org/">FFmpeg官网地址:</a> 	<a href="https://www.ffmpeg.org/">https://www.ffmpeg.org/</a><br><a href="https://www.ffmpeg.org/download.html">FFmpeg下载地址:</a>  	<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a></p>
-<h4 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h4><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i 源文件路径及文件名称 转码后文件路径及名称</span><br></pre></td></tr></table></figure>
-<p><strong>示例：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ffmpeg -i D:\<span class="built_in">test</span>\abc.flv	D:\<span class="built_in">test</span>\abc.mp4</span><br></pre></td></tr></table></figure>
-<p>实现就是这么简单，建议大家现在系统命令行中先测试下这个工具，看看能不能达到大家的要求，大家要是想了解ffmpeg的全部用法可以去官网文档上面查看</p>
-<h2 id="python调用ffmpeg"><a href="#python调用ffmpeg" class="headerlink" title="python调用ffmpeg"></a>python调用ffmpeg</h2><p>其实相当简单，只需要在python导入OS模块就可以了，下面直接上代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="built_in">dir</span> = os.getcwd()	</span><br><span class="line"><span class="comment">#获取当前文件路径，因为我这里把ffmpeg工具放到了代码路径，所以需要获取一下当前路径，这个根据大家实际情况写</span></span><br><span class="line">dir2 = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span>	<span class="comment">#ffmpeg具体位置</span></span><br><span class="line">ff = <span class="built_in">dir</span>+<span class="built_in">dir</span>	<span class="comment">#组合路径</span></span><br><span class="line">result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"><span class="comment">#转换反斜杠为斜杠，因为获取到的路径是反斜杠的，需要转换成斜杠，转换后会发现是双斜杠，所以需要下面再转换下</span></span><br><span class="line">ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)	<span class="comment">#双斜杠转为但斜杠</span></span><br><span class="line">cmd = ff +<span class="string">&#x27; -i &#x27;</span>+<span class="string">&#x27;D:\test\abc.flv&#x27;</span> +<span class="string">&#x27; -c copy &#x27;</span> + <span class="string">&#x27;D:\test\abc.mp4&#x27;</span></span><br><span class="line"><span class="comment">#写需要执行的命令</span></span><br><span class="line">os.system(cmd)	<span class="comment">#执行系统命令，也就是进行转码</span></span><br></pre></td></tr></table></figure>
-<p>OK，执行上面代码直接进行转码，这里需要注意的是路径位置一定要对哦！<br>窗口有了，功能有了，那后面就是拼接了</p>
-<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>废话不多说直接上结果：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">wind=tk.Tk()	</span><br><span class="line">wind.geometry(<span class="string">&quot;800x400&quot;</span>)	</span><br><span class="line">wind.title(<span class="string">&quot;视频转码&quot;</span>)	</span><br><span class="line"></span><br><span class="line">title_lab=tk.Label(wind,text=<span class="string">&quot;视频转码&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">title_lab.place(x=<span class="number">350</span>,y=<span class="number">30</span>)	</span><br><span class="line"></span><br><span class="line">textlab=tk.Label(wind, text=<span class="string">&quot;请输入视频地址:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">20</span>)</span><br><span class="line">textlab.place(x=<span class="number">0</span>,y=<span class="number">100</span>)</span><br><span class="line">text_entry=tk.Entry(wind, width=<span class="number">30</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">text_entry.place(x=<span class="number">300</span>,y=<span class="number">100</span>)	</span><br><span class="line"></span><br><span class="line">mzlab=tk.Label(wind, text=<span class="string">&quot;请输入新视频名称:&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>,fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">18</span>)</span><br><span class="line">mzlab.place(x=<span class="number">0</span>,y=<span class="number">200</span>)</span><br><span class="line">mz_entry=tk.Entry(wind, width=<span class="number">30</span>,bg=<span class="string">&quot;white&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)</span><br><span class="line">mz_entry.place(x=<span class="number">300</span>,y=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面是引用了一个执行转码的方法，并声明执行结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTextInput</span>():	</span><br><span class="line">	lianjie = text_entry.get()</span><br><span class="line">	mz = mz_entry.get()</span><br><span class="line">	mz = mz + <span class="string">&#x27;.mp4&#x27;</span></span><br><span class="line">	ff = <span class="string">&#x27;/windows-ffmpeg/x64/ffmpeg.exe&#x27;</span></span><br><span class="line">	ff1 = os.getcwd()</span><br><span class="line">	ff = ff1+ff</span><br><span class="line">	result = <span class="built_in">eval</span>(<span class="built_in">repr</span>(ff).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>))</span><br><span class="line">	ff = result.replace(<span class="string">&#x27;//&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">	cmd = ff +<span class="string">&#x27; -i &#x27;</span>+lianjie+<span class="string">&#x27; -c copy &#x27;</span>+mz</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> os.system(cmd) == <span class="number">0</span>: 	<span class="comment">#判断执行结果并进行转码</span></span><br><span class="line">		test1=tk.Tk()	</span><br><span class="line">		test1.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test1.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test1,text=<span class="string">&quot;视频转码成功&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test1.mainloop()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		test2=tk.Tk()	</span><br><span class="line">		test2.geometry(<span class="string">&quot;200x100&quot;</span>)	</span><br><span class="line">		test2.title(<span class="string">&quot;&quot;</span>)	</span><br><span class="line">		title_lab=tk.Label(test2,text=<span class="string">&quot;视频转码失败&quot;</span>,font=<span class="string">&quot;仿宋 20 bold&quot;</span>)	</span><br><span class="line">		title_lab.place(x=<span class="number">0</span>,y=<span class="number">0</span>)	</span><br><span class="line">		test2.mainloop()</span><br><span class="line"></span><br><span class="line">btn=tk.Button(wind,text=<span class="string">&quot;提交&quot;</span>, font=<span class="string">&quot;仿宋 20 bold&quot;</span>, fg=<span class="string">&quot;blue&quot;</span>, width=<span class="number">8</span>,command=getTextInput)	<span class="comment">#将信息提交给上面的getTextInput方法</span></span><br><span class="line">btn.place(x=<span class="number">350</span>,y=<span class="number">300</span>)</span><br><span class="line">wind.mainloop()</span><br></pre></td></tr></table></figure>
-<p>双击python文件的话会出现两个窗口，一个是用来输入信息的窗口一个是用来显示报错信息的窗口，这个工具有待完善，希望有会python的大神可以完善下</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f172fff22a616c6b137c6c04a26b3e0a.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/f172fff22a616c6b137c6c04a26b3e0a.png">'); </script><br>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c562b684582c9b9da23c728505ceea68.png) -->
-<script> document.write('<img src="'+ imgurl +'1736581566/c562b684582c9b9da23c728505ceea68.png">'); </script><br>
-
-<p><strong>注意</strong>：这个工具需要注意的是如果你不想改代码直接用的话，就直接把ffmpeg工具和你的代码文件放到一起，还有如果你不写转码后文件路径默认会保存到存放代码文件的地方<br>源代码上传到了我的资源里面，资源地址：<a href="https://download.csdn.net/download/KH_FC/16719873">https://download.csdn.net/download/KH_FC/16719873</a></p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>python</tag>
-        <tag>ffmpeg</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自学PHP笔记 (三) 类型转换</title>
     <url>/2025/01/13/2025011302/</url>
     <content><![CDATA[<p>在真正使用PHP写项目时会经常用到不同数据类型之间进行转换，PHP中类型转换是比较简单的，只需要在变量前面加上用括号括起来的数据类型名称就可以了，数据类型转换有以下几种：</p>
@@ -5328,6 +5328,67 @@ MySql：经典安装 MySql 5.6
 <p>【<strong>示例</strong>】使用<code>gettype</code>函数输出变量类型</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$int</span> = <span class="number">0.1111</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$int</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>输出结果为：<code>double</code>也就是浮点数类型</p>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自学PHP笔记（一）PHP语法</title>
+    <url>/2025/01/13/2025011304/</url>
+    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
+<span id="more"></span>
+<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
+<ol>
+<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+输出结果为：  <code>php$test变量为 false.</code></li>
+</ol>
+<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
+<ol>
+<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
+<ol>
+<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>123</code>不会显示我注释的内容。</li>
+<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
+<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
+</ol>
+<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
+
+<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
+<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
+
+<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
+
+<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
+
+
+
+
+
 ]]></content>
       <categories>
         <category>php</category>
@@ -5600,67 +5661,6 @@ MySql：经典安装 MySql 5.6
 <p>输出结果为：<code>NULL</code><br>【<strong>提示</strong>】使用<code>unset()</code>函数将会摧毁变量，使用<code>is_null()</code>函数可以判断变量是否为空<br>【<strong>实例3</strong>】判断变量是否为空</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;张三&quot;</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">is_null</span>(<span class="variable">$a</span>))&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;变量为空&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;变量不为空&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>输出结果为：<code>变量不为空</code></p>
-]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>php</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自学PHP笔记（一）PHP语法</title>
-    <url>/2025/01/13/2025011304/</url>
-    <content><![CDATA[<h1 id="PHP基本语法"><a href="#PHP基本语法" class="headerlink" title="PHP基本语法"></a>PHP基本语法</h1><p>php使用一对特殊的标记包含php代码，与HTML代码混在一起。当服务器解析页面时，能够自动过滤出PHP脚本并进行解释，最后把生成的静态网页传递给客户端。</p>
-<span id="more"></span>
-<h2 id="1-PHP标记"><a href="#1-PHP标记" class="headerlink" title="1.PHP标记"></a>1.PHP标记</h2><p>一般情况下，PHP代码都被嵌入到HTMl文档中，PHP代码在HTML中嵌入时有以下几种方式：</p>
-<ol>
-<li>默认标记<br>默认标记是通过 “<?php" 和 "?>“ 标记进行将HTML和PHP代码进行分隔。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里写PHP代码哟</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】使用这种默认标记，可以在HTML文档中随意混合PHP和HTML代码，例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (<span class="variable">$test</span>) &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">true</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="keyword">else</span> &#123; <span class="meta">?&gt;</span></span><br><span class="line">	&lt;div&gt; <span class="variable">$test</span>变量为<span class="literal">false</span>.&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> &#125; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-输出结果为：  <code>php$test变量为 false.</code></li>
-</ol>
-<p>【<strong>注意</strong>】使用上面实例方法输出大段HTML字符串时，使用更方便比起使用<code>echo()</code>或 <code>print()</code>更方便更快。</p>
-<ol>
-<li>脚本标记<br>脚本标记是采用<code>script</code>中的<code>language</code>属性设置脚本语言为PHP进行使用的。例如：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;php&quot;</span>&gt;</span></span><br><span class="line">	#这里写PHP代码哟！</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>简写标记<br>简写标记相比较于默认标记的方式去掉了<code>php</code>关键字，方便大家书写。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">	<span class="comment">#这里写php代码哟！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>ASP标记<br>ASP标记是以类似于JAVA的方式进行书写的，通过<code>&lt;%</code>和<code>%&gt;</code>一对标记分割PHP代码。例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="comment">#这里写代码哟！</span></span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-【<strong>注意</strong>】使用这种ASP标记这种进行书写PHP代码的话，需要修改PHP配置文件<code>php.ini</code>文件，需要将<code>short_open_tag</code>和<code>asp_tags</code>这两个参数设置为<code>On</code>，考虑到这两种方式的移植性比较差，不建议使用这种方式。修改如下：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">short_open_tag = On</span><br><span class="line">asp_tags = On</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="2-PHP注释"><a href="#2-PHP注释" class="headerlink" title="2. PHP注释"></a>2. PHP注释</h2><p>一门编程语言肯定少不了写注释的，我们来看看PHP有哪些注释吧</p>
-<ol>
-<li>C++语言风格的单行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">//这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】这种单行注释方式是经常使用的，也是比较常见的注释方式<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="number">123</span>;  <span class="comment">//输出123</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>123</code>不会显示我注释的内容。</li>
-<li>Shell脚本语言风格的注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">		这里</span></span><br><span class="line"><span class="comment">		是多</span></span><br><span class="line"><span class="comment">		行注</span></span><br><span class="line"><span class="comment">		释呦！</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】多行注释主要用于代码的开始简要说明时使用<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】多行注释中不要写入代码去呦，不然的话是不生效无法基线解释的呦！！！<br>【<strong>实例</strong>】这里将PHP代码写到多行注释种，看看会怎么样<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	下面代码用来乘法计算</span></span><br><span class="line"><span class="comment">	$d = 200;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;</span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span> * <span class="variable">$d</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>0</code>	这里因为把变量<code>d</code>写到了注释里面，PHP不会解释注释里面的代码</li>
-<li>C语言风格的多行注释<br>例如：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">#这里是我写的注释呦！</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-【<strong>实例</strong>】单行注释<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-输出结果为：<code>200</code><br>【<strong>注意</strong>】单行注释的时候不要写<code>?&gt;</code>呦，不让后面的代码不会生效，会出现报错的呦！！！<br>【<strong>实例</strong>】当单行注释加入<code>?&gt;</code>会发生什么呢<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">10</span>;	<span class="comment">#这是a变量</span></span><br><span class="line">	<span class="variable">$b</span> = <span class="number">20</span>;	<span class="comment">#这是b?&gt;变量</span></span><br><span class="line">	<span class="variable">$c</span> = <span class="variable">$a</span> * <span class="variable">$b</span>; <span class="comment">#这是c变量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$c</span>;	<span class="comment">#这是输出c变量</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/8a05280c606ec9373a606746bfc365de.png) --></li>
-</ol>
-<script> document.write('<img src="'+ imgurl +'1736732490/8a05280c606ec9373a606746bfc365de.png">'); </script><br>
-
-<p>当单行注释种加入<code>?&gt;</code>结尾符时，PHP会停止解释后面的代码，后面代码就会以HTML的形式进行展现</p>
-<h2 id="3-PHP指令分隔符"><a href="#3-PHP指令分隔符" class="headerlink" title="3. PHP指令分隔符"></a>3. PHP指令分隔符</h2><p>与C、Perl等语言一样都有着同样一个分隔符<code>;</code>,放在需要分隔的语句后面，当一段PHP代码中包含了结尾符<code>?&gt;</code>则可以省略分隔符<code>;</code>，所以在PHP代码中最后一段代码可以省略分隔符，因为<code>?&gt;</code>结尾符中包含了一个分隔符。<br>【<strong>实例</strong>】正常使用分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5aaa6be44e1ff97aa0dd114a464358bf.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/5aaa6be44e1ff97aa0dd114a464358bf.png">'); </script><br>
-
-<p>【<strong>实例</strong>】最后一段代码省略分隔符</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第一行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;第二行代码&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;最后一行代码&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<!-- 输出结果为：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c94cde48638307287b4af4f83c924806.png) -->
-
-<script> document.write('<img src="'+ imgurl +'1736732490/c94cde48638307287b4af4f83c924806.png">'); </script><br>
-
-
-
-
-
 ]]></content>
       <categories>
         <category>php</category>
@@ -5970,71 +5970,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一起来看看华为云的裸金属服务器</title>
-    <url>/2025/01/13/2025011308/</url>
-    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
-<span id="more"></span>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
-
-<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
-<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
-<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
-<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
-<ul>
-<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
-<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
-<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
-<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
-<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
-<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
-</ul>
-<p><strong>图1 BMS产品架构</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
-
-<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
-<blockquote>
-<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
-</blockquote>
-<p><strong>表1 特性对比</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
-
-<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
-<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
-
-<p><strong>常用概念</strong></p>
-<ul>
-<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
-<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
-<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
-<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
-<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
-<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
-</ul>
-<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
-<ul>
-<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
-<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
-</ul>
-<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
-<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
-<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
-<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
-<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -6494,6 +6429,71 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一起来看看华为云的裸金属服务器</title>
+    <url>/2025/01/13/2025011308/</url>
+    <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
+<span id="more"></span>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/a9ef48f85b4b54f95f326fd36146d8e6.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/a9ef48f85b4b54f95f326fd36146d8e6.png">'); </script><br>
+
+<h2 id="什么叫裸金属服务器呢？"><a href="#什么叫裸金属服务器呢？" class="headerlink" title="什么叫裸金属服务器呢？"></a><strong>什么叫裸金属服务器呢？</strong></h2><p>其实这个名称是在公有云服务中出现的，公有云中如果提供的是一台虚拟机，一般叫做云服务器（或者云虚拟主机），如果提供的是一台物理机，一般叫做裸金属服务器。所以裸金属服务器的叫法是为了和云服务器做区分。</p>
+<p>裸金属服务器（Bare Metal Server，BMS）是一款兼具虚拟机弹性和物理机性能的计算类服务，为您和您的企业提供专属的云上物理服务器，为核心数据库、关键应用系统、高性能计算、大数据等业务提供卓越的计算性能以及数据安全。租户可灵活申请，按需使用。</p>
+<p>裸金属服务器的开通是自助完成的，您只需要指定具体的服务器类型、镜像、所需要的网络配置等，即可在30min内获得所需的裸金属服务器。服务器供应、运维工作交由华为云，您可以专注于业务创新。</p>
+<h2 id="产品架构"><a href="#产品架构" class="headerlink" title="产品架构"></a><strong>产品架构</strong></h2><p>通过和其他服务组合，裸金属服务器可以实现计算、存储、网络、镜像安装等功能：</p>
+<ul>
+<li>裸金属服务器在不同可用区中部署（可用区之间通过内网连接），部分可用区发生故障后不会影响同一区域内的其他可用区。</li>
+<li>可以通过虚拟私有云建立专属的网络环境，设置子网、安全组，并通过弹性公网IP实现外网链接（需带宽支持）。</li>
+<li>通过镜像服务，可以对裸金属服务器安装镜像，也可以通过私有镜像批量创建裸金属服务器，实现快速的业务部署。</li>
+<li>通过云硬盘服务实现数据存储，并通过云硬盘备份服务实现数据的备份和恢复。</li>
+<li>云监控是保持裸金属服务器可靠性、可用性和性能的重要部分，通过云监控，用户可以观察裸金属服务器资源。</li>
+<li>云备份提供对云硬盘和裸金属服务器的备份保护服务，支持基于快照技术的备份服务，并支持利用备份数据恢复服务器和磁盘的数据。</li>
+</ul>
+<p><strong>图1 BMS产品架构</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5c8c1e5a075b012da4235eb9fd555608.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/5c8c1e5a075b012da4235eb9fd555608.png">'); </script><br>
+
+<h2 id="裸金属服务器与物理机、虚拟机的功能对比"><a href="#裸金属服务器与物理机、虚拟机的功能对比" class="headerlink" title="裸金属服务器与物理机、虚拟机的功能对比"></a>裸金属服务器与物理机、虚拟机的功能对比</h2><p>裸金属服务器与物理机、虚拟机的对比如表1所示。其中，Y表示支持，N表示不支持，N&#x2F;A表示不涉及。</p>
+<blockquote>
+<p><strong>说明：</strong><br>无特性损失、无性能损失：裸金属服务器具备物理机的一切特性和优势，您的应用可以直接访问裸金属服务器的处理器和内存，无任何虚拟化开销。</p>
+</blockquote>
+<p><strong>表1 特性对比</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/86c8dd1d414e9c2d959e62bb77ca6292.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/86c8dd1d414e9c2d959e62bb77ca6292.png">'); </script><br>
+
+<h2 id="裸金属的缺点"><a href="#裸金属的缺点" class="headerlink" title="裸金属的缺点"></a>裸金属的缺点</h2><!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f81586ce770e3710b1657a54660a66a0.png) -->
+<script> document.write('<img src="'+ imgurl +'1736739333/f81586ce770e3710b1657a54660a66a0.png">'); </script><br>
+
+<p><strong>常用概念</strong></p>
+<ul>
+<li>云上的物理计算资源，即运行在华为云数据中心的裸金属服务器，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section19818434175418?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例</a>。</li>
+<li>描述裸金属服务器所在的数据中心，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0004.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">区域和可用区</a>。</li>
+<li>裸金属服务器由不同的CPU、内存、存储和网络等组成，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0003.html#bms_01_0003__section998171914438?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">实例类型</a>。</li>
+<li>裸金属服务器运行环境的模板，其中包含了特定的操作系统和一些预装的应用软件，请查看<a href="https://support.huaweicloud.com/productdesc-bms/bms_01_0002.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">镜像</a>。</li>
+<li>裸金属服务器网络类型及各自使用场景，请查看<a href="https://support.huaweicloud.com/productdesc-bms/zh-cn_topic_0069070105.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">网络</a>。</li>
+<li>实例对内和对外的服务地址，即私有IP地址和<a href="https://support.huaweicloud.com/usermanual-bms/bms_01_0011.html?fromacct=c76cea9f-f106-4938-a195-0df9b712c327&utm_source=V1g3MDY4NTY=&utm_medium=cps&utm_campaign=201905">弹性公网IP地址</a>。</li>
+</ul>
+<h2 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a><strong>访问方式</strong></h2><p>公有云提供了Web化的服务管理系统（即管理控制台）和基于HTTPS请求的API（Application Programming Interface）管理方式。</p>
+<ul>
+<li>API方式<br>如果用户需要将云平台上的裸金属服务器集成到第三方系统，用于二次开发，请使用API方式访问裸金属服务器。</li>
+<li>管理控制台方式<br>其他相关操作，请使用管理控制台方式访问裸金属服务器。如果用户已注册公有云，可直接登录管理控制台，从主页选择“计算 &gt; 裸金属服务器”。</li>
+</ul>
+<h2 id="适用于场景"><a href="#适用于场景" class="headerlink" title="适用于场景"></a>适用于场景</h2><ul>
+<li>对安全和监管高要求的场景<br>金融、证券等行业对业务部署的合规性，以及某些客户对数据安全有苛刻的要求。采用裸金属服务器部署，能够确保资源独享、数据隔离、可监管可追溯。</li>
+<li>高性能计算场景<br>超算中心、基因测序等高性能计算场景，处理的数据量大，对服务器的计算性能、稳定性、实时性等要求很高，裸金属服务器可以满足高性能计算的需求。</li>
+<li>核心数据库场景<br>某些关键的数据库业务不能部署在虚拟机上，必须通过资源专享、网络隔离、性能有保障的物理服务器承载。裸金属服务器为用户提供独享的高性能的物理服务器，可以满足此种场景下的业务需求。</li>
+<li>移动应用场景<br>围绕移动应用尤其是手机游戏的开发、测试、上线、运营，借助鲲鹏系列服务器对终端设备的兼容性优势，以鲲鹏系列裸金属服务器为基础打造一站式整体解决方案。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>华为云</tag>
       </tags>
   </entry>
   <entry>
@@ -13965,77 +13965,6 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
       </tags>
   </entry>
   <entry>
-    <title>一起聊聊等保测评工作内容以及FAQ</title>
-    <url>/2024/12/24/dbcp02/</url>
-    <content><![CDATA[<p>之前写过一篇关于等保测评的相关介绍<a href="https://blog.csdn.net/KH_FC/article/details/115628039?spm=1001.2014.3001.5502">《一起聊聊等保测评》</a>，发现大家对于等保测评这个还是很关注的，有些人问等保测评这份工工作的，也有些人问关于等保测评一些指导意见的，这篇文章我想把大家的问题来总结一下，让大家对等保测评有一个更深入的认识。</p>
-<span id="more"></span>
-<p><strong>1.首先我想先来说说等保测评师这个职位，这个职位的未来发展方向又是怎样的呢？</strong><br>在说这个职位之前呀我们先来看看这个职位的工作职责是什么？下面我找了几个知名等保测评机构的招聘信息。</p>
-<!-- ![在这里插入图片描述](ce3b0f2d76ea6be90ed8f35511c1629c.png) -->
-<!-- <img src="ce3b0f2d76ea6be90ed8f35511c1629c.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/ce3b0f2d76ea6be90ed8f35511c1629c.png">'); </script><br>
-<!-- ![在这里插入图片描述](58377dac4cf2f0d1af756d474e016220.png) -->
-<!-- <img src="58377dac4cf2f0d1af756d474e016220.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/58377dac4cf2f0d1af756d474e016220.png">'); </script><br>
-<!-- ![在这里插入图片描述](56e6adcf8a93d5654cc2b23d87a36f18.png) -->
-<!-- <img src="56e6adcf8a93d5654cc2b23d87a36f18.png"> -->
-<script> document.write('<img src="'+ imgurl +'1735387112/56e6adcf8a93d5654cc2b23d87a36f18.png">'); </script><br>
-
-<p>这类的招聘信息还是有很多的，我这里就不一个一个列举出来了，那我们先从薪资来说一说这份工作吧。<br><strong>北京、上海、广州：平均在10-15K左右<br>河北、成都、西安：平均在8-13K左右</strong><br>由以上可以看出薪资方面还是比较不错的，当然这个薪资的高低跟区域划分、个人能力等多方面因素有关，刚入门的小伙伴如果在二线或三线城市的话可能入门薪资也就在3-8K之间，更多的是5K左右，相对于二线三线城市薪资应该算是比较合适的了，像北上广深这种一线城市可能刚毕业入门的话薪资在7-10K之间，当然这只是我招聘信息结合二三线城市的情况去推断出来的，具体的薪资情况要看企业和面试情况去定的。</p>
-<p>说完薪资我们再来看看等保测评师的工作职责是什么？下面我总结了下招聘信息中所提到的一些关键性的工作职责。</p>
-<ol>
-<li>等保测评的项目实施及管理，包括等保测评的物理安全测评、主机安全测评、数据安全测评、应用安全测评、风险评估、差距分析等并编制相关报告。</li>
-<li>完成信息安全等级保护测评、信息安全咨询、信息安全风险评估等项目的技术支持工作，能够为客户提供信息安全等级保护、信息安全风险评估以及其他信息安全知识的培训；</li>
-<li>负责等级保护测评项目、信息安全风险评估项目以及其他信息安全项目的投标应答、讲解与答疑；</li>
-</ol>
-<p>看到上面的工作内容基本上已经涵盖了等保测评师的所有工作内容了，但是招聘信息一般写的都比较文字化不够直白，当然做过类似工作的肯定一看就知道是怎么回事，没有做过的看到上面内容一般就会认为这个工作不就是个文职类工作嘛，平时也就写写报告，写写投标文件啥的嘛，其实并不是这样的等保测评涵盖的工作有很多，不但你要有写作能力还要有技术能力才行的。下面我来说一说这个工作的具体工作内容</p>
-<ol>
-<li><strong>事前</strong><ul>
-<li><strong>项目方案</strong>：当销售挖掘到客户需求之后，就需要等保测评师来针对客户的具体需求来出具测评项目整体方案</li>
-<li><strong>答疑解惑</strong>：上面有了项目方案就需要给客户讲解整个项目的方案和解答客户所提出的问题。比如：方案优势、测评流程、职责划分等等一系列问题</li>
-<li><strong>招投标</strong>：配合客户测制作招标文件，投标中技术参数、偏离表等等，当然这个会有项目经理带着一起做，有些公司没有项目经理就需要自行解决啦，还有很重要的一个环节就是招投标答疑，这个是很重要的招投标的关键点，但不是所有项目都需要答疑的</li>
-</ul>
-</li>
-<li>事中<ul>
-<li><strong>项目启动会</strong>：这个项目启动会一般是在客户测进行召开的，由等保测评公司发起客户测人员参与的这样一个会议，在这个项目启动会中要将项目进行立项，明确工作内容、划分工作职责、确定工作流程、确认工作时间点、收集信息等等</li>
-<li><strong>定级、备案</strong>：这里是要协助配合客户来完成的，按照正常流程是由客户测来完成，考虑到客户测对流程不了解，所以由测评师来协助完成，在这里要明确客户测系统测评等级、需要测评的系统等等，需要编写备案表、备案报告和一些纸质的相关资料。</li>
-<li><strong>专家评审</strong>：这个专家评审是由测评公司向公安部申请，由国家专家库中派遣或抽取相应的三个专家，专家去客户测现场了解情况，了解后在相关文件中进行签字，签字完成后会由客户测拿着定级报告等材料去公安部进行备案，备案完成后会发放电子版测评证书。</li>
-<li><strong>系统测评</strong>：前面的工作都是准备工作，系统测评才是最重要的一部分，在这个模块中等保测评师需要对客户测系统进行现场测评，测评前打印测评表，按照测评表中测评项对客户的业务系统进行一条一条的查看检查，检查大项包括：物理环境、主机环境、数据库环境、应用环境、安全边界环境等等，这里是最重要的也是需要技术的，因为你需要一项一项的去的按照规则去查看他有没有配置相应的策略等等，在此你还需要对系统进行漏洞扫描、渗透测试等等一些工作。</li>
-<li><strong>整改报告</strong>：在上一步对系统测评做完测评后会先编辑制作一份整改报告，整改报告内容包含不满足的测评项以及整改建议，当然这个期间也会对客户的系统出一个大概的分数，不满足就需要客户整改后再进行一次测评，如果满足的话就直接往下进行并且告知客户测哪些项不满足。</li>
-<li><strong>测评报告</strong>：这个就是测评工作的最后一个内容了，也是需要花费大量时间去完成的一个工作了，在此你可能会有很多时间是在加班做的，因为在此期间也会其他项目去做的，这里会把所有的测评结果列出来，完成之后会交由公安部进行审核没问题最后会给到客户一份。</li>
-</ul>
-</li>
-<li>事后<br> 大家是不是以为测评都完成了就没有后续了吧，往往不是这样的看过我写的上一篇关于等保测评的同学大家都知道测评完成了之后还有一项就是公安部会不定期不定时的会抽取行业内的一些系统进行检查的，如果被抽到的了那恭喜了，你们就需要提前联系客户去再进行一次现场测评，这一次不需要出具任何纸质资料，但是测评结果要和你提交的测评报告一致，不然公安部查出后客户测以及测评机构也会受到一些处罚的。</li>
-</ol>
-<p> 以上就是测评工作的基本所有内容了，所以说这份工作并不是一份纯文职的一份工作，更多的还是需要有一些技术功底的。因为很多工作都是在客户现场做的，所以会涉及到频繁的出差的。</p>
-<p>说了职责那再来说说这个职位要有哪些能力才能从容的面对这份工作？下面是我在招聘信息中整理出来的一些要求：</p>
-<ol>
-<li>.熟悉计算机系统和网络设备的操作,至少精通一种操作系统的安全机制和配置（Windows，Linux，Unix）；熟悉数据库系统的安全机制和配置；熟悉安全协议、网络安全体系架构、安全技术和应用，熟练配置管理主流信息安全产品；</li>
-<li>对系统安全、网络安全以有深入理解,熟悉网络安全相关标准，如风险评估规范，等级保护，ISO27001等；</li>
-<li>持有网络安全等级测评证书（初级、中级、高级）和具有网络安全等级测评工作经验者或安全服务工作经验者优先；</li>
-</ol>
-<p>大致基本上就是上面的这些要求，每个公司之间的要求基本上都大差不差的，下面我来总结下具体需要哪些能力：</p>
-<ol>
-<li>首先就是你必须要有一定的网络知识的基础，比如：路由器、交换机、防火墙等设备的配置和工作原理。</li>
-<li>熟悉服务器版本的操作系统，比如：Centos、Ubuntu等liunx操作系统，windows server 2012 R2、windows sevrer 2016等windows操作系统，甚至你还要熟悉AIX系统和unix操作系统，以及国产操作系统如麒麟、UOS等等。</li>
-<li>要熟悉数据库系统，如MySql、SQL server、DB2、Oracle等数据库安全配置以及使用。</li>
-<li>对各类攻击性行为的工作原理以及防护防护方法方式有一定的理解和熟知，比如：SQL注入、木马、勒索病毒等等</li>
-<li>要对国家网络安全的相关标准有一定的了解或熟悉，比如ISO27001、网络安全等级保护基本要求等等，都要有一定的熟悉。</li>
-<li>写文件比较多当然要有一定的写作功底。</li>
-</ol>
-<p>以上就是我总结的一些基础，除了以上的能力之外可能还需要很多其他的能力，所需能力基本上就这些，大家有需要补充的可以告诉我我来补充。</p>
-<p>总结一下吧，这份工作呢整体来说还是很不错的，也有较大的成长空间，涉及的面相对来说也比较广，各方面都可以涉及的到，对于应届生刚步入社会不知往哪个方向发展，可以考虑先来做等保测评师通过这份工作来积累经验和了解各个方向的利弊，选择后续自己发展的一个重点，当然后续继续在这方面发展也是完全不错的，这份工作和其他IT行业的工作类似都是需要有证书和能力来提升自己的薪资，从事这个工作的建议大家都去考测评师证书，很多企业入门都是要求有这个证书的。</p>
-<p><strong>2.企业业务系统部署在公有云了或者托管到了运营商的IDC机房是不是就不需要做等保了？</strong><br>首先来说下哈不管是你托管到别人的机房还是把业务系统部署到了公有云都是需要做等保测评的，根据“谁运营谁负责，谁使用谁负责，谁主管谁负责”的原则，该系统责任主体还是属于网络运营者自己，所以还是得承担相应的网络安全责任，该进行系统定级的还是得定级，该做等保的还是得做等保。<br>系统上云或托管后，并不是安全责任主体转移，只是系统所在机房地址的变更，当然在公有云模式下，Iaas、Paas、Saas不同模式相应的安全责任会有些区别，但是并不是没有责任。部署到公有云或者IDC机房当中只不过是底层资源是已经过了等保测评的，但整体的应用你还是没有过等保测评，所以还是要做的，流程还是哪些流程，不过就是有一部分不需要由自己来负责了，只需要把自己负责的一部分做好防护就可以了。<br><strong>3.系统定级是不是越低越好，定的低了所需的安全就少一些，这样就会减少很多资金投入了？</strong><br>这肯定是不对的，最终定级是根据受侵害的客体以及对客体侵害的程度来确定的，以事实为根据，而不是主观随意定级。定级低了，表面上要求更容易满足，但相应的防护措施也相对不足，万一你的系统不小心被攻击破坏造成一定不良影响，在主管部门进行责任认定追查时，很有可能就会因为系统定级不合理，安全责任没有履行到位而被处罚。<br><strong>4.只要保证不出事，是不是不做等保测评也可以？</strong><br>只要是需要做的就不能不做，《中华人民共和国网络安全法》第二十一条 国家实行网络安全等级保护制度。网络运营者应当按照网络安全等级保护制度的要求，履行下列安全保护义务，保障网络免受干扰、破坏或者未经授权的访问，防止网络数据泄露或者被窃取、篡改：（五）法律、行政法规规定的其他义务。不做等保就属于第五个行为，国内目前已经有公开报道的因没有落实等级保护制度而被处罚的真实案例。所以等保及时去做，不要等。<br><strong>5.系统在内网，数据不出公司是不是就可以不用做等保测评了？</strong><br>这个肯定是不对的，首先所有非涉密系统都属于等级保护范畴，和系统在外网还是内网没有关系。其次在内网的系统往往其网络安全技术措施做的并不好，甚至不少系统已经发生了安全事件。所以不论系统在内网还是外网都得及时开展等保工作。<br><strong>6.做等保测评就意味着一定要去整改吗？会不会花费很多资金来做整改？</strong><br>这个不一定，整改花多少钱取决于你的信息系统等级、系统现有的安全防护措施状况以及网络运营者对测评分数的期望值，如果信息系统在建设阶段，采取了完备的安全技术手段，整改工作不一定要花很多钱甚至不花钱。<br><strong>7.信息系统上云就安全了？</strong><br>很多单位认为网站和信息系统上云后就安全了，等保不用做了。这样是不对的，信息系统是否上云，安全责任主体都不会变。各类云平台只提供平台和简单的安全措施，安全责任主体单位还是要按等保要求落实相应的安全工作，只是物理和环境安全等部分安全工作由云平台承担。</p>
-]]></content>
-      <categories>
-        <category>安全</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>等保测评</tag>
-        <tag>安全</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一起聊聊等保测评</title>
     <url>/2024/12/24/dbcp01/</url>
     <content><![CDATA[<p>现在好多企业里面好像都在搞这个等保测评，这个等保测评终究是个什么东西呢？那企业为什么要做这个等保测评呢？做完之后对企业又有什么帮助呢？然后就是哪些企业需要做等保测呢？甚至很多企业做了很多次等保测评最后都不太了解这个等保测评，那今天就让我们一起聊聊这个神话般的等保测评吧！</p>
@@ -14116,6 +14045,77 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
 <script> document.write('<img src="'+ imgurl +'1735387015/06edf1acf742742636197e0039343007.png">'); </script><br>
 
 <p>想不起再给大家说哪些了？大家有关于等保测评的问题可以直接评论区问？一般都是会回复的</p>
+]]></content>
+      <categories>
+        <category>安全</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>等保测评</tag>
+        <tag>安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一起聊聊等保测评工作内容以及FAQ</title>
+    <url>/2024/12/24/dbcp02/</url>
+    <content><![CDATA[<p>之前写过一篇关于等保测评的相关介绍<a href="https://blog.csdn.net/KH_FC/article/details/115628039?spm=1001.2014.3001.5502">《一起聊聊等保测评》</a>，发现大家对于等保测评这个还是很关注的，有些人问等保测评这份工工作的，也有些人问关于等保测评一些指导意见的，这篇文章我想把大家的问题来总结一下，让大家对等保测评有一个更深入的认识。</p>
+<span id="more"></span>
+<p><strong>1.首先我想先来说说等保测评师这个职位，这个职位的未来发展方向又是怎样的呢？</strong><br>在说这个职位之前呀我们先来看看这个职位的工作职责是什么？下面我找了几个知名等保测评机构的招聘信息。</p>
+<!-- ![在这里插入图片描述](ce3b0f2d76ea6be90ed8f35511c1629c.png) -->
+<!-- <img src="ce3b0f2d76ea6be90ed8f35511c1629c.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/ce3b0f2d76ea6be90ed8f35511c1629c.png">'); </script><br>
+<!-- ![在这里插入图片描述](58377dac4cf2f0d1af756d474e016220.png) -->
+<!-- <img src="58377dac4cf2f0d1af756d474e016220.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/58377dac4cf2f0d1af756d474e016220.png">'); </script><br>
+<!-- ![在这里插入图片描述](56e6adcf8a93d5654cc2b23d87a36f18.png) -->
+<!-- <img src="56e6adcf8a93d5654cc2b23d87a36f18.png"> -->
+<script> document.write('<img src="'+ imgurl +'1735387112/56e6adcf8a93d5654cc2b23d87a36f18.png">'); </script><br>
+
+<p>这类的招聘信息还是有很多的，我这里就不一个一个列举出来了，那我们先从薪资来说一说这份工作吧。<br><strong>北京、上海、广州：平均在10-15K左右<br>河北、成都、西安：平均在8-13K左右</strong><br>由以上可以看出薪资方面还是比较不错的，当然这个薪资的高低跟区域划分、个人能力等多方面因素有关，刚入门的小伙伴如果在二线或三线城市的话可能入门薪资也就在3-8K之间，更多的是5K左右，相对于二线三线城市薪资应该算是比较合适的了，像北上广深这种一线城市可能刚毕业入门的话薪资在7-10K之间，当然这只是我招聘信息结合二三线城市的情况去推断出来的，具体的薪资情况要看企业和面试情况去定的。</p>
+<p>说完薪资我们再来看看等保测评师的工作职责是什么？下面我总结了下招聘信息中所提到的一些关键性的工作职责。</p>
+<ol>
+<li>等保测评的项目实施及管理，包括等保测评的物理安全测评、主机安全测评、数据安全测评、应用安全测评、风险评估、差距分析等并编制相关报告。</li>
+<li>完成信息安全等级保护测评、信息安全咨询、信息安全风险评估等项目的技术支持工作，能够为客户提供信息安全等级保护、信息安全风险评估以及其他信息安全知识的培训；</li>
+<li>负责等级保护测评项目、信息安全风险评估项目以及其他信息安全项目的投标应答、讲解与答疑；</li>
+</ol>
+<p>看到上面的工作内容基本上已经涵盖了等保测评师的所有工作内容了，但是招聘信息一般写的都比较文字化不够直白，当然做过类似工作的肯定一看就知道是怎么回事，没有做过的看到上面内容一般就会认为这个工作不就是个文职类工作嘛，平时也就写写报告，写写投标文件啥的嘛，其实并不是这样的等保测评涵盖的工作有很多，不但你要有写作能力还要有技术能力才行的。下面我来说一说这个工作的具体工作内容</p>
+<ol>
+<li><strong>事前</strong><ul>
+<li><strong>项目方案</strong>：当销售挖掘到客户需求之后，就需要等保测评师来针对客户的具体需求来出具测评项目整体方案</li>
+<li><strong>答疑解惑</strong>：上面有了项目方案就需要给客户讲解整个项目的方案和解答客户所提出的问题。比如：方案优势、测评流程、职责划分等等一系列问题</li>
+<li><strong>招投标</strong>：配合客户测制作招标文件，投标中技术参数、偏离表等等，当然这个会有项目经理带着一起做，有些公司没有项目经理就需要自行解决啦，还有很重要的一个环节就是招投标答疑，这个是很重要的招投标的关键点，但不是所有项目都需要答疑的</li>
+</ul>
+</li>
+<li>事中<ul>
+<li><strong>项目启动会</strong>：这个项目启动会一般是在客户测进行召开的，由等保测评公司发起客户测人员参与的这样一个会议，在这个项目启动会中要将项目进行立项，明确工作内容、划分工作职责、确定工作流程、确认工作时间点、收集信息等等</li>
+<li><strong>定级、备案</strong>：这里是要协助配合客户来完成的，按照正常流程是由客户测来完成，考虑到客户测对流程不了解，所以由测评师来协助完成，在这里要明确客户测系统测评等级、需要测评的系统等等，需要编写备案表、备案报告和一些纸质的相关资料。</li>
+<li><strong>专家评审</strong>：这个专家评审是由测评公司向公安部申请，由国家专家库中派遣或抽取相应的三个专家，专家去客户测现场了解情况，了解后在相关文件中进行签字，签字完成后会由客户测拿着定级报告等材料去公安部进行备案，备案完成后会发放电子版测评证书。</li>
+<li><strong>系统测评</strong>：前面的工作都是准备工作，系统测评才是最重要的一部分，在这个模块中等保测评师需要对客户测系统进行现场测评，测评前打印测评表，按照测评表中测评项对客户的业务系统进行一条一条的查看检查，检查大项包括：物理环境、主机环境、数据库环境、应用环境、安全边界环境等等，这里是最重要的也是需要技术的，因为你需要一项一项的去的按照规则去查看他有没有配置相应的策略等等，在此你还需要对系统进行漏洞扫描、渗透测试等等一些工作。</li>
+<li><strong>整改报告</strong>：在上一步对系统测评做完测评后会先编辑制作一份整改报告，整改报告内容包含不满足的测评项以及整改建议，当然这个期间也会对客户的系统出一个大概的分数，不满足就需要客户整改后再进行一次测评，如果满足的话就直接往下进行并且告知客户测哪些项不满足。</li>
+<li><strong>测评报告</strong>：这个就是测评工作的最后一个内容了，也是需要花费大量时间去完成的一个工作了，在此你可能会有很多时间是在加班做的，因为在此期间也会其他项目去做的，这里会把所有的测评结果列出来，完成之后会交由公安部进行审核没问题最后会给到客户一份。</li>
+</ul>
+</li>
+<li>事后<br> 大家是不是以为测评都完成了就没有后续了吧，往往不是这样的看过我写的上一篇关于等保测评的同学大家都知道测评完成了之后还有一项就是公安部会不定期不定时的会抽取行业内的一些系统进行检查的，如果被抽到的了那恭喜了，你们就需要提前联系客户去再进行一次现场测评，这一次不需要出具任何纸质资料，但是测评结果要和你提交的测评报告一致，不然公安部查出后客户测以及测评机构也会受到一些处罚的。</li>
+</ol>
+<p> 以上就是测评工作的基本所有内容了，所以说这份工作并不是一份纯文职的一份工作，更多的还是需要有一些技术功底的。因为很多工作都是在客户现场做的，所以会涉及到频繁的出差的。</p>
+<p>说了职责那再来说说这个职位要有哪些能力才能从容的面对这份工作？下面是我在招聘信息中整理出来的一些要求：</p>
+<ol>
+<li>.熟悉计算机系统和网络设备的操作,至少精通一种操作系统的安全机制和配置（Windows，Linux，Unix）；熟悉数据库系统的安全机制和配置；熟悉安全协议、网络安全体系架构、安全技术和应用，熟练配置管理主流信息安全产品；</li>
+<li>对系统安全、网络安全以有深入理解,熟悉网络安全相关标准，如风险评估规范，等级保护，ISO27001等；</li>
+<li>持有网络安全等级测评证书（初级、中级、高级）和具有网络安全等级测评工作经验者或安全服务工作经验者优先；</li>
+</ol>
+<p>大致基本上就是上面的这些要求，每个公司之间的要求基本上都大差不差的，下面我来总结下具体需要哪些能力：</p>
+<ol>
+<li>首先就是你必须要有一定的网络知识的基础，比如：路由器、交换机、防火墙等设备的配置和工作原理。</li>
+<li>熟悉服务器版本的操作系统，比如：Centos、Ubuntu等liunx操作系统，windows server 2012 R2、windows sevrer 2016等windows操作系统，甚至你还要熟悉AIX系统和unix操作系统，以及国产操作系统如麒麟、UOS等等。</li>
+<li>要熟悉数据库系统，如MySql、SQL server、DB2、Oracle等数据库安全配置以及使用。</li>
+<li>对各类攻击性行为的工作原理以及防护防护方法方式有一定的理解和熟知，比如：SQL注入、木马、勒索病毒等等</li>
+<li>要对国家网络安全的相关标准有一定的了解或熟悉，比如ISO27001、网络安全等级保护基本要求等等，都要有一定的熟悉。</li>
+<li>写文件比较多当然要有一定的写作功底。</li>
+</ol>
+<p>以上就是我总结的一些基础，除了以上的能力之外可能还需要很多其他的能力，所需能力基本上就这些，大家有需要补充的可以告诉我我来补充。</p>
+<p>总结一下吧，这份工作呢整体来说还是很不错的，也有较大的成长空间，涉及的面相对来说也比较广，各方面都可以涉及的到，对于应届生刚步入社会不知往哪个方向发展，可以考虑先来做等保测评师通过这份工作来积累经验和了解各个方向的利弊，选择后续自己发展的一个重点，当然后续继续在这方面发展也是完全不错的，这份工作和其他IT行业的工作类似都是需要有证书和能力来提升自己的薪资，从事这个工作的建议大家都去考测评师证书，很多企业入门都是要求有这个证书的。</p>
+<p><strong>2.企业业务系统部署在公有云了或者托管到了运营商的IDC机房是不是就不需要做等保了？</strong><br>首先来说下哈不管是你托管到别人的机房还是把业务系统部署到了公有云都是需要做等保测评的，根据“谁运营谁负责，谁使用谁负责，谁主管谁负责”的原则，该系统责任主体还是属于网络运营者自己，所以还是得承担相应的网络安全责任，该进行系统定级的还是得定级，该做等保的还是得做等保。<br>系统上云或托管后，并不是安全责任主体转移，只是系统所在机房地址的变更，当然在公有云模式下，Iaas、Paas、Saas不同模式相应的安全责任会有些区别，但是并不是没有责任。部署到公有云或者IDC机房当中只不过是底层资源是已经过了等保测评的，但整体的应用你还是没有过等保测评，所以还是要做的，流程还是哪些流程，不过就是有一部分不需要由自己来负责了，只需要把自己负责的一部分做好防护就可以了。<br><strong>3.系统定级是不是越低越好，定的低了所需的安全就少一些，这样就会减少很多资金投入了？</strong><br>这肯定是不对的，最终定级是根据受侵害的客体以及对客体侵害的程度来确定的，以事实为根据，而不是主观随意定级。定级低了，表面上要求更容易满足，但相应的防护措施也相对不足，万一你的系统不小心被攻击破坏造成一定不良影响，在主管部门进行责任认定追查时，很有可能就会因为系统定级不合理，安全责任没有履行到位而被处罚。<br><strong>4.只要保证不出事，是不是不做等保测评也可以？</strong><br>只要是需要做的就不能不做，《中华人民共和国网络安全法》第二十一条 国家实行网络安全等级保护制度。网络运营者应当按照网络安全等级保护制度的要求，履行下列安全保护义务，保障网络免受干扰、破坏或者未经授权的访问，防止网络数据泄露或者被窃取、篡改：（五）法律、行政法规规定的其他义务。不做等保就属于第五个行为，国内目前已经有公开报道的因没有落实等级保护制度而被处罚的真实案例。所以等保及时去做，不要等。<br><strong>5.系统在内网，数据不出公司是不是就可以不用做等保测评了？</strong><br>这个肯定是不对的，首先所有非涉密系统都属于等级保护范畴，和系统在外网还是内网没有关系。其次在内网的系统往往其网络安全技术措施做的并不好，甚至不少系统已经发生了安全事件。所以不论系统在内网还是外网都得及时开展等保工作。<br><strong>6.做等保测评就意味着一定要去整改吗？会不会花费很多资金来做整改？</strong><br>这个不一定，整改花多少钱取决于你的信息系统等级、系统现有的安全防护措施状况以及网络运营者对测评分数的期望值，如果信息系统在建设阶段，采取了完备的安全技术手段，整改工作不一定要花很多钱甚至不花钱。<br><strong>7.信息系统上云就安全了？</strong><br>很多单位认为网站和信息系统上云后就安全了，等保不用做了。这样是不对的，信息系统是否上云，安全责任主体都不会变。各类云平台只提供平台和简单的安全措施，安全责任主体单位还是要按等保要求落实相应的安全工作，只是物理和环境安全等部分安全工作由云平台承担。</p>
 ]]></content>
       <categories>
         <category>安全</category>
