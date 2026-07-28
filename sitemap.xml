@@ -587,34 +587,6 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/python/</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blxtcloud.github.io/tags/pip/</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blxtcloud.github.io/tags/%E5%8C%BB%E7%96%97/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -629,6 +601,34 @@
   </url>
   
   <url>
+    <loc>https://blxtcloud.github.io/tags/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/python/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/schedule/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blxtcloud.github.io/tags/pip/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blxtcloud.github.io/tags/windwos/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -636,14 +636,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>https://blxtcloud.github.io/tags/nginx/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/nginx/</loc>
+    <loc>https://blxtcloud.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -671,14 +671,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/php/</loc>
+    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/tags/ffmpeg/</loc>
+    <loc>https://blxtcloud.github.io/tags/php/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -778,14 +778,14 @@
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/python/</loc>
+    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blxtcloud.github.io/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://blxtcloud.github.io/categories/python/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
