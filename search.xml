@@ -5864,115 +5864,6 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
-    <title>DNS域名服务及常用国内DNS服务器地址</title>
-    <url>/2025/01/13/2025011307/</url>
-    <content><![CDATA[<h2 id="DNS域名服务"><a href="#DNS域名服务" class="headerlink" title="DNS域名服务"></a>DNS域名服务</h2><h3 id="DNS服务器分类"><a href="#DNS服务器分类" class="headerlink" title="DNS服务器分类"></a>DNS服务器分类</h3><p><strong>缓存域名服务器</strong></p>
-<ol>
-<li>也称为高速缓存服务器</li>
-<li>通过向其他域名服务器查询获得域名 -&gt; IP 地址记录</li>
-<li>将域名查询结果缓存到本地，提高重复查询时的速度<span id="more"></span></li>
-</ol>
-<p><strong>主域名服务器</strong></p>
-<ol>
-<li>特定 DNS 区域的官方服务器，具有唯一性</li>
-<li>负责维护该区域内所有域名 -&gt; IP 地址的映射记录</li>
-</ol>
-<p><strong>从域名服务器</strong></p>
-<ol>
-<li>也称为辅助域名服务器</li>
-<li>其维护的域名 -&gt; IP 地址记录来源于主域名服务器</li>
-</ol>
-<h2 id="搭建DNS服务器"><a href="#搭建DNS服务器" class="headerlink" title="搭建DNS服务器"></a>搭建DNS服务器</h2><h3 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@wpt ~]# yum install <span class="built_in">bind</span> bind-chroot bind-utils -y</span><br></pre></td></tr></table></figure>
-<h3 id="配置文件介绍"><a href="#配置文件介绍" class="headerlink" title="配置文件介绍"></a>配置文件介绍</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用BIND软件构建域名服务是，主要涉及两种类型的配置文件：主配置文件和区域数据文件。其中，主配置文件用于设置named服务的全局选项、注册区域及访问控制等各种运行参数；区域数据文件用于保存 DNS 解析记录的数据文件（正向或反向记录）。</span><br><span class="line">BIND配置文件保存在两个位置：</span><br><span class="line">/etc/named.conf BIND服务主配置文件</span><br><span class="line">/var/named/ zone文件（域的dns信息）</span><br><span class="line">如果安装了bind-chroot，BIND会被封装到一个伪根目录内，原先的文件配置文件的路径位置变为：</span><br><span class="line">/var/named/chroot/etc/named.conf ----BIND服务主配置文件</span><br><span class="line">/var/named/chroot/var/named/ ---------zone文件</span><br></pre></td></tr></table></figure>
-<h3 id="复制配置相关文件"><a href="#复制配置相关文件" class="headerlink" title="复制配置相关文件"></a>复制配置相关文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[root@wpt ~]# <span class="built_in">cp</span> -rv /usr/share/doc/bind-9.11.4/sample/etc/* /var/named/chroot/etc/</span><br><span class="line">[root@wpt ~]#  <span class="built_in">cp</span> -rv /usr/share/doc/bind-9.11.4/sample/var/* /var/named/chroot/var/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bind-chroot安装好之后不会有预制的配置文件，但是在BIND的文档文件夹内（/usr/share/doc/bind-9.11.4），BIND为我们提供了配置文件模板，我们可以直接拷贝过来：</span><br><span class="line"><span class="comment"># 拷贝bind相关文件,准备 bind chroot 环境</span></span><br><span class="line"><span class="built_in">cp</span> -R /usr/share/doc/bind-*/sample/var/named/* /var/named/chroot/var/named/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /etc/named.conf 拷贝到 bind chroot目录</span></span><br><span class="line"><span class="comment"># -p 复制后目标文件保留源文件的属性 （包括所有者、所属组、权限和时间）</span></span><br><span class="line"><span class="built_in">cp</span> -p /etc/named.conf /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 bind chroot 的目录中创建相关文件</span></span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/cache_dump.db</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named_stats.txt</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named_mem_stats.txt</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named.run</span><br><span class="line"><span class="built_in">mkdir</span> /var/named/chroot/var/named/dynamic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件属主和属组</span></span><br><span class="line"><span class="built_in">chown</span> -R named:named /var/named/chroot/var/named</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start named-chroot</span><br></pre></td></tr></table></figure>
-<h2 id="构建缓存域名服务器"><a href="#构建缓存域名服务器" class="headerlink" title="构建缓存域名服务器"></a>构建缓存域名服务器</h2><h3 id="案例介绍"><a href="#案例介绍" class="headerlink" title="案例介绍"></a>案例介绍</h3><ul>
-<li>缓存域名服务器的IP地址为192.168.142.128。</li>
-<li>​ 局域网内的PC机将首选DNS服务器设为192.168.142.128。</li>
-<li>缓存域名服务器能够访问Internet中的其他DNS服务器。</li>
-<li>​ 负责处理局域网PC机的DNS解析请求，并缓存查询结果。</li>
-</ul>
-<h3 id="基本步骤："><a href="#基本步骤：" class="headerlink" title="基本步骤："></a>基本步骤：</h3><p>​ 1.建立named.conf主配置文件，通过根域或者转发器机制指定解析源；<br>​ 2.确认建立named.ca根区域数据文件，若使用转发器机制则无需此步骤；<br>​ 3.启动named服务；<br>​ 4.验证缓存域名服务器；</p>
-<h3 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">### 1.修改主配置文件</span></span><br><span class="line">[root@wpt ~]# vim /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定数据文件的存放目录 默认无需修改</span></span><br><span class="line">directory 	<span class="string">&quot;/var/named&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定服务器监听的地址和端口</span></span><br><span class="line">listen-on port 53       &#123; 127.0.0.1; 192.168.142.128; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定允许内网网段地址主机可以查询授权区域数据</span></span><br><span class="line">allow-query					&#123; 192.168.142.0/24; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 哪些主机查询非授权区域记录时，为其做递归</span></span><br><span class="line">allow-query-cache       &#123; 192.168.142.0/24; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启递归 默认为开启</span></span><br><span class="line"><span class="comment"># 如果你要建立一个 授权域名服务器 服务器, 那么不要开启 recursion（递归） 功能。</span></span><br><span class="line"><span class="comment"># 如果你要建立一个 递归 DNS 服务器, 那么需要开启recursion 功能。</span></span><br><span class="line"><span class="comment"># 如果你的递归DNS服务器有公网IP地址, 你必须开启访问控制功能，</span></span><br><span class="line"><span class="comment"># 只有那些合法用户才可以发询问. 如果不这么做的话，那么你的服</span></span><br><span class="line"><span class="comment"># 服务就会受到DNS 放大攻击。实现BCP38将有效抵御这类攻击。</span></span><br><span class="line">recursion <span class="built_in">yes</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">########################使用转发器#################################</span></span><br><span class="line"><span class="comment"># 如果不使用根区域，也可以选择设置转发器，即可以指向另外一个DNS服务器。</span></span><br><span class="line"><span class="comment"># forward 可以是first，也可以是only</span></span><br><span class="line"><span class="comment"># forward first设置优先使用forwarders DNS服务器做域名解析，如果查询不到再使用本地DNS服务器做域名解析。</span></span><br><span class="line"><span class="comment"># forward only设置只使用forwarders DNS服务器做域名解析，如果查询不到则返回DNS客户端查询失败。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 options&#123;&#125;; 中加入以下内容</span></span><br><span class="line"><span class="comment"># forward only;</span></span><br><span class="line"><span class="comment"># forwarders &#123;8.8.8.8&#125;;</span></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 2. 配置根区域 这样服务器不知道域名记录时，就去找根DNS服务器 在区域文件目录中必须存在&quot;/var/named/named.ca&quot;这个文件，里面记录了根DNS服务器的地址（共13个）</span></span><br><span class="line"><span class="built_in">cat</span> /var/named/chroot/var/named/named.ca | grep -v <span class="string">&#x27;^;&#x27;</span>|grep -v <span class="string">&#x27;^$&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.检查配置文件语法</span></span><br><span class="line">named-checkconf /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">### 180错误解决</span></span><br><span class="line">dnssec-keygen -a HMAC-MD5 -b 128 -n HOST <span class="string">&quot;test_key&quot;</span></span><br><span class="line">[root@localhost ~]# dnssec-keygen -a HMAC-MD5 -b 128 -n HOST <span class="string">&quot;test_key&quot;</span></span><br><span class="line">Ktest_key.+157+09104</span><br><span class="line">[root@localhost ~]# <span class="built_in">cat</span> Ktest_key.+157+09104.key</span><br><span class="line">test_key. IN KEY 512 3 157 XkByzMnhtuSq4IItAzKb3w==</span><br><span class="line"><span class="comment">## 复制XkByzMnhtuSq4IItAzKb3w== 然后修改文件key 大概在180行左右</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"><span class="comment">##	测试前把双方的防火墙都关掉，或者在服务器端配置dns服务</span></span><br><span class="line">[root@wpt ~]# firewall-cmd --add-service=dns</span><br><span class="line"><span class="comment">##	测试时把客户端的dns地址解析改为服务端的，文件在/etc/resolv.conf下 </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment">##################客户端验证是否可以解析#########################</span></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment"># 5 安装客户端命令行工具</span></span><br><span class="line">yum install bind-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6 配置首选DNS为192.168.215.3</span></span><br><span class="line"><span class="built_in">cp</span> /etc/resolv.conf /etc/resolv.conf.bak</span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"><span class="comment"># 修改以下内容</span></span><br><span class="line">nameserver 192.168.215.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7 解析域名</span></span><br><span class="line"><span class="comment"># 第一台客户端解析会慢一些，第二台客户端解析相同域名会很快，因为有了缓存。</span></span><br><span class="line">nslookup www.baidu.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#eg:</span></span><br><span class="line">root@experiment2 ~# nslookup www.baidu.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">www.baidu.com	canonical name = www.a.shifen.com.</span><br><span class="line">Name:	www.a.shifen.com</span><br><span class="line">Address: 39.156.66.18</span><br><span class="line">Name:	www.a.shifen.com</span><br><span class="line">Address: 39.156.66.14</span><br></pre></td></tr></table></figure>
-<h2 id="构建主域名服务器"><a href="#构建主域名服务器" class="headerlink" title="构建主域名服务器"></a>构建主域名服务器</h2><h3 id="案例介绍-1"><a href="#案例介绍-1" class="headerlink" title="案例介绍"></a>案例介绍</h3><ul>
-<li>负责abc.com域的解析</li>
-<li>网站服务器 <a href="http://www.abc.com，IP地址为192.168.142.10">www.abc.com，IP地址为192.168.142.10</a></li>
-<li>邮件服务器 mail.abc.com,IP地址为192.168.142.20</li>
-<li>在线视频服务器 video.abc.com，IP地址为192.168.142.30</li>
-<li>主域名服务器 ns1.abc.com ，IP地址为192.168.142.3</li>
-<li>从域名服务器 ns2.abc.com，IP地址为192.168.142.5</li>
-</ul>
-<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><ol>
-<li>确认本机网络地址、主机映射、默认DNS服务器地址。</li>
-<li>建立主配置文件named.conf。</li>
-<li>建立正、反向区域数据文件。</li>
-<li>启动named服务或重载配置。</li>
-<li>验证主域名服务器。</li>
-</ol>
-<h3 id="实现方案-1"><a href="#实现方案-1" class="headerlink" title="实现方案"></a>实现方案</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">### 1 确认本机网络地址、主机映射、DNS服务器地址</span></span><br><span class="line"><span class="comment"># 为了提高域名解析效率，将两个DNS服务器的地址映射直接写入到/etc/hosts文件中</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line">192.168.142.128	ns1.abc.com		ns1</span><br><span class="line">192.168.142.6	ns2.abc.com		ns2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定两个DNS服务器的地址为首选和备份DNS</span></span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入以下内容</span></span><br><span class="line"><span class="comment"># search 定义域名的搜索列表</span></span><br><span class="line">nameserver 192.168.142.128</span><br><span class="line">nameserver 192.168.142.6</span><br><span class="line"></span><br><span class="line"><span class="comment">### 2 修改主配置文件</span></span><br><span class="line">vim /var/named/chroot/etc/named.conf</span><br><span class="line"><span class="comment"># 在 zone &quot;.&quot; IN 前面加入以下内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一个zone关键字定义一个域区</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># type类型有三种，它们分别是master,slave和hint它们的含义分别是：</span></span><br><span class="line"><span class="comment"># master:表示定义的是主域名服务器</span></span><br><span class="line"><span class="comment"># slave [sleɪv]:表示定义的是辅助域名服务器</span></span><br><span class="line"><span class="comment"># hint [hɪnt]暗示:表示是互联网中根域名服务器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># file 指定具体存放DNS记录的文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># allow-transfer [trænsˈfɜːr , ˈtrænsfɜːr]指定哪些主机可以从服务器上接收区域传输,未指定将允许传说到所有的主机</span></span><br><span class="line">zone <span class="string">&quot;abc.com&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;abc.com.zone&quot;</span>;</span><br><span class="line">        allow-transfer &#123;192.168.142.6;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment"># 定义一个IP为192.168.215.*的反向域区 </span></span><br><span class="line">zone <span class="string">&quot;142.168.192.in-addr.arpa&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;192.168.142.arpa.zone&quot;</span>;</span><br><span class="line">        allow-transfer &#123;192.168.142.6;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3 建立正向区域数据文件</span></span><br><span class="line"><span class="built_in">cp</span> -p /var/named/named.localhost /var/named/chroot/var/named/abc.com.zone</span><br><span class="line">vim /var/named/chroot/var/named/abc.com.zone</span><br><span class="line"><span class="comment"># 修改以下内容</span></span><br><span class="line"><span class="comment"># “@”表示当前的DNS区域名，相当于“abc.com.”	</span></span><br><span class="line"><span class="comment"># $TTL（Time To Live，生存时间）记录</span></span><br><span class="line"><span class="comment"># SOA（Start Of Authority[əˈθɔːrəti]，授权信息开始）记录</span></span><br><span class="line"><span class="comment"># 分号“;” 开始的部分表示注释信息</span></span><br><span class="line"><span class="comment"># NS 域名服务器（Name Server）：记录当前区域的DNS服务器的主机地址</span></span><br><span class="line"><span class="comment"># MX 邮件交换（Mail  Exchange[ɪksˈtʃeɪndʒ]）：记录当前区域的邮件服务器的主机地址，数字10表示优先级。</span></span><br><span class="line"><span class="comment"># A 地址（Address）：记录正向解析条目，只用在正向解析区域中</span></span><br><span class="line"><span class="comment"># CNAME 别名（Canonical[kəˈnɑːnɪkl] Name）：记录某一个正向解析条目的其他名称</span></span><br><span class="line"><span class="comment"># PTR   指针（Point）记录，只用在反向解析区域中</span></span><br><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  abc.com. admin.abc.com. (</span><br><span class="line">                                2020112901      ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">@       IN      NS      ns1.abc.com.</span><br><span class="line">        IN      NS      ns2.abc.com.</span><br><span class="line">                MX      10      mail.abc.com.</span><br><span class="line">www     IN      A       192.168.142.10</span><br><span class="line">mail    IN      A       192.168.142.20</span><br><span class="line">video   IN      A       192.168.142.30</span><br><span class="line">ns1     IN      A       192.168.142.128</span><br><span class="line">ns2     IN      A       192.168.142.6</span><br><span class="line"><span class="comment"># 验证区域数据文件</span></span><br><span class="line"><span class="comment"># named-checkzone zonename filename</span></span><br><span class="line">named-checkzone abc.com /var/named/chroot/var/named/abc.com.zone</span><br><span class="line"></span><br><span class="line"><span class="comment">### 4 建立反向区域数据文件</span></span><br><span class="line"><span class="built_in">cd</span> /var/named/chroot/var/named/</span><br><span class="line"><span class="built_in">cp</span> -p abc.com.zone 192.168.142.arpa.zone</span><br><span class="line">vim 192.168.142.arpa.zone</span><br><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  abc.com. admin.abc.com. (</span><br><span class="line">                                2020112901      ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">@       IN      NS      ns1.abc.com.</span><br><span class="line">        IN      NS      ns2.abc.com.</span><br><span class="line">10      IN      PTR www.abc.com.</span><br><span class="line">20      IN      PTR mail.abc.com.</span><br><span class="line">30      IN      PTR study.abc.com.</span><br><span class="line">128     IN      PTR ns1.abc.com.</span><br><span class="line">6       IN      PTR ns2.abc.com.</span><br><span class="line"><span class="comment"># 验证区域数据文件</span></span><br><span class="line">named-checkzone 215.168.192.in-addr.arpa 192.168.142.arpa.zone</span><br><span class="line"><span class="comment"># 5 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment">##################客户端验证是否可以解析#########################</span></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line">[root@wpt named]# nslookup</span><br><span class="line">&gt; www.abc.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Name:	www.abc.com</span><br><span class="line">Address: 192.168.142.10</span><br><span class="line">&gt; mail.abc.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Name:	mail.abc.com</span><br><span class="line">Address: 192.168.142.20</span><br><span class="line">&gt; 192.168.142.30</span><br><span class="line">30.142.168.192.in-addr.arpa	name = study.abc.com.</span><br></pre></td></tr></table></figure>
-<h2 id="构建从域名服务器"><a href="#构建从域名服务器" class="headerlink" title="构建从域名服务器"></a>构建从域名服务器</h2><p>为了降低主域名服务器的压力，可以构建从域名服务器，不仅可以负载分担，还可以起到备份作用。</p>
-<h3 id="基本步骤-1"><a href="#基本步骤-1" class="headerlink" title="基本步骤"></a>基本步骤</h3><ol>
-<li>确认本机网络地址、主机映射、默认DNS服务器地址。</li>
-<li>建立主配置文件named.conf。</li>
-<li>启动named服务，查看区域数据文件是否下载成功。</li>
-<li>验证从域名服务器。</li>
-</ol>
-<h2 id="实现方案-2"><a href="#实现方案-2" class="headerlink" title="实现方案"></a>实现方案</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1 安装</span></span><br><span class="line">yum install <span class="built_in">bind</span> bind-chroot bind-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 启动服务</span></span><br><span class="line">systemctl start named-chroot.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3 确认本机网络地址、主机映射、DNS服务器地址</span></span><br><span class="line"><span class="comment"># 为了提高域名解析效率，将两个DNS服务器的地址映射直接写入到/etc/hosts文件中</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line">192.168.142.128	ns1.abc.com		ns1</span><br><span class="line">192.168.142.6	ns2.abc.com		ns2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定两个DNS服务器的地址为首选和备份DNS</span></span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入以下内容</span></span><br><span class="line"><span class="comment"># search 定义域名的搜索列表</span></span><br><span class="line">nameserver 192.168.142.128</span><br><span class="line">nameserver 192.168.142.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4 建立主配置文件</span></span><br><span class="line"><span class="built_in">cd</span> /var/named/chroot/</span><br><span class="line">vim /etc/named.conf</span><br><span class="line"><span class="comment"># 修改如下配置</span></span><br><span class="line">listen-on port 53	&#123; 127.0.0.1; 192.168.142.6; &#125;;</span><br><span class="line">zone <span class="string">&quot;abc.com&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/abc.com.zone&quot;</span>;</span><br><span class="line">        masters &#123;192.168.142.128;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line">zone <span class="string">&quot;142.168.192.in-addr.arpa&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/192.168.142.arpa.zone&quot;</span>;</span><br><span class="line">        masters &#123;192.168.142.128;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5 关闭两个机器的防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7 查看是否同步成功</span></span><br><span class="line">ll /var/named/chroot/var/named/slaves/</span><br><span class="line"></span><br><span class="line">-rw-r--r--. 1 named named 362 Nov 23 22:35 abc.com.zone</span><br><span class="line"><span class="comment"># 8 使用从域名服务器进行验证</span></span><br><span class="line">root@experiment2 /v/n/chroot# nslookup</span><br><span class="line">&gt; www.abc.com</span><br><span class="line">Server:		192.168.142.6</span><br><span class="line">Address:	192.168.142.6#53</span><br><span class="line"></span><br><span class="line">Name:	www.abc.com</span><br><span class="line">Address: 192.168.142.20</span><br></pre></td></tr></table></figure>
-<h2 id="nslookup命令详解"><a href="#nslookup命令详解" class="headerlink" title="nslookup命令详解"></a>nslookup命令详解</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">###   nslookup命令详解</span></span><br><span class="line">nslookup -qt=<span class="built_in">type</span> domain [dns-server]</span><br><span class="line"></span><br><span class="line">其中，<span class="built_in">type</span>可以是以下这些类型：</span><br><span class="line"></span><br><span class="line">A 地址记录</span><br><span class="line">AAAA 地址记录</span><br><span class="line">AFSDB Andrew文件系统数据库服务器记录</span><br><span class="line">ATMA ATM地址记录</span><br><span class="line">CNAME 别名记录</span><br><span class="line">HINFO 硬件配置记录，包括CPU、操作系统信息</span><br><span class="line">ISDN 域名对应的ISDN号码</span><br><span class="line">MB 存放指定邮箱的服务器</span><br><span class="line">MG 邮件组记录</span><br><span class="line">MINFO 邮件组和邮箱的信息记录</span><br><span class="line">MR 改名的邮箱记录</span><br><span class="line">MX 邮件服务器记录</span><br><span class="line">NS 名字服务器记录</span><br><span class="line">PTR 反向记录</span><br><span class="line">RP 负责人记录</span><br><span class="line">RT 路由穿透记录</span><br><span class="line">SRV TCP服务器信息记录</span><br><span class="line">TXT 域名对应的文本信息</span><br><span class="line">X25 域名对应的X.25地址记录</span><br><span class="line"><span class="comment">###例如</span></span><br><span class="line">[root@localhost ~]# nslookup -qt=mx baidu.com 8.8.8.8</span><br></pre></td></tr></table></figure>
-<h2 id="国内常用的DNS服务器"><a href="#国内常用的DNS服务器" class="headerlink" title="国内常用的DNS服务器"></a>国内常用的DNS服务器</h2><h3 id="114DNS"><a href="#114DNS" class="headerlink" title="114DNS"></a>114DNS</h3><p>114DNS开启DNS高可靠服务时代的大幕。114DNS开始同时为公众提供高速、稳定、可信的DNS递归解析服务；为网站提供强大抗攻击能力的权威智能DNS解析服务；为ISP提供可靠的DNS灾备及外包服务，作为国内用户量最大的老牌DNS，访问速度快，各地区设有节点，负载各运营商用户，DNS防劫持能力，自然也是名列前茅。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：114.114.114.114</li>
-<li><strong>备选</strong>：114.114.114.115</li>
-</ol>
-<p>2017公共DNS服务器地址评估—DNS推荐</p>
-<h3 id="DNSPod-DNS"><a href="#DNSPod-DNS" class="headerlink" title="DNSPod DNS"></a>DNSPod DNS</h3><p>DNSPod创始于2006年3月，是中国最大的第三方域名服务商，全球排名第四位。DNSPod是国内最早提供免费智能DNS产品的网站,致力于为各类网站提供高质量的电信、网通、教育网双线或者三线智能DNS免费解析，作为114DNS竞争对手之一，无论是访问速度，还是各地区节点覆盖率以及防劫持能力都是顶级的。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：119.29.29.29</li>
-<li><strong>备选</strong>：182.254.116.116</li>
-</ol>
-<p>2017公共DNS服务器地址评估—DNS推荐</p>
-<h3 id="阿里-DNS"><a href="#阿里-DNS" class="headerlink" title="阿里 DNS"></a>阿里 DNS</h3><p>阿里公共DNS是阿里巴巴集团推出的DNS递归解析系统，作为国内最大的互联网基础服务提供商，阿里巴巴在继承多年优秀技术的基础上，通过提供性能优异的公共DNS服务，为广大互联网用户提供最可靠的面向互联网用户提供“快速”、“稳定”、“智能”的免费DNS递归解析服务。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：223.5.5.5</li>
-<li><strong>备选</strong>：223.6.6.6</li>
-</ol>
-<p>2017公共DNS服务器地址评估—DNS推荐</p>
-<h3 id="百度-DNS"><a href="#百度-DNS" class="headerlink" title="百度 DNS"></a>百度 DNS</h3><p>百度开放DNS主要面向企业，旨在集结行业力量，以开放的方式共同打造一个全球最大的、稳定的、高效的、纯净的公共DNS平台，作为核心基础设施服务于整个互联网，百度DNS拥有一流基础设施和强大技术实力,为用户提供免费的DNS服务。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：180.76.76.76</li>
-<li><strong>备选</strong>：暂未公布</li>
-</ol>
-<p>2017公共DNS服务器地址评估—DNS推荐</p>
-<h3 id="CNNIC-SDNS"><a href="#CNNIC-SDNS" class="headerlink" title="CNNIC SDNS"></a>CNNIC SDNS</h3><p>SDNS已在全球部署了多个节点，提供智能的、弹性的平台支持能力，可随用户的需求而变化。每节点建设在运营商4A、5A级机房，每节点配备服务器集群，多线路出口，节点之间相互冗余备份。通过多线路，确保每一次查询的全局路由最优化，最大程度上使用户解析就近响应。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：1.2.4.8</li>
-<li><strong>备选</strong>：202.98.0.68</li>
-</ol>
-<p>2017公共DNS服务器地址评估—DNS推荐</p>
-<h3 id="DNS派"><a href="#DNS派" class="headerlink" title="DNS派"></a>DNS派</h3><p>DNS派拥有全球最领先的云 DNS 集群技术,领先的分布式云服务，遍布全国的解析服务器，多年 DNS 领域专业研究，DNS派拥有全球最领先的云DNS集群技术，领先的分布式云服务，遍布全国的解析服务器，能为域名的权威解析提供强有力的支持。<br><strong>DNS 服务器 IP 地址：</strong></p>
-<ol>
-<li><strong>首选</strong>：101.226.4.6</li>
-<li><strong>备选</strong>：218.30.118.6</li>
-</ol>
-<h3 id="附：国外常用DNS服务器"><a href="#附：国外常用DNS服务器" class="headerlink" title="附：国外常用DNS服务器"></a>附：国外常用DNS服务器</h3><ol>
-<li><strong>Google Public DNS</strong> （8.8.8.8， 8.8.4.4）</li>
-<li><strong>OpenDNS</strong> （208.67.222.222， 208.67.220.220）</li>
-<li><strong>OpenDNS Family</strong> （208.67.222.123， 208.67.220.123）</li>
-<li><strong>Dyn DNS</strong> （216.146.35.35， 216.146.36.36）</li>
-<li><strong>Comodo Secure</strong> (8.26.56.26， 8.20.247.20)</li>
-<li><strong>UltraDNS</strong> （156.154.70.1， 156.154.71.1）</li>
-<li><strong>Norton ConnectSafe</strong> (199.85.126.10, 199.85.127.10)</li>
-</ol>
-<p>本文部分内容摘自：<a href="https://blog.csdn.net/weixin_49912759/article/details/110419273%E5%8F%8Ahttps://blog.csdn.net/weixin_43634280/article/details/84361024">https://blog.csdn.net/weixin_49912759/article/details/110419273及https://blog.csdn.net/weixin_43634280/article/details/84361024</a></p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一起来看看华为云的裸金属服务器</title>
     <url>/2025/01/13/2025011308/</url>
     <content><![CDATA[<h2 id="裸金属服务器是什么？"><a href="#裸金属服务器是什么？" class="headerlink" title="裸金属服务器是什么？"></a><strong>裸金属服务器是什么？</strong></h2><p>裸金属服务器的英文名是Bare Metal Server，BMS。其实就是一台物理服务器，没错就是它：</p>
@@ -6494,6 +6385,115 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DNS域名服务及常用国内DNS服务器地址</title>
+    <url>/2025/01/13/2025011307/</url>
+    <content><![CDATA[<h2 id="DNS域名服务"><a href="#DNS域名服务" class="headerlink" title="DNS域名服务"></a>DNS域名服务</h2><h3 id="DNS服务器分类"><a href="#DNS服务器分类" class="headerlink" title="DNS服务器分类"></a>DNS服务器分类</h3><p><strong>缓存域名服务器</strong></p>
+<ol>
+<li>也称为高速缓存服务器</li>
+<li>通过向其他域名服务器查询获得域名 -&gt; IP 地址记录</li>
+<li>将域名查询结果缓存到本地，提高重复查询时的速度<span id="more"></span></li>
+</ol>
+<p><strong>主域名服务器</strong></p>
+<ol>
+<li>特定 DNS 区域的官方服务器，具有唯一性</li>
+<li>负责维护该区域内所有域名 -&gt; IP 地址的映射记录</li>
+</ol>
+<p><strong>从域名服务器</strong></p>
+<ol>
+<li>也称为辅助域名服务器</li>
+<li>其维护的域名 -&gt; IP 地址记录来源于主域名服务器</li>
+</ol>
+<h2 id="搭建DNS服务器"><a href="#搭建DNS服务器" class="headerlink" title="搭建DNS服务器"></a>搭建DNS服务器</h2><h3 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@wpt ~]# yum install <span class="built_in">bind</span> bind-chroot bind-utils -y</span><br></pre></td></tr></table></figure>
+<h3 id="配置文件介绍"><a href="#配置文件介绍" class="headerlink" title="配置文件介绍"></a>配置文件介绍</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用BIND软件构建域名服务是，主要涉及两种类型的配置文件：主配置文件和区域数据文件。其中，主配置文件用于设置named服务的全局选项、注册区域及访问控制等各种运行参数；区域数据文件用于保存 DNS 解析记录的数据文件（正向或反向记录）。</span><br><span class="line">BIND配置文件保存在两个位置：</span><br><span class="line">/etc/named.conf BIND服务主配置文件</span><br><span class="line">/var/named/ zone文件（域的dns信息）</span><br><span class="line">如果安装了bind-chroot，BIND会被封装到一个伪根目录内，原先的文件配置文件的路径位置变为：</span><br><span class="line">/var/named/chroot/etc/named.conf ----BIND服务主配置文件</span><br><span class="line">/var/named/chroot/var/named/ ---------zone文件</span><br></pre></td></tr></table></figure>
+<h3 id="复制配置相关文件"><a href="#复制配置相关文件" class="headerlink" title="复制配置相关文件"></a>复制配置相关文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[root@wpt ~]# <span class="built_in">cp</span> -rv /usr/share/doc/bind-9.11.4/sample/etc/* /var/named/chroot/etc/</span><br><span class="line">[root@wpt ~]#  <span class="built_in">cp</span> -rv /usr/share/doc/bind-9.11.4/sample/var/* /var/named/chroot/var/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bind-chroot安装好之后不会有预制的配置文件，但是在BIND的文档文件夹内（/usr/share/doc/bind-9.11.4），BIND为我们提供了配置文件模板，我们可以直接拷贝过来：</span><br><span class="line"><span class="comment"># 拷贝bind相关文件,准备 bind chroot 环境</span></span><br><span class="line"><span class="built_in">cp</span> -R /usr/share/doc/bind-*/sample/var/named/* /var/named/chroot/var/named/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /etc/named.conf 拷贝到 bind chroot目录</span></span><br><span class="line"><span class="comment"># -p 复制后目标文件保留源文件的属性 （包括所有者、所属组、权限和时间）</span></span><br><span class="line"><span class="built_in">cp</span> -p /etc/named.conf /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 bind chroot 的目录中创建相关文件</span></span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/cache_dump.db</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named_stats.txt</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named_mem_stats.txt</span><br><span class="line"><span class="built_in">touch</span> /var/named/chroot/var/named/data/named.run</span><br><span class="line"><span class="built_in">mkdir</span> /var/named/chroot/var/named/dynamic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件属主和属组</span></span><br><span class="line"><span class="built_in">chown</span> -R named:named /var/named/chroot/var/named</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start named-chroot</span><br></pre></td></tr></table></figure>
+<h2 id="构建缓存域名服务器"><a href="#构建缓存域名服务器" class="headerlink" title="构建缓存域名服务器"></a>构建缓存域名服务器</h2><h3 id="案例介绍"><a href="#案例介绍" class="headerlink" title="案例介绍"></a>案例介绍</h3><ul>
+<li>缓存域名服务器的IP地址为192.168.142.128。</li>
+<li>​ 局域网内的PC机将首选DNS服务器设为192.168.142.128。</li>
+<li>缓存域名服务器能够访问Internet中的其他DNS服务器。</li>
+<li>​ 负责处理局域网PC机的DNS解析请求，并缓存查询结果。</li>
+</ul>
+<h3 id="基本步骤："><a href="#基本步骤：" class="headerlink" title="基本步骤："></a>基本步骤：</h3><p>​ 1.建立named.conf主配置文件，通过根域或者转发器机制指定解析源；<br>​ 2.确认建立named.ca根区域数据文件，若使用转发器机制则无需此步骤；<br>​ 3.启动named服务；<br>​ 4.验证缓存域名服务器；</p>
+<h3 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">### 1.修改主配置文件</span></span><br><span class="line">[root@wpt ~]# vim /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定数据文件的存放目录 默认无需修改</span></span><br><span class="line">directory 	<span class="string">&quot;/var/named&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定服务器监听的地址和端口</span></span><br><span class="line">listen-on port 53       &#123; 127.0.0.1; 192.168.142.128; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定允许内网网段地址主机可以查询授权区域数据</span></span><br><span class="line">allow-query					&#123; 192.168.142.0/24; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 哪些主机查询非授权区域记录时，为其做递归</span></span><br><span class="line">allow-query-cache       &#123; 192.168.142.0/24; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启递归 默认为开启</span></span><br><span class="line"><span class="comment"># 如果你要建立一个 授权域名服务器 服务器, 那么不要开启 recursion（递归） 功能。</span></span><br><span class="line"><span class="comment"># 如果你要建立一个 递归 DNS 服务器, 那么需要开启recursion 功能。</span></span><br><span class="line"><span class="comment"># 如果你的递归DNS服务器有公网IP地址, 你必须开启访问控制功能，</span></span><br><span class="line"><span class="comment"># 只有那些合法用户才可以发询问. 如果不这么做的话，那么你的服</span></span><br><span class="line"><span class="comment"># 服务就会受到DNS 放大攻击。实现BCP38将有效抵御这类攻击。</span></span><br><span class="line">recursion <span class="built_in">yes</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">########################使用转发器#################################</span></span><br><span class="line"><span class="comment"># 如果不使用根区域，也可以选择设置转发器，即可以指向另外一个DNS服务器。</span></span><br><span class="line"><span class="comment"># forward 可以是first，也可以是only</span></span><br><span class="line"><span class="comment"># forward first设置优先使用forwarders DNS服务器做域名解析，如果查询不到再使用本地DNS服务器做域名解析。</span></span><br><span class="line"><span class="comment"># forward only设置只使用forwarders DNS服务器做域名解析，如果查询不到则返回DNS客户端查询失败。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 options&#123;&#125;; 中加入以下内容</span></span><br><span class="line"><span class="comment"># forward only;</span></span><br><span class="line"><span class="comment"># forwarders &#123;8.8.8.8&#125;;</span></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 2. 配置根区域 这样服务器不知道域名记录时，就去找根DNS服务器 在区域文件目录中必须存在&quot;/var/named/named.ca&quot;这个文件，里面记录了根DNS服务器的地址（共13个）</span></span><br><span class="line"><span class="built_in">cat</span> /var/named/chroot/var/named/named.ca | grep -v <span class="string">&#x27;^;&#x27;</span>|grep -v <span class="string">&#x27;^$&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.检查配置文件语法</span></span><br><span class="line">named-checkconf /var/named/chroot/etc/named.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">### 180错误解决</span></span><br><span class="line">dnssec-keygen -a HMAC-MD5 -b 128 -n HOST <span class="string">&quot;test_key&quot;</span></span><br><span class="line">[root@localhost ~]# dnssec-keygen -a HMAC-MD5 -b 128 -n HOST <span class="string">&quot;test_key&quot;</span></span><br><span class="line">Ktest_key.+157+09104</span><br><span class="line">[root@localhost ~]# <span class="built_in">cat</span> Ktest_key.+157+09104.key</span><br><span class="line">test_key. IN KEY 512 3 157 XkByzMnhtuSq4IItAzKb3w==</span><br><span class="line"><span class="comment">## 复制XkByzMnhtuSq4IItAzKb3w== 然后修改文件key 大概在180行左右</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"><span class="comment">##	测试前把双方的防火墙都关掉，或者在服务器端配置dns服务</span></span><br><span class="line">[root@wpt ~]# firewall-cmd --add-service=dns</span><br><span class="line"><span class="comment">##	测试时把客户端的dns地址解析改为服务端的，文件在/etc/resolv.conf下 </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment">##################客户端验证是否可以解析#########################</span></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment"># 5 安装客户端命令行工具</span></span><br><span class="line">yum install bind-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6 配置首选DNS为192.168.215.3</span></span><br><span class="line"><span class="built_in">cp</span> /etc/resolv.conf /etc/resolv.conf.bak</span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"><span class="comment"># 修改以下内容</span></span><br><span class="line">nameserver 192.168.215.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7 解析域名</span></span><br><span class="line"><span class="comment"># 第一台客户端解析会慢一些，第二台客户端解析相同域名会很快，因为有了缓存。</span></span><br><span class="line">nslookup www.baidu.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#eg:</span></span><br><span class="line">root@experiment2 ~# nslookup www.baidu.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">www.baidu.com	canonical name = www.a.shifen.com.</span><br><span class="line">Name:	www.a.shifen.com</span><br><span class="line">Address: 39.156.66.18</span><br><span class="line">Name:	www.a.shifen.com</span><br><span class="line">Address: 39.156.66.14</span><br></pre></td></tr></table></figure>
+<h2 id="构建主域名服务器"><a href="#构建主域名服务器" class="headerlink" title="构建主域名服务器"></a>构建主域名服务器</h2><h3 id="案例介绍-1"><a href="#案例介绍-1" class="headerlink" title="案例介绍"></a>案例介绍</h3><ul>
+<li>负责abc.com域的解析</li>
+<li>网站服务器 <a href="http://www.abc.com，IP地址为192.168.142.10">www.abc.com，IP地址为192.168.142.10</a></li>
+<li>邮件服务器 mail.abc.com,IP地址为192.168.142.20</li>
+<li>在线视频服务器 video.abc.com，IP地址为192.168.142.30</li>
+<li>主域名服务器 ns1.abc.com ，IP地址为192.168.142.3</li>
+<li>从域名服务器 ns2.abc.com，IP地址为192.168.142.5</li>
+</ul>
+<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><ol>
+<li>确认本机网络地址、主机映射、默认DNS服务器地址。</li>
+<li>建立主配置文件named.conf。</li>
+<li>建立正、反向区域数据文件。</li>
+<li>启动named服务或重载配置。</li>
+<li>验证主域名服务器。</li>
+</ol>
+<h3 id="实现方案-1"><a href="#实现方案-1" class="headerlink" title="实现方案"></a>实现方案</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">### 1 确认本机网络地址、主机映射、DNS服务器地址</span></span><br><span class="line"><span class="comment"># 为了提高域名解析效率，将两个DNS服务器的地址映射直接写入到/etc/hosts文件中</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line">192.168.142.128	ns1.abc.com		ns1</span><br><span class="line">192.168.142.6	ns2.abc.com		ns2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定两个DNS服务器的地址为首选和备份DNS</span></span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入以下内容</span></span><br><span class="line"><span class="comment"># search 定义域名的搜索列表</span></span><br><span class="line">nameserver 192.168.142.128</span><br><span class="line">nameserver 192.168.142.6</span><br><span class="line"></span><br><span class="line"><span class="comment">### 2 修改主配置文件</span></span><br><span class="line">vim /var/named/chroot/etc/named.conf</span><br><span class="line"><span class="comment"># 在 zone &quot;.&quot; IN 前面加入以下内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一个zone关键字定义一个域区</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># type类型有三种，它们分别是master,slave和hint它们的含义分别是：</span></span><br><span class="line"><span class="comment"># master:表示定义的是主域名服务器</span></span><br><span class="line"><span class="comment"># slave [sleɪv]:表示定义的是辅助域名服务器</span></span><br><span class="line"><span class="comment"># hint [hɪnt]暗示:表示是互联网中根域名服务器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># file 指定具体存放DNS记录的文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># allow-transfer [trænsˈfɜːr , ˈtrænsfɜːr]指定哪些主机可以从服务器上接收区域传输,未指定将允许传说到所有的主机</span></span><br><span class="line">zone <span class="string">&quot;abc.com&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;abc.com.zone&quot;</span>;</span><br><span class="line">        allow-transfer &#123;192.168.142.6;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment"># 定义一个IP为192.168.215.*的反向域区 </span></span><br><span class="line">zone <span class="string">&quot;142.168.192.in-addr.arpa&quot;</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;192.168.142.arpa.zone&quot;</span>;</span><br><span class="line">        allow-transfer &#123;192.168.142.6;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3 建立正向区域数据文件</span></span><br><span class="line"><span class="built_in">cp</span> -p /var/named/named.localhost /var/named/chroot/var/named/abc.com.zone</span><br><span class="line">vim /var/named/chroot/var/named/abc.com.zone</span><br><span class="line"><span class="comment"># 修改以下内容</span></span><br><span class="line"><span class="comment"># “@”表示当前的DNS区域名，相当于“abc.com.”	</span></span><br><span class="line"><span class="comment"># $TTL（Time To Live，生存时间）记录</span></span><br><span class="line"><span class="comment"># SOA（Start Of Authority[əˈθɔːrəti]，授权信息开始）记录</span></span><br><span class="line"><span class="comment"># 分号“;” 开始的部分表示注释信息</span></span><br><span class="line"><span class="comment"># NS 域名服务器（Name Server）：记录当前区域的DNS服务器的主机地址</span></span><br><span class="line"><span class="comment"># MX 邮件交换（Mail  Exchange[ɪksˈtʃeɪndʒ]）：记录当前区域的邮件服务器的主机地址，数字10表示优先级。</span></span><br><span class="line"><span class="comment"># A 地址（Address）：记录正向解析条目，只用在正向解析区域中</span></span><br><span class="line"><span class="comment"># CNAME 别名（Canonical[kəˈnɑːnɪkl] Name）：记录某一个正向解析条目的其他名称</span></span><br><span class="line"><span class="comment"># PTR   指针（Point）记录，只用在反向解析区域中</span></span><br><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  abc.com. admin.abc.com. (</span><br><span class="line">                                2020112901      ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">@       IN      NS      ns1.abc.com.</span><br><span class="line">        IN      NS      ns2.abc.com.</span><br><span class="line">                MX      10      mail.abc.com.</span><br><span class="line">www     IN      A       192.168.142.10</span><br><span class="line">mail    IN      A       192.168.142.20</span><br><span class="line">video   IN      A       192.168.142.30</span><br><span class="line">ns1     IN      A       192.168.142.128</span><br><span class="line">ns2     IN      A       192.168.142.6</span><br><span class="line"><span class="comment"># 验证区域数据文件</span></span><br><span class="line"><span class="comment"># named-checkzone zonename filename</span></span><br><span class="line">named-checkzone abc.com /var/named/chroot/var/named/abc.com.zone</span><br><span class="line"></span><br><span class="line"><span class="comment">### 4 建立反向区域数据文件</span></span><br><span class="line"><span class="built_in">cd</span> /var/named/chroot/var/named/</span><br><span class="line"><span class="built_in">cp</span> -p abc.com.zone 192.168.142.arpa.zone</span><br><span class="line">vim 192.168.142.arpa.zone</span><br><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  abc.com. admin.abc.com. (</span><br><span class="line">                                2020112901      ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">@       IN      NS      ns1.abc.com.</span><br><span class="line">        IN      NS      ns2.abc.com.</span><br><span class="line">10      IN      PTR www.abc.com.</span><br><span class="line">20      IN      PTR mail.abc.com.</span><br><span class="line">30      IN      PTR study.abc.com.</span><br><span class="line">128     IN      PTR ns1.abc.com.</span><br><span class="line">6       IN      PTR ns2.abc.com.</span><br><span class="line"><span class="comment"># 验证区域数据文件</span></span><br><span class="line">named-checkzone 215.168.192.in-addr.arpa 192.168.142.arpa.zone</span><br><span class="line"><span class="comment"># 5 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line"><span class="comment">##################客户端验证是否可以解析#########################</span></span><br><span class="line"><span class="comment">###############################################################</span></span><br><span class="line">[root@wpt named]# nslookup</span><br><span class="line">&gt; www.abc.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Name:	www.abc.com</span><br><span class="line">Address: 192.168.142.10</span><br><span class="line">&gt; mail.abc.com</span><br><span class="line">Server:		192.168.142.128</span><br><span class="line">Address:	192.168.142.128#53</span><br><span class="line"></span><br><span class="line">Name:	mail.abc.com</span><br><span class="line">Address: 192.168.142.20</span><br><span class="line">&gt; 192.168.142.30</span><br><span class="line">30.142.168.192.in-addr.arpa	name = study.abc.com.</span><br></pre></td></tr></table></figure>
+<h2 id="构建从域名服务器"><a href="#构建从域名服务器" class="headerlink" title="构建从域名服务器"></a>构建从域名服务器</h2><p>为了降低主域名服务器的压力，可以构建从域名服务器，不仅可以负载分担，还可以起到备份作用。</p>
+<h3 id="基本步骤-1"><a href="#基本步骤-1" class="headerlink" title="基本步骤"></a>基本步骤</h3><ol>
+<li>确认本机网络地址、主机映射、默认DNS服务器地址。</li>
+<li>建立主配置文件named.conf。</li>
+<li>启动named服务，查看区域数据文件是否下载成功。</li>
+<li>验证从域名服务器。</li>
+</ol>
+<h2 id="实现方案-2"><a href="#实现方案-2" class="headerlink" title="实现方案"></a>实现方案</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1 安装</span></span><br><span class="line">yum install <span class="built_in">bind</span> bind-chroot bind-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 启动服务</span></span><br><span class="line">systemctl start named-chroot.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3 确认本机网络地址、主机映射、DNS服务器地址</span></span><br><span class="line"><span class="comment"># 为了提高域名解析效率，将两个DNS服务器的地址映射直接写入到/etc/hosts文件中</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line">192.168.142.128	ns1.abc.com		ns1</span><br><span class="line">192.168.142.6	ns2.abc.com		ns2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定两个DNS服务器的地址为首选和备份DNS</span></span><br><span class="line">vim /etc/resolv.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入以下内容</span></span><br><span class="line"><span class="comment"># search 定义域名的搜索列表</span></span><br><span class="line">nameserver 192.168.142.128</span><br><span class="line">nameserver 192.168.142.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4 建立主配置文件</span></span><br><span class="line"><span class="built_in">cd</span> /var/named/chroot/</span><br><span class="line">vim /etc/named.conf</span><br><span class="line"><span class="comment"># 修改如下配置</span></span><br><span class="line">listen-on port 53	&#123; 127.0.0.1; 192.168.142.6; &#125;;</span><br><span class="line">zone <span class="string">&quot;abc.com&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/abc.com.zone&quot;</span>;</span><br><span class="line">        masters &#123;192.168.142.128;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line">zone <span class="string">&quot;142.168.192.in-addr.arpa&quot;</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/192.168.142.arpa.zone&quot;</span>;</span><br><span class="line">        masters &#123;192.168.142.128;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5 关闭两个机器的防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6 重启服务</span></span><br><span class="line">systemctl restart named-chroot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7 查看是否同步成功</span></span><br><span class="line">ll /var/named/chroot/var/named/slaves/</span><br><span class="line"></span><br><span class="line">-rw-r--r--. 1 named named 362 Nov 23 22:35 abc.com.zone</span><br><span class="line"><span class="comment"># 8 使用从域名服务器进行验证</span></span><br><span class="line">root@experiment2 /v/n/chroot# nslookup</span><br><span class="line">&gt; www.abc.com</span><br><span class="line">Server:		192.168.142.6</span><br><span class="line">Address:	192.168.142.6#53</span><br><span class="line"></span><br><span class="line">Name:	www.abc.com</span><br><span class="line">Address: 192.168.142.20</span><br></pre></td></tr></table></figure>
+<h2 id="nslookup命令详解"><a href="#nslookup命令详解" class="headerlink" title="nslookup命令详解"></a>nslookup命令详解</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">###   nslookup命令详解</span></span><br><span class="line">nslookup -qt=<span class="built_in">type</span> domain [dns-server]</span><br><span class="line"></span><br><span class="line">其中，<span class="built_in">type</span>可以是以下这些类型：</span><br><span class="line"></span><br><span class="line">A 地址记录</span><br><span class="line">AAAA 地址记录</span><br><span class="line">AFSDB Andrew文件系统数据库服务器记录</span><br><span class="line">ATMA ATM地址记录</span><br><span class="line">CNAME 别名记录</span><br><span class="line">HINFO 硬件配置记录，包括CPU、操作系统信息</span><br><span class="line">ISDN 域名对应的ISDN号码</span><br><span class="line">MB 存放指定邮箱的服务器</span><br><span class="line">MG 邮件组记录</span><br><span class="line">MINFO 邮件组和邮箱的信息记录</span><br><span class="line">MR 改名的邮箱记录</span><br><span class="line">MX 邮件服务器记录</span><br><span class="line">NS 名字服务器记录</span><br><span class="line">PTR 反向记录</span><br><span class="line">RP 负责人记录</span><br><span class="line">RT 路由穿透记录</span><br><span class="line">SRV TCP服务器信息记录</span><br><span class="line">TXT 域名对应的文本信息</span><br><span class="line">X25 域名对应的X.25地址记录</span><br><span class="line"><span class="comment">###例如</span></span><br><span class="line">[root@localhost ~]# nslookup -qt=mx baidu.com 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h2 id="国内常用的DNS服务器"><a href="#国内常用的DNS服务器" class="headerlink" title="国内常用的DNS服务器"></a>国内常用的DNS服务器</h2><h3 id="114DNS"><a href="#114DNS" class="headerlink" title="114DNS"></a>114DNS</h3><p>114DNS开启DNS高可靠服务时代的大幕。114DNS开始同时为公众提供高速、稳定、可信的DNS递归解析服务；为网站提供强大抗攻击能力的权威智能DNS解析服务；为ISP提供可靠的DNS灾备及外包服务，作为国内用户量最大的老牌DNS，访问速度快，各地区设有节点，负载各运营商用户，DNS防劫持能力，自然也是名列前茅。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：114.114.114.114</li>
+<li><strong>备选</strong>：114.114.114.115</li>
+</ol>
+<p>2017公共DNS服务器地址评估—DNS推荐</p>
+<h3 id="DNSPod-DNS"><a href="#DNSPod-DNS" class="headerlink" title="DNSPod DNS"></a>DNSPod DNS</h3><p>DNSPod创始于2006年3月，是中国最大的第三方域名服务商，全球排名第四位。DNSPod是国内最早提供免费智能DNS产品的网站,致力于为各类网站提供高质量的电信、网通、教育网双线或者三线智能DNS免费解析，作为114DNS竞争对手之一，无论是访问速度，还是各地区节点覆盖率以及防劫持能力都是顶级的。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：119.29.29.29</li>
+<li><strong>备选</strong>：182.254.116.116</li>
+</ol>
+<p>2017公共DNS服务器地址评估—DNS推荐</p>
+<h3 id="阿里-DNS"><a href="#阿里-DNS" class="headerlink" title="阿里 DNS"></a>阿里 DNS</h3><p>阿里公共DNS是阿里巴巴集团推出的DNS递归解析系统，作为国内最大的互联网基础服务提供商，阿里巴巴在继承多年优秀技术的基础上，通过提供性能优异的公共DNS服务，为广大互联网用户提供最可靠的面向互联网用户提供“快速”、“稳定”、“智能”的免费DNS递归解析服务。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：223.5.5.5</li>
+<li><strong>备选</strong>：223.6.6.6</li>
+</ol>
+<p>2017公共DNS服务器地址评估—DNS推荐</p>
+<h3 id="百度-DNS"><a href="#百度-DNS" class="headerlink" title="百度 DNS"></a>百度 DNS</h3><p>百度开放DNS主要面向企业，旨在集结行业力量，以开放的方式共同打造一个全球最大的、稳定的、高效的、纯净的公共DNS平台，作为核心基础设施服务于整个互联网，百度DNS拥有一流基础设施和强大技术实力,为用户提供免费的DNS服务。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：180.76.76.76</li>
+<li><strong>备选</strong>：暂未公布</li>
+</ol>
+<p>2017公共DNS服务器地址评估—DNS推荐</p>
+<h3 id="CNNIC-SDNS"><a href="#CNNIC-SDNS" class="headerlink" title="CNNIC SDNS"></a>CNNIC SDNS</h3><p>SDNS已在全球部署了多个节点，提供智能的、弹性的平台支持能力，可随用户的需求而变化。每节点建设在运营商4A、5A级机房，每节点配备服务器集群，多线路出口，节点之间相互冗余备份。通过多线路，确保每一次查询的全局路由最优化，最大程度上使用户解析就近响应。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：1.2.4.8</li>
+<li><strong>备选</strong>：202.98.0.68</li>
+</ol>
+<p>2017公共DNS服务器地址评估—DNS推荐</p>
+<h3 id="DNS派"><a href="#DNS派" class="headerlink" title="DNS派"></a>DNS派</h3><p>DNS派拥有全球最领先的云 DNS 集群技术,领先的分布式云服务，遍布全国的解析服务器，多年 DNS 领域专业研究，DNS派拥有全球最领先的云DNS集群技术，领先的分布式云服务，遍布全国的解析服务器，能为域名的权威解析提供强有力的支持。<br><strong>DNS 服务器 IP 地址：</strong></p>
+<ol>
+<li><strong>首选</strong>：101.226.4.6</li>
+<li><strong>备选</strong>：218.30.118.6</li>
+</ol>
+<h3 id="附：国外常用DNS服务器"><a href="#附：国外常用DNS服务器" class="headerlink" title="附：国外常用DNS服务器"></a>附：国外常用DNS服务器</h3><ol>
+<li><strong>Google Public DNS</strong> （8.8.8.8， 8.8.4.4）</li>
+<li><strong>OpenDNS</strong> （208.67.222.222， 208.67.220.220）</li>
+<li><strong>OpenDNS Family</strong> （208.67.222.123， 208.67.220.123）</li>
+<li><strong>Dyn DNS</strong> （216.146.35.35， 216.146.36.36）</li>
+<li><strong>Comodo Secure</strong> (8.26.56.26， 8.20.247.20)</li>
+<li><strong>UltraDNS</strong> （156.154.70.1， 156.154.71.1）</li>
+<li><strong>Norton ConnectSafe</strong> (199.85.126.10, 199.85.127.10)</li>
+</ol>
+<p>本文部分内容摘自：<a href="https://blog.csdn.net/weixin_49912759/article/details/110419273%E5%8F%8Ahttps://blog.csdn.net/weixin_43634280/article/details/84361024">https://blog.csdn.net/weixin_49912759/article/details/110419273及https://blog.csdn.net/weixin_43634280/article/details/84361024</a></p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>DNS</tag>
       </tags>
   </entry>
   <entry>
@@ -7597,254 +7597,6 @@ MySql：经典安装 MySql 5.6
       <tags>
         <tag>技术笔记</tag>
         <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>docker命令总结（一）</title>
-    <url>/2025/01/13/2025011317/</url>
-    <content><![CDATA[<p>个人简单总结：</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>用途</th>
-<th>语法</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
-<td>在docker hub中搜索镜像</td>
-<td>docker search 镜像名称</td>
-<td>docker search nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
-<td>在docker hub中下载镜像到本地</td>
-<td>docker pull 镜像名：tag</td>
-<td>docker pull nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
-<td>推送指定镜像到docker镜像服务器</td>
-<td>docker push 本地镜像：tag</td>
-<td>docker push nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
-<td>查看本地所有docker镜像</td>
-<td>docker images</td>
-<td>docker imaegs</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
-<td>创建容器，并运行</td>
-<td>docker run 参数 镜像名：tag</td>
-<td>docker -d run nginx:latest</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
-<td>查看镜像形成过程</td>
-<td>docker history 本地镜像名：tag</td>
-<td>docker history nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
-<td>启动容器</td>
-<td>docker start 容器ID或容器名称</td>
-<td>docker strat 3d265463456</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
-<td>停止容器</td>
-<td>docker stop 容器ID或容器名称</td>
-<td>docker stop nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
-<td>通过dockerfile制作镜像</td>
-<td>docker build 参数 镜像名：tag dockerfile目录</td>
-<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
-<td>当前shell连接运行容器</td>
-<td>docker attach 容器名</td>
-<td>docker attach nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
-<td>保存当前容器为镜像&#x2F;快照</td>
-<td>docker commit 容器ID或容器名 新镜像名：tag</td>
-<td>docker commit nginx nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
-<td>容器与宿主机互相复制文件</td>
-<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
-<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
-<td>创建容器但不启动容器</td>
-<td>docker create  参数 镜像名称</td>
-<td>docker create nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
-<td>查看容器改动</td>
-<td>docker diff 容器ID或容器名称</td>
-<td>docker diff nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
-<td>在容器中执行命令</td>
-<td>docker exec 参数 容器ID或名称 命令</td>
-<td>docker exec centos echo ‘123’</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
-<td>登入docker镜像源服务器</td>
-<td>docker login 服务器地址</td>
-<td>docker login</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
-<td>退出登录镜像源服务器</td>
-<td>docker logout</td>
-<td>docker logout</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
-<td>输出当前容器的日志信息</td>
-<td>docker logs 容器ID或名称</td>
-<td>docker logs nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
-<td>查看容器的端口映射情况</td>
-<td>docker port 容器ID或名称</td>
-<td>docker port nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
-<td>列出容器列表</td>
-<td>docker ps 参数</td>
-<td>docker ps -a</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
-<td>重新启动容器</td>
-<td>docker restart 容器ID或名称</td>
-<td>docker restart nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
-<td>删除容器</td>
-<td>docker rm 参数 容器ID或名称</td>
-<td>docker rm nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
-<td>删除本地镜像</td>
-<td>docker rmi 镜像名：tag</td>
-<td>docker rmi nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
-<td>保存镜像为tar包</td>
-<td>docker save -o tar文件名 镜像名:tag</td>
-<td>docker save -o nginx.tar nginx:V1</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
-<td>查看容器中进程信息</td>
-<td>docker top 容器ID或名称</td>
-<td>docker top nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
-<td>查看docker软件版本</td>
-<td>docker version</td>
-<td>docker version</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
-<td>查看docker服务器实时时间</td>
-<td>docker events 参数</td>
-<td>docker events –since&#x3D;”1577321423”</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
-<td>从tar文件导入docker为镜像</td>
-<td>docker import 参数 tar文件 镜像名：tag</td>
-<td>docker import nginx.tar nginx:V2</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
-<td>从docker导出镜像为tar文件</td>
-<td>docker export 参数 镜像名：tag tar文件</td>
-<td>docker export nginx:V2 nginx2.tar</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
-<td>查看docker系统信息</td>
-<td>docker info</td>
-<td>docker info</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
-<td>查看容器详细信息</td>
-<td>docker inspect 容器ID或名称</td>
-<td>docker inspect nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
-<td>杀死正在运行的容器</td>
-<td>docker kill 参数 容器ID或名称</td>
-<td>docker kill nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
-<td>从tar文件中加载为docker镜像</td>
-<td>docker load -i tar文件 镜像名：tag</td>
-<td>docker load -i nginx2.tar nginx:V3</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
-<td>暂停容器</td>
-<td>docker pause 容器ID&#x2F;名称</td>
-<td>docker pause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
-<td>镜像打标签</td>
-<td>docker tag 镜像名：tag 新镜像名：tag</td>
-<td>docker tag nginx:V3 mynginx:V4</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
-<td>取消暂停的容器</td>
-<td>docker unpause 容器ID&#x2F;名称</td>
-<td>docker unpause nginx</td>
-</tr>
-<tr>
-<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
-<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
-<td>docker wait CONTAINER</td>
-<td>docker wait CONTAINER</td>
-</tr>
-</tbody></table>
-<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -11899,6 +11651,630 @@ MySql：经典安装 MySql 5.6
       </tags>
   </entry>
   <entry>
+    <title>docker命令总结（一）</title>
+    <url>/2025/01/13/2025011317/</url>
+    <content><![CDATA[<p>个人简单总结：</p>
+<span id="more"></span>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>用途</th>
+<th>语法</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t0">search</a></td>
+<td>在docker hub中搜索镜像</td>
+<td>docker search 镜像名称</td>
+<td>docker search nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t1">pull</a></td>
+<td>在docker hub中下载镜像到本地</td>
+<td>docker pull 镜像名：tag</td>
+<td>docker pull nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t2">push</a></td>
+<td>推送指定镜像到docker镜像服务器</td>
+<td>docker push 本地镜像：tag</td>
+<td>docker push nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t3">images</a></td>
+<td>查看本地所有docker镜像</td>
+<td>docker images</td>
+<td>docker imaegs</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t4">run</a></td>
+<td>创建容器，并运行</td>
+<td>docker run 参数 镜像名：tag</td>
+<td>docker -d run nginx:latest</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t5">history</a></td>
+<td>查看镜像形成过程</td>
+<td>docker history 本地镜像名：tag</td>
+<td>docker history nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t6">start</a></td>
+<td>启动容器</td>
+<td>docker start 容器ID或容器名称</td>
+<td>docker strat 3d265463456</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t7">stop</a></td>
+<td>停止容器</td>
+<td>docker stop 容器ID或容器名称</td>
+<td>docker stop nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t8">build</a></td>
+<td>通过dockerfile制作镜像</td>
+<td>docker build 参数 镜像名：tag dockerfile目录</td>
+<td>docker build -t nginx:V1 &#x2F;opt&#x2F;</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t9">attach</a></td>
+<td>当前shell连接运行容器</td>
+<td>docker attach 容器名</td>
+<td>docker attach nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t10">commit</a></td>
+<td>保存当前容器为镜像&#x2F;快照</td>
+<td>docker commit 容器ID或容器名 新镜像名：tag</td>
+<td>docker commit nginx nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t11">cp</a></td>
+<td>容器与宿主机互相复制文件</td>
+<td>docker cp 容器名：文件目录&#x2F;名称 本地目录</td>
+<td>docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F; nginx:&#x2F;var&#x2F;www&#x2F;html</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t12">create</a></td>
+<td>创建容器但不启动容器</td>
+<td>docker create  参数 镜像名称</td>
+<td>docker create nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t13">diff</a></td>
+<td>查看容器改动</td>
+<td>docker diff 容器ID或容器名称</td>
+<td>docker diff nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t14">exec</a></td>
+<td>在容器中执行命令</td>
+<td>docker exec 参数 容器ID或名称 命令</td>
+<td>docker exec centos echo ‘123’</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t15">login</a></td>
+<td>登入docker镜像源服务器</td>
+<td>docker login 服务器地址</td>
+<td>docker login</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t16">logout</a></td>
+<td>退出登录镜像源服务器</td>
+<td>docker logout</td>
+<td>docker logout</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t17">logs</a></td>
+<td>输出当前容器的日志信息</td>
+<td>docker logs 容器ID或名称</td>
+<td>docker logs nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t18">port</a></td>
+<td>查看容器的端口映射情况</td>
+<td>docker port 容器ID或名称</td>
+<td>docker port nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t19">ps</a></td>
+<td>列出容器列表</td>
+<td>docker ps 参数</td>
+<td>docker ps -a</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t20">restart</a></td>
+<td>重新启动容器</td>
+<td>docker restart 容器ID或名称</td>
+<td>docker restart nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t21">rm</a></td>
+<td>删除容器</td>
+<td>docker rm 参数 容器ID或名称</td>
+<td>docker rm nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t22">rmi</a></td>
+<td>删除本地镜像</td>
+<td>docker rmi 镜像名：tag</td>
+<td>docker rmi nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t23">save</a></td>
+<td>保存镜像为tar包</td>
+<td>docker save -o tar文件名 镜像名:tag</td>
+<td>docker save -o nginx.tar nginx:V1</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t24">top</a></td>
+<td>查看容器中进程信息</td>
+<td>docker top 容器ID或名称</td>
+<td>docker top nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t25">version</a></td>
+<td>查看docker软件版本</td>
+<td>docker version</td>
+<td>docker version</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t26">events</a></td>
+<td>查看docker服务器实时时间</td>
+<td>docker events 参数</td>
+<td>docker events –since&#x3D;”1577321423”</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t27">import</a></td>
+<td>从tar文件导入docker为镜像</td>
+<td>docker import 参数 tar文件 镜像名：tag</td>
+<td>docker import nginx.tar nginx:V2</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t28">export</a></td>
+<td>从docker导出镜像为tar文件</td>
+<td>docker export 参数 镜像名：tag tar文件</td>
+<td>docker export nginx:V2 nginx2.tar</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t29">info</a></td>
+<td>查看docker系统信息</td>
+<td>docker info</td>
+<td>docker info</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t30">inspect</a></td>
+<td>查看容器详细信息</td>
+<td>docker inspect 容器ID或名称</td>
+<td>docker inspect nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t31">kill</a></td>
+<td>杀死正在运行的容器</td>
+<td>docker kill 参数 容器ID或名称</td>
+<td>docker kill nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t32">load</a></td>
+<td>从tar文件中加载为docker镜像</td>
+<td>docker load -i tar文件 镜像名：tag</td>
+<td>docker load -i nginx2.tar nginx:V3</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t33">pause</a></td>
+<td>暂停容器</td>
+<td>docker pause 容器ID&#x2F;名称</td>
+<td>docker pause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t35">tag</a></td>
+<td>镜像打标签</td>
+<td>docker tag 镜像名：tag 新镜像名：tag</td>
+<td>docker tag nginx:V3 mynginx:V4</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t34">unpause</a></td>
+<td>取消暂停的容器</td>
+<td>docker unpause 容器ID&#x2F;名称</td>
+<td>docker unpause nginx</td>
+</tr>
+<tr>
+<td><a href="https://blog.csdn.net/KH_FC/article/details/103821457#t36">wait</a></td>
+<td>阻塞运行直到容器停止，然后打印出它的退出代码</td>
+<td>docker wait CONTAINER</td>
+<td>docker wait CONTAINER</td>
+</tr>
+</tbody></table>
+<p>这里提醒大家一句，我这里省略了许多命令参数，上面这些是最常用的一些参数和语法，后面会向大家介绍命令参数的使用</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>resin部署安装</title>
+    <url>/2025/01/13/2025011318/</url>
+    <content><![CDATA[<p>Resin是CAUCHO公司的产品，是一个非常流行的application server,对servlet和JSP提供了良好的支持，性能也比较优良，resin自身也是采用JAVA语法开发，功能近似于tomcat</p>
+<span id="more"></span>
+<p>resin版本分为：普通版和pro版；主要区别于pro版本支持缓存和负载均衡，此版本有强大的cache功能；Resin本身包含了一个支持HTTP&#x2F;1.1的WEB服务器。它不仅可以显示动态内容，而它显示静态内容能力也特别强</p>
+<p>Resin也可以和其他WEB服务器一起工作，如：nginx\apache\IIS等，resin支持servlets2.3标准和jsp1.2标准。熟悉ASP和PHP的用户可以发现用Resin来进行JSP编程是很方便的，resin添加了php解析执行功能，能够执行php程序，但不如php原生版本</p>
+<h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>resin程序需要JDK的支持，但JDK要求6.0版本或者更高的版本</li>
+</ul>
+<p>JDK可以到<a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">oracle官网</a>进行下载相关版本的JDK，这里提醒大家建议使用稳定版本的JDK程序</p>
+<h2 id="安装resin"><a href="#安装resin" class="headerlink" title="安装resin"></a>安装resin</h2><h4 id="Centos-RedHat-rpm安装"><a href="#Centos-RedHat-rpm安装" class="headerlink" title="Centos&#x2F;RedHat rpm安装"></a><strong>Centos&#x2F;RedHat rpm安装</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">加载公钥</span><br><span class="line">	[root@jia /]# rpm --import http://caucho.com/download/rpm/RPM-GPG-KEY-caucho</span><br><span class="line">安装软件包(pro版本)</span><br><span class="line">	[root@jia /]# yum -y install http://caucho.com/download/rpm/4.0.30/x86_64/resin-pro-4.0.30-1.x86_64.rpm</span><br><span class="line">	[root@jia /]# yum -y install http://caucho.com/download/rpm-6.8/4.0.63/x86_64/resin-4.0.63-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<h4 id="Ubuntu-Debian-deb安装"><a href="#Ubuntu-Debian-deb安装" class="headerlink" title="Ubuntu&#x2F;Debian deb安装"></a><strong>Ubuntu&#x2F;Debian deb安装</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">添加存储库</span><br><span class="line">	[root@jia /]# add-apt-repository http://caucho.com/download/debian</span><br><span class="line">更新本地存储库</span><br><span class="line">	[root@jia /]# apt-get update</span><br><span class="line">安装软件包(pro版本)</span><br><span class="line">	[root@jia /]# apt -y install resin-pro</span><br><span class="line">安装软件包(普通版本)</span><br><span class="line">	[root@jia /]# apt -y install resin</span><br></pre></td></tr></table></figure>
+<h4 id="基于Linux的编译安装"><a href="#基于Linux的编译安装" class="headerlink" title="基于Linux的编译安装"></a><strong>基于Linux的编译安装</strong></h4><p><strong>安装依赖软件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">安装依赖软件(redhat/centos)</span><br><span class="line">	[root@jia /]# yum -y install wget gcc make gcc-c++</span><br><span class="line">安装依赖软件(ubuntu/Debian)</span><br><span class="line">	[root@jia /]# apt -y install wget gcc make</span><br></pre></td></tr></table></figure>
+<p><strong>下载JDK软件包，并进行解压</strong><br>    下载软件包请移步<a href="https://www.oracle.com/technetwork/java/javase/downloads/">JAVA官网</a>,下载后将软件包上传至linux服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">解压JDK软件包</span><br><span class="line">	[root@jia /]# tar zxf jdk-8u231-linux-x64.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
+<p>配置环境变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# <span class="built_in">cp</span> /etc/profile /etc/profile.bak</span><br><span class="line">[root@jia /]# <span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">&gt; export JAVA_HOME=/usr/local/jdk-8u231</span></span><br><span class="line"><span class="string">&gt; export PATH=$JAVA_HOME/bin:$PATH</span></span><br><span class="line"><span class="string">&gt; export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span></span><br><span class="line"><span class="string">&gt;EOF</span></span><br><span class="line">[root@jia /]#java -version		//查看java版本，列出版本号就证明成功了</span><br></pre></td></tr></table></figure>
+<p><strong>下载resin软件包，并进行解压</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">普通标准版</span><br><span class="line">	[root@jia /]# wget -c http://caucho.com/download/resin-4.0.63.tar.gz</span><br><span class="line">	[root@jia /]# tar zxf resin-4.0.63.tar.gz</span><br><span class="line">pro版本</span><br><span class="line">	[root@jia /]# wget -c http://caucho.com/download/resin-pro-4.0.63.tar.gz</span><br><span class="line">	[root@jia /]# tar zxf resin-pro-4.0.63.tar.gz</span><br></pre></td></tr></table></figure>
+<p><strong>编译安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# <span class="built_in">cd</span> resin-4.0.63</span><br><span class="line">[root@jia /]# ./configure --prefix=/usr/local/resin --with-resin-log=/data/logs/resin/ --with-java-home=/usr/local/jdk-8u231</span><br><span class="line">[root@jia /]# make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>.&#x2F;configure参数介绍：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–help</td>
+<td>帮助，可以查看.&#x2F;configure所有参数</td>
+</tr>
+<tr>
+<td>–prefix</td>
+<td>指定安装目录</td>
+</tr>
+<tr>
+<td>–enable-64bit</td>
+<td>使用64编译JNI</td>
+</tr>
+<tr>
+<td>–enable-ssl</td>
+<td>启用OpenSSL</td>
+</tr>
+<tr>
+<td>–with-apxs&#x3D;PATH</td>
+<td>启用apache集成并产生mod_caucho</td>
+</tr>
+<tr>
+<td>–enable-debug</td>
+<td>为mod_caucho\isapi_dll和resin_jni启用扩展日志记录</td>
+</tr>
+<tr>
+<td>–with-resin-log&#x3D;PATH</td>
+<td>指定resin日志存放目录</td>
+</tr>
+<tr>
+<td>–with-java-home&#x3D;PATH</td>
+<td>指定java程序的家目录</td>
+</tr>
+</tbody></table>
+<h4 id="windows安装"><a href="#windows安装" class="headerlink" title="windows安装"></a><strong>windows安装</strong></h4><p><strong>下载JDK软件包</strong><br>下载软件包请移步<a href="https://www.oracle.com/technetwork/java/javase/downloads/">JAVA官网</a>,下载后将软件包上传至服务器</p>
+<p><strong>安装JDK软件</strong></p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/743460c130d6afd90cbff782224ecfc8.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/743460c130d6afd90cbff782224ecfc8.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0ffe14f7b203f389024f8f5c5649f7b5.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/0ffe14f7b203f389024f8f5c5649f7b5.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c96d48fa9be9b52a95c2f096ed302b01.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/c96d48fa9be9b52a95c2f096ed302b01.png">'); </script><br>
+
+<p><strong>配置环境变量</strong><br>在桌面上右击”我的电脑(计算机)–&gt;属性”，选择”高级系统设置”。</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/85fe24b74e59ba83e1479581de112b25.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/85fe24b74e59ba83e1479581de112b25.png">'); </script><br>
+
+<p>在”系统属性”中选择”高级–&gt;环境变量”。  </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5892e9d911952850fca7067d13d46420.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/5892e9d911952850fca7067d13d46420.png">'); </script><br>
+
+<p>在”环境变量”面板中找到”系统变量”，选择”新建”。   </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/734748ad32d1297ff1e6cc4ac80d1dfb.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/734748ad32d1297ff1e6cc4ac80d1dfb.png">'); </script><br>
+
+<p>在’”新建系统变量”对话框中，变量名一栏输入:”JAVA_HOME”，变量值找到jdk的安装路径填入。  </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/988c004bcf0226208c6aa03235656cb9.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/988c004bcf0226208c6aa03235656cb9.png">'); </script><br>
+
+<p>接着在”系统变量”中找到”CLASSPATH”变量，选中之后，点击”编辑”。有些电脑上面没有这个变量，没有的直接新建变量就可以了<br> <!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cb282fe0db7a73b0d0483a41578f615d.png) --><br> <script> document.write('<img src="'+ imgurl +'1736751090/cb282fe0db7a73b0d0483a41578f615d.png">'); </script><br></p>
+<p>最后在”系统变量”中找到”path”变量，选中之后，点击”编辑”。   </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5e439d97842405a707b89b1302b2dd09.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/5e439d97842405a707b89b1302b2dd09.png">'); </script><br>
+
+<p>点击新建,在变量值一行的末尾输入:”;%JAVA_HOME%\bin”  必须是英文。之后确定即可。到此环境变量已经配置好了。    </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/46abd09e65378b3bdaa567af1a3aae31.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/46abd09e65378b3bdaa567af1a3aae31.png">'); </script><br>
+<p><strong>验证是否安装成功</strong></p>
+<p> 使用WIN+R快捷键，打开运行输入cmd指令，进入doc命令窗口<br>  <!-- 　![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/838a4c4f6d05cbc44923b5b70e5f2370.png) --><br>  <script> document.write('<img src="'+ imgurl +'1736751090/838a4c4f6d05cbc44923b5b70e5f2370.png">'); </script><br><br>  <!-- ![](https://i-blog.csdnimg.cn/blog_migrate/5ce0a255abc3155b2d3e7af50cadb974.png) --><br>  <script> document.write('<img src="'+ imgurl +'1736751090/5ce0a255abc3155b2d3e7af50cadb974.png">'); </script><br></p>
+<p>  输入”java -version”,出现如下界面，jdk安装成功。  </p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/64939f84e1fd85f2f486d433640d2ebc.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/64939f84e1fd85f2f486d433640d2ebc.png">'); </script><br>
+
+<p><strong>下载resin，并进行解压</strong><br>下载软件包请移步<a href="http://caucho.com/download/">resin官网</a>,下载后将软件包上传至服务器<br>解压resin软件包</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6840fdb257fca62a5681120f8d8e9352.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/6840fdb257fca62a5681120f8d8e9352.png">'); </script><br>
+
+<p>解压后文件内容：</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bf4317651a0535ebb53c1a7e8a22d309.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/bf4317651a0535ebb53c1a7e8a22d309.png">'); </script><br>
+
+<p>设置环境变量，可以直接执行setup.exe文件</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/317a5ff93af3dc13cdcc4046f39abaa2.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/317a5ff93af3dc13cdcc4046f39abaa2.png">'); </script><br>
+
+<p>然后点击Install&#x2F;Chang执行完成后即安装成功</p>
+<h2 id="启动resin"><a href="#启动resin" class="headerlink" title="启动resin"></a>启动resin</h2><h4 id="Linux操作系统启动resin"><a href="#Linux操作系统启动resin" class="headerlink" title="Linux操作系统启动resin"></a><strong>Linux操作系统启动resin</strong></h4><p><strong>使用yum或者apt安装的resin可以使用下面命令进行启动</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用yum或者apt安装的resin可以使用下面命令进行启动(pro版本)</span><br><span class="line">	[root@jia /]# systemctl start resin-pro		//启动</span><br><span class="line">	[root@jia /]# systemctl stop resin-pro		//停止</span><br><span class="line">	[root@jia /]# systemctl restart resin-pro	//重启</span><br><span class="line">使用yum或者apt安装的resin可以使用下面命令进行启动(普通版本)	</span><br><span class="line">	[root@jia /]# systemctl start resin		</span><br><span class="line">	[root@jia /]# systemctl stop resin		</span><br><span class="line">	[root@jia /]# systemctl restart resin</span><br><span class="line">需要注意的是centos/redhat 7版本以下操作系统需要使用下面方法启动</span><br><span class="line">	[root@jia /]# server resin start	//启动</span><br><span class="line">	[root@jia /]# server resin stop		//停止</span><br><span class="line">	[root@jia /]# server resin restart	//重启</span><br></pre></td></tr></table></figure>
+<p><strong>使用编译安装的resin需要使用下面方法进行启动</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# /usr/local/resin/bin/resin.sh start	//启动</span><br><span class="line">[root@jia /]# /usr/local/resin/bin/resin.sh stop	//停止</span><br></pre></td></tr></table></figure>
+<h4 id="windowns启动resin"><a href="#windowns启动resin" class="headerlink" title="windowns启动resin"></a><strong>windowns启动resin</strong></h4><p>windowns启动相对比较简单，进入resin主目录，直接执行resin.exe程序就可以了</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/39061fcc2c6f0ba1c8f8d43e4439dc23.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/39061fcc2c6f0ba1c8f8d43e4439dc23.png">'); </script><br>
+
+<p>执行后</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/730d4e1dd50e55fb7d8e7f8595d5d69d.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/730d4e1dd50e55fb7d8e7f8595d5d69d.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/216e631cbd1b5344102ef8f777556ba9.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/216e631cbd1b5344102ef8f777556ba9.png">'); </script><br>
+
+<p>关闭resin时只需要把后面这个选中stop就可以了，就会直接关闭</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fef4315f6cb2fb450f149da76f8d3a22.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/fef4315f6cb2fb450f149da76f8d3a22.png">'); </script><br>
+
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/344a024c12c4b8313c1daa0190ce6be7.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/344a024c12c4b8313c1daa0190ce6be7.png">'); </script><br>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>直接使用下面链接进行访问就可以的了，注意默认端口为8080，若已经修改请更换端口<br>访问地址：http:&#x2F;&#x2F;服务器IP:8080，访问后出现下面表示部署成功</p>
+<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/dfb4b3aaa39af142d5e20e7aca963603.png) -->
+<script> document.write('<img src="'+ imgurl +'1736751090/dfb4b3aaa39af142d5e20e7aca963603.png">'); </script><br>
+
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+        <tag>resin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx location匹配及rewrite规则</title>
+    <url>/2025/01/13/2025011319/</url>
+    <content><![CDATA[<p>nginx location匹配及rewrite规则</p>
+<span id="more"></span>
+<h1 id="location匹配规则"><a href="#location匹配规则" class="headerlink" title="location匹配规则"></a>location匹配规则</h1><h2 id="1-实例"><a href="#1-实例" class="headerlink" title="1. 实例"></a>1. 实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">		location = \ &#123;</span><br><span class="line">			[配置A]</span><br><span class="line">		&#125;</span><br><span class="line">		location / &#123;</span><br><span class="line">			[配置B]</span><br><span class="line">		&#125;</span><br><span class="line">		location = /images/ &#123;</span><br><span class="line">			[配置C]</span><br><span class="line">		&#125;</span><br><span class="line">		location ^~ /static/&#123;</span><br><span class="line">			[配置D]</span><br><span class="line">		&#125;</span><br><span class="line">		localtion ~* \.(gif|jpg|png)&#123;</span><br><span class="line">			[配置E]</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-location语法规则"><a href="#2-location语法规则" class="headerlink" title="2. location语法规则"></a>2. location语法规则</h2><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location  = | ~ | ~* | ^~ | @  /url/&#123;		//注意 =、~、~*、^~ 、@是location的匹配规则，”|“表示或者</span><br><span class="line">“</span><br><span class="line">	......省略其他配置</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>规则说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;</td>
+<td>字面精准匹配，如果匹配，则跳出匹配过程（不再进行正则匹配）</td>
+</tr>
+<tr>
+<td>~</td>
+<td>开头区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td>~*</td>
+<td>开头不区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td>^~</td>
+<td>开头表示uri以某哥常规字符串开头，理解为匹配url路径即可</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>通用匹配，在没有正则表达式匹配时，任何请求都会匹配到</td>
+</tr>
+<tr>
+<td>@</td>
+<td>不是普通的location匹配，用于location内部重定向的变量</td>
+</tr>
+<tr>
+<td>~</td>
+<td>开头区分大小写的正则匹配</td>
+</tr>
+</tbody></table>
+<p><strong>多个location配置的匹配顺序：</strong></p>
+<ul>
+<li>首先匹配：”&#x3D;”</li>
+<li>其次匹配：”^~”</li>
+<li>再匹配：文件location书写顺序</li>
+<li>最后把所有请求交给通配符（”&#x2F;“）</li>
+</ul>
+<p>注意：每次匹配成功后，停止匹配，会按照本匹配的location处理请求</p>
+<p><strong>按照上面实例进行说明匹配顺序：</strong></p>
+<ul>
+<li>首先对比第一个location，如果匹配就会停止匹配，并按照配置A进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = \ &#123;</span><br><span class="line">	[配置A]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>其次对比第二个location，如果匹配就会停止匹配，并按照配置D进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/&#123;</span><br><span class="line">		[配置D]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li>再按照顺序依此进行对比，直到找到匹配的才会停止，并按照所匹配的配置*进行处理请求</li>
+<li>如果以上无任何匹配项则会选择通用选项，并按照所匹配的配置B进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">		[配置B]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-应用举例"><a href="#3-应用举例" class="headerlink" title="3. 应用举例"></a>3. 应用举例</h2><ul>
+<li>精准规则（&#x3D;）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = / &#123;</span><br><span class="line">	root /var/ww/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配以默认地址进行访问的请求，访问地址：<a href="http://nginxip/">http://NginxIP/</a></li>
+<li>匹配url路径（^~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/ &#123;</span><br><span class="line">	root /var/www/html/static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配以” &#x2F;static&#x2F; “开头的地址进行访问的请求，访问地址：<a href="http://nginxip/static/">http://NginxIP/static/</a></li>
+<li>忽略大小写（~*）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(png|gif|jpg)&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示只匹配” *.png | *.gif | *.jpg “的文件，访问地址：<a href="http://nginxip/test.png">http://NginxIP/test.png</a><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* /Test/ &#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配url地址中存在Test的访问请求，不区分大小写test也可以，访问地址：<a href="http://nginxip/test/">http://NginxIP/test/</a></li>
+<li>区分大小写（~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~ /Test/&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配url地址中存在Test的访问请求，区分大小写,test是进行匹配的，访问地址：<a href="http://nginxip/Test/">http://NginxIP/Test/</a></li>
+<li>默认匹配（所有规则都可匹配）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">	root /var/www/html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则为默认匹配，他可以匹配所有以默认地址访问的链接，访问地址：<a href="http://nginxip/login.html">http://NginxIP/login.html</a></li>
+<li>内部跳转（@）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location @index_error&#123;</span><br><span class="line">	root /var/www/error/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+此规则表示匹配以 “&#x2F;index&#x2F; “开头的请求，如果链接状态404，会匹配到这条规则</li>
+</ul>
+<h1 id="rewrite规则详解"><a href="#rewrite规则详解" class="headerlink" title="rewrite规则详解"></a>rewrite规则详解</h1><p>nginx的rewrite功能和apache一样，rewrite的主要功能是实现RUL地址的重定向。Nginx的rewrite功能是由PCRE软件支持，rewrite模块即<code>ngx_http_rewrite_module</code>模块。从某种意义上可以说为了美观或者搜索引起的友好搜索，提高排名等</p>
+<h2 id="1-实例-1"><a href="#1-实例-1" class="headerlink" title="1.实例"></a>1.实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span> )&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www.jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">	location ~.*\.(png|gif|jpg)&#123;</span><br><span class="line">		<span class="built_in">return</span> 403;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-rewrite语法规则"><a href="#2-rewrite语法规则" class="headerlink" title="2.rewrite语法规则"></a>2.rewrite语法规则</h2><p><strong>语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite		regex		replacement		[flag]</span><br></pre></td></tr></table></figure>
+<p>rewrite：rewrite重写的关键字不可省略<br>regex：这里写的是正则表达式<br>replacement：这里是重新内容<br>flag：这里是最后的flag标记</p>
+<p><strong>flag标记说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>flag标记</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>last</td>
+<td>也就是apache里的（L）标记，表示完成rewrite，URL地址不会改变</td>
+</tr>
+<tr>
+<td>break</td>
+<td>本条规则匹配成功后，会停止匹配，不再匹配后面的规则，URL地址不会改变</td>
+</tr>
+<tr>
+<td>redirect</td>
+<td>返回302临时重定向，浏览器地址会显示跳转后的URL地址</td>
+</tr>
+<tr>
+<td>permanent</td>
+<td>返回301永久重定向，浏览器地址栏显示跳转后的URL地址，Nginx返回response状态码301</td>
+</tr>
+<tr>
+<td><strong>相关符号说明：</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>代表前面0或者多个字符</td>
+</tr>
+<tr>
+<td>+</td>
+<td>代表前面1或者多个字符</td>
+</tr>
+<tr>
+<td>?</td>
+<td>代表前面0或1个字符</td>
+</tr>
+<tr>
+<td>^</td>
+<td>代表字符串的开始位置</td>
+</tr>
+<tr>
+<td>$</td>
+<td>代表字符串结束位置</td>
+</tr>
+<tr>
+<td>$n</td>
+<td>代表字符串结束第n个参数</td>
+</tr>
+<tr>
+<td>.</td>
+<td>通配符，代表任何字符</td>
+</tr>
+</tbody></table>
+<h2 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h2><ul>
+<li>多域名跳转到同一域名<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz abc.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span>)&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www,jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>当访问 abc.jkyst.xyz 时会自动跳转到 <a href="http://www.jkyst.xyz/">www.jkyst.xyz</a> ，这里出现if语句用于判断，判断结果为true则执行语句内部的 rewrite重写</p>
+<ul>
+<li>当文件不存在时重定向到指定文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>当访问 “test” 目录下的文件或目录不存在时，则跳转到 “test1”下面的此文件或者目录，跳转后会将URL进行转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ index.html last;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表示当访问 “test” 目录下的文件或目录不存在时，则重定向到 “index.html”文件，跳转后URl不会进行转换</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">		listen 80;</span><br><span class="line">		server_name www.jkyst.xyz;</span><br><span class="line">		<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">			rewrite ^/test/([0-9a-z]+)/([0-9a-z]+)/(.*)$ http://www.jkyst.xyz/test/$1$2<span class="variable">$3</span> permanent;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>目录切换，表示将原目录转换成其他目录，【0-9a-z】表示转换后目录名称</p>
+<ul>
+<li>禁止访问.sh后缀的文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">	......其他配置</span><br><span class="line">	location ~.*\.(sh)<span class="variable">$&#123;</span></span><br><span class="line"><span class="variable">		return 405;</span></span><br><span class="line"><span class="variable">	&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>表示当访问 “*.sh”的文件就会返回405错误</p>
+<ul>
+<li>匹配用户浏览器代理信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="variable">$http_user_agent</span> ~* (<span class="string">&quot;Android&quot;</span>)|(iPhone))&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ http://www.jkyst.xyz/test/<span class="variable">$1</span>  permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>表示当匹配到浏览代理为Android和iPhone时进行重定向 “test”目录下的文件，改变访问的地址</p>
+<ul>
+<li>禁止htaccess<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	location ~//.ht &#123;</span><br><span class="line">         deny all;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-文件目录匹配"><a href="#4-文件目录匹配" class="headerlink" title="4.文件目录匹配"></a>4.文件目录匹配</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f</td>
+<td>判断文件是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-f</td>
+<td>判断文件是否存在 返回值false为不存在</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>判断目录是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-d</td>
+<td>判断目录是否存在 返回值true为不存在</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>判断文件或目录是否存在 返回值true为存在</td>
+</tr>
+<tr>
+<td>!-e</td>
+<td>判断文件或目录是否存在 返回值true为不存在</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>判断文件是否可执行 返回值true为可执行</td>
+</tr>
+<tr>
+<td>!-x</td>
+<td>判断文件是否可执行 返回值true为不可执行</td>
+</tr>
+</tbody></table>
+<p><strong>举例说明：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断文件或目录是否存在</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>技术笔记</tag>
+        <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker命令总结（二）</title>
     <url>/2025/01/13/2025011316/</url>
     <content><![CDATA[<p>上次只是给大家把命令的作用以及简单使用列出来了（大家可以查看：<a href="https://blog.csdn.net/KH_FC/article/details/103789373">docker命令总结（一）</a>），那这篇文章会详细介绍每条命令的参数</p>
@@ -13355,382 +13731,6 @@ root@jia:~# curl 172.18.0.2		//发现无法访问容器nginx页面
         <tag>技术笔记</tag>
         <tag>云计算</tag>
         <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>resin部署安装</title>
-    <url>/2025/01/13/2025011318/</url>
-    <content><![CDATA[<p>Resin是CAUCHO公司的产品，是一个非常流行的application server,对servlet和JSP提供了良好的支持，性能也比较优良，resin自身也是采用JAVA语法开发，功能近似于tomcat</p>
-<span id="more"></span>
-<p>resin版本分为：普通版和pro版；主要区别于pro版本支持缓存和负载均衡，此版本有强大的cache功能；Resin本身包含了一个支持HTTP&#x2F;1.1的WEB服务器。它不仅可以显示动态内容，而它显示静态内容能力也特别强</p>
-<p>Resin也可以和其他WEB服务器一起工作，如：nginx\apache\IIS等，resin支持servlets2.3标准和jsp1.2标准。熟悉ASP和PHP的用户可以发现用Resin来进行JSP编程是很方便的，resin添加了php解析执行功能，能够执行php程序，但不如php原生版本</p>
-<h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
-<li>resin程序需要JDK的支持，但JDK要求6.0版本或者更高的版本</li>
-</ul>
-<p>JDK可以到<a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">oracle官网</a>进行下载相关版本的JDK，这里提醒大家建议使用稳定版本的JDK程序</p>
-<h2 id="安装resin"><a href="#安装resin" class="headerlink" title="安装resin"></a>安装resin</h2><h4 id="Centos-RedHat-rpm安装"><a href="#Centos-RedHat-rpm安装" class="headerlink" title="Centos&#x2F;RedHat rpm安装"></a><strong>Centos&#x2F;RedHat rpm安装</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">加载公钥</span><br><span class="line">	[root@jia /]# rpm --import http://caucho.com/download/rpm/RPM-GPG-KEY-caucho</span><br><span class="line">安装软件包(pro版本)</span><br><span class="line">	[root@jia /]# yum -y install http://caucho.com/download/rpm/4.0.30/x86_64/resin-pro-4.0.30-1.x86_64.rpm</span><br><span class="line">	[root@jia /]# yum -y install http://caucho.com/download/rpm-6.8/4.0.63/x86_64/resin-4.0.63-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
-<h4 id="Ubuntu-Debian-deb安装"><a href="#Ubuntu-Debian-deb安装" class="headerlink" title="Ubuntu&#x2F;Debian deb安装"></a><strong>Ubuntu&#x2F;Debian deb安装</strong></h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">添加存储库</span><br><span class="line">	[root@jia /]# add-apt-repository http://caucho.com/download/debian</span><br><span class="line">更新本地存储库</span><br><span class="line">	[root@jia /]# apt-get update</span><br><span class="line">安装软件包(pro版本)</span><br><span class="line">	[root@jia /]# apt -y install resin-pro</span><br><span class="line">安装软件包(普通版本)</span><br><span class="line">	[root@jia /]# apt -y install resin</span><br></pre></td></tr></table></figure>
-<h4 id="基于Linux的编译安装"><a href="#基于Linux的编译安装" class="headerlink" title="基于Linux的编译安装"></a><strong>基于Linux的编译安装</strong></h4><p><strong>安装依赖软件</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">安装依赖软件(redhat/centos)</span><br><span class="line">	[root@jia /]# yum -y install wget gcc make gcc-c++</span><br><span class="line">安装依赖软件(ubuntu/Debian)</span><br><span class="line">	[root@jia /]# apt -y install wget gcc make</span><br></pre></td></tr></table></figure>
-<p><strong>下载JDK软件包，并进行解压</strong><br>    下载软件包请移步<a href="https://www.oracle.com/technetwork/java/javase/downloads/">JAVA官网</a>,下载后将软件包上传至linux服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">解压JDK软件包</span><br><span class="line">	[root@jia /]# tar zxf jdk-8u231-linux-x64.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
-<p>配置环境变量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# <span class="built_in">cp</span> /etc/profile /etc/profile.bak</span><br><span class="line">[root@jia /]# <span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">&gt; export JAVA_HOME=/usr/local/jdk-8u231</span></span><br><span class="line"><span class="string">&gt; export PATH=$JAVA_HOME/bin:$PATH</span></span><br><span class="line"><span class="string">&gt; export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span></span><br><span class="line"><span class="string">&gt;EOF</span></span><br><span class="line">[root@jia /]#java -version		//查看java版本，列出版本号就证明成功了</span><br></pre></td></tr></table></figure>
-<p><strong>下载resin软件包，并进行解压</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">普通标准版</span><br><span class="line">	[root@jia /]# wget -c http://caucho.com/download/resin-4.0.63.tar.gz</span><br><span class="line">	[root@jia /]# tar zxf resin-4.0.63.tar.gz</span><br><span class="line">pro版本</span><br><span class="line">	[root@jia /]# wget -c http://caucho.com/download/resin-pro-4.0.63.tar.gz</span><br><span class="line">	[root@jia /]# tar zxf resin-pro-4.0.63.tar.gz</span><br></pre></td></tr></table></figure>
-<p><strong>编译安装</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# <span class="built_in">cd</span> resin-4.0.63</span><br><span class="line">[root@jia /]# ./configure --prefix=/usr/local/resin --with-resin-log=/data/logs/resin/ --with-java-home=/usr/local/jdk-8u231</span><br><span class="line">[root@jia /]# make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-<p>.&#x2F;configure参数介绍：</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>–help</td>
-<td>帮助，可以查看.&#x2F;configure所有参数</td>
-</tr>
-<tr>
-<td>–prefix</td>
-<td>指定安装目录</td>
-</tr>
-<tr>
-<td>–enable-64bit</td>
-<td>使用64编译JNI</td>
-</tr>
-<tr>
-<td>–enable-ssl</td>
-<td>启用OpenSSL</td>
-</tr>
-<tr>
-<td>–with-apxs&#x3D;PATH</td>
-<td>启用apache集成并产生mod_caucho</td>
-</tr>
-<tr>
-<td>–enable-debug</td>
-<td>为mod_caucho\isapi_dll和resin_jni启用扩展日志记录</td>
-</tr>
-<tr>
-<td>–with-resin-log&#x3D;PATH</td>
-<td>指定resin日志存放目录</td>
-</tr>
-<tr>
-<td>–with-java-home&#x3D;PATH</td>
-<td>指定java程序的家目录</td>
-</tr>
-</tbody></table>
-<h4 id="windows安装"><a href="#windows安装" class="headerlink" title="windows安装"></a><strong>windows安装</strong></h4><p><strong>下载JDK软件包</strong><br>下载软件包请移步<a href="https://www.oracle.com/technetwork/java/javase/downloads/">JAVA官网</a>,下载后将软件包上传至服务器</p>
-<p><strong>安装JDK软件</strong></p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/743460c130d6afd90cbff782224ecfc8.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/743460c130d6afd90cbff782224ecfc8.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0ffe14f7b203f389024f8f5c5649f7b5.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/0ffe14f7b203f389024f8f5c5649f7b5.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c96d48fa9be9b52a95c2f096ed302b01.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/c96d48fa9be9b52a95c2f096ed302b01.png">'); </script><br>
-
-<p><strong>配置环境变量</strong><br>在桌面上右击”我的电脑(计算机)–&gt;属性”，选择”高级系统设置”。</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/85fe24b74e59ba83e1479581de112b25.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/85fe24b74e59ba83e1479581de112b25.png">'); </script><br>
-
-<p>在”系统属性”中选择”高级–&gt;环境变量”。  </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5892e9d911952850fca7067d13d46420.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/5892e9d911952850fca7067d13d46420.png">'); </script><br>
-
-<p>在”环境变量”面板中找到”系统变量”，选择”新建”。   </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/734748ad32d1297ff1e6cc4ac80d1dfb.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/734748ad32d1297ff1e6cc4ac80d1dfb.png">'); </script><br>
-
-<p>在’”新建系统变量”对话框中，变量名一栏输入:”JAVA_HOME”，变量值找到jdk的安装路径填入。  </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/988c004bcf0226208c6aa03235656cb9.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/988c004bcf0226208c6aa03235656cb9.png">'); </script><br>
-
-<p>接着在”系统变量”中找到”CLASSPATH”变量，选中之后，点击”编辑”。有些电脑上面没有这个变量，没有的直接新建变量就可以了<br> <!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/cb282fe0db7a73b0d0483a41578f615d.png) --><br> <script> document.write('<img src="'+ imgurl +'1736751090/cb282fe0db7a73b0d0483a41578f615d.png">'); </script><br></p>
-<p>最后在”系统变量”中找到”path”变量，选中之后，点击”编辑”。   </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/5e439d97842405a707b89b1302b2dd09.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/5e439d97842405a707b89b1302b2dd09.png">'); </script><br>
-
-<p>点击新建,在变量值一行的末尾输入:”;%JAVA_HOME%\bin”  必须是英文。之后确定即可。到此环境变量已经配置好了。    </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/46abd09e65378b3bdaa567af1a3aae31.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/46abd09e65378b3bdaa567af1a3aae31.png">'); </script><br>
-<p><strong>验证是否安装成功</strong></p>
-<p> 使用WIN+R快捷键，打开运行输入cmd指令，进入doc命令窗口<br>  <!-- 　![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/838a4c4f6d05cbc44923b5b70e5f2370.png) --><br>  <script> document.write('<img src="'+ imgurl +'1736751090/838a4c4f6d05cbc44923b5b70e5f2370.png">'); </script><br><br>  <!-- ![](https://i-blog.csdnimg.cn/blog_migrate/5ce0a255abc3155b2d3e7af50cadb974.png) --><br>  <script> document.write('<img src="'+ imgurl +'1736751090/5ce0a255abc3155b2d3e7af50cadb974.png">'); </script><br></p>
-<p>  输入”java -version”,出现如下界面，jdk安装成功。  </p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/64939f84e1fd85f2f486d433640d2ebc.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/64939f84e1fd85f2f486d433640d2ebc.png">'); </script><br>
-
-<p><strong>下载resin，并进行解压</strong><br>下载软件包请移步<a href="http://caucho.com/download/">resin官网</a>,下载后将软件包上传至服务器<br>解压resin软件包</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6840fdb257fca62a5681120f8d8e9352.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/6840fdb257fca62a5681120f8d8e9352.png">'); </script><br>
-
-<p>解压后文件内容：</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/bf4317651a0535ebb53c1a7e8a22d309.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/bf4317651a0535ebb53c1a7e8a22d309.png">'); </script><br>
-
-<p>设置环境变量，可以直接执行setup.exe文件</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/317a5ff93af3dc13cdcc4046f39abaa2.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/317a5ff93af3dc13cdcc4046f39abaa2.png">'); </script><br>
-
-<p>然后点击Install&#x2F;Chang执行完成后即安装成功</p>
-<h2 id="启动resin"><a href="#启动resin" class="headerlink" title="启动resin"></a>启动resin</h2><h4 id="Linux操作系统启动resin"><a href="#Linux操作系统启动resin" class="headerlink" title="Linux操作系统启动resin"></a><strong>Linux操作系统启动resin</strong></h4><p><strong>使用yum或者apt安装的resin可以使用下面命令进行启动</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">使用yum或者apt安装的resin可以使用下面命令进行启动(pro版本)</span><br><span class="line">	[root@jia /]# systemctl start resin-pro		//启动</span><br><span class="line">	[root@jia /]# systemctl stop resin-pro		//停止</span><br><span class="line">	[root@jia /]# systemctl restart resin-pro	//重启</span><br><span class="line">使用yum或者apt安装的resin可以使用下面命令进行启动(普通版本)	</span><br><span class="line">	[root@jia /]# systemctl start resin		</span><br><span class="line">	[root@jia /]# systemctl stop resin		</span><br><span class="line">	[root@jia /]# systemctl restart resin</span><br><span class="line">需要注意的是centos/redhat 7版本以下操作系统需要使用下面方法启动</span><br><span class="line">	[root@jia /]# server resin start	//启动</span><br><span class="line">	[root@jia /]# server resin stop		//停止</span><br><span class="line">	[root@jia /]# server resin restart	//重启</span><br></pre></td></tr></table></figure>
-<p><strong>使用编译安装的resin需要使用下面方法进行启动</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jia /]# /usr/local/resin/bin/resin.sh start	//启动</span><br><span class="line">[root@jia /]# /usr/local/resin/bin/resin.sh stop	//停止</span><br></pre></td></tr></table></figure>
-<h4 id="windowns启动resin"><a href="#windowns启动resin" class="headerlink" title="windowns启动resin"></a><strong>windowns启动resin</strong></h4><p>windowns启动相对比较简单，进入resin主目录，直接执行resin.exe程序就可以了</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/39061fcc2c6f0ba1c8f8d43e4439dc23.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/39061fcc2c6f0ba1c8f8d43e4439dc23.png">'); </script><br>
-
-<p>执行后</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/730d4e1dd50e55fb7d8e7f8595d5d69d.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/730d4e1dd50e55fb7d8e7f8595d5d69d.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/216e631cbd1b5344102ef8f777556ba9.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/216e631cbd1b5344102ef8f777556ba9.png">'); </script><br>
-
-<p>关闭resin时只需要把后面这个选中stop就可以了，就会直接关闭</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/fef4315f6cb2fb450f149da76f8d3a22.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/fef4315f6cb2fb450f149da76f8d3a22.png">'); </script><br>
-
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/344a024c12c4b8313c1daa0190ce6be7.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/344a024c12c4b8313c1daa0190ce6be7.png">'); </script><br>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>直接使用下面链接进行访问就可以的了，注意默认端口为8080，若已经修改请更换端口<br>访问地址：http:&#x2F;&#x2F;服务器IP:8080，访问后出现下面表示部署成功</p>
-<!-- ![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/dfb4b3aaa39af142d5e20e7aca963603.png) -->
-<script> document.write('<img src="'+ imgurl +'1736751090/dfb4b3aaa39af142d5e20e7aca963603.png">'); </script><br>
-
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
-        <tag>resin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nginx location匹配及rewrite规则</title>
-    <url>/2025/01/13/2025011319/</url>
-    <content><![CDATA[<p>nginx location匹配及rewrite规则</p>
-<span id="more"></span>
-<h1 id="location匹配规则"><a href="#location匹配规则" class="headerlink" title="location匹配规则"></a>location匹配规则</h1><h2 id="1-实例"><a href="#1-实例" class="headerlink" title="1. 实例"></a>1. 实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">		location = \ &#123;</span><br><span class="line">			[配置A]</span><br><span class="line">		&#125;</span><br><span class="line">		location / &#123;</span><br><span class="line">			[配置B]</span><br><span class="line">		&#125;</span><br><span class="line">		location = /images/ &#123;</span><br><span class="line">			[配置C]</span><br><span class="line">		&#125;</span><br><span class="line">		location ^~ /static/&#123;</span><br><span class="line">			[配置D]</span><br><span class="line">		&#125;</span><br><span class="line">		localtion ~* \.(gif|jpg|png)&#123;</span><br><span class="line">			[配置E]</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-location语法规则"><a href="#2-location语法规则" class="headerlink" title="2. location语法规则"></a>2. location语法规则</h2><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location  = | ~ | ~* | ^~ | @  /url/&#123;		//注意 =、~、~*、^~ 、@是location的匹配规则，”|“表示或者</span><br><span class="line">“</span><br><span class="line">	......省略其他配置</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>规则说明：</strong></p>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x3D;</td>
-<td>字面精准匹配，如果匹配，则跳出匹配过程（不再进行正则匹配）</td>
-</tr>
-<tr>
-<td>~</td>
-<td>开头区分大小写的正则匹配</td>
-</tr>
-<tr>
-<td>~*</td>
-<td>开头不区分大小写的正则匹配</td>
-</tr>
-<tr>
-<td>^~</td>
-<td>开头表示uri以某哥常规字符串开头，理解为匹配url路径即可</td>
-</tr>
-<tr>
-<td>&#x2F;</td>
-<td>通用匹配，在没有正则表达式匹配时，任何请求都会匹配到</td>
-</tr>
-<tr>
-<td>@</td>
-<td>不是普通的location匹配，用于location内部重定向的变量</td>
-</tr>
-<tr>
-<td>~</td>
-<td>开头区分大小写的正则匹配</td>
-</tr>
-</tbody></table>
-<p><strong>多个location配置的匹配顺序：</strong></p>
-<ul>
-<li>首先匹配：”&#x3D;”</li>
-<li>其次匹配：”^~”</li>
-<li>再匹配：文件location书写顺序</li>
-<li>最后把所有请求交给通配符（”&#x2F;“）</li>
-</ul>
-<p>注意：每次匹配成功后，停止匹配，会按照本匹配的location处理请求</p>
-<p><strong>按照上面实例进行说明匹配顺序：</strong></p>
-<ul>
-<li>首先对比第一个location，如果匹配就会停止匹配，并按照配置A进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = \ &#123;</span><br><span class="line">	[配置A]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>其次对比第二个location，如果匹配就会停止匹配，并按照配置D进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/&#123;</span><br><span class="line">		[配置D]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-<li>再按照顺序依此进行对比，直到找到匹配的才会停止，并按照所匹配的配置*进行处理请求</li>
-<li>如果以上无任何匹配项则会选择通用选项，并按照所匹配的配置B进行处理请求：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">		[配置B]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="3-应用举例"><a href="#3-应用举例" class="headerlink" title="3. 应用举例"></a>3. 应用举例</h2><ul>
-<li>精准规则（&#x3D;）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location = / &#123;</span><br><span class="line">	root /var/ww/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配以默认地址进行访问的请求，访问地址：<a href="http://nginxip/">http://NginxIP/</a></li>
-<li>匹配url路径（^~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ^~ /static/ &#123;</span><br><span class="line">	root /var/www/html/static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配以” &#x2F;static&#x2F; “开头的地址进行访问的请求，访问地址：<a href="http://nginxip/static/">http://NginxIP/static/</a></li>
-<li>忽略大小写（~*）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* \.(png|gif|jpg)&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示只匹配” *.png | *.gif | *.jpg “的文件，访问地址：<a href="http://nginxip/test.png">http://NginxIP/test.png</a><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~* /Test/ &#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配url地址中存在Test的访问请求，不区分大小写test也可以，访问地址：<a href="http://nginxip/test/">http://NginxIP/test/</a></li>
-<li>区分大小写（~）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location ~ /Test/&#123;</span><br><span class="line">	root /var/www/html/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配url地址中存在Test的访问请求，区分大小写,test是进行匹配的，访问地址：<a href="http://nginxip/Test/">http://NginxIP/Test/</a></li>
-<li>默认匹配（所有规则都可匹配）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">	root /var/www/html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则为默认匹配，他可以匹配所有以默认地址访问的链接，访问地址：<a href="http://nginxip/login.html">http://NginxIP/login.html</a></li>
-<li>内部跳转（@）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">location @index_error&#123;</span><br><span class="line">	root /var/www/error/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-此规则表示匹配以 “&#x2F;index&#x2F; “开头的请求，如果链接状态404，会匹配到这条规则</li>
-</ul>
-<h1 id="rewrite规则详解"><a href="#rewrite规则详解" class="headerlink" title="rewrite规则详解"></a>rewrite规则详解</h1><p>nginx的rewrite功能和apache一样，rewrite的主要功能是实现RUL地址的重定向。Nginx的rewrite功能是由PCRE软件支持，rewrite模块即<code>ngx_http_rewrite_module</code>模块。从某种意义上可以说为了美观或者搜索引起的友好搜索，提高排名等</p>
-<h2 id="1-实例-1"><a href="#1-实例-1" class="headerlink" title="1.实例"></a>1.实例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span> )&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www.jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">	location ~.*\.(png|gif|jpg)&#123;</span><br><span class="line">		<span class="built_in">return</span> 403;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-rewrite语法规则"><a href="#2-rewrite语法规则" class="headerlink" title="2.rewrite语法规则"></a>2.rewrite语法规则</h2><p><strong>语法：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rewrite		regex		replacement		[flag]</span><br></pre></td></tr></table></figure>
-<p>rewrite：rewrite重写的关键字不可省略<br>regex：这里写的是正则表达式<br>replacement：这里是重新内容<br>flag：这里是最后的flag标记</p>
-<p><strong>flag标记说明：</strong></p>
-<table>
-<thead>
-<tr>
-<th>flag标记</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>last</td>
-<td>也就是apache里的（L）标记，表示完成rewrite，URL地址不会改变</td>
-</tr>
-<tr>
-<td>break</td>
-<td>本条规则匹配成功后，会停止匹配，不再匹配后面的规则，URL地址不会改变</td>
-</tr>
-<tr>
-<td>redirect</td>
-<td>返回302临时重定向，浏览器地址会显示跳转后的URL地址</td>
-</tr>
-<tr>
-<td>permanent</td>
-<td>返回301永久重定向，浏览器地址栏显示跳转后的URL地址，Nginx返回response状态码301</td>
-</tr>
-<tr>
-<td><strong>相关符号说明：</strong></td>
-<td></td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>*</td>
-<td>代表前面0或者多个字符</td>
-</tr>
-<tr>
-<td>+</td>
-<td>代表前面1或者多个字符</td>
-</tr>
-<tr>
-<td>?</td>
-<td>代表前面0或1个字符</td>
-</tr>
-<tr>
-<td>^</td>
-<td>代表字符串的开始位置</td>
-</tr>
-<tr>
-<td>$</td>
-<td>代表字符串结束位置</td>
-</tr>
-<tr>
-<td>$n</td>
-<td>代表字符串结束第n个参数</td>
-</tr>
-<tr>
-<td>.</td>
-<td>通配符，代表任何字符</td>
-</tr>
-</tbody></table>
-<h2 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h2><ul>
-<li>多域名跳转到同一域名<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz jkyst.xyz abc.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$host</span> != <span class="string">&#x27;www.jkyst.xyz&#x27;</span>)&#123;</span><br><span class="line">		rewrite ^/(.*)$ http://www,jkyst.xyz/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>当访问 abc.jkyst.xyz 时会自动跳转到 <a href="http://www.jkyst.xyz/">www.jkyst.xyz</a> ，这里出现if语句用于判断，判断结果为true则执行语句内部的 rewrite重写</p>
-<ul>
-<li>当文件不存在时重定向到指定文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>当访问 “test” 目录下的文件或目录不存在时，则跳转到 “test1”下面的此文件或者目录，跳转后会将URL进行转换</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ index.html last;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>表示当访问 “test” 目录下的文件或目录不存在时，则重定向到 “index.html”文件，跳转后URl不会进行转换</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">		listen 80;</span><br><span class="line">		server_name www.jkyst.xyz;</span><br><span class="line">		<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">			rewrite ^/test/([0-9a-z]+)/([0-9a-z]+)/(.*)$ http://www.jkyst.xyz/test/$1$2<span class="variable">$3</span> permanent;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>目录切换，表示将原目录转换成其他目录，【0-9a-z】表示转换后目录名称</p>
-<ul>
-<li>禁止访问.sh后缀的文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	server&#123;</span><br><span class="line">	......其他配置</span><br><span class="line">	location ~.*\.(sh)<span class="variable">$&#123;</span></span><br><span class="line"><span class="variable">		return 405;</span></span><br><span class="line"><span class="variable">	&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>表示当访问 “*.sh”的文件就会返回405错误</p>
-<ul>
-<li>匹配用户浏览器代理信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span> ( <span class="variable">$http_user_agent</span> ~* (<span class="string">&quot;Android&quot;</span>)|(iPhone))&#123;</span><br><span class="line">		rewrite ^/test/(.*)$ http://www.jkyst.xyz/test/<span class="variable">$1</span>  permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>表示当匹配到浏览代理为Android和iPhone时进行重定向 “test”目录下的文件，改变访问的地址</p>
-<ul>
-<li>禁止htaccess<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	location ~//.ht &#123;</span><br><span class="line">         deny all;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="4-文件目录匹配"><a href="#4-文件目录匹配" class="headerlink" title="4.文件目录匹配"></a>4.文件目录匹配</h2><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-f</td>
-<td>判断文件是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-f</td>
-<td>判断文件是否存在 返回值false为不存在</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>判断目录是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-d</td>
-<td>判断目录是否存在 返回值true为不存在</td>
-</tr>
-<tr>
-<td>-e</td>
-<td>判断文件或目录是否存在 返回值true为存在</td>
-</tr>
-<tr>
-<td>!-e</td>
-<td>判断文件或目录是否存在 返回值true为不存在</td>
-</tr>
-<tr>
-<td>-x</td>
-<td>判断文件是否可执行 返回值true为可执行</td>
-</tr>
-<tr>
-<td>!-x</td>
-<td>判断文件是否可执行 返回值true为不可执行</td>
-</tr>
-</tbody></table>
-<p><strong>举例说明：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.jkyst.xyz;</span><br><span class="line">	<span class="keyword">if</span>(!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">		rewrite  ^/test/(.*)$ http://www.jkyst.xyz/test1/<span class="variable">$1</span> permanent;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>判断文件或目录是否存在</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>技术笔记</tag>
-        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
